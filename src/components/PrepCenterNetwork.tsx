@@ -16,13 +16,44 @@ import {
   CheckCircle2,
   AlertTriangle,
   ShieldCheck,
+  Mail,
+  ExternalLink,
 } from "lucide-react";
-import { prepCenters, prepCenterCategories, projectToMapPercent } from "../data/prepCenters";
+import { prepCenters, prepCenterCategories, projectToMapPercent, type PrepCenter } from "../data/prepCenters";
 
 const dotTexture = {
-  backgroundImage: "radial-gradient(circle, #94a3b8 1px, transparent 1px)",
-  backgroundSize: "22px 22px",
+  backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
+  backgroundSize: "20px 20px",
 };
+
+const REGIONS = [
+  { label: "West", from: 0, to: 33.3 },
+  { label: "Central", from: 33.3, to: 66.6 },
+  { label: "East", from: 66.6, to: 100 },
+];
+
+interface CityGroup {
+  key: string;
+  city: string;
+  state: string;
+  lat: number;
+  long: number;
+  centers: PrepCenter[];
+}
+
+function groupByCity(list: PrepCenter[]): CityGroup[] {
+  const map = new Map<string, CityGroup>();
+  for (const c of list) {
+    const key = `${c.city}|${c.state}`;
+    const existing = map.get(key);
+    if (existing) {
+      existing.centers.push(c);
+    } else {
+      map.set(key, { key, city: c.city, state: c.state, lat: c.lat, long: c.long, centers: [c] });
+    }
+  }
+  return [...map.values()];
+}
 
 function TimeDonut({ sourcingPct, label, accent }: { sourcingPct: number; label: string; accent: string }) {
   const r = 50;
@@ -186,13 +217,13 @@ const costRows = [
 export default function PrepCenterNetwork() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [activeCenter, setActiveCenter] = useState<string | null>(null);
+  const [activeCity, setActiveCity] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return prepCenters.filter((c) => {
-      const matchesCategory = activeCategory === "All" || c.category === activeCategory;
+      const matchesCategory = activeCategory === "All" || c.services.includes(activeCategory);
       const matchesQuery =
         !q ||
         c.name.toLowerCase().includes(q) ||
@@ -201,6 +232,8 @@ export default function PrepCenterNetwork() {
       return matchesCategory && matchesQuery;
     });
   }, [query, activeCategory]);
+
+  const cityGroups = useMemo(() => groupByCity(filtered), [filtered]);
 
   const handleCopy = async () => {
     try {
@@ -278,73 +311,165 @@ export default function PrepCenterNetwork() {
         </div>
 
         {/* Map + Cards */}
-        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-6 mb-24">
+        <div className="grid lg:grid-cols-[1.15fr_1fr] gap-6 mb-8">
           {/* Map */}
-          <div
-            className="relative rounded-3xl border border-slate-200 bg-slate-50 overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[420px]"
-            style={dotTexture}
-          >
-            {filtered.map((c) => {
-              const { x, y } = projectToMapPercent(c.lat, c.long);
-              const isActive = activeCenter === c.name;
+          <div className="relative rounded-3xl border border-slate-200 shadow-sm overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[520px] bg-gradient-to-b from-slate-50 to-white">
+            <div
+              className="absolute inset-0"
+              style={{
+                ...dotTexture,
+                maskImage:
+                  "radial-gradient(ellipse 75% 75% at 50% 50%, black 55%, transparent 100%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 75% 75% at 50% 50%, black 55%, transparent 100%)",
+              }}
+            />
+
+            {/* Region dividers */}
+            {REGIONS.slice(0, -1).map((r) => (
+              <div
+                key={r.label}
+                className="absolute top-0 bottom-0 border-r border-dashed border-slate-200"
+                style={{ left: `${r.to}%` }}
+              />
+            ))}
+            {REGIONS.map((r) => (
+              <div
+                key={`label-${r.label}`}
+                className="absolute top-3 text-[10px] font-black text-slate-300 uppercase tracking-widest"
+                style={{ left: `${(r.from + r.to) / 2}%`, transform: "translateX(-50%)" }}
+              >
+                {r.label}
+              </div>
+            ))}
+
+            {cityGroups.map((g) => {
+              const { x, y } = projectToMapPercent(g.lat, g.long);
+              const isActive = activeCity === g.key;
               return (
                 <button
-                  key={c.name}
-                  onClick={() => setActiveCenter(isActive ? null : c.name)}
+                  key={g.key}
+                  onClick={() => setActiveCity(isActive ? null : g.key)}
                   style={{ left: `${x}%`, top: `${y}%` }}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 group"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 group z-10"
                 >
+                  {isActive && (
+                    <span className="absolute inset-0 -m-2.5 rounded-full bg-brand/30 animate-ping" />
+                  )}
                   <span
-                    className={`block w-4 h-4 rounded-full border-2 border-white shadow-lg transition-all ${
+                    className={`relative flex items-center justify-center w-5 h-5 rounded-full border-2 border-white shadow-lg transition-all ${
                       isActive ? "bg-brand scale-125" : "bg-slate-900 group-hover:bg-brand"
                     }`}
-                  />
-                  <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 whitespace-nowrap bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                    {c.name} — {c.city}, {c.state}
+                  >
+                    {g.centers.length > 1 && (
+                      <span className="text-white text-[9px] font-black">{g.centers.length}</span>
+                    )}
+                  </span>
+                  <span
+                    className={`pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 whitespace-nowrap bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition-opacity z-20 ${
+                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                    }`}
+                  >
+                    {g.city}, {g.state}
+                    {g.centers.length > 1 ? ` — ${g.centers.length} partners` : ""}
                   </span>
                 </button>
               );
             })}
+
+            <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-bold text-slate-400">
+              {REGIONS.map((r) => {
+                const count = cityGroups
+                  .filter((g) => {
+                    const { x } = projectToMapPercent(g.lat, g.long);
+                    return x >= r.from && x < r.to;
+                  })
+                  .reduce((sum, g) => sum + g.centers.length, 0);
+                return (
+                  <span key={r.label} className="inline-flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-slate-900" />
+                    {r.label} · {count}
+                  </span>
+                );
+              })}
+            </div>
           </div>
 
           {/* Cards */}
-          <div className="space-y-4">
-            {filtered.map((c) => (
-              <motion.div
-                key={c.name}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                onClick={() => setActiveCenter(activeCenter === c.name ? null : c.name)}
-                className={`bg-white border rounded-2xl p-5 cursor-pointer transition-all ${
-                  activeCenter === c.name ? "border-brand shadow-lg" : "border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black text-brand uppercase tracking-widest">
-                    <ShieldCheck size={12} />
-                    Apex Approved Partner
-                  </div>
-                  {c.featured && (
-                    <span className="text-[10px] font-black text-orange-500 uppercase tracking-widest">
-                      Featured
+          <div className="space-y-4 lg:max-h-[520px] lg:overflow-y-auto lg:pr-1 lg:-mr-1">
+            {filtered.map((c) => {
+              const cityKey = `${c.city}|${c.state}`;
+              const isActive = activeCity === cityKey;
+              return (
+                <motion.div
+                  key={c.name}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  onClick={() => setActiveCity(isActive ? null : cityKey)}
+                  className={`bg-white border rounded-2xl p-5 cursor-pointer transition-all ${
+                    isActive ? "border-brand shadow-lg" : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    {c.approvedPartner ? (
+                      <div className="inline-flex items-center gap-1.5 text-[10px] font-black text-brand uppercase tracking-widest">
+                        <ShieldCheck size={12} />
+                        Apex Approved Partner
+                      </div>
+                    ) : (
+                      <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                        Network Listing
+                      </div>
+                    )}
+                    <span className="inline-flex items-center gap-1 text-xs text-slate-400 shrink-0">
+                      <Star size={12} className="fill-amber-400 text-amber-400" />
+                      {c.rating.toFixed(2).replace(/0$/, "").replace(/\.$/, "")} ({c.reviews})
                     </span>
-                  )}
-                </div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-base font-bold text-slate-900">{c.name}</h3>
-                  <span className="inline-flex items-center gap-1 text-xs text-slate-400">
-                    <Star size={12} className="fill-amber-400 text-amber-400" />
-                    5.0
-                  </span>
-                </div>
-                <p className="text-sm text-slate-500 leading-relaxed mb-3">{c.description}</p>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
-                  <MapPin size={13} />
-                  {c.city}, {c.state}
-                </div>
-              </motion.div>
-            ))}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 mb-1">{c.name}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-3">{c.tagline}</p>
+
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {c.services.map((s) => (
+                      <span
+                        key={s}
+                        className="text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full px-2.5 py-1"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-slate-400">
+                    <span className="inline-flex items-center gap-1.5">
+                      <MapPin size={13} />
+                      {c.city}, {c.state}
+                    </span>
+                    <a
+                      href={c.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 hover:text-brand transition-colors"
+                    >
+                      <ExternalLink size={13} />
+                      Website
+                    </a>
+                    {c.email && (
+                      <a
+                        href={`mailto:${c.email}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1.5 hover:text-brand transition-colors"
+                      >
+                        <Mail size={13} />
+                        {c.email}
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
             {filtered.length === 0 && (
               <div className="text-center text-sm text-slate-400 py-12">No prep centers match your search.</div>
             )}
