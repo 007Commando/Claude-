@@ -21,7 +21,9 @@ const benefits = [
     iconBg: "bg-blue-600",
     photo: prepCenterPhoto,
     title: "Prep Center Network",
-    body: "Work with the best prep centers in the US at lower prices and with product insurance built in."
+    body: "Work with the best prep centers in the US at lower prices and with product insurance built in.",
+    href: "/prep-center-network",
+    ctaLabel: "Explore the Network"
   },
   {
     icon: ShieldCheck,
@@ -29,7 +31,8 @@ const benefits = [
     photo: distributionPhoto,
     title: "Distribution List",
     body: "Source items from trusted vendors in our network ready to un-gate you and help you scale.",
-    href: "/distributor-vault"
+    href: "/distributor-vault",
+    ctaLabel: "Explore the Vault"
   },
   {
     icon: Users,
@@ -109,7 +112,7 @@ export default function RewardsBenefits() {
 
         {/* Benefit Cards */}
         <section className="grid md:grid-cols-3 gap-8 mb-12">
-          {benefits.map(({ icon: Icon, iconBg, photo, title, body, href }, i) => (
+          {benefits.map(({ icon: Icon, iconBg, photo, title, body, href, ctaLabel }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
@@ -132,7 +135,7 @@ export default function RewardsBenefits() {
                   onClick={() => router.push(href)}
                   className="inline-flex items-center gap-2 text-brand font-bold text-sm hover:gap-3 transition-all"
                 >
-                  Explore the Vault <ArrowRight size={16} />
+                  {ctaLabel} <ArrowRight size={16} />
                 </button>
               ) : (
                 <div className="h-0.5 w-8 bg-brand rounded-full" />
