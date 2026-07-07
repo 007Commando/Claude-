@@ -40,6 +40,32 @@ const signupSchema = z.object({
 
 type Mode = "login" | "signup" | "forgot";
 
+function getFriendlyAuthError(message: string): string {
+  const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
+  if (!codeMatch) return message;
+
+  switch (codeMatch[1]) {
+    case "invalid-credential":
+    case "wrong-password":
+    case "user-not-found":
+      return "Incorrect email or password. Please try again.";
+    case "invalid-email":
+      return "Enter a valid email address.";
+    case "user-disabled":
+      return "This account has been disabled. Contact support for help.";
+    case "too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
+    case "email-already-in-use":
+      return "An account with this email already exists. Try logging in instead.";
+    case "weak-password":
+      return "Choose a stronger password (at least 6 characters).";
+    case "network-request-failed":
+      return "Network error. Check your connection and try again.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+}
+
 function waitForApexAuth(timeoutMs = 8000): Promise<NonNullable<Window["ApexAuth"]>> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -141,7 +167,7 @@ export default function Auth() {
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
-      setError(msg);
+      setError(getFriendlyAuthError(msg));
     } finally {
       setLoading(false);
     }
