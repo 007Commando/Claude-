@@ -160,7 +160,7 @@ export default function DistributorVault() {
                     : "Every distributor's website and direct contact email is reserved for Apex members. Log in or create a free account to continue."}
                 </p>
                 <button
-                  onClick={() => router.push(loggedIn ? "/pricing" : "/auth?mode=signup")}
+                  onClick={() => router.push(loggedIn ? "/pricing" : "/auth?mode=signup&product=plus&plan=monthly")}
                   className="w-full bg-brand text-white px-6 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-[1.02] transition-all shadow-lg"
                 >
                   {loggedIn ? "Go Annual" : "Log In / Sign Up"}
@@ -219,7 +219,7 @@ export default function DistributorVault() {
                       Log In
                     </button>
                     <button
-                      onClick={() => router.push("/auth?mode=signup")}
+                      onClick={() => router.push("/auth?mode=signup&product=plus&plan=monthly")}
                       className="w-full border border-slate-200 text-slate-900 px-6 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:bg-slate-50 transition-all"
                     >
                       Create Free Account
