@@ -1,9 +1,6 @@
 "use client";
 
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
-import apexBlackLogo from "../assets/apex-black-logo.png.asset.json";
-import apexBlueLogo from "../assets/apex-blue-logo.png.asset.json";
-import apexRedLogo from "../assets/apex-red-logo.png.asset.json";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ChevronDown,
@@ -32,7 +29,10 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const apexGreenLogo = "/images/apex-green-logo.png";
+const apexBlackLogo = "/images/nav-logos/apex-black-logo.png";
+const apexBlueLogo = "/images/nav-logos/apex-blue-logo.png";
+const apexGreenLogo = "/images/nav-logos/apex-green-logo.png";
+const apexRedLogo = "/images/nav-logos/apex-red-logo.png";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -126,7 +126,7 @@ export default function Navigation() {
                             onClick={() => handleFeatureClick('/features/black')}
                             className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 hover:shadow-[0_0_28px_-2px_rgba(15,23,42,0.45)]"
                           >
-                            <img src={apexBlackLogo.url} alt="Apex Black" className="h-12 w-auto object-contain" />
+                            <img src={apexBlackLogo} alt="Apex Black" className="h-11 w-auto object-contain" />
                           </button>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
@@ -161,7 +161,7 @@ export default function Navigation() {
                             onClick={() => handleFeatureClick('/features/blue')}
                             className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_0_28px_-2px_rgba(37,99,235,0.5)]"
                           >
-                            <img src={apexBlueLogo.url} alt="Apex Blue" className="h-12 w-auto object-contain" />
+                            <img src={apexBlueLogo} alt="Apex Blue" className="h-11 w-auto object-contain" />
                           </button>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
@@ -192,7 +192,7 @@ export default function Navigation() {
                             onClick={() => handleFeatureClick('/features/green')}
                             className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 hover:shadow-[0_0_28px_-2px_rgba(34,197,94,0.5)]"
                           >
-                            <img src={apexGreenLogo} alt="Apex Green" className="h-14 w-auto object-contain" />
+                            <img src={apexGreenLogo} alt="Apex Green" className="h-11 w-auto object-contain" />
                           </button>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
@@ -222,7 +222,7 @@ export default function Navigation() {
                             onClick={() => handleFeatureClick('/features/red')}
                             className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 hover:shadow-[0_0_28px_-2px_rgba(239,68,68,0.5)]"
                           >
-                            <img src={apexRedLogo.url} alt="Apex Red" className="h-12 w-auto object-contain" />
+                            <img src={apexRedLogo} alt="Apex Red" className="h-11 w-auto object-contain" />
                           </button>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
@@ -333,19 +333,19 @@ export default function Navigation() {
                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Features</div>
                  <div className="grid grid-cols-1 gap-2">
                      <button onClick={() => handleFeatureClick('/features/black')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
-                       <img src={apexBlackLogo.url} alt="Apex Black" className="h-6 w-auto object-contain" />
+                       <img src={apexBlackLogo} alt="Apex Black" className="h-7 w-auto object-contain" />
                        <span className="font-medium text-slate-700">Apex Black</span>
                      </button>
                      <button onClick={() => handleFeatureClick('/features/blue')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
-                       <img src={apexBlueLogo.url} alt="Apex Blue" className="h-6 w-auto object-contain" />
+                       <img src={apexBlueLogo} alt="Apex Blue" className="h-7 w-auto object-contain" />
                        <span className="font-medium text-slate-700">Apex Blue</span>
                      </button>
                       <button onClick={() => handleFeatureClick('/features/green')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
-                        <img src={apexGreenLogo} alt="Apex Green" className="h-8 w-auto object-contain" />
+                        <img src={apexGreenLogo} alt="Apex Green" className="h-7 w-auto object-contain" />
                         <span className="font-medium text-slate-700">Apex Green</span>
                       </button>
                       <button onClick={() => handleFeatureClick('/features/red')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
-                        <img src={apexRedLogo.url} alt="Apex Red" className="h-6 w-auto object-contain" />
+                        <img src={apexRedLogo} alt="Apex Red" className="h-7 w-auto object-contain" />
                         <span className="font-medium text-slate-700">Apex Red</span>
                       </button>
                  </div>
