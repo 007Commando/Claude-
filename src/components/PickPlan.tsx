@@ -44,7 +44,7 @@ const sections: Section[] = [
   {
     title: "Overview",
     rows: [
-      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
+      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: "Up to $50K/mo in revenue", unlimited: "Unlimited" },
       { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: "2", unlimited: "3" },
       { label: "Listings", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
     ],
@@ -104,6 +104,7 @@ export default function PickPlan() {
   const unlimitedPrice = isAnnual
     ? Math.round(PRICE_UNLIMITED_M * (1 - ANNUAL_DISCOUNT)).toString()
     : PRICE_UNLIMITED_M.toString();
+  const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
   const handleStart = () => router.push("/auth?mode=signup");
 
@@ -182,9 +183,16 @@ export default function PickPlan() {
               {/* Limited */}
               <div className="p-6 border-l border-slate-100">
                 <div className="text-sm font-bold text-slate-900">Limited</div>
-                <div className="mt-1 flex items-baseline gap-1">
-                  <span className="text-3xl font-black text-slate-900">${limitedPrice}</span>
-                  <span className="text-xs text-slate-400 font-semibold">/month</span>
+                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
+                  <span className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">${limitedPrice}</span>
+                    <span className="text-xs text-slate-400 font-semibold">/month</span>
+                  </span>
+                  {isAnnual && (
+                    <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      Save {annualSavingsPct}%
+                    </span>
+                  )}
                 </div>
                 <div className="text-[11px] font-bold text-blue-600 mt-1">
                   14-Day Free Trial, Then ${limitedPrice}/month
@@ -205,9 +213,16 @@ export default function PickPlan() {
                   Most Popular
                 </span>
                 <div className="text-sm font-bold text-slate-900">Unlimited</div>
-                <div className="mt-1 flex items-baseline gap-1">
-                  <span className="text-3xl font-black text-slate-900">${unlimitedPrice}</span>
-                  <span className="text-xs text-slate-400 font-semibold">/month</span>
+                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
+                  <span className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">${unlimitedPrice}</span>
+                    <span className="text-xs text-slate-400 font-semibold">/month</span>
+                  </span>
+                  {isAnnual && (
+                    <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      Save {annualSavingsPct}%
+                    </span>
+                  )}
                 </div>
                 <div className="text-[11px] font-bold text-indigo-600 mt-1">
                   14-Day Free Trial, Then ${unlimitedPrice}/month
