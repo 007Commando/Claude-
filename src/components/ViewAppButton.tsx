@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { useSession } from "../hooks/useSession";
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -6,7 +8,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export default function ViewAppButton({ children, onClick, ...rest }: Props) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { session } = useSession();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,7 +18,7 @@ export default function ViewAppButton({ children, onClick, ...rest }: Props) {
     if (session && apex) {
       apex.redirectToApp("/");
     } else {
-      navigate("/auth?mode=signup");
+      router.push("/auth?mode=signup");
     }
   };
 

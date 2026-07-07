@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion, useAnimate } from "motion/react";
-import { useNavigate, Link } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { 
   BarChart3, 
   Search, 
@@ -61,7 +63,7 @@ function SalesCounter() {
 }
 
 export default function LandingPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
                 const paths: Record<string, string> = { blue: "/features/blue", green: "/features/green", black: "/features/black" };
                 return (
     <>
@@ -84,7 +86,7 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-5">
                 <button 
-                  onClick={() => navigate("/pricing")}
+                  onClick={() => router.push("/pricing")}
                   className="bg-brand text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(249,115,22,0.3)] flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
                   Run It <ArrowRight size={18} />
@@ -231,7 +233,7 @@ export default function LandingPage() {
                 <motion.div 
                   key={i}
                   variants={fadeIn}
-                  onClick={() => navigate(paths[feature.view])}
+                  onClick={() => router.push(paths[feature.view])}
                   className="p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all group cursor-pointer"
                 >
                 <div className="flex items-center justify-between mb-6">
@@ -370,7 +372,7 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => navigate("/pricing")}
+              onClick={() => router.push("/pricing")}
               className="bg-white text-brand px-10 py-5 rounded-2xl text-xl font-black hover:scale-105 transition-all shadow-2xl"
             >
               Start Your 14-Day Free Trial

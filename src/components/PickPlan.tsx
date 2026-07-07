@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import {
   Check,
   X,
@@ -93,7 +95,7 @@ const PRICE_UNLIMITED_M = 299;
 const ANNUAL_DISCOUNT = 0.2;
 
 export default function PickPlan() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [isAnnual, setIsAnnual] = useState(false);
 
   const limitedPrice = isAnnual
@@ -103,7 +105,7 @@ export default function PickPlan() {
     ? Math.round(PRICE_UNLIMITED_M * (1 - ANNUAL_DISCOUNT)).toString()
     : PRICE_UNLIMITED_M.toString();
 
-  const handleStart = () => navigate("/auth?mode=signup");
+  const handleStart = () => router.push("/auth?mode=signup");
 
   return (
     <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen pt-24 pb-24 text-slate-900">

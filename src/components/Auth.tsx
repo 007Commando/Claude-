@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
@@ -49,7 +51,8 @@ function waitForApexAuth(timeoutMs = 8000): Promise<NonNullable<Window["ApexAuth
 }
 
 export default function Auth() {
-  const [params, setParams] = useSearchParams();
+  const params = useSearchParams();
+  const router = useRouter();
   const mode: Mode =
     params.get("mode") === "signup" ? "signup" : params.get("mode") === "forgot" ? "forgot" : "login";
 
@@ -83,10 +86,11 @@ export default function Auth() {
   const setMode = (m: Mode) => {
     setError(null);
     setInfo(null);
-    const next = new URLSearchParams(params);
+    const next = new URLSearchParams(params.toString());
     if (m === "login") next.delete("mode");
     else next.set("mode", m);
-    setParams(next);
+    const qs = next.toString();
+    router.replace(qs ? `/auth?${qs}` : "/auth");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

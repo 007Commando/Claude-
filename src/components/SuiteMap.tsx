@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import {
   LayoutGrid,
@@ -133,7 +135,7 @@ const fadeInItem = {
 };
 
 export default function SuiteMap() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <section className="py-24 bg-white overflow-hidden">
@@ -177,7 +179,7 @@ export default function SuiteMap() {
 
                   <div className={imageLeft ? "lg:order-1" : "lg:order-2"}>
                     <button
-                      onClick={() => navigate(s.route)}
+                      onClick={() => router.push(s.route)}
                       className={`group w-full flex flex-col items-center justify-center gap-5 bg-slate-50/70 border border-slate-100 rounded-[32px] py-16 px-8 ring-1 ring-transparent transition-all hover:bg-white hover:shadow-[0_20px_50px_-20px_rgba(15,23,42,0.15)] ${s.ring}`}
                     >
                       <img src={s.bull} alt={`${s.label} ${s.labelAccent}`} className="h-16 w-auto object-contain group-hover:scale-105 transition-transform" />
@@ -217,7 +219,7 @@ export default function SuiteMap() {
                       })}
                     </div>
                     <button
-                      onClick={() => navigate(s.route)}
+                      onClick={() => router.push(s.route)}
                       className={`inline-flex items-center gap-2 text-sm font-bold ${s.accent} hover:gap-3 transition-all`}
                     >
                       Explore {s.label} {s.labelAccent} <ArrowRight size={16} />

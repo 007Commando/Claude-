@@ -1,14 +1,14 @@
+"use client";
+
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import apexBlackLogo from "../assets/apex-black-logo.png.asset.json";
 import apexBlueLogo from "../assets/apex-blue-logo.png.asset.json";
-import apexGreenLogo from "../assets/apex-green-logo.png";
 import apexRedLogo from "../assets/apex-red-logo.png.asset.json";
-import bullRed from "../assets/bull-red.png";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  ChevronDown, 
-  Layers, 
-  Menu, 
+import {
+  ChevronDown,
+  Layers,
+  Menu,
   X,
   LayoutGrid,
   Star,
@@ -29,18 +29,23 @@ import {
   Receipt,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+
+const apexGreenLogo = "/images/apex-green-logo.png";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const featuresTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const isFeatureActive = ["/features/black", "/features/blue", "/features/green", "/features/red"].includes(location.pathname);
-  const isHomeActive = location.pathname === "/";
+  const isFeatureActive = ["/features/black", "/features/blue", "/features/green", "/features/red"].includes(pathname);
+  const isHomeActive = pathname === "/";
+  const isPricingActive = pathname === "/pricing";
+  const isRewardsActive = pathname === "/rewards-benefits";
 
 
   useEffect(() => {
@@ -54,7 +59,7 @@ export default function Navigation() {
   }, []);
 
   const handleFeatureClick = (path: string) => {
-    navigate(path);
+    router.push(path);
     setIsFeaturesOpen(false);
     setIsMenuOpen(false);
   };
@@ -63,7 +68,7 @@ export default function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 relative">
-          <Link to="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <img src={apexBullLogo.url} alt="Apex Applications" className="h-18 w-auto object-contain" />
             <span className="text-xl font-bold tracking-tight text-slate-900">APEX <span className="text-brand text-[10px] align-top ml-0.5 font-black uppercase tracking-tighter">Applications</span></span>
           </Link>
@@ -71,12 +76,12 @@ export default function Navigation() {
           {/* Desktop Nav — centered */}
           <div className="hidden lg:flex items-center gap-10 text-[13px] font-bold text-slate-600 absolute left-1/2 -translate-x-1/2">
 
-            <NavLink 
-              to="/" 
-              className={({ isActive }) => `hover:text-brand transition-colors uppercase tracking-wider ${isActive ? 'text-brand' : ''}`}
+            <Link
+              href="/"
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${isHomeActive ? 'text-brand' : ''}`}
             >
               HOME
-            </NavLink>
+            </Link>
             
             <div 
               className="relative" 
@@ -254,14 +259,14 @@ export default function Navigation() {
                         </div>
                         <div className="flex items-center gap-5">
                           <Link
-                            to="/auth?mode=signup"
+                            href="/auth?mode=signup"
                             onClick={() => setIsFeaturesOpen(false)}
                             className="text-brand hover:text-brand-dark font-semibold text-[13px] transition-colors"
                           >
                             Create an Account
                           </Link>
                           <Link
-                            to="/auth"
+                            href="/auth"
                             onClick={() => setIsFeaturesOpen(false)}
                             className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-semibold text-[13px] transition-all"
                           >
@@ -274,25 +279,25 @@ export default function Navigation() {
                 )}
               </AnimatePresence>
             </div>
-            <NavLink
-              to="/pricing"
-              className={({ isActive }) => `hover:text-brand transition-colors uppercase tracking-wider ${isActive ? 'text-brand' : ''}`}
+            <Link
+              href="/pricing"
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${isPricingActive ? 'text-brand' : ''}`}
             >
               PRICING
-            </NavLink>
-            <NavLink
-              to="/rewards-benefits"
-              className={({ isActive }) => `hover:text-brand transition-colors uppercase tracking-wider ${isActive ? 'text-brand' : ''}`}
+            </Link>
+            <Link
+              href="/rewards-benefits"
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${isRewardsActive ? 'text-brand' : ''}`}
             >
               REWARDS & BENEFITS
-            </NavLink>
+            </Link>
           </div>
 
           {/* Right-side auth */}
           <div className="hidden lg:flex items-center gap-6 uppercase tracking-wider text-[13px]">
-            <Link to="/auth" className="text-slate-900 hover:text-brand transition-colors font-bold">LOG IN</Link>
+            <Link href="/auth" className="text-slate-900 hover:text-brand transition-colors font-bold">LOG IN</Link>
             <Link
-              to="/auth?mode=signup"
+              href="/auth?mode=signup"
               className="bg-brand text-white px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
             >
               SIGN UP
@@ -302,7 +307,7 @@ export default function Navigation() {
 
           {/* Mobile Nav Toggle */}
           <div className="lg:hidden flex items-center gap-4">
-            <Link to="/auth" className="text-sm font-bold text-slate-900">LOG IN</Link>
+            <Link href="/auth" className="text-sm font-bold text-slate-900">LOG IN</Link>
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-slate-100 bg-slate-900 rounded-lg shadow-lg"
@@ -323,7 +328,7 @@ export default function Navigation() {
             className="lg:hidden bg-white border-b border-slate-200 py-6 px-4 space-y-6 overflow-hidden"
           >
             <div className="space-y-4">
-              <Link to="/" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Home</Link>
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Home</Link>
               <div className="space-y-2">
                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Features</div>
                  <div className="grid grid-cols-1 gap-2">
@@ -345,13 +350,13 @@ export default function Navigation() {
                       </button>
                  </div>
               </div>
-              <Link to="/rewards-benefits" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Rewards & Benefits</Link>
+              <Link href="/rewards-benefits" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Rewards & Benefits</Link>
               <button className="block text-slate-900 font-bold text-lg w-full text-left">Resources</button>
             </div>
             
             <div className="pt-4 border-t border-slate-100 space-y-3">
               <Link 
-                to="/auth?mode=signup"
+                href="/auth?mode=signup"
                 onClick={() => setIsMenuOpen(false)}
                 className="block w-full text-center bg-brand text-white px-5 py-4 rounded-2xl font-bold shadow-lg shadow-brand/20"
               >

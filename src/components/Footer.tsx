@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
 
@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           {/* Logo */}
           <div className="md:col-span-3">
-            <Link to="/" className="inline-block">
+            <Link href="/" className="inline-block">
               <img
                 src={apexBullLogo.url}
                 alt="Apex Applications"
@@ -24,12 +24,12 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5">Company</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link to="/" className="hover:text-brand transition-colors">
+                <Link href="/" className="hover:text-brand transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/features/black#review-booster" className="hover:text-brand transition-colors">
+                <Link href="/features/black#review-booster" className="hover:text-brand transition-colors">
                   Review Booster
                 </Link>
               </li>
@@ -41,17 +41,17 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5">Features</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link to="/features/black" className="hover:text-brand transition-colors">
+                <Link href="/features/black" className="hover:text-brand transition-colors">
                   Apex Black
                 </Link>
               </li>
               <li>
-                <Link to="/features/blue" className="hover:text-brand transition-colors">
+                <Link href="/features/blue" className="hover:text-brand transition-colors">
                   Apex Blue
                 </Link>
               </li>
               <li>
-                <Link to="/features/green" className="hover:text-brand transition-colors">
+                <Link href="/features/green" className="hover:text-brand transition-colors">
                   Apex Green
                 </Link>
               </li>
@@ -63,7 +63,7 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5">Pricing</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link to="/pricing" className="hover:text-brand transition-colors">
+                <Link href="/pricing" className="hover:text-brand transition-colors">
                   Plans
                 </Link>
               </li>
@@ -83,10 +83,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex gap-8 text-slate-600 text-sm">
-            <Link to="/terms" className="hover:text-brand transition-colors">
+            <Link href="/terms" className="hover:text-brand transition-colors">
               Terms of Service
             </Link>
-            <Link to="/privacy" className="hover:text-brand transition-colors">
+            <Link href="/privacy" className="hover:text-brand transition-colors">
               Privacy Policy
             </Link>
           </div>

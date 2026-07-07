@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { motion } from "motion/react";
 import { CheckCircle2, TrendingUp, ExternalLink, Layers, Barcode } from "lucide-react";

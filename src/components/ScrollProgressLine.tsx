@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, useScroll } from "motion/react";
 import { RefObject } from "react";
 
@@ -5,7 +7,7 @@ export default function ScrollProgressLine({
   containerRef,
   colorClassName = "bg-brand",
 }: {
-  containerRef: RefObject<HTMLElement>;
+  containerRef: RefObject<HTMLElement | null>;
   colorClassName?: string;
 }) {
   const { scrollYProgress } = useScroll({

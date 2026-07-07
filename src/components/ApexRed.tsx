@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Container } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useSession } from "../hooks/useSession";
 
 const fadeIn = {
@@ -11,11 +13,11 @@ const fadeIn = {
 };
 
 export default function ApexRed() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { session } = useSession();
 
   const handleCta = () => {
-    navigate(session ? "/app" : "/auth");
+    router.push(session ? "/app" : "/auth");
   };
 
   return (

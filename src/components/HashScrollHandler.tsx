@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { usePathname } from "next/navigation";
 
 function getGlowColor(pathname: string): string {
   if (pathname.includes("/features/blue")) return "rgba(37, 99, 235, 0.6)";
@@ -38,48 +40,62 @@ function applyGlow(element: HTMLElement, color: string) {
   };
 }
 
-export default function ScrollToHash() {
-  const { pathname, hash } = useLocation();
+export default function HashScrollHandler() {
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!hash) {
-      window.scrollTo({ top: 0, behavior: "auto" });
-      return;
-    }
-    const id = hash.replace("#", "");
-    let attempts = 0;
     let cleanup: (() => void) | null = null;
 
-    const tryScroll = () => {
-      const el = document.getElementById(id);
-      if (el) {
-        const top = el.getBoundingClientRect().top + window.scrollY - 100;
-        window.scrollTo({ top, behavior: "smooth" });
-
-        const color = getGlowColor(pathname);
-        const cleanups: (() => void)[] = [];
-
-        // Target image container and CTA inside the section, not the whole section
-        const image = el.querySelector<HTMLElement>("[data-feature-image]");
-        const cta = el.querySelector<HTMLElement>("[data-feature-cta]");
-
-        if (image) cleanups.push(applyGlow(image, color));
-        if (cta) cleanups.push(applyGlow(cta, color));
-
-        cleanup = () => {
-          cleanups.forEach((fn) => fn());
-        };
-      } else if (attempts < 20) {
-        attempts += 1;
-        setTimeout(tryScroll, 50);
+    const runFromHash = () => {
+      if (cleanup) {
+        cleanup();
+        cleanup = null;
       }
+
+      const hash = window.location.hash;
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        return;
+      }
+
+      const id = hash.replace("#", "");
+      let attempts = 0;
+
+      const tryScroll = () => {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top, behavior: "smooth" });
+
+          const color = getGlowColor(pathname);
+          const cleanups: (() => void)[] = [];
+
+          // Target image container and CTA inside the section, not the whole section
+          const image = el.querySelector<HTMLElement>("[data-feature-image]");
+          const cta = el.querySelector<HTMLElement>("[data-feature-cta]");
+
+          if (image) cleanups.push(applyGlow(image, color));
+          if (cta) cleanups.push(applyGlow(cta, color));
+
+          cleanup = () => {
+            cleanups.forEach((fn) => fn());
+          };
+        } else if (attempts < 20) {
+          attempts += 1;
+          setTimeout(tryScroll, 50);
+        }
+      };
+      tryScroll();
     };
-    tryScroll();
+
+    runFromHash();
+    window.addEventListener("hashchange", runFromHash);
 
     return () => {
+      window.removeEventListener("hashchange", runFromHash);
       if (cleanup) cleanup();
     };
-  }, [pathname, hash]);
+  }, [pathname]);
 
   return null;
 }

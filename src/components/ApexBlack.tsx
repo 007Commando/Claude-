@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { motion } from "motion/react";
 import { CheckCircle2, Activity, ExternalLink, LayoutGrid, Star, School, BookOpen } from "lucide-react";

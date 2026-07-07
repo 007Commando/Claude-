@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { CheckCircle2, Trophy, DollarSign, Flag, ExternalLink } from "lucide-react";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";

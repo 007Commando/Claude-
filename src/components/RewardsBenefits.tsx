@@ -1,10 +1,13 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Package, ShieldCheck, Users, Star, ArrowRight, Headphones } from "lucide-react";
-import prepCenterPhoto from "../assets/rewards-prep-center.png";
-import distributionPhoto from "../assets/rewards-distribution.png";
-import videoCallsPhoto from "../assets/rewards-video-calls.png";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+
+const prepCenterPhoto = "/images/rewards-prep-center.png";
+const distributionPhoto = "/images/rewards-distribution.png";
+const videoCallsPhoto = "/images/rewards-video-calls.png";
 
 const fadeIn = {
   initial: { opacity: 0, y: 24 },
@@ -79,7 +82,7 @@ function GrowthRing({ arcFraction }: { arcFraction: number }) {
 }
 
 export default function RewardsBenefits() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <div className="pt-32 pb-24 bg-white">
@@ -197,7 +200,7 @@ export default function RewardsBenefits() {
             New benefits are added regularly to help you stay ahead of the competition.
           </p>
           <button
-            onClick={() => navigate("/pricing")}
+            onClick={() => router.push("/pricing")}
             className="inline-flex items-center gap-2 text-brand font-bold hover:gap-3 transition-all whitespace-nowrap"
           >
             Become a Member <ArrowRight size={18} />
