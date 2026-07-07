@@ -180,9 +180,9 @@ export default function PickPlan() {
           <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
             <div className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px]">
               <div />
-              {/* Limited */}
+              {/* Plus Plan */}
               <div className="p-6 border-l border-slate-100">
-                <div className="text-sm font-bold text-slate-900">Limited</div>
+                <div className="text-sm font-bold text-slate-900">Plus Plan</div>
                 <div className="mt-1 flex items-baseline gap-2 flex-wrap">
                   <span className="flex items-baseline gap-1">
                     <span className="text-3xl font-black text-slate-900">${limitedPrice}</span>
@@ -207,12 +207,12 @@ export default function PickPlan() {
                   Start Free Trial
                 </button>
               </div>
-              {/* Unlimited */}
+              {/* Pro Plan */}
               <div className="p-6 border-l border-slate-100 bg-gradient-to-b from-indigo-50/40 to-white relative">
                 <span className="absolute top-3 right-3 bg-orange-400 text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider">
                   Most Popular
                 </span>
-                <div className="text-sm font-bold text-slate-900">Unlimited</div>
+                <div className="text-sm font-bold text-slate-900">Pro Plan</div>
                 <div className="mt-1 flex items-baseline gap-2 flex-wrap">
                   <span className="flex items-baseline gap-1">
                     <span className="text-3xl font-black text-slate-900">${unlimitedPrice}</span>
