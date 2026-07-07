@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion } from "motion/react";
 import { CheckCircle2, Activity, ExternalLink, LayoutGrid, Star, School, BookOpen } from "lucide-react";
+import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import apexUniversityImage from "../assets/apex-university.png.asset.json";
 import resourceLibraryImage from "../assets/resource-library.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
@@ -196,16 +197,21 @@ export default function ApexBlack() {
 
         </div>
 
-        <div className="mt-32 p-20 bg-slate-900 rounded-[56px] text-center text-white relative overflow-hidden shadow-2xl">
-           <div className="absolute -right-20 -top-20 w-80 h-80 bg-brand/20 rounded-full blur-[120px]" />
-           <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-[100px]" />
-           <div className="relative z-10 max-w-2xl mx-auto">
-             <div className="text-slate-400 text-sm font-bold uppercase tracking-[0.2em] mb-6">You've seen the full command center.</div>
-             <h2 className="text-5xl font-black mb-8 tracking-tighter leading-none">READY FOR THE <br/><span className="text-brand italic uppercase">Black Edition?</span></h2>
-             <p className="text-slate-400 text-lg mb-12 font-medium">Join the elite tier of Amazon wholesale growth.</p>
-             <button className="bg-brand text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] uppercase tracking-widest text-sm">
-               UPGRADE PERFORMANCE
-             </button>
+        <div className="mt-32 p-12 lg:p-16 bg-slate-900 rounded-[56px] text-white relative overflow-hidden text-center">
+           <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 h-[90%] w-auto opacity-40 brightness-150 scale-x-[-1] pointer-events-none">
+              <img
+                src={apexBullLogo.url}
+                alt="Apex Black bull logo"
+                className="h-full w-auto object-contain"
+              />
+           </div>
+           <div className="relative z-10 max-w-3xl mx-auto">
+              <div className="text-slate-400 text-sm font-bold uppercase tracking-[0.2em] mb-4">You've seen the full command center.</div>
+              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Ready for the Black Edition?</h2>
+              <p className="text-lg lg:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Join the elite tier of Amazon wholesale growth.</p>
+              <ViewAppButton className="bg-white text-slate-900 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
+                Start Trial
+              </ViewAppButton>
            </div>
         </div>
       </div>
