@@ -28,7 +28,8 @@ const benefits = [
     iconBg: "bg-blue-600",
     photo: distributionPhoto,
     title: "Distribution List",
-    body: "Source items from trusted vendors in our network ready to un-gate you and help you scale."
+    body: "Source items from trusted vendors in our network ready to un-gate you and help you scale.",
+    href: "/distributor-vault"
   },
   {
     icon: Users,
@@ -108,7 +109,7 @@ export default function RewardsBenefits() {
 
         {/* Benefit Cards */}
         <section className="grid md:grid-cols-3 gap-8 mb-12">
-          {benefits.map(({ icon: Icon, iconBg, photo, title, body }, i) => (
+          {benefits.map(({ icon: Icon, iconBg, photo, title, body, href }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
@@ -126,7 +127,16 @@ export default function RewardsBenefits() {
                 <h3 className="text-xl font-bold text-slate-900 tracking-tight">{title}</h3>
               </div>
               <p className="text-slate-500 leading-relaxed mb-3">{body}</p>
-              <div className="h-0.5 w-8 bg-brand rounded-full" />
+              {href ? (
+                <button
+                  onClick={() => router.push(href)}
+                  className="inline-flex items-center gap-2 text-brand font-bold text-sm hover:gap-3 transition-all"
+                >
+                  Explore the Vault <ArrowRight size={16} />
+                </button>
+              ) : (
+                <div className="h-0.5 w-8 bg-brand rounded-full" />
+              )}
             </motion.div>
           ))}
         </section>
