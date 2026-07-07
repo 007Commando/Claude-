@@ -16,6 +16,8 @@ declare global {
         email: string;
         password: string;
         initialAccountType: "seller" | "prep";
+        product?: "starter" | "plus" | "pro" | "enterprise";
+        plan?: "monthly" | "yearly";
       }) => Promise<unknown>;
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
       signOut: () => Promise<unknown> | void;
@@ -50,11 +52,25 @@ function waitForApexAuth(timeoutMs = 8000): Promise<NonNullable<Window["ApexAuth
   });
 }
 
+const PRODUCTS = ["starter", "plus", "pro", "enterprise"] as const;
+const PLANS = ["monthly", "yearly"] as const;
+const PRODUCT_LABELS: Record<(typeof PRODUCTS)[number], string> = {
+  starter: "Starter",
+  plus: "Plus",
+  pro: "Pro",
+  enterprise: "Enterprise",
+};
+
 export default function Auth() {
   const params = useSearchParams();
   const router = useRouter();
   const mode: Mode =
     params.get("mode") === "signup" ? "signup" : params.get("mode") === "forgot" ? "forgot" : "login";
+
+  const productParam = params.get("product");
+  const product = PRODUCTS.find((p) => p === productParam);
+  const planParam = params.get("plan");
+  const plan = PLANS.find((p) => p === planParam);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -108,6 +124,8 @@ export default function Auth() {
           email: parsed.data.email,
           password: parsed.data.password,
           initialAccountType: "seller",
+          ...(product ? { product } : {}),
+          ...(plan ? { plan } : {}),
         });
         setInfo("Check your email to confirm your account.");
       } else if (mode === "forgot") {
@@ -229,6 +247,13 @@ export default function Auth() {
 
               <h2 className="text-2xl font-black tracking-tight text-slate-900 text-center">{heading}</h2>
               <p className="text-sm text-slate-500 text-center mt-1 mb-8">{sub}</p>
+
+              {mode === "signup" && product && (
+                <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
+                  Signing up for the {PRODUCT_LABELS[product]} plan
+                  {plan ? ` — ${plan === "yearly" ? "Annual" : "Monthly"} billing` : ""}
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" && (

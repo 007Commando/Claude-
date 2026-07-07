@@ -106,7 +106,8 @@ export default function PickPlan() {
     : PRICE_UNLIMITED_M.toString();
   const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
-  const handleStart = () => router.push("/auth?mode=signup");
+  const handleStart = (product: "plus" | "pro") =>
+    router.push(`/auth?mode=signup&product=${product}&plan=${isAnnual ? "yearly" : "monthly"}`);
 
   return (
     <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen pt-24 pb-24 text-slate-900">
@@ -201,7 +202,7 @@ export default function PickPlan() {
                   Perfect for Amazon Wholesale businesses just getting started.
                 </p>
                 <button
-                  onClick={handleStart}
+                  onClick={() => handleStart("plus")}
                   className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
                 >
                   Start Free Trial
@@ -231,7 +232,7 @@ export default function PickPlan() {
                   For serious Amazon Wholesale sellers looking to scale their business.
                 </p>
                 <button
-                  onClick={handleStart}
+                  onClick={() => handleStart("pro")}
                   className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Start Free Trial
@@ -275,7 +276,7 @@ export default function PickPlan() {
             <div />
             <div className="p-6 border-l border-slate-100">
               <button
-                onClick={handleStart}
+                onClick={() => handleStart("plus")}
                 className="w-full py-3 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Start Free Trial
@@ -283,7 +284,7 @@ export default function PickPlan() {
             </div>
             <div className="p-6 border-l border-slate-100">
               <button
-                onClick={handleStart}
+                onClick={() => handleStart("pro")}
                 className="w-full py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md hover:shadow-lg transition-all"
               >
                 Start Free Trial
