@@ -9,7 +9,7 @@ export default function Footer() {
         {/* Top section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           {/* Logo */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-2">
             <Link href="/" className="inline-block">
               <img
                 src={apexBullLogo.url}
@@ -70,8 +70,20 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* How Amazon Wholesale Works */}
+          <div className="md:col-span-2">
+            <h4 className="font-semibold text-slate-900 mb-5">How Amazon Wholesale Works</h4>
+            <ul className="space-y-3 text-slate-600">
+              <li>
+                <Link href="/how-it-works" className="hover:text-brand transition-colors">
+                  The Roadmap
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Software Partner badge */}
-          <div className="md:col-span-3 flex md:justify-end items-start">
+          <div className="md:col-span-2 flex md:justify-end items-start">
             <img
               src={amazonPartnerBadge.url}
               alt="Amazon Selling Partner Appstore Software Partner"
