@@ -331,9 +331,9 @@ export default function ApexBlue() {
               <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">You've seen the engine room.</div>
               <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Ready to Scale Your Amazon Reselling Business?</h2>
               <p className="text-lg lg:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">Join the elite sellers who have moved from spreadsheets to systems.</p>
-              <button className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
+              <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
                 Start 14-Day Free Trial
-              </button>
+              </ViewAppButton>
            </div>
         </div>
 

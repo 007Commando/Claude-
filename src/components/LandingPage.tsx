@@ -352,7 +352,10 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="shrink-0 w-full lg:w-auto">
-              <button className="w-full lg:w-auto bg-brand hover:bg-brand-dark text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] flex items-center justify-center gap-3 uppercase tracking-widest">
+              <button
+                onClick={() => router.push("/features/black#apex-university")}
+                className="w-full lg:w-auto bg-brand hover:bg-brand-dark text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] flex items-center justify-center gap-3 uppercase tracking-widest"
+              >
                 Enroll In Free Course <ArrowRight size={18} />
               </button>
             </div>

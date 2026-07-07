@@ -351,7 +351,7 @@ export default function Navigation() {
                  </div>
               </div>
               <Link href="/rewards-benefits" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Rewards & Benefits</Link>
-              <button className="block text-slate-900 font-bold text-lg w-full text-left">Resources</button>
+              <button onClick={() => handleFeatureClick('/features/black#resource-library')} className="block text-slate-900 font-bold text-lg w-full text-left">Resources</button>
             </div>
             
             <div className="pt-4 border-t border-slate-100 space-y-3">
@@ -362,7 +362,7 @@ export default function Navigation() {
               >
                 SIGN UP FREE
               </Link>
-              <button className="w-full border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all">
+              <button onClick={() => handleFeatureClick('/features/black#apex-university')} className="w-full border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all">
                 FREE AMAZON COURSE
               </button>
               <button className="w-full bg-slate-50 text-slate-900 px-5 py-4 rounded-2xl font-bold">

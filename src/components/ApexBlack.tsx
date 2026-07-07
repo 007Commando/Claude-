@@ -168,9 +168,9 @@ export default function ApexBlack() {
             </div>
 
             <div className="mt-8 flex justify-center">
-              <button data-feature-cta className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black hover:bg-slate-800 transition-all uppercase tracking-widest text-sm">
+              <ViewAppButton data-feature-cta className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black hover:bg-slate-800 transition-all uppercase tracking-widest text-sm">
                 Enroll in Free Course
-              </button>
+              </ViewAppButton>
             </div>
           </motion.section>
 
