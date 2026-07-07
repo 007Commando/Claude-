@@ -173,6 +173,8 @@ export default function PickPlan() {
 
         {/* Unified comparison container */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+        <div className="overflow-x-auto">
+        <div className="min-w-[680px]">
           {/* Sticky plan headers */}
           <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
             <div className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px]">
@@ -273,6 +275,8 @@ export default function PickPlan() {
               </button>
             </div>
           </div>
+        </div>
+        </div>
         </div>
       </div>
     </div>
