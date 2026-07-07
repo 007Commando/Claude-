@@ -72,7 +72,7 @@ export default function Auth() {
         unsub = auth.onAuthStateChanged((user) => {
           if (user) {
             const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
-            if (!redirect) auth.redirectToApp("/");
+            if (!redirect) auth.redirectToApp("/dashboard");
           }
         });
       })

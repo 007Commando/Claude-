@@ -16,7 +16,7 @@ export default function ViewAppButton({ children, onClick, ...rest }: Props) {
     if (e.defaultPrevented) return;
     const apex = (window as unknown as { ApexAuth?: { redirectToApp: (p?: string) => void } }).ApexAuth;
     if (session && apex) {
-      apex.redirectToApp("/");
+      apex.redirectToApp("/dashboard");
     } else {
       router.push("/auth?mode=signup");
     }
