@@ -259,7 +259,7 @@ export default function Navigation() {
                         </div>
                         <div className="flex items-center gap-5">
                           <Link
-                            href="/auth?mode=signup&product=plus&plan=monthly"
+                            href="/auth?mode=signup&plan=plus&period=monthly"
                             onClick={() => setIsFeaturesOpen(false)}
                             className="text-brand hover:text-brand-dark font-semibold text-[13px] transition-colors"
                           >
@@ -297,7 +297,7 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center gap-6 uppercase tracking-wider text-[13px]">
             <Link href="/auth" className="text-slate-900 hover:text-brand transition-colors font-bold">LOG IN</Link>
             <Link
-              href="/auth?mode=signup&product=plus&plan=monthly"
+              href="/auth?mode=signup&plan=plus&period=monthly"
               className="bg-brand text-white px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
             >
               SIGN UP
@@ -356,7 +356,7 @@ export default function Navigation() {
             
             <div className="pt-4 border-t border-slate-100 space-y-3">
               <Link 
-                href="/auth?mode=signup&product=plus&plan=monthly"
+                href="/auth?mode=signup&plan=plus&period=monthly"
                 onClick={() => setIsMenuOpen(false)}
                 className="block w-full text-center bg-brand text-white px-5 py-4 rounded-2xl font-bold shadow-lg shadow-brand/20"
               >

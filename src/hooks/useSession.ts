@@ -13,13 +13,25 @@ export function useSession() {
 
     const start = Date.now();
     const attach = () => {
-      const auth = (window as unknown as { ApexAuth?: { onAuthStateChanged: (cb: (u: AuthUser) => void) => (() => void) | void } }).ApexAuth;
+      const auth = (
+        window as unknown as {
+          ApexAuth?: { onAuthStateChanged: (cb: (u: AuthUser) => void) => (() => void) | void | Promise<(() => void) | void> };
+        }
+      ).ApexAuth;
       if (auth) {
-        unsub = auth.onAuthStateChanged((user) => {
-          if (cancelled) return;
-          setSession(user ?? null);
-          setLoading(false);
-          done = true;
+        Promise.resolve(
+          auth.onAuthStateChanged((user) => {
+            if (cancelled) return;
+            setSession(user ?? null);
+            setLoading(false);
+            done = true;
+          })
+        ).then((fn) => {
+          if (cancelled) {
+            if (typeof fn === "function") fn();
+          } else {
+            unsub = fn;
+          }
         });
         return;
       }

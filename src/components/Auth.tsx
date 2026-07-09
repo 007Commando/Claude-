@@ -5,24 +5,25 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
+import { readStoredAttribution } from "./LeadAttribution";
 
 // Global ApexAuth from https://app.apexapplications.io/apex-auth.js
 declare global {
   interface Window {
     ApexAuth?: {
-      signIn: (email: string, password: string) => Promise<unknown>;
+      signIn: (email: string, password: string, opts?: { redirect?: boolean }) => Promise<unknown>;
       signUp: (opts: {
         name: string;
         email: string;
         password: string;
-        initialAccountType: "seller" | "prep";
-        product?: "starter" | "plus" | "pro" | "enterprise";
-        plan?: "monthly" | "yearly";
+        plan?: "starter" | "plus" | "pro" | "enterprise";
+        period?: "monthly" | "yearly";
       }) => Promise<unknown>;
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
       signOut: () => Promise<unknown> | void;
       redirectToApp: (path?: string) => void;
-      onAuthStateChanged: (cb: (user: unknown) => void) => (() => void) | void;
+      getCurrentUser: () => Promise<unknown>;
+      onAuthStateChanged: (cb: (user: unknown) => void) => (() => void) | void | Promise<(() => void) | void>;
     };
   }
 }
@@ -78,9 +79,9 @@ function waitForApexAuth(timeoutMs = 8000): Promise<NonNullable<Window["ApexAuth
   });
 }
 
-const PRODUCTS = ["starter", "plus", "pro", "enterprise"] as const;
-const PLANS = ["monthly", "yearly"] as const;
-const PRODUCT_LABELS: Record<(typeof PRODUCTS)[number], string> = {
+const PLAN_TIERS = ["starter", "plus", "pro", "enterprise"] as const;
+const PERIODS = ["monthly", "yearly"] as const;
+const PLAN_TIER_LABELS: Record<(typeof PLAN_TIERS)[number], string> = {
   starter: "Starter",
   plus: "Plus",
   pro: "Pro",
@@ -93,10 +94,10 @@ export default function Auth() {
   const mode: Mode =
     params.get("mode") === "signup" ? "signup" : params.get("mode") === "forgot" ? "forgot" : "login";
 
-  const productParam = params.get("product");
-  const product = PRODUCTS.find((p) => p === productParam);
   const planParam = params.get("plan");
-  const plan = PLANS.find((p) => p === planParam);
+  const planTier = PLAN_TIERS.find((p) => p === planParam);
+  const periodParam = params.get("period");
+  const period = PERIODS.find((p) => p === periodParam);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -109,14 +110,21 @@ export default function Auth() {
     let cancelled = false;
     let unsub: (() => void) | void;
     waitForApexAuth()
-      .then((auth) => {
+      .then(async (auth) => {
         if (cancelled) return;
-        unsub = auth.onAuthStateChanged((user) => {
-          if (user) {
-            const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
-            if (!redirect) auth.redirectToApp("/dashboard");
-          }
-        });
+        const fn = await Promise.resolve(
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
+              if (!redirect) auth.redirectToApp("/dashboard");
+            }
+          })
+        );
+        if (cancelled) {
+          if (typeof fn === "function") fn();
+        } else {
+          unsub = fn;
+        }
       })
       .catch(() => {});
     return () => {
@@ -149,11 +157,25 @@ export default function Auth() {
           name: parsed.data.name,
           email: parsed.data.email,
           password: parsed.data.password,
-          initialAccountType: "seller",
-          ...(product ? { product } : {}),
-          ...(plan ? { plan } : {}),
+          ...(planTier ? { plan: planTier } : {}),
+          ...(period ? { period } : {}),
         });
-        setInfo("Check your email to confirm your account.");
+        const attribution = readStoredAttribution();
+        fetch("/api/track", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            source: attribution?.source ?? "direct",
+            event: "apex_signup",
+            email: parsed.data.email,
+            visitorId: attribution?.visitorId,
+            utmSource: attribution?.utmSource,
+            utmMedium: attribution?.utmMedium,
+            utmCampaign: attribution?.utmCampaign,
+          }),
+          keepalive: true,
+        }).catch(() => {});
+        // Auto-redirects: to Stripe checkout if a plan was selected, otherwise into the app
       } else if (mode === "forgot") {
         const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
@@ -274,10 +296,10 @@ export default function Auth() {
               <h2 className="text-2xl font-black tracking-tight text-slate-900 text-center">{heading}</h2>
               <p className="text-sm text-slate-500 text-center mt-1 mb-8">{sub}</p>
 
-              {mode === "signup" && product && (
+              {mode === "signup" && planTier && (
                 <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
-                  Signing up for the {PRODUCT_LABELS[product]} plan
-                  {plan ? ` — ${plan === "yearly" ? "Annual" : "Monthly"} billing` : ""}
+                  Signing up for the {PLAN_TIER_LABELS[planTier]} plan
+                  {period ? ` — ${period === "yearly" ? "Annual" : "Monthly"} billing` : ""}
                 </div>
               )}
 

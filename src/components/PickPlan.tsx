@@ -106,8 +106,8 @@ export default function PickPlan() {
     : PRICE_UNLIMITED_M.toString();
   const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
-  const handleStart = (product: "plus" | "pro") =>
-    router.push(`/auth?mode=signup&product=${product}&plan=${isAnnual ? "yearly" : "monthly"}`);
+  const handleStart = (plan: "plus" | "pro") =>
+    router.push(`/auth?mode=signup&plan=${plan}&period=${isAnnual ? "yearly" : "monthly"}`);
 
   return (
     <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen pt-24 pb-24 text-slate-900">
