@@ -91,8 +91,16 @@ const PLAN_TIER_LABELS: Record<(typeof PLAN_TIERS)[number], string> = {
 export default function Auth() {
   const params = useSearchParams();
   const router = useRouter();
-  const mode: Mode =
+  const modeFromParams: Mode =
     params.get("mode") === "signup" ? "signup" : params.get("mode") === "forgot" ? "forgot" : "login";
+  // Tab clicks flip this immediately so the UI never waits on a router
+  // round-trip; it's reconciled back to null once the URL catches up.
+  const [modeOverride, setModeOverride] = useState<Mode | null>(null);
+  const mode = modeOverride ?? modeFromParams;
+
+  useEffect(() => {
+    setModeOverride(null);
+  }, [modeFromParams]);
 
   const planParam = params.get("plan");
   const planTier = PLAN_TIERS.find((p) => p === planParam);
@@ -136,6 +144,7 @@ export default function Auth() {
   const setMode = (m: Mode) => {
     setError(null);
     setInfo(null);
+    setModeOverride(m);
     const next = new URLSearchParams(params.toString());
     if (m === "login") next.delete("mode");
     else next.set("mode", m);
