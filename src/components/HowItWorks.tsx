@@ -11,13 +11,17 @@ import {
   RotateCw,
   ArrowRight,
   Map,
+  Sparkles,
 } from "lucide-react";
+import ViewAppButton from "./ViewAppButton";
+import apexBlueCtaBull from "../assets/apex-blue-cta-bull.png.asset.json";
 
 const steps = [
   {
     icon: BookOpen,
     title: "Build Your Foundation",
     body: "Before you ever reach out to a supplier, get your business foundation right. Our proven setup guide is built to maximize your approval odds with wholesale vendors from day one.",
+    highlights: ["Ungating Unlock SOP", "9 High-Level Videos", "Keepa Playbook"],
     linkLabel: "See the Foundation Guide",
     linkHref: "/features/black#apex-university",
   },
@@ -25,6 +29,7 @@ const steps = [
     icon: Building2,
     title: "Open Wholesale Accounts",
     body: "Reach out to vetted, authorized distributors and brands, open your wholesale accounts, and start pulling their full product catalogs.",
+    highlights: ["3 Free Suppliers in the US", "Review Booster Automation to Hyper-Scale New Stores"],
     linkLabel: "Browse Vetted Vendors",
     linkHref: "/features/black#resource-library",
   },
@@ -32,6 +37,7 @@ const steps = [
     icon: Barcode,
     title: "Scan & Catalog Everything",
     body: "Run every account's catalog through our UPC Scanner and store the profitable winners in your Master Catalog inside Apex Blue.",
+    highlights: ["Scan Up to 100,000 UPCs/Hour", "Auto-Match UPC to ASIN", "Cross-Vendor Price Comparison"],
     linkLabel: "View UPC Scanner",
     linkHref: "/features/green#upc-scanner",
   },
@@ -39,6 +45,7 @@ const steps = [
     icon: SlidersHorizontal,
     title: "Filter & Build Purchase Orders",
     body: "Set your profitability filters and turn your best finds into real purchase orders — ready to send with confidence.",
+    highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown", "Buy Box Profit Tracking"],
     linkLabel: "View Purchase Orders",
     linkHref: "/features/blue#purchase-orders",
   },
@@ -46,6 +53,7 @@ const steps = [
     icon: RotateCw,
     title: "Restock & Scale at Your Pace",
     body: "Once inventory starts moving, use the Restock Purchase Order Builder to rinse and repeat. Scale slow and steady, or aggressive and fast — it's entirely up to you.",
+    highlights: ["Sales Velocity Restock Alerts", "Dead Inventory Warnings", "One-Click PO Creation"],
     linkLabel: "View Analytics & Restocking",
     linkHref: "/features/blue#analytics",
   },
@@ -163,7 +171,18 @@ export default function HowItWorks() {
                   <h3 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed mb-5">{step.body}</p>
+                  <p className="text-slate-600 leading-relaxed mb-4">{step.body}</p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {step.highlights.map((highlight) => (
+                      <span
+                        key={highlight}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-brand bg-brand/10 rounded-full px-3 py-1.5"
+                      >
+                        <Sparkles size={12} className="shrink-0" />
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
                   <button
                     onClick={() => router.push(step.linkHref)}
                     className="inline-flex items-center gap-2 text-brand font-bold text-sm hover:gap-3 transition-all"
@@ -182,23 +201,30 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-20 p-12 lg:p-16 bg-slate-900 rounded-[56px] text-center text-white"
+          className="mt-20 p-12 lg:p-16 bg-blue-600 rounded-[56px] text-white relative overflow-hidden text-center"
         >
-          <div className="text-slate-400 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-            You've seen the full route.
+          <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 h-[90%] w-auto opacity-40 brightness-150 scale-x-[-1] pointer-events-none">
+            <img
+              src={apexBlueCtaBull.url}
+              alt="Apex Blue bull logo"
+              className="h-full w-auto object-contain"
+            />
           </div>
-          <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">
-            Ready to run your own deal, start to scale?
-          </h2>
-          <p className="text-slate-400 text-lg mb-8 max-w-xl mx-auto">
-            Everything on this roadmap lives inside Apex — one login, one system.
-          </p>
-          <button
-            onClick={() => router.push("/pricing")}
-            className="bg-brand text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-xl uppercase tracking-widest text-sm"
-          >
-            Start Free Trial
-          </button>
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">
+              You've seen the roadmap.
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">
+              Ready to Get Started?
+            </h2>
+            <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
+              Everything you just saw is already built into Apex — jump in and start your first
+              deal today.
+            </p>
+            <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
+              Start Free Trial
+            </ViewAppButton>
+          </div>
         </motion.section>
       </div>
     </div>
