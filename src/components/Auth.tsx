@@ -195,8 +195,16 @@ export default function Auth() {
       } else if (mode === "forgot") {
         const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
-        await auth.sendPasswordResetEmail(parsed.data);
-        setInfo("Password reset email sent. Check your inbox.");
+        try {
+          await auth.sendPasswordResetEmail(parsed.data);
+        } catch (err) {
+          // The reset-email endpoint returns a non-JSON success body, which
+          // ApexAuth's own response parsing chokes on even though the email
+          // was actually sent — don't surface that as a failure.
+          const msg = err instanceof Error ? err.message : "";
+          if (!/not valid JSON/i.test(msg)) throw err;
+        }
+        setInfo("Email has been sent! Check your inbox.");
       } else {
         const parsed = loginSchema.safeParse({ email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
@@ -402,7 +410,8 @@ export default function Auth() {
                   </div>
                 )}
                 {info && (
-                  <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
+                    <CheckCircle2 className="w-4 h-4 shrink-0" />
                     {info}
                   </div>
                 )}
