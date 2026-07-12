@@ -102,10 +102,14 @@ export default function Auth() {
     setModeOverride(null);
   }, [modeFromParams]);
 
+  // Defaults ensure every signup carries a plan — even someone who lands on
+  // a bare /auth (e.g. the header "Log In" link) and switches to Sign Up
+  // from inside the page still triggers Stripe checkout, never a free
+  // account with direct app access.
   const planParam = params.get("plan");
-  const planTier = PLAN_TIERS.find((p) => p === planParam);
+  const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "plus";
   const periodParam = params.get("period");
-  const period = PERIODS.find((p) => p === periodParam);
+  const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -149,7 +153,10 @@ export default function Auth() {
     if (m === "login") next.delete("mode");
     else next.set("mode", m);
     const qs = next.toString();
-    router.replace(qs ? `/auth?${qs}` : "/auth");
+    // scroll: false — without it, Next.js resets scroll to top on navigate,
+    // yanking the form off-screen (it sits below a tall hero) and making the
+    // tab switch look broken even though the mode did change underneath.
+    router.replace(qs ? `/auth?${qs}` : "/auth", { scroll: false });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -166,8 +173,8 @@ export default function Auth() {
           name: parsed.data.name,
           email: parsed.data.email,
           password: parsed.data.password,
-          ...(planTier ? { plan: planTier } : {}),
-          ...(period ? { period } : {}),
+          plan: planTier,
+          period,
         });
         const attribution = readStoredAttribution();
         fetch("/api/track", {
@@ -305,10 +312,9 @@ export default function Auth() {
               <h2 className="text-2xl font-black tracking-tight text-slate-900 text-center">{heading}</h2>
               <p className="text-sm text-slate-500 text-center mt-1 mb-8">{sub}</p>
 
-              {mode === "signup" && planTier && (
+              {mode === "signup" && (
                 <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
-                  Signing up for the {PLAN_TIER_LABELS[planTier]} plan
-                  {period ? ` — ${period === "yearly" ? "Annual" : "Monthly"} billing` : ""}
+                  Signing up for the {PLAN_TIER_LABELS[planTier]} plan — {period === "yearly" ? "Annual" : "Monthly"} billing
                 </div>
               )}
 
