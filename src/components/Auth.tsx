@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "motion/react";
 import { z } from "zod";
 import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
@@ -129,6 +130,11 @@ export default function Auth() {
   const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "plus";
   const periodParam = params.get("period");
   const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
+
+  const formCardRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    formCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -316,7 +322,18 @@ export default function Auth() {
           </div>
 
           <div className="lg:pt-4">
-            <div className="bg-white rounded-[28px] border border-slate-200 shadow-[0_40px_100px_-30px_rgba(15,23,42,0.18)] p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full">
+            <motion.div
+              ref={formCardRef}
+              animate={{
+                boxShadow: [
+                  "0 40px 100px -30px rgba(15,23,42,0.18), 0 0 0 0 rgba(59,130,246,0)",
+                  "0 40px 100px -30px rgba(15,23,42,0.18), 0 0 0 10px rgba(59,130,246,0.35)",
+                  "0 40px 100px -30px rgba(15,23,42,0.18), 0 0 0 0 rgba(59,130,246,0)",
+                ],
+              }}
+              transition={{ duration: 0.9, repeat: 2, ease: "easeInOut" }}
+              className="bg-white rounded-[28px] border border-slate-200 p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full"
+            >
               <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
                 <button
                   type="button"
@@ -488,7 +505,7 @@ export default function Auth() {
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
                 Cancel anytime
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
