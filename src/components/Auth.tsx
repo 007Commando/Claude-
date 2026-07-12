@@ -331,7 +331,7 @@ export default function Auth() {
                   "0 40px 100px -30px rgba(15,23,42,0.18), 0 0 0 0 rgba(59,130,246,0)",
                 ],
               }}
-              transition={{ duration: 0.9, repeat: 2, ease: "easeInOut" }}
+              transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
               className="bg-white rounded-[28px] border border-slate-200 p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full"
             >
               <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
