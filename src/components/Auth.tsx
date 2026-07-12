@@ -42,6 +42,10 @@ const signupSchema = z.object({
 type Mode = "login" | "signup" | "forgot";
 
 function getFriendlyAuthError(message: string): string {
+  if (/is not a function/i.test(message)) {
+    return "The login service didn't finish loading in time. Please try again.";
+  }
+
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
   if (!codeMatch) return message;
 
@@ -64,6 +68,21 @@ function getFriendlyAuthError(message: string): string {
       return "Network error. Check your connection and try again.";
     default:
       return "Something went wrong. Please try again.";
+  }
+}
+
+// If ApexAuth's own internal setup (e.g. its Firebase init) hasn't finished
+// by the time we call into it, calls fail with a raw "X is not a function"
+// TypeError. window.ApexAuth existing doesn't guarantee that setup is done,
+// so retry once after a short delay before giving up.
+async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
+  try {
+    return await fn();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "";
+    if (!/is not a function/i.test(msg)) throw err;
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    return fn();
   }
 }
 
@@ -169,13 +188,15 @@ export default function Auth() {
       if (mode === "signup") {
         const parsed = signupSchema.safeParse({ name, email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
-        await auth.signUp({
-          name: parsed.data.name,
-          email: parsed.data.email,
-          password: parsed.data.password,
-          plan: planTier,
-          period,
-        });
+        await withAuthRetry(() =>
+          auth.signUp({
+            name: parsed.data.name,
+            email: parsed.data.email,
+            password: parsed.data.password,
+            plan: planTier,
+            period,
+          })
+        );
         const attribution = readStoredAttribution();
         fetch("/api/track", {
           method: "POST",
@@ -196,7 +217,7 @@ export default function Auth() {
         const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
         try {
-          await auth.sendPasswordResetEmail(parsed.data);
+          await withAuthRetry(() => auth.sendPasswordResetEmail(parsed.data));
         } catch (err) {
           // The reset-email endpoint returns a non-JSON success body, which
           // ApexAuth's own response parsing chokes on even though the email
@@ -208,7 +229,7 @@ export default function Auth() {
       } else {
         const parsed = loginSchema.safeParse({ email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
-        await auth.signIn(parsed.data.email, parsed.data.password);
+        await withAuthRetry(() => auth.signIn(parsed.data.email, parsed.data.password));
         // Auto-redirects on success
       }
     } catch (err: unknown) {
