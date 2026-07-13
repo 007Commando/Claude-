@@ -70,6 +70,11 @@ const quickWinSteps = [
     icon: ShoppingCart,
     title: "Create a Frontier Co-op Account",
     body: "Sign up at frontiercoop.com. Make sure the business name and shipping address exactly match what's on file with your Amazon seller account — this is what Amazon checks the invoice against.",
+    image: {
+      src: "/images/ungating-guide/frontier-coop-homepage.png",
+      alt: "Frontier Co-op homepage",
+      caption: "frontiercoop.com",
+    },
   },
   {
     icon: PackagePlus,
@@ -95,6 +100,11 @@ const quickWinSteps = [
     icon: Upload,
     title: "Submit to Amazon's Ungating Portal",
     body: "Once it arrives, upload the Frontier Co-op invoice and clear photos of the product and packaging into Amazon's application for that ASIN's Grocery category approval.",
+    image: {
+      src: "/images/ungating-guide/amazon-ungating-portal.png",
+      alt: "Amazon Seller Central selling application for Brand, listing required invoice documents",
+      caption: "sellercentral.amazon.com",
+    },
   },
   {
     icon: RotateCw,
@@ -304,6 +314,24 @@ export default function UngatingGuide() {
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">{s.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{s.body}</p>
+
+                  {s.image && (
+                    <div className="mt-4 rounded-2xl border border-slate-200 overflow-hidden shadow-[0_20px_40px_-24px_rgba(15,23,42,0.25)]">
+                      <div className="flex items-center gap-1.5 bg-slate-100 px-3.5 py-2.5 border-b border-slate-200">
+                        <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                        <span className="ml-2.5 text-[11px] text-slate-400 font-medium tracking-wide truncate">
+                          {s.image.caption}
+                        </span>
+                      </div>
+                      <img
+                        src={s.image.src}
+                        alt={s.image.alt}
+                        className="w-full h-auto block"
+                      />
+                    </div>
+                  )}
 
                   {s.product && (
                     <div className="mt-4 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
