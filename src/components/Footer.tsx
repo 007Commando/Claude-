@@ -55,6 +55,11 @@ export default function Footer() {
                   Apex Green
                 </Link>
               </li>
+              <li>
+                <Link href="/features/red" className="hover:text-brand transition-colors">
+                  Apex Red
+                </Link>
+              </li>
             </ul>
           </div>
 
