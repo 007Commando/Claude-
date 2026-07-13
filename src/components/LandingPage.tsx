@@ -378,7 +378,7 @@ export default function LandingPage() {
               onClick={() => router.push("/pricing")}
               className="bg-white text-brand px-10 py-5 rounded-2xl text-xl font-black hover:scale-105 transition-all shadow-2xl"
             >
-              Start Your 14-Day Free Trial
+              Start Your 7-Day Free Trial
             </button>
           </div>
         </div>

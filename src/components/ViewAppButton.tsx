@@ -18,7 +18,7 @@ export default function ViewAppButton({ children, onClick, ...rest }: Props) {
     if (session && apex) {
       apex.redirectToApp("/dashboard");
     } else {
-      router.push("/auth?mode=signup&plan=plus&period=monthly");
+      router.push("/auth?mode=signup&plan=starter&period=monthly");
     }
   };
 

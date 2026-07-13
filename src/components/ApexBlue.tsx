@@ -332,7 +332,7 @@ export default function ApexBlue() {
               <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Ready to Scale Your Amazon Reselling Business?</h2>
               <p className="text-lg lg:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">Join the elite sellers who have moved from spreadsheets to systems.</p>
               <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
-                Start 14-Day Free Trial
+                Start 7-Day Free Trial
               </ViewAppButton>
            </div>
         </div>

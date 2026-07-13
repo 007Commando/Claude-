@@ -106,7 +106,7 @@ export default function PickPlan() {
     : PRICE_UNLIMITED_M.toString();
   const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
-  const handleStart = (plan: "plus" | "pro") =>
+  const handleStart = (plan: "starter" | "pro") =>
     router.push(`/auth?mode=signup&plan=${plan}&period=${isAnnual ? "yearly" : "monthly"}`);
 
   return (
@@ -181,9 +181,9 @@ export default function PickPlan() {
           <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
             <div className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px]">
               <div />
-              {/* Plus Plan */}
+              {/* Starter Plan */}
               <div className="p-6 border-l border-slate-100">
-                <div className="text-sm font-bold text-slate-900">Plus Plan</div>
+                <div className="text-sm font-bold text-slate-900">Starter Plan</div>
                 <div className="mt-1 flex items-baseline gap-2 flex-wrap">
                   <span className="flex items-baseline gap-1">
                     <span className="text-3xl font-black text-slate-900">${limitedPrice}</span>
@@ -196,13 +196,13 @@ export default function PickPlan() {
                   )}
                 </div>
                 <div className="text-[11px] font-bold text-blue-600 mt-1">
-                  14-Day Free Trial, Then ${limitedPrice}/month
+                  7-Day Free Trial, Then ${limitedPrice}/month
                 </div>
                 <p className="text-[11px] text-slate-500 mt-2 leading-snug">
                   Perfect for Amazon Wholesale businesses just getting started.
                 </p>
                 <button
-                  onClick={() => handleStart("plus")}
+                  onClick={() => handleStart("starter")}
                   className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
                 >
                   Start Free Trial
@@ -226,7 +226,7 @@ export default function PickPlan() {
                   )}
                 </div>
                 <div className="text-[11px] font-bold text-indigo-600 mt-1">
-                  14-Day Free Trial, Then ${unlimitedPrice}/month
+                  7-Day Free Trial, Then ${unlimitedPrice}/month
                 </div>
                 <p className="text-[11px] text-slate-500 mt-2 leading-snug">
                   For serious Amazon Wholesale sellers looking to scale their business.
@@ -276,7 +276,7 @@ export default function PickPlan() {
             <div />
             <div className="p-6 border-l border-slate-100">
               <button
-                onClick={() => handleStart("plus")}
+                onClick={() => handleStart("starter")}
                 className="w-full py-3 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Start Free Trial

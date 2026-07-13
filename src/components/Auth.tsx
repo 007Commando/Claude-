@@ -127,7 +127,7 @@ export default function Auth() {
   // from inside the page still triggers Stripe checkout, never a free
   // account with direct app access.
   const planParam = params.get("plan");
-  const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "plus";
+  const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "starter";
   const periodParam = params.get("period");
   const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
 
