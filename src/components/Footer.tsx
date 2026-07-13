@@ -79,6 +79,11 @@ export default function Footer() {
                   The Roadmap
                 </Link>
               </li>
+              <li>
+                <Link href="/ungating-guide" className="hover:text-brand transition-colors">
+                  Ungating Guide
+                </Link>
+              </li>
             </ul>
           </div>
 
