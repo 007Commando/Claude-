@@ -20,7 +20,19 @@ import {
   AlertTriangle,
   Sparkles,
   ArrowRight,
+  FileCheck,
+  CheckCircle2,
+  Calendar,
+  Leaf,
 } from "lucide-react";
+
+const invoiceRequirements = [
+  "Dated within the last 180 days",
+  "Your business name and address",
+  "The distributor's name and address",
+  "A combined purchase of at least 10 units",
+  "Pricing on the invoice is optional — you can leave it off",
+];
 
 const gatingTypes = [
   {
@@ -62,7 +74,13 @@ const quickWinSteps = [
   {
     icon: PackagePlus,
     title: "Order 10 Units of Pumpkin Pie Spice",
-    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items — a low-cost way to get a real, verifiable invoice for a Grocery ASIN.",
+    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items — a low-cost way to get a real, verifiable invoice for a Grocery ASIN. Ten units puts the total around $62 before shipping.",
+    product: {
+      name: "Frontier Co-op Pumpkin Pie Spice",
+      size: "1.72 oz bottle",
+      price: "$6.19",
+      note: "price as of 2026 — always confirm current pricing",
+    },
     link: {
       label: "View product on Frontier Co-op",
       href: "https://www.frontiercoop.com/products/frontier-co-op-pumpkin-pie-spice-1-72-oz",
@@ -212,9 +230,9 @@ export default function UngatingGuide() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-10"
+          className="mb-10 rounded-[40px] bg-slate-50/70 border border-slate-100 p-6 sm:p-10 lg:p-12"
         >
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand/10 text-brand text-xs font-black rounded-full uppercase tracking-[0.2em] mb-6">
               <Sparkles size={14} />
               Quick Win
@@ -228,6 +246,40 @@ export default function UngatingGuide() {
             </p>
           </div>
 
+          {/* Real Amazon requirements checklist */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="rounded-[28px] border-2 border-brand/15 bg-white p-6 sm:p-8 mb-10"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <FileCheck size={16} className="text-brand" />
+              <div className="text-xs font-black text-brand uppercase tracking-[0.2em]">
+                What Amazon Actually Checks
+              </div>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-6 tracking-tight">
+              Your invoice needs to show:
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+              {invoiceRequirements.map((req) => (
+                <div key={req} className="flex items-start gap-3">
+                  <CheckCircle2 size={18} className="text-brand shrink-0 mt-0.5" />
+                  <span className="text-sm text-slate-700 leading-relaxed">{req}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 pt-6 border-t border-slate-100 flex items-start gap-3">
+              <Calendar size={16} className="text-slate-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-slate-500 leading-relaxed">
+                This is exactly why the walkthrough below has you order 10 units — it's the
+                minimum Amazon looks for on a single invoice.
+              </p>
+            </div>
+          </motion.div>
+
           <div className="space-y-4">
             {quickWinSteps.map((s, i) => (
               <motion.div
@@ -236,7 +288,7 @@ export default function UngatingGuide() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex gap-5 rounded-2xl border border-slate-100 p-6"
+                className="flex gap-5 rounded-2xl bg-white border border-slate-100 p-6"
               >
                 <div className="shrink-0 flex flex-col items-center">
                   <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center">
@@ -246,12 +298,32 @@ export default function UngatingGuide() {
                     <div className="w-0.5 flex-1 bg-slate-100 mt-2" />
                   )}
                 </div>
-                <div className="pb-2">
+                <div className="pb-2 flex-1 min-w-0">
                   <div className="text-xs font-black text-brand uppercase tracking-widest mb-1">
                     Step {i + 1}
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">{s.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{s.body}</p>
+
+                  {s.product && (
+                    <div className="mt-4 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+                      <div className="w-11 h-11 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                        <Leaf size={18} className="text-emerald-600" strokeWidth={1.75} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-slate-900 text-sm truncate">{s.product.name}</div>
+                        <div className="text-xs text-slate-500">{s.product.size}</div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="font-black text-slate-900">{s.product.price}</div>
+                        <div className="text-[10px] text-slate-400">per unit</div>
+                      </div>
+                    </div>
+                  )}
+                  {s.product && (
+                    <p className="text-[11px] text-slate-400 mt-1.5">{s.product.note}</p>
+                  )}
+
                   {s.link && (
                     <a
                       href={s.link.href}
