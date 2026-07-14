@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, useScroll } from "motion/react";
 import {
   ShieldCheck,
   Tag,
@@ -24,6 +25,10 @@ import {
   CheckCircle2,
   Calendar,
   Leaf,
+  Rocket,
+  Barcode,
+  SlidersHorizontal,
+  Map,
 } from "lucide-react";
 
 const invoiceRequirements = [
@@ -124,8 +129,67 @@ const quickWinSteps = [
   },
 ];
 
+const nextSteps = [
+  {
+    icon: Rocket,
+    title: "Sign Up & Get Ungated Today",
+    body: "Start your free trial and the Foundation Guide, Distributor Vault, and this exact walkthrough are unlocked from day one.",
+    highlights: ["7-Day Free Trial", "Ungating Unlock SOP"],
+    linkLabel: "Start Free Trial",
+    linkHref: "/auth?mode=signup&plan=starter&period=monthly",
+  },
+  {
+    icon: Building2,
+    title: "Receive 3 Free Suppliers",
+    body: "Reach out to vetted, authorized distributors and brands, open your wholesale accounts, and start pulling their full product catalogs.",
+    highlights: ["3 Free Suppliers in the US"],
+    linkLabel: "Browse Vetted Vendors",
+    linkHref: "/features/black#resource-library",
+  },
+  {
+    icon: Barcode,
+    title: "Analyze with UPC Scanner",
+    body: "Run every account's catalog through our UPC Scanner and store the profitable winners in your Master Catalog inside Apex Blue.",
+    highlights: ["Scan Up to 100,000 UPCs/Hour", "Auto-Match UPC to ASIN"],
+    linkLabel: "View UPC Scanner",
+    linkHref: "/features/green#upc-scanner",
+  },
+  {
+    icon: SlidersHorizontal,
+    title: "Build Purchase Order",
+    body: "Set your profitability filters and turn your best finds into real purchase orders — ready to send with confidence.",
+    highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown"],
+    linkLabel: "View Purchase Orders",
+    linkHref: "/features/blue#purchase-orders",
+  },
+];
+
+const NEXT_STEP_HEIGHT = 260;
+const NEXT_VIEWBOX_WIDTH = 400;
+
+function buildNextStepsPath() {
+  const points = nextSteps.map((_, i) => ({
+    x: i % 2 === 0 ? 260 : 140,
+    y: i * NEXT_STEP_HEIGHT + NEXT_STEP_HEIGHT / 2,
+  }));
+  let d = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    const midY = (prev.y + curr.y) / 2;
+    d += ` C ${prev.x} ${midY}, ${curr.x} ${midY}, ${curr.x} ${curr.y}`;
+  }
+  return { d, points };
+}
+
 export default function UngatingGuide() {
   const router = useRouter();
+  const nextStepsRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: nextStepsProgress } = useScroll({
+    target: nextStepsRef,
+    offset: ["start 0.3", "end 0.7"],
+  });
+  const { d: nextPathD, points: nextPoints } = buildNextStepsPath();
 
   return (
     <div className="pt-28 sm:pt-32 pb-24 bg-white">
@@ -424,6 +488,113 @@ export default function UngatingGuide() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </motion.section>
+
+        {/* What Happens Next */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16"
+        >
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand/10 text-brand text-xs font-black rounded-full uppercase tracking-[0.2em] mb-6">
+              <Map size={14} />
+              What Happens Next
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
+              From Ungated to Your First Sale
+            </h2>
+            <p className="text-slate-500 leading-relaxed">
+              Getting ungated is step one. Here's the rest of the path once you're in.
+            </p>
+          </div>
+
+          <div
+            ref={nextStepsRef}
+            className="relative"
+            style={{ minHeight: nextSteps.length * NEXT_STEP_HEIGHT }}
+          >
+            <svg
+              className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox={`0 0 ${NEXT_VIEWBOX_WIDTH} ${nextSteps.length * NEXT_STEP_HEIGHT}`}
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <path d={nextPathD} fill="none" stroke="#e2e8f0" strokeWidth={3} strokeLinecap="round" />
+              <motion.path
+                d={nextPathD}
+                fill="none"
+                stroke="#2563eb"
+                strokeWidth={3}
+                strokeLinecap="round"
+                style={{ pathLength: nextStepsProgress }}
+              />
+            </svg>
+
+            {nextSteps.map((step, i) => {
+              const Icon = step.icon;
+              const point = nextPoints[i];
+              const leftCard = i % 2 === 0;
+              const circleLeftPct = (point.x / NEXT_VIEWBOX_WIDTH) * 100;
+
+              return (
+                <div
+                  key={step.title}
+                  className="relative z-10 flex items-center"
+                  style={{ minHeight: NEXT_STEP_HEIGHT }}
+                >
+                  <div
+                    className="hidden lg:flex absolute -translate-x-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white border-2 border-brand text-brand items-center justify-center font-black text-sm shadow-[0_8px_20px_-6px_rgba(37,99,235,0.4)]"
+                    style={{ left: `${circleLeftPct}%`, top: "50%" }}
+                  >
+                    {i + 1}
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: leftCard ? -32 : 32 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className={`w-full lg:w-[46%] bg-slate-50/70 border border-slate-100 rounded-[28px] p-8 ${
+                      leftCard ? "lg:mr-auto" : "lg:ml-auto"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-xl bg-brand flex items-center justify-center shrink-0">
+                        <Icon size={20} className="text-white" strokeWidth={1.75} />
+                      </div>
+                      <div className="text-xs font-black text-brand uppercase tracking-[0.2em]">
+                        Step {i + 1}
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed mb-4">{step.body}</p>
+                    <div className="flex flex-wrap gap-2 mb-5">
+                      {step.highlights.map((highlight) => (
+                        <span
+                          key={highlight}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand bg-brand/10 rounded-full px-3 py-1.5"
+                        >
+                          <Sparkles size={12} className="shrink-0" />
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => router.push(step.linkHref)}
+                      className="inline-flex items-center gap-2 text-brand font-bold text-sm hover:gap-3 transition-all"
+                    >
+                      {step.linkLabel} <ArrowRight size={16} />
+                    </button>
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         </motion.section>
 
