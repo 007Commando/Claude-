@@ -625,20 +625,20 @@ export default function UngatingGuide() {
         >
           <div className="relative z-10 max-w-xl mx-auto">
             <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Ready for the next category?
+              Sign Up Today
             </div>
             <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">
-              See the Full Roadmap
+              Let's Embark on Winning on Amazon
             </h2>
             <p className="text-lg text-blue-100 mb-8">
-              This is one step. Apex walks you through sourcing, purchase orders, and scaling
-              start to finish.
+              3 Free Suppliers the moment you register — everything else you just saw is already
+              built into Apex.
             </p>
             <button
-              onClick={() => router.push("/how-it-works")}
+              onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}
               className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl"
             >
-              View the Roadmap
+              Start Free Trial
             </button>
           </div>
         </motion.section>
