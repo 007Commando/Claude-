@@ -34,17 +34,22 @@ const invoiceRequirements = [
   "Pricing on the invoice is optional — you can leave it off",
 ];
 
-const gatingTypes = [
-  {
-    icon: Tag,
-    title: "Category Gating",
-    body: "Entire categories — like Grocery, Beauty, or Toys — require approval before you can list anything in them, regardless of brand.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Brand Gating",
-    body: "Individual brands can be restricted even within an open category, usually to protect against counterfeits or unauthorized resale.",
-  },
+const gatedCategories = [
+  "Grocery & Gourmet Food",
+  "Beauty",
+  "Toys & Games",
+  "Sports & Outdoors",
+  "Automotive",
+  "Baby Products",
+  "Supplements",
+  "Fine Jewelry & Watches",
+  "Fine Art & Collectibles",
+];
+
+const gatedBrandExamples = [
+  { category: "Toys & Games", brands: ["LEGO"] },
+  { category: "Footwear & Apparel", brands: ["Nike", "Adidas"] },
+  { category: "Electronics", brands: ["Apple"] },
 ];
 
 const generalSteps = [
@@ -85,6 +90,7 @@ const quickWinSteps = [
       size: "1.72 oz bottle",
       price: "$6.19",
       note: "price as of 2026 — always confirm current pricing",
+      photo: "/images/ungating-guide/pumpkin-pie-spice-product.png",
     },
     link: {
       label: "View product on Frontier Co-op",
@@ -161,15 +167,60 @@ export default function UngatingGuide() {
             legitimate, authorized source.
           </p>
           <div className="grid sm:grid-cols-2 gap-6">
-            {gatingTypes.map((t) => (
-              <div key={t.title} className="rounded-2xl border border-slate-100 p-6">
-                <div className="w-11 h-11 rounded-xl bg-brand flex items-center justify-center mb-4">
-                  <t.icon size={20} className="text-white" strokeWidth={1.75} />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">{t.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{t.body}</p>
+            {/* Category Gating */}
+            <div className="rounded-2xl border border-slate-100 p-6">
+              <div className="w-11 h-11 rounded-xl bg-brand flex items-center justify-center mb-4">
+                <Tag size={20} className="text-white" strokeWidth={1.75} />
               </div>
-            ))}
+              <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Category Gating</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-5">
+                Entire categories require approval before you can list anything in them — regardless
+                of brand. Commonly gated categories include:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {gatedCategories.map((c) => (
+                  <span
+                    key={c}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 rounded-full px-3 py-1.5"
+                  >
+                    <Tag size={11} className="text-slate-400 shrink-0" />
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Brand Gating */}
+            <div className="rounded-2xl border border-slate-100 p-6">
+              <div className="w-11 h-11 rounded-xl bg-brand flex items-center justify-center mb-4">
+                <ShieldCheck size={20} className="text-white" strokeWidth={1.75} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Brand Gating</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-5">
+                Even inside an open category, specific brands can still need their own approval —
+                usually to protect against counterfeits. A few well-known examples:
+              </p>
+              <div className="space-y-2.5">
+                {gatedBrandExamples.map((row) => (
+                  <div
+                    key={row.category}
+                    className="flex items-center justify-between gap-3 rounded-xl bg-slate-50/70 px-3.5 py-2.5"
+                  >
+                    <span className="text-xs font-semibold text-slate-500">{row.category}</span>
+                    <div className="flex gap-1.5">
+                      {row.brands.map((b) => (
+                        <span
+                          key={b}
+                          className="text-xs font-bold text-brand bg-brand/10 rounded-full px-2.5 py-1"
+                        >
+                          {b}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.section>
 
@@ -335,8 +386,16 @@ export default function UngatingGuide() {
 
                   {s.product && (
                     <div className="mt-4 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-                      <div className="w-11 h-11 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0">
-                        <Leaf size={18} className="text-emerald-600" strokeWidth={1.75} />
+                      <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
+                        {s.product.photo ? (
+                          <img
+                            src={s.product.photo}
+                            alt={s.product.name}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <Leaf size={18} className="text-emerald-600" strokeWidth={1.75} />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-bold text-slate-900 text-sm truncate">{s.product.name}</div>
