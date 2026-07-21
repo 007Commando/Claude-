@@ -230,7 +230,6 @@ export default function TermsOfService() {
           <div className="pl-6 border-l-4 border-slate-200 my-4">
             <p>Apex Applications</p>
             <p>Attn: Legal Department</p>
-            <p>[Your Company Address]</p>
             <p>Email: info@apexapplications.io</p>
           </div>
           <p>
