@@ -145,6 +145,17 @@ export default function PrivacyPolicy() {
             Your Personal Information may be stored and processed on servers located in the United States or other countries where we or our affiliates operate facilities. By using our Services, you consent to the transfer of your information outside your country of residence.
           </p>
 
+          <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">SMS Communications & Mobile Information.</h3>
+          <p>
+            If you provide your mobile phone number and opt in to receive text messages from Apex Applications, we will use your number only for the purposes you have authorized, including account notifications, customer support, service updates, appointment reminders, and other communications related to our Services.
+          </p>
+          <p>
+            No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Information sharing with subcontractors in support services, such as customer service, is permitted. All other use case categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.
+          </p>
+          <p>
+            You may opt out of SMS communications at any time by replying STOP to any message. Reply HELP for assistance. Message and data rates may apply. Message frequency may vary.
+          </p>
+
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">TARGETED ADVERTISING</h2>
           <p>
             We may engage third-party service providers to serve advertisements on our behalf and to provide analytics services. In addition, we may participate in third-party affiliate advertising programs and include affiliate links on our pages. This means that if you click on or make purchases through these affiliate links, we may earn a commission.

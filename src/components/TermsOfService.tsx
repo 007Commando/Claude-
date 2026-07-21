@@ -251,6 +251,20 @@ export default function TermsOfService() {
             This Agreement constitutes the entire understanding between you and Apex Applications regarding the subject matter hereof and supersedes all prior agreements. The failure of Apex Applications to enforce any provision of this Agreement shall not constitute a waiver of that provision. If any part of this Agreement is held to be invalid or unenforceable, the remaining provisions will remain in full force and effect. Any claim arising under or related to this Agreement must be filed within six (6) months from the date the claim arose, or it will be forever barred.
           </p>
 
+          <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">15. SMS MESSAGING TERMS</h2>
+          <p>
+            By providing your mobile number and opting into SMS communications, you consent to receive recurring text messages from Apex Applications regarding your account, appointments, customer support, product updates, and other service-related communications.
+          </p>
+          <ul className="list-disc pl-6 space-y-1">
+            <li>Message frequency varies.</li>
+            <li>Message and data rates may apply.</li>
+            <li>Reply STOP to unsubscribe at any time.</li>
+            <li>Reply HELP for assistance.</li>
+          </ul>
+          <p>
+            Consent to receive SMS messages is not a condition of purchasing any product or service.
+          </p>
+
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">Contact Us</h2>
           <p>
             For any questions regarding these Terms or the Services, please contact us at:
