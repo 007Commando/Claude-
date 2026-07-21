@@ -33,6 +33,11 @@ export default function Footer() {
                   Review Booster
                 </Link>
               </li>
+              <li>
+                <Link href="/contact-us" className="hover:text-brand transition-colors">
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
 
