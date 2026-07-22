@@ -220,11 +220,13 @@ export default function Auth() {
           }),
           keepalive: true,
         }).catch(() => {});
-        window.oaiq?.("measure", "registration_completed", {
-          type: "customer_action",
-          amount: 0,
-          currency: "USD",
-        });
+        window.oaiq?.("measure", "trial_started", { type: "plan_enrollment" });
+        fetch("/api/oaiq-conversion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sourceUrl: window.location.href }),
+          keepalive: true,
+        }).catch(() => {});
         // Auto-redirects: to Stripe checkout if a plan was selected, otherwise into the app
       } else if (mode === "forgot") {
         const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
