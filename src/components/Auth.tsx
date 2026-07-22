@@ -26,6 +26,8 @@ declare global {
       getCurrentUser: () => Promise<unknown>;
       onAuthStateChanged: (cb: (user: unknown) => void) => (() => void) | void | Promise<(() => void) | void>;
     };
+    // ChatGPT Ads pixel, initialized in layout.tsx
+    oaiq?: (...args: unknown[]) => void;
   }
 }
 
@@ -218,6 +220,11 @@ export default function Auth() {
           }),
           keepalive: true,
         }).catch(() => {});
+        window.oaiq?.("measure", "registration_completed", {
+          type: "customer_action",
+          amount: 0,
+          currency: "USD",
+        });
         // Auto-redirects: to Stripe checkout if a plan was selected, otherwise into the app
       } else if (mode === "forgot") {
         const parsed = z.string().trim().email("Enter a valid email").safeParse(email);

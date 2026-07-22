@@ -3,6 +3,7 @@ import Script from "next/script";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
+import LeadAttribution from "../components/LeadAttribution";
 import "../index.css";
 
 const OG_IMAGE =
@@ -60,9 +61,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <Script src="https://app.apexapplications.io/apex-auth.js" strategy="afterInteractive" />
+        <Script
+          src="https://link.msgsndr.com/js/external-tracking.js"
+          data-tracking-id="tk_38b71d0c9c964a29938c819ffce85afa"
+          strategy="afterInteractive"
+        />
+        <Script id="oaiq-pixel" strategy="afterInteractive">
+          {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:true});`}
+        </Script>
         <div className="min-h-screen bg-white">
           <Navigation />
           <HashScrollHandler />
+          <LeadAttribution />
           <main>{children}</main>
           <Footer />
         </div>
