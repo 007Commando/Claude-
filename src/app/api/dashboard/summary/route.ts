@@ -24,7 +24,7 @@ interface RawGhlLeads {
   totalLeads: number;
   newLeads7d: number;
   newLeads30d: number;
-  contacts: Array<{ name: string; email: string; phone: string | null; dateAdded: string }>;
+  contacts: Array<{ id: string; name: string; email: string; phone: string | null; dateAdded: string }>;
 }
 
 // Shared shape between PrimeWell's, Facebook's, and ASH's GHL leads — all
@@ -40,6 +40,7 @@ function buildGhlFunnel(
     const stripeChecked = eagerEmails.has(c.email);
     const stripeStatus = stripeStatusByEmail.get(c.email);
     return {
+      id: c.id,
       name: c.name,
       email: c.email,
       phone: c.phone,
@@ -50,6 +51,11 @@ function buildGhlFunnel(
       planName: stripeChecked ? (stripeStatus?.planName ?? null) : null,
       ltv: stripeChecked ? (stripeStatus?.ltv ?? 0) : 0,
       stripeChecked,
+      // Temperature is always fetched lazily per visible table page (see
+      // GhlLeadsTable in page.tsx) — never eagerly, since it costs one live
+      // GHL API call per contact and this route already does enough of those.
+      temperature: null,
+      temperatureChecked: false,
     };
   });
 

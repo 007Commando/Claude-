@@ -11,6 +11,7 @@ const PAGE_SIZE = 100;
 const PAGE_TIMEOUT_MS = 6000;
 
 interface GhlContact {
+  id: string;
   email?: string;
   phone?: string;
   contactName?: string;
@@ -20,6 +21,7 @@ interface GhlContact {
 }
 
 export interface AshContact {
+  id: string;
   name: string;
   email: string;
   phone: string | null;
@@ -154,6 +156,7 @@ export async function getAshLeads(): Promise<AshLeadsResult> {
     emails: contactsWithEmail.map((c) => c.email as string),
     emailsTruncated: stoppedEarly || total > contacts.length,
     contacts: contactsWithEmail.map((c) => ({
+      id: c.id,
       name: (c.contactName || [c.firstName, c.lastName].filter(Boolean).join(" ") || c.email) as string,
       email: c.email as string,
       phone: c.phone ?? null,

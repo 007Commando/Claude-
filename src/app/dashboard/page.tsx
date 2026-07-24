@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   BadgeDollarSign,
@@ -20,7 +20,14 @@ import {
   Users,
   X,
 } from "lucide-react";
-import type { DashboardSummary, GhlLeadRow, LeadSource, StripeSubscriptionRow, TrialRow } from "../../lib/dashboard/types";
+import type {
+  DashboardSummary,
+  GhlLeadRow,
+  LeadSource,
+  StripeSubscriptionRow,
+  Temperature,
+  TrialRow,
+} from "../../lib/dashboard/types";
 import { downloadCsv } from "../../lib/dashboard/csv";
 
 const money = (n: number) =>
@@ -102,6 +109,37 @@ function Badge({
   return (
     <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-bold ${toneClasses}`}>
       {children}
+    </span>
+  );
+}
+
+const TEMPERATURE_STYLES: Record<Temperature, { label: string; className: string }> = {
+  cold: { label: "Cold", className: "bg-blue-100 text-blue-900 border-blue-200" },
+  cool: { label: "Cool", className: "bg-sky-50 text-sky-600 border-sky-200" },
+  warm: { label: "Warm", className: "bg-yellow-50 text-yellow-700 border-yellow-200" },
+  hot: { label: "Hot", className: "bg-orange-50 text-orange-700 border-orange-200" },
+  very_hot: { label: "Very Hot", className: "bg-red-50 text-red-700 border-red-200" },
+};
+
+const TEMPERATURE_ORDER: Temperature[] = ["cold", "cool", "warm", "hot", "very_hot"];
+
+function TemperatureBadge({
+  temperature,
+  checked,
+  converted,
+}: {
+  temperature: Temperature | null;
+  checked: boolean;
+  converted: boolean;
+}) {
+  // "Goes away" once they've subscribed to Apex — there's no more lead to
+  // keep warming up, so a color badge here would be noise, not signal.
+  if (converted) return <Badge tone="green">Converted</Badge>;
+  if (!checked || !temperature) return <Badge tone="slate">…</Badge>;
+  const { label, className } = TEMPERATURE_STYLES[temperature];
+  return (
+    <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-bold ${className}`}>
+      {label}
     </span>
   );
 }
@@ -526,35 +564,55 @@ interface StripeStatusOverride {
   ltv: number;
 }
 
+interface TemperatureOverride {
+  temperature: Temperature;
+  lastMessageAt: string | null;
+  hasReplied: boolean;
+}
+
 function GhlLeadsTable({
   rows,
   signupsConnected,
   sourceLabel,
   csvPrefix,
+  source,
 }: {
   rows: GhlLeadRow[];
   signupsConnected: boolean;
   sourceLabel: string;
   csvPrefix: string;
+  source: "primewell" | "ash" | "facebook";
 }) {
   const [search, setSearch] = useState("");
   const [payingFilter, setPayingFilter] = useState<TriState>("all");
   const [subscribedFilter, setSubscribedFilter] = useState<SubscribedFilter>("all");
+  const [temperatureFilter, setTemperatureFilter] = useState<Set<Temperature>>(new Set());
   const [page, setPage] = useState(0);
   const [overrides, setOverrides] = useState<Record<string, StripeStatusOverride>>({});
+  const [temperatureOverrides, setTemperatureOverrides] = useState<Record<string, TemperatureOverride>>({});
   const [checking, setChecking] = useState(false);
+  const [checkingAllForFilter, setCheckingAllForFilter] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const temperatureInFlightRef = useRef<Set<string>>(new Set());
 
   const mergedRows = useMemo(
     () =>
       rows.map((row) => {
         const override = overrides[row.email];
-        return override ? { ...row, ...override, stripeChecked: true } : row;
+        const tempOverride = temperatureOverrides[row.id];
+        return {
+          ...row,
+          ...(override ? { ...override, stripeChecked: true } : {}),
+          ...(tempOverride ? { temperature: tempOverride.temperature, temperatureChecked: true } : {}),
+        };
       }),
-    [rows, overrides],
+    [rows, overrides, temperatureOverrides],
   );
 
-  const filteredRows = useMemo(() => {
+  // Filters that don't depend on temperature — kept separate so the
+  // eager-fetch-for-filter effect below knows exactly which rows need a
+  // temperature check without depending on the temperature filter itself.
+  const baseFilteredRows = useMemo(() => {
     const q = search.trim().toLowerCase();
     return mergedRows.filter((row) => {
       if (q) {
@@ -571,13 +629,23 @@ function GhlLeadsTable({
     });
   }, [mergedRows, search, payingFilter, subscribedFilter, signupsConnected]);
 
+  const filteredRows = useMemo(() => {
+    if (temperatureFilter.size === 0) return baseFilteredRows;
+    return baseFilteredRows.filter((row) => {
+      // Converted leads don't need approaching — never show them under a
+      // temperature filter regardless of their underlying (pre-conversion) tier.
+      if (row.isApexSubscriber || row.isPayingCustomer) return false;
+      return row.temperature != null && temperatureFilter.has(row.temperature);
+    });
+  }, [baseFilteredRows, temperatureFilter]);
+
   const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
   const clampedPage = Math.min(page, pageCount - 1);
   const pagedRows = filteredRows.slice(clampedPage * PAGE_SIZE, (clampedPage + 1) * PAGE_SIZE);
 
   useEffect(() => {
     setPage(0);
-  }, [search, payingFilter, subscribedFilter]);
+  }, [search, payingFilter, subscribedFilter, temperatureFilter]);
 
   // Checks Stripe status for whatever emails aren't already known, in batches
   // of 100 (the server-side cap per call). Returns the freshly-fetched
@@ -609,7 +677,51 @@ function GhlLeadsTable({
     return fetched;
   };
 
-  // Auto-enrich whichever rows land on the visible page.
+  // Checks reply/engagement-based temperature for whatever contact IDs
+  // aren't already known, in batches of 100 (the server-side cap per call).
+  // Guards against in-flight duplicates — GHL's /conversations/search is rate
+  // limited tightly enough that two overlapping callers (e.g. the page
+  // auto-enrich effect and the filter's eager-fetch effect both wanting the
+  // same ids before either's state update has landed) would otherwise double
+  // the request volume and trigger far more 429s.
+  const checkTemperature = async (contactIds: string[]): Promise<Record<string, TemperatureOverride>> => {
+    const toCheck = [...new Set(contactIds)].filter(
+      (id) => !temperatureOverrides[id] && !temperatureInFlightRef.current.has(id),
+    );
+    if (toCheck.length === 0) return {};
+    toCheck.forEach((id) => temperatureInFlightRef.current.add(id));
+    const fetched: Record<string, TemperatureOverride> = {};
+    try {
+      for (let i = 0; i < toCheck.length; i += 100) {
+        const chunk = toCheck.slice(i, i + 100);
+        try {
+          const res = await fetch("/api/dashboard/lead-temperature", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ source, contactIds: chunk }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            Object.assign(fetched, data.results);
+          }
+        } catch {
+          // Leave these unchecked — the UI just won't show a temperature for them yet.
+        }
+      }
+    } finally {
+      toCheck.forEach((id) => temperatureInFlightRef.current.delete(id));
+    }
+    if (Object.keys(fetched).length > 0) {
+      setTemperatureOverrides((prev) => ({ ...prev, ...fetched }));
+    }
+    return fetched;
+  };
+
+  // Auto-enrich Stripe status for whichever rows land on the visible page.
+  // Temperature is handled by a single effect below instead of also being
+  // fetched here — two effects independently fetching overlapping contact
+  // ids raced against GHL's tight rate limit on /conversations/search and
+  // doubled the failure rate in testing.
   useEffect(() => {
     const uncheckedEmails = pagedRows.filter((r) => !r.stripeChecked).map((r) => r.email);
     if (uncheckedEmails.length === 0) return;
@@ -618,14 +730,46 @@ function GhlLeadsTable({
     // Re-run whenever the visible page's underlying data changes.
   }, [clampedPage, filteredRows]);
 
+  // Fetches temperature for whichever contacts currently need it: just the
+  // visible page normally, but the ENTIRE (pre-temperature-filter) result set
+  // once a temperature filter is active, since filtering needs to know every
+  // candidate's temperature, not just what's on screen. Converted leads are
+  // skipped since they're excluded from the filter and shown as "Converted"
+  // regardless of temperature.
+  useEffect(() => {
+    const source = temperatureFilter.size > 0 ? baseFilteredRows : pagedRows;
+    const uncheckedIds = source
+      .filter((r) => !r.temperatureChecked && !r.isApexSubscriber && !r.isPayingCustomer)
+      .map((r) => r.id);
+    if (uncheckedIds.length === 0) return;
+    const filterActive = temperatureFilter.size > 0;
+    if (filterActive) setCheckingAllForFilter(true);
+    else setChecking(true);
+    checkTemperature(uncheckedIds).finally(() => {
+      if (filterActive) setCheckingAllForFilter(false);
+      else setChecking(false);
+    });
+  }, [temperatureFilter, baseFilteredRows, pagedRows]);
+
   const exportCsv = async () => {
     setExporting(true);
     try {
       const unchecked = filteredRows.filter((r) => !r.stripeChecked).map((r) => r.email);
-      const freshlyFetched = await checkStripeStatus(unchecked);
+      const uncheckedIds = filteredRows.filter((r) => !r.temperatureChecked).map((r) => r.id);
+      const [freshlyFetched, freshlyFetchedTemps] = await Promise.all([
+        checkStripeStatus(unchecked),
+        checkTemperature(uncheckedIds),
+      ]);
       const finalRows = filteredRows.map((row) => {
         const override = freshlyFetched[row.email];
-        return override ? { ...row, ...override } : row;
+        const tempOverride = freshlyFetchedTemps[row.id];
+        return {
+          ...row,
+          ...(override ?? {}),
+          ...(tempOverride
+            ? { temperature: tempOverride.temperature, temperatureChecked: true }
+            : {}),
+        };
       });
       downloadCsv(
         `${csvPrefix}-leads-${new Date().toISOString().slice(0, 10)}.csv`,
@@ -639,6 +783,7 @@ function GhlLeadsTable({
           "Customer Since",
           "Plan",
           "LTV",
+          "Temperature",
         ],
         finalRows.map((row) => [
           row.name,
@@ -650,6 +795,11 @@ function GhlLeadsTable({
           row.customerSince ? new Date(row.customerSince).toLocaleDateString() : "",
           row.planName ?? "",
           row.ltv.toFixed(2),
+          row.isApexSubscriber || row.isPayingCustomer
+            ? "Converted"
+            : !row.temperatureChecked || !row.temperature
+              ? "Unknown"
+              : TEMPERATURE_STYLES[row.temperature].label,
         ]),
       );
     } finally {
@@ -696,6 +846,45 @@ function GhlLeadsTable({
         </button>
       </div>
 
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Temperature:</span>
+        {TEMPERATURE_ORDER.map((temp) => {
+          const active = temperatureFilter.has(temp);
+          const { label, className } = TEMPERATURE_STYLES[temp];
+          return (
+            <button
+              key={temp}
+              type="button"
+              onClick={() =>
+                setTemperatureFilter((prev) => {
+                  const next = new Set(prev);
+                  if (next.has(temp)) next.delete(temp);
+                  else next.add(temp);
+                  return next;
+                })
+              }
+              className={`rounded-full border px-2.5 py-1 text-xs font-bold transition ${
+                active ? className : "bg-white text-slate-400 border-slate-200 hover:text-slate-600"
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+        {temperatureFilter.size > 0 && (
+          <button
+            type="button"
+            onClick={() => setTemperatureFilter(new Set())}
+            className="text-xs font-bold text-slate-400 hover:text-slate-600 underline"
+          >
+            Clear
+          </button>
+        )}
+        {checkingAllForFilter && (
+          <span className="text-xs text-slate-400">checking engagement for all matching leads…</span>
+        )}
+      </div>
+
       {filteredRows.length > 0 ? (
         <>
           <div className="overflow-x-auto -mx-2">
@@ -711,6 +900,7 @@ function GhlLeadsTable({
                   <th className="px-2 py-2">Customer Since</th>
                   <th className="px-2 py-2">Plan</th>
                   <th className="px-2 py-2">LTV</th>
+                  <th className="px-2 py-2">Temperature</th>
                 </tr>
               </thead>
               <tbody>
@@ -749,6 +939,13 @@ function GhlLeadsTable({
                     </td>
                     <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">{row.planName ?? "—"}</td>
                     <td className="px-2 py-2.5 text-slate-700">{money(row.ltv)}</td>
+                    <td className="px-2 py-2.5">
+                      <TemperatureBadge
+                        temperature={row.temperature}
+                        checked={row.temperatureChecked}
+                        converted={row.isApexSubscriber || row.isPayingCustomer}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -759,7 +956,7 @@ function GhlLeadsTable({
             <p className="text-xs text-slate-500">
               Showing {clampedPage * PAGE_SIZE + 1}-{Math.min((clampedPage + 1) * PAGE_SIZE, filteredRows.length)}{" "}
               of {filteredRows.length}
-              {checking ? " · checking Stripe status…" : ""}
+              {checking ? " · checking status…" : ""}
             </p>
             <div className="flex items-center gap-2">
               <button
@@ -978,6 +1175,7 @@ export default function DashboardPage() {
                         signupsConnected={data.signups.connected}
                         sourceLabel="PrimeWell"
                         csvPrefix="primewell"
+                        source="primewell"
                       />
                     </>
                   ) : (
@@ -1037,6 +1235,7 @@ export default function DashboardPage() {
                         signupsConnected={data.signups.connected}
                         sourceLabel="Facebook"
                         csvPrefix="facebook"
+                        source="facebook"
                       />
                     </>
                   ) : (
@@ -1096,6 +1295,7 @@ export default function DashboardPage() {
                         signupsConnected={data.signups.connected}
                         sourceLabel="ASH"
                         csvPrefix="ash"
+                        source="ash"
                       />
                     </>
                   ) : (

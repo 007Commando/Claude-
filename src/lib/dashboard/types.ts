@@ -80,7 +80,10 @@ export interface MetaMetrics {
   campaigns: Array<{ id: string; name: string; spend: number; clicks: number; impressions: number }>;
 }
 
+export type Temperature = "cold" | "cool" | "warm" | "hot" | "very_hot";
+
 export interface GhlLeadRow {
+  id: string;
   name: string;
   email: string;
   phone: string | null;
@@ -93,6 +96,9 @@ export interface GhlLeadRow {
   /** False means isPayingCustomer/ltv/planName/customerSince are placeholders —
    * this row's Stripe status hasn't been checked yet (see /api/dashboard/primewell-stripe-status). */
   stripeChecked: boolean;
+  temperature: Temperature | null;
+  /** False means temperature is a placeholder — not checked yet (see /api/dashboard/lead-temperature). */
+  temperatureChecked: boolean;
 }
 
 export interface GhlFunnel {
