@@ -15,13 +15,13 @@ import {
   ArrowRight,
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
-import vendorsDashboardImage from "../assets/vendors-dashboard.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import apexUniversityImage from "../assets/apex-university.png.asset.json";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
 const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
+const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
 
 const CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
 
@@ -40,7 +40,10 @@ const includes = [
     icon: Building2,
     title: "3 Free Suppliers",
     body: "Three vetted, authorized US wholesale distributors handed to you on registration — skip the months of cold outreach.",
-    image: { src: vendorsDashboardImage.url, alt: "Apex vendor management dashboard", caption: "Apex Blue — Vendors" },
+    photo: {
+      src: productCatalogCollageImage,
+      alt: "Real products and UPC catalogs from wholesale suppliers",
+    },
   },
   {
     icon: Star,
@@ -225,6 +228,27 @@ export default function FbaStarterBundle() {
                           <div className="mt-2 text-xs font-bold text-slate-500">{book.label}</div>
                         </div>
                       ))}
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              if ("photo" in item && item.photo) {
+                const photoOnLeft = i % 2 === 1;
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className={`flex flex-col ${
+                      photoOnLeft ? "lg:flex-row-reverse" : "lg:flex-row"
+                    } items-center gap-8 lg:gap-12 rounded-[28px] bg-slate-50/70 border border-slate-100 p-6 sm:p-8`}
+                  >
+                    {textBlock}
+                    <div className="flex-1 w-full rounded-2xl bg-white p-4 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.25)]">
+                      <img src={item.photo.src} alt={item.photo.alt} className="w-full h-auto object-contain" />
                     </div>
                   </motion.div>
                 );
