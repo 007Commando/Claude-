@@ -20,9 +20,7 @@ import vendorsDashboardImage from "../assets/vendors-dashboard.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import apexUniversityImage from "../assets/apex-university.png.asset.json";
 
-// TODO: replace with the real $27 Stripe Payment Link (or GHL order-form URL).
-// Until then this is a placeholder — the buy buttons won't charge anything.
-const CHECKOUT_URL = "#";
+const CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
 
 const includes = [
   {
@@ -67,6 +65,8 @@ function BuyButton({ className = "", children }: { className?: string; children:
   return (
     <a
       href={CHECKOUT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`inline-flex items-center justify-center gap-2 transition-all ${className}`}
     >
       {children}
