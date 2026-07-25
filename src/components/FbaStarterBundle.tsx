@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import {
   Sparkles,
@@ -22,6 +23,9 @@ const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.p
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
 const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
+const amazonSellerSalesImage = "/images/fba-starter-bundle/amazon-seller-app-sales.png";
+
+const COUNTDOWN_SECONDS = 9 * 60;
 
 const CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
 
@@ -29,7 +33,7 @@ const includes = [
   {
     icon: Rocket,
     title: "Extended Trial to the #1 Amazon Reselling Suite",
-    body: "Full access to Apex Black, Blue & Green — sourcing, analytics, purchase orders, and more — on an extended trial, not the standard 7 days.",
+    body: "Full access to Apex Black, Blue & Green, including sourcing, analytics, purchase orders, and more, on an extended trial, not the standard 7 days.",
     image: {
       src: apexSuiteOverviewImage,
       alt: "Apex dashboard with the Tools menu open, showing Apex Black, Blue, and Green modules",
@@ -39,7 +43,7 @@ const includes = [
   {
     icon: Building2,
     title: "3 Free Suppliers",
-    body: "Three vetted, authorized US wholesale distributors handed to you on registration — skip the months of cold outreach.",
+    body: "Three vetted, authorized US wholesale distributors handed to you on registration, so you skip the months of cold outreach.",
     photo: {
       src: productCatalogCollageImage,
       alt: "Real products and UPC catalogs from wholesale suppliers",
@@ -48,19 +52,19 @@ const includes = [
   {
     icon: Star,
     title: "Free Lifetime Review Booster",
-    body: "Our automated review-generation tool — free for life, so your new listings build social proof from day one.",
+    body: "Our automated review-generation tool, free for life, so your new listings build social proof from day one.",
     highlights: [
       "Autopilot growth for starting sellers",
       "Win more sales",
       "Ungate easier",
       "Earn more trust with Amazon customers",
     ],
-    image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black — Review Booster" },
+    image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black Review Booster" },
   },
   {
     icon: BookOpen,
     title: "Keepa Playbook and Ungating SOP",
-    body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products — plus our step-by-step SOP for getting ungated fast.",
+    body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products, plus our step-by-step SOP for getting ungated fast.",
     books: [
       { src: keepaPlaybookBookImage, alt: "Apex Keepa Playbook book cover", label: "Keepa Playbook" },
       { src: ungatingSopBookImage, alt: "Apex Ungating SOP book cover", label: "Ungating SOP" },
@@ -69,7 +73,7 @@ const includes = [
   {
     icon: LayoutGrid,
     title: "9 Core Wholesale Modules",
-    body: "A step-by-step curriculum covering ungating, supplier approval, scanning, purchase orders, and scaling — start to finish.",
+    body: "A step-by-step curriculum covering ungating, supplier approval, scanning, purchase orders, and scaling, from start to finish.",
     image: { src: apexUniversityImage.url, alt: "Apex University course modules", caption: "Apex University" },
   },
 ];
@@ -90,6 +94,42 @@ function BuyButton({ className = "", children }: { className?: string; children:
     >
       {children}
     </a>
+  );
+}
+
+function CountdownBadge() {
+  const [secondsLeft, setSecondsLeft] = useState(COUNTDOWN_SECONDS);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
+
+  return (
+    <div className="flex items-center justify-center gap-2 mb-4 text-sm font-bold text-red-500">
+      <span>This price disappears in</span>
+      <span className="tabular-nums bg-red-50 rounded-lg px-2 py-1">
+        {minutes}:{seconds.toString().padStart(2, "0")}
+      </span>
+    </div>
+  );
+}
+
+function ShakeOnScroll({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ x: 0 }}
+      whileInView={{ x: [0, -6, 6, -5, 5, -3, 3, 0] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -123,8 +163,8 @@ export default function FbaStarterBundle() {
             Amazon FBA Starter Bundle
           </div>
           <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-[1.05]">
-            Everything You Need to Launch on Amazon —{" "}
-            <span className="text-brand">for $27</span>
+            Everything You Need to Launch on Amazon{" "}
+            <span className="text-brand">for Just $27</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
             One bundle, everything to start: extended access to the #1 Amazon reselling suite, 3
@@ -134,7 +174,7 @@ export default function FbaStarterBundle() {
 
           <div className="flex flex-col items-center gap-4">
             <BuyButton className="bg-brand text-white px-10 py-4 rounded-[20px] font-black hover:scale-105 text-lg shadow-[0_20px_40px_rgba(249,115,22,0.3)] uppercase tracking-wide">
-              Get Instant Access — $27 <ArrowRight size={18} />
+              Get Instant Access for $27 <ArrowRight size={18} />
             </BuyButton>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {trustPoints.map((t) => (
@@ -148,18 +188,34 @@ export default function FbaStarterBundle() {
         </motion.section>
 
         {/* Hero product shot */}
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-2xl lg:text-3xl font-black text-slate-900 text-center tracking-tight mb-8 max-w-2xl mx-auto"
+        >
+          The Fastest Path to a Real FBA Business
+        </motion.h2>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto mb-20"
+          className="relative max-w-4xl mx-auto mb-24 sm:mb-20"
         >
           <BrowserFrame
             src={dashboardHeroImage.url}
             alt="Apex dashboard showing Amazon balance, sales, and profit"
-            caption="Your Apex dashboard"
+            caption="What We Promise You"
           />
+          <div className="absolute -right-2 sm:-right-6 lg:-right-14 -bottom-10 sm:-bottom-12 lg:-bottom-14 w-28 sm:w-36 lg:w-48 rotate-3 rounded-[22px] border-4 border-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.45)] overflow-hidden bg-white">
+            <img
+              src={amazonSellerSalesImage}
+              alt="Amazon Seller app showing real-time sales, units sold, and 7-day growth"
+              className="w-full h-auto block"
+            />
+          </div>
         </motion.div>
 
         {/* What's inside */}
@@ -175,7 +231,7 @@ export default function FbaStarterBundle() {
               What's Inside the Bundle
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Five things that normally take months and hundreds of dollars to assemble — bundled
+              Five things that normally take months and hundreds of dollars to assemble, bundled
               into one $27 starter pack.
             </p>
           </div>
@@ -295,16 +351,17 @@ export default function FbaStarterBundle() {
               Start Selling for Just $27
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              A one-time $27 gets you the whole starter bundle. No experience required — everything
+              A one-time $27 gets you the whole starter bundle. No experience required, everything
               you need to land your first profitable deal is included.
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
-              <div className="flex items-baseline justify-center gap-2 mb-6">
+              <div className="flex items-baseline justify-center gap-2 mb-2">
                 <span className="text-5xl font-black text-slate-900">$27</span>
                 <span className="text-sm font-bold text-slate-400">one-time</span>
               </div>
-              <ul className="space-y-3 mb-8">
+              <CountdownBadge />
+              <ul className="space-y-3 mb-8 mt-6">
                 {includes.map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
                     <Check size={18} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
@@ -312,9 +369,11 @@ export default function FbaStarterBundle() {
                   </li>
                 ))}
               </ul>
-              <BuyButton className="w-full bg-brand text-white px-8 py-4 rounded-[20px] font-black hover:scale-[1.02] text-lg shadow-lg uppercase tracking-wide">
-                Get the Bundle — $27
-              </BuyButton>
+              <ShakeOnScroll>
+                <BuyButton className="w-full bg-brand text-white px-8 py-4 rounded-[20px] font-black hover:scale-[1.02] text-lg shadow-lg uppercase tracking-wide">
+                  Get the Bundle for $27
+                </BuyButton>
+              </ShakeOnScroll>
               <p className="text-center text-xs text-slate-400 mt-3">
                 Secure checkout · Instant access · Cancel anytime
               </p>
