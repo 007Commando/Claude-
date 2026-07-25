@@ -164,7 +164,7 @@ export default function FbaStarterBundle() {
           </div>
           <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-[1.05]">
             Everything You Need to Launch on Amazon{" "}
-            <span className="text-brand">for Just $27</span>
+            <span className="text-brand">for Just $29</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
             One bundle, everything to start: extended access to the #1 Amazon reselling suite, 3
@@ -174,7 +174,7 @@ export default function FbaStarterBundle() {
 
           <div className="flex flex-col items-center gap-4">
             <BuyButton className="bg-brand text-white px-10 py-4 rounded-[20px] font-black hover:scale-105 text-lg shadow-[0_20px_40px_rgba(249,115,22,0.3)] uppercase tracking-wide">
-              Get Instant Access for $27 <ArrowRight size={18} />
+              Get Instant Access for $29 <ArrowRight size={18} />
             </BuyButton>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {trustPoints.map((t) => (
@@ -232,7 +232,7 @@ export default function FbaStarterBundle() {
             </h2>
             <p className="text-slate-500 leading-relaxed">
               Five things that normally take months and hundreds of dollars to assemble, bundled
-              into one $27 starter pack.
+              into one $29 starter pack.
             </p>
           </div>
 
@@ -348,16 +348,16 @@ export default function FbaStarterBundle() {
               Your Amazon FBA head start
             </div>
             <h2 className="text-3xl lg:text-5xl font-black mb-3 tracking-tight leading-tight">
-              Start Selling for Just $27
+              Start Selling for Just $29
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              A one-time $27 gets you the whole starter bundle. No experience required, everything
+              A one-time $29 gets you the whole starter bundle. No experience required, everything
               you need to land your first profitable deal is included.
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
               <div className="flex items-baseline justify-center gap-2 mb-2">
-                <span className="text-5xl font-black text-slate-900">$27</span>
+                <span className="text-5xl font-black text-slate-900">$29</span>
                 <span className="text-sm font-bold text-slate-400">one-time</span>
               </div>
               <CountdownBadge />
@@ -371,7 +371,7 @@ export default function FbaStarterBundle() {
               </ul>
               <ShakeOnScroll>
                 <BuyButton className="w-full bg-brand text-white px-8 py-4 rounded-[20px] font-black hover:scale-[1.02] text-lg shadow-lg uppercase tracking-wide">
-                  Get the Bundle for $27
+                  Get the Bundle for $29
                 </BuyButton>
               </ShakeOnScroll>
               <p className="text-center text-xs text-slate-400 mt-3">
