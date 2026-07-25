@@ -1,7 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "motion/react";
 import { CheckCircle2, Users, CalendarDays, ArrowRight } from "lucide-react";
+
+declare global {
+  interface Window {
+    // Meta pixel, initialized in layout.tsx
+    fbq?: (...args: unknown[]) => void;
+  }
+}
 
 const COMMUNITY_URL = "https://community.amazonsuccesshub.com/c/start-here";
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/meeting";
@@ -24,6 +32,14 @@ const steps = [
 ];
 
 export default function FbaThankYou() {
+  useEffect(() => {
+    window.fbq?.("track", "Purchase", {
+      value: 29,
+      currency: "USD",
+      content_name: "Amazon FBA Starter Bundle",
+    });
+  }, []);
+
   return (
     <div className="pt-28 sm:pt-32 pb-24 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
