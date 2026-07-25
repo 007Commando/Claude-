@@ -15,10 +15,13 @@ import {
   ArrowRight,
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
-import dashboardImage from "../assets/dashboard.png.asset.json";
 import vendorsDashboardImage from "../assets/vendors-dashboard.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import apexUniversityImage from "../assets/apex-university.png.asset.json";
+
+const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
+const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
+const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 
 const CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
 
@@ -27,7 +30,11 @@ const includes = [
     icon: Rocket,
     title: "Extended Trial to the #1 Amazon Reselling Suite",
     body: "Full access to Apex Black, Blue & Green — sourcing, analytics, purchase orders, and more — on an extended trial, not the standard 7 days.",
-    image: { src: dashboardImage.url, alt: "Apex sales and profit dashboard", caption: "Apex Blue — Analytics" },
+    image: {
+      src: apexSuiteOverviewImage,
+      alt: "Apex dashboard with the Tools menu open, showing Apex Black, Blue, and Green modules",
+      caption: "Apex Black, Blue & Green",
+    },
   },
   {
     icon: Building2,
@@ -39,13 +46,22 @@ const includes = [
     icon: Star,
     title: "Free Lifetime Review Booster",
     body: "Our automated review-generation tool — free for life, so your new listings build social proof from day one.",
+    highlights: [
+      "Autopilot growth for starting sellers",
+      "Win more sales",
+      "Ungate easier",
+      "Earn more trust with Amazon customers",
+    ],
     image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black — Review Booster" },
   },
   {
     icon: BookOpen,
-    title: "Keepa Playbook",
-    body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products.",
-    image: null,
+    title: "Keepa Playbook and Ungating SOP",
+    body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products — plus our step-by-step SOP for getting ungated fast.",
+    books: [
+      { src: keepaPlaybookBookImage, alt: "Apex Keepa Playbook book cover", label: "Keepa Playbook" },
+      { src: ungatingSopBookImage, alt: "Apex Ungating SOP book cover", label: "Ungating SOP" },
+    ],
   },
   {
     icon: LayoutGrid,
@@ -172,33 +188,49 @@ export default function FbaStarterBundle() {
                     <Check size={16} className="text-emerald-500 shrink-0" strokeWidth={3} />
                     <h3 className="text-xl font-black text-slate-900 tracking-tight">{item.title}</h3>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-4">{item.body}</p>
+                  {"highlights" in item && item.highlights && (
+                    <div className="flex flex-wrap gap-2">
+                      {item.highlights.map((highlight) => (
+                        <span
+                          key={highlight}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand bg-brand/10 rounded-full px-3 py-1.5"
+                        >
+                          <Sparkles size={12} className="shrink-0" />
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
 
-              if (!item.image) {
+              if ("books" in item && item.books) {
                 return (
                   <motion.div
                     key={item.title}
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.4, delay: i * 0.05 }}
-                    className="flex gap-5 rounded-2xl bg-slate-50/70 border border-slate-100 p-6 max-w-2xl mx-auto"
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 rounded-[28px] bg-slate-50/70 border border-slate-100 p-6 sm:p-8"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center shrink-0">
-                      <item.icon size={22} className="text-white" strokeWidth={1.75} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <Check size={16} className="text-emerald-500 shrink-0" strokeWidth={3} />
-                        <h3 className="text-lg font-black text-slate-900 tracking-tight">{item.title}</h3>
-                      </div>
-                      <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
+                    {textBlock}
+                    <div className="flex-1 w-full grid grid-cols-2 gap-4 sm:gap-6">
+                      {item.books.map((book) => (
+                        <div key={book.label} className="text-center">
+                          <div className="rounded-2xl bg-white p-4 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.25)]">
+                            <img src={book.src} alt={book.alt} className="w-full h-auto object-contain" />
+                          </div>
+                          <div className="mt-2 text-xs font-bold text-slate-500">{book.label}</div>
+                        </div>
+                      ))}
                     </div>
                   </motion.div>
                 );
               }
+
+              if (!("image" in item) || !item.image) return null;
 
               const imageOnLeft = i % 2 === 1;
 
