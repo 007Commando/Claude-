@@ -14,6 +14,11 @@ import {
   Lock,
   ArrowRight,
 } from "lucide-react";
+import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
+import dashboardImage from "../assets/dashboard.png.asset.json";
+import vendorsDashboardImage from "../assets/vendors-dashboard.png.asset.json";
+import reviewBoosterImage from "../assets/review-booster.png.asset.json";
+import apexUniversityImage from "../assets/apex-university.png.asset.json";
 
 // TODO: replace with the real $27 Stripe Payment Link (or GHL order-form URL).
 // Until then this is a placeholder — the buy buttons won't charge anything.
@@ -24,26 +29,31 @@ const includes = [
     icon: Rocket,
     title: "Extended Trial to the #1 Amazon Reselling Suite",
     body: "Full access to Apex Black, Blue & Green — sourcing, analytics, purchase orders, and more — on an extended trial, not the standard 7 days.",
+    image: { src: dashboardImage.url, alt: "Apex sales and profit dashboard", caption: "Apex Blue — Analytics" },
   },
   {
     icon: Building2,
     title: "3 Free Suppliers",
     body: "Three vetted, authorized US wholesale distributors handed to you on registration — skip the months of cold outreach.",
+    image: { src: vendorsDashboardImage.url, alt: "Apex vendor management dashboard", caption: "Apex Blue — Vendors" },
   },
   {
     icon: Star,
     title: "Free Lifetime Review Booster",
     body: "Our automated review-generation tool — free for life, so your new listings build social proof from day one.",
+    image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black — Review Booster" },
   },
   {
     icon: BookOpen,
     title: "Keepa Playbook",
     body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products.",
+    image: null,
   },
   {
     icon: LayoutGrid,
     title: "9 Core Wholesale Modules",
     body: "A step-by-step curriculum covering ungating, supplier approval, scanning, purchase orders, and scaling — start to finish.",
+    image: { src: apexUniversityImage.url, alt: "Apex University course modules", caption: "Apex University" },
   },
 ];
 
@@ -64,6 +74,20 @@ function BuyButton({ className = "", children }: { className?: string; children:
   );
 }
 
+function BrowserFrame({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-[0_20px_40px_-24px_rgba(15,23,42,0.25)] bg-white">
+      <div className="flex items-center gap-1.5 bg-slate-100 px-3.5 py-2.5 border-b border-slate-200">
+        <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+        <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+        <span className="ml-2.5 text-[11px] text-slate-400 font-medium tracking-wide truncate">{caption}</span>
+      </div>
+      <img src={src} alt={alt} className="w-full h-auto block" />
+    </div>
+  );
+}
+
 export default function FbaStarterBundle() {
   return (
     <div className="pt-28 sm:pt-32 pb-24 bg-white">
@@ -73,7 +97,7 @@ export default function FbaStarterBundle() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand/10 text-brand text-xs font-black rounded-full uppercase tracking-[0.2em] mb-6">
             <Sparkles size={14} />
@@ -104,6 +128,21 @@ export default function FbaStarterBundle() {
           </div>
         </motion.section>
 
+        {/* Hero product shot */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto mb-20"
+        >
+          <BrowserFrame
+            src={dashboardHeroImage.url}
+            alt="Apex dashboard showing Amazon balance, sales, and profit"
+            caption="Your Apex dashboard"
+          />
+        </motion.div>
+
         {/* What's inside */}
         <motion.section
           initial={{ opacity: 0, y: 16 }}
@@ -122,28 +161,65 @@ export default function FbaStarterBundle() {
             </p>
           </div>
 
-          <div className="space-y-4">
-            {includes.map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex gap-5 rounded-2xl bg-slate-50/70 border border-slate-100 p-6"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center shrink-0">
-                  <item.icon size={22} className="text-white" strokeWidth={1.75} />
-                </div>
+          <div className="space-y-6">
+            {includes.map((item, i) => {
+              const textBlock = (
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center shrink-0 mb-4">
+                    <item.icon size={22} className="text-white" strokeWidth={1.75} />
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
                     <Check size={16} className="text-emerald-500 shrink-0" strokeWidth={3} />
-                    <h3 className="text-lg font-black text-slate-900 tracking-tight">{item.title}</h3>
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight">{item.title}</h3>
                   </div>
                   <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
                 </div>
-              </motion.div>
-            ))}
+              );
+
+              if (!item.image) {
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.4, delay: i * 0.05 }}
+                    className="flex gap-5 rounded-2xl bg-slate-50/70 border border-slate-100 p-6 max-w-2xl mx-auto"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center shrink-0">
+                      <item.icon size={22} className="text-white" strokeWidth={1.75} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Check size={16} className="text-emerald-500 shrink-0" strokeWidth={3} />
+                        <h3 className="text-lg font-black text-slate-900 tracking-tight">{item.title}</h3>
+                      </div>
+                      <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              const imageOnLeft = i % 2 === 1;
+
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.05 }}
+                  className={`flex flex-col ${
+                    imageOnLeft ? "lg:flex-row-reverse" : "lg:flex-row"
+                  } items-center gap-8 lg:gap-12 rounded-[28px] bg-slate-50/70 border border-slate-100 p-6 sm:p-8`}
+                >
+                  {textBlock}
+                  <div className="flex-1 w-full">
+                    <BrowserFrame src={item.image.src} alt={item.image.alt} caption={item.image.caption} />
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.section>
 
