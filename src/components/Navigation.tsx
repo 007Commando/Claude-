@@ -46,6 +46,7 @@ export default function Navigation() {
   const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
+  const isFbaBundlePage = pathname === "/fba-starter-bundle";
 
 
   useEffect(() => {
@@ -63,6 +64,23 @@ export default function Navigation() {
     setIsFeaturesOpen(false);
     setIsMenuOpen(false);
   };
+
+  if (isFbaBundlePage) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center h-20">
+            <div className="flex items-center gap-2">
+              <img src={apexBullLogo.url} alt="Apex Applications" className="h-18 w-auto object-contain" />
+              <span className="text-xl font-bold tracking-tight text-slate-900">
+                APEX <span className="text-brand text-[10px] align-top ml-0.5 font-black uppercase tracking-tighter">Applications</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
