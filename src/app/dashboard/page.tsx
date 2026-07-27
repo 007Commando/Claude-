@@ -123,18 +123,32 @@ const TEMPERATURE_STYLES: Record<Temperature, { label: string; className: string
 
 const TEMPERATURE_ORDER: Temperature[] = ["cold", "cool", "warm", "hot", "very_hot"];
 
+const MIA_STYLE = { label: "MIA", className: "bg-gray-700 text-gray-100 border-gray-600" };
+
 function TemperatureBadge({
   temperature,
   checked,
   converted,
+  optedOut,
 }: {
   temperature: Temperature | null;
   checked: boolean;
   converted: boolean;
+  optedOut: boolean;
 }) {
   // "Goes away" once they've subscribed to Apex — there's no more lead to
   // keep warming up, so a color badge here would be noise, not signal.
   if (converted) return <Badge tone="green">Converted</Badge>;
+  // Opted out (SMS STOP keyword, email unsubscribe, etc.) beats any computed
+  // temperature — a lead who told us to stop messaging them is not "warm"
+  // just because that STOP reply itself looked like fresh engagement.
+  if (optedOut) {
+    return (
+      <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-bold ${MIA_STYLE.className}`}>
+        {MIA_STYLE.label}
+      </span>
+    );
+  }
   if (!checked || !temperature) return <Badge tone="slate">…</Badge>;
   const { label, className } = TEMPERATURE_STYLES[temperature];
   return (
@@ -586,7 +600,7 @@ function GhlLeadsTable({
   const [search, setSearch] = useState("");
   const [payingFilter, setPayingFilter] = useState<TriState>("all");
   const [subscribedFilter, setSubscribedFilter] = useState<SubscribedFilter>("all");
-  const [temperatureFilter, setTemperatureFilter] = useState<Set<Temperature>>(new Set());
+  const [temperatureFilter, setTemperatureFilter] = useState<Set<Temperature | "mia">>(new Set());
   const [page, setPage] = useState(0);
   const [overrides, setOverrides] = useState<Record<string, StripeStatusOverride>>({});
   const [temperatureOverrides, setTemperatureOverrides] = useState<Record<string, TemperatureOverride>>({});
@@ -635,6 +649,7 @@ function GhlLeadsTable({
       // Converted leads don't need approaching — never show them under a
       // temperature filter regardless of their underlying (pre-conversion) tier.
       if (row.isApexSubscriber || row.isPayingCustomer) return false;
+      if (row.optedOut) return temperatureFilter.has("mia");
       return row.temperature != null && temperatureFilter.has(row.temperature);
     });
   }, [baseFilteredRows, temperatureFilter]);
@@ -733,13 +748,14 @@ function GhlLeadsTable({
   // Fetches temperature for whichever contacts currently need it: just the
   // visible page normally, but the ENTIRE (pre-temperature-filter) result set
   // once a temperature filter is active, since filtering needs to know every
-  // candidate's temperature, not just what's on screen. Converted leads are
-  // skipped since they're excluded from the filter and shown as "Converted"
-  // regardless of temperature.
+  // candidate's temperature, not just what's on screen. Converted and opted-
+  // out leads are skipped entirely — they're excluded from the filter and
+  // shown as "Converted"/"MIA" regardless of any computed temperature, so
+  // there's no reason to spend a GHL API call finding out theirs.
   useEffect(() => {
     const source = temperatureFilter.size > 0 ? baseFilteredRows : pagedRows;
     const uncheckedIds = source
-      .filter((r) => !r.temperatureChecked && !r.isApexSubscriber && !r.isPayingCustomer)
+      .filter((r) => !r.temperatureChecked && !r.isApexSubscriber && !r.isPayingCustomer && !r.optedOut)
       .map((r) => r.id);
     if (uncheckedIds.length === 0) return;
     const filterActive = temperatureFilter.size > 0;
@@ -797,9 +813,11 @@ function GhlLeadsTable({
           row.ltv.toFixed(2),
           row.isApexSubscriber || row.isPayingCustomer
             ? "Converted"
-            : !row.temperatureChecked || !row.temperature
-              ? "Unknown"
-              : TEMPERATURE_STYLES[row.temperature].label,
+            : row.optedOut
+              ? "MIA"
+              : !row.temperatureChecked || !row.temperature
+                ? "Unknown"
+                : TEMPERATURE_STYLES[row.temperature].label,
         ]),
       );
     } finally {
@@ -848,9 +866,11 @@ function GhlLeadsTable({
 
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Temperature:</span>
-        {TEMPERATURE_ORDER.map((temp) => {
+        {/* MIA sits below Cold — an opted-out lead is worse than merely cold,
+            not just another point on the hot/cold scale. */}
+        {(["mia", ...TEMPERATURE_ORDER] as const).map((temp) => {
           const active = temperatureFilter.has(temp);
-          const { label, className } = TEMPERATURE_STYLES[temp];
+          const { label, className } = temp === "mia" ? MIA_STYLE : TEMPERATURE_STYLES[temp];
           return (
             <button
               key={temp}
@@ -944,6 +964,7 @@ function GhlLeadsTable({
                         temperature={row.temperature}
                         checked={row.temperatureChecked}
                         converted={row.isApexSubscriber || row.isPayingCustomer}
+                        optedOut={row.optedOut}
                       />
                     </td>
                   </tr>

@@ -24,7 +24,14 @@ interface RawGhlLeads {
   totalLeads: number;
   newLeads7d: number;
   newLeads30d: number;
-  contacts: Array<{ id: string; name: string; email: string; phone: string | null; dateAdded: string }>;
+  contacts: Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    dateAdded: string;
+    optedOut: boolean;
+  }>;
 }
 
 // Shared shape between PrimeWell's, Facebook's, and ASH's GHL leads — all
@@ -56,6 +63,7 @@ function buildGhlFunnel(
       // GHL API call per contact and this route already does enough of those.
       temperature: null,
       temperatureChecked: false,
+      optedOut: c.optedOut,
     };
   });
 

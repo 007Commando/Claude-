@@ -4,10 +4,9 @@ const REQUEST_TIMEOUT_MS = 8000;
 
 // GHL's API doesn't expose email open/click tracking (message status only
 // ever shows "delivered", even though GHL clearly tracks opens internally
-// via their own redirect links). What IS available per conversation is
-// lastMessageDirection ("inbound" means the lead replied — a stronger signal
-// than a passive open anyway) and lastMessageDate. Temperature is built from
-// that: has this lead ever replied, and how recently did anything happen.
+// via their own redirect links). What IS available is actual message-level
+// direction — has this lead ever sent us an inbound SMS or email, and how
+// recently did THEY (not us) last do that. Temperature is built from that.
 export type Temperature = "cold" | "cool" | "warm" | "hot" | "very_hot";
 
 export interface EngagementResult {
@@ -17,8 +16,13 @@ export interface EngagementResult {
 }
 
 interface GhlConversation {
-  lastMessageDate?: number;
-  lastMessageDirection?: "inbound" | "outbound";
+  id: string;
+}
+
+interface GhlMessage {
+  direction?: "inbound" | "outbound";
+  messageType?: string; // "TYPE_SMS" | "TYPE_EMAIL" | "TYPE_CALL" | ...
+  dateAdded?: string;
 }
 
 // Confirmed via live testing against ~1000 real contacts: GHL's rate limit
@@ -63,33 +67,57 @@ async function ghlFetch<T>(path: string, token: string): Promise<T> {
   }
 }
 
-function computeTemperature(daysSinceLastMessage: number | null, hasReplied: boolean): Temperature {
-  if (daysSinceLastMessage == null) return "cold"; // never contacted at all
-
+function computeTemperature(
+  hasReplied: boolean,
+  daysSinceReply: number | null,
+  daysSinceAnyMessage: number | null,
+): Temperature {
   // Warm/Hot/Very Hot all require an actual reply (SMS or email) from the
   // lead — outbound-only activity from us, no matter how recent, never counts
-  // as "engaged." Recency among repliers decides how warm it still is, and it
-  // cools back down to "cold" on its own the longer nothing happens (this is
-  // what makes the badge "go away" as they stop responding, without us
-  // needing to track or expire anything explicitly).
-  if (hasReplied) {
-    if (daysSinceLastMessage <= 2) return "very_hot";
-    if (daysSinceLastMessage <= 7) return "hot";
-    if (daysSinceLastMessage <= 30) return "warm";
+  // as "engaged." Recency is measured from THEIR most recent reply specifically,
+  // not the conversation's last message overall — a follow-up we send right
+  // after they reply must never mask that they engaged. It cools back down to
+  // "cold" on its own the longer nothing happens, with no expiry to track.
+  if (hasReplied && daysSinceReply != null) {
+    if (daysSinceReply <= 2) return "very_hot";
+    if (daysSinceReply <= 7) return "hot";
+    if (daysSinceReply <= 30) return "warm";
     return "cold";
   }
 
   // Never replied — the best this can be is "cool" (something outbound went
   // out recently), never warmer.
-  if (daysSinceLastMessage <= 14) return "cool";
+  if (daysSinceAnyMessage != null && daysSinceAnyMessage <= 14) return "cool";
   return "cold";
+}
+
+// Only these count as "messaging" for reply detection, per the requirement
+// that Warm/Hot/Very Hot reflect replies to SMS or email specifically — an
+// inbound phone call, for instance, isn't the same signal as a text back.
+const REPLIABLE_MESSAGE_TYPES = new Set(["TYPE_SMS", "TYPE_EMAIL"]);
+
+// GHL returns messages newest-first; this is generous enough to reach any
+// realistic recent reply without paginating deeper (irrelevant anyway — a
+// reply older than this page is already well past any "engaged" threshold).
+const MESSAGE_FETCH_LIMIT = 20;
+
+async function fetchConversationMessages(conversationId: string, token: string): Promise<GhlMessage[]> {
+  const data = await ghlFetch<{ messages: { messages: GhlMessage[] } }>(
+    `/conversations/${conversationId}/messages?limit=${MESSAGE_FETCH_LIMIT}`,
+    token,
+  );
+  return data.messages?.messages ?? [];
 }
 
 // Empirically tuned: testing against ~1000 real PrimeWell contacts showed
 // concurrency 5 with no retry hit a ~100% 429 rate on /conversations/search
-// (much stricter than /contacts/ or Stripe). Combined with the retry/backoff
-// above, 3 concurrent requests reliably clears the whole list without errors.
-const CONCURRENCY = 3;
+// (much stricter than /contacts/ or Stripe). Fetching actual messages (this
+// module now does 1 conversations/search call + 1 messages call per
+// conversation, roughly doubling request volume) makes the same rate limit
+// even easier to trip, so concurrency is kept lower here than it otherwise
+// could be — combined with the retry/backoff above, this reliably clears
+// the whole list without errors, just more slowly.
+const CONCURRENCY = 2;
 
 /** Looks up reply/engagement-based temperature per GHL contact ID, bounded to a few concurrent requests. */
 export async function getLeadEngagement(
@@ -107,23 +135,37 @@ export async function getLeadEngagement(
     while (cursor < uniqueIds.length) {
       const contactId = uniqueIds[cursor++];
       try {
-        const data = await ghlFetch<{ conversations: GhlConversation[] }>(
+        const convoData = await ghlFetch<{ conversations: GhlConversation[] }>(
           `/conversations/search?locationId=${locationId}&contactId=${contactId}&limit=10`,
           token,
         );
-        const convos = data.conversations ?? [];
-        if (convos.length === 0) {
+        const conversations = convoData.conversations ?? [];
+        if (conversations.length === 0) {
           result.set(contactId, { temperature: "cold", lastMessageAt: null, hasReplied: false });
           continue;
         }
 
-        const latest = convos.reduce((a, b) => ((b.lastMessageDate ?? 0) > (a.lastMessageDate ?? 0) ? b : a));
-        const hasReplied = convos.some((c) => c.lastMessageDirection === "inbound");
-        const daysSince = latest.lastMessageDate != null ? (Date.now() - latest.lastMessageDate) / 86_400_000 : null;
+        const messageLists = await Promise.all(
+          conversations.map((c) => fetchConversationMessages(c.id, token)),
+        );
+        const messages = messageLists
+          .flat()
+          .filter((m) => m.messageType && REPLIABLE_MESSAGE_TYPES.has(m.messageType));
+
+        const toTs = (d?: string) => (d ? new Date(d).getTime() : null);
+        const inbound = messages.filter((m) => m.direction === "inbound");
+        const lastInboundTs = inbound.length
+          ? Math.max(...inbound.map((m) => toTs(m.dateAdded) ?? 0))
+          : null;
+        const lastAnyTs = messages.length ? Math.max(...messages.map((m) => toTs(m.dateAdded) ?? 0)) : null;
+
+        const hasReplied = inbound.length > 0;
+        const daysSinceReply = lastInboundTs != null ? (Date.now() - lastInboundTs) / 86_400_000 : null;
+        const daysSinceAny = lastAnyTs != null ? (Date.now() - lastAnyTs) / 86_400_000 : null;
 
         result.set(contactId, {
-          temperature: computeTemperature(daysSince, hasReplied),
-          lastMessageAt: latest.lastMessageDate ? new Date(latest.lastMessageDate).toISOString() : null,
+          temperature: computeTemperature(hasReplied, daysSinceReply, daysSinceAny),
+          lastMessageAt: lastAnyTs != null ? new Date(lastAnyTs).toISOString() : null,
           hasReplied,
         });
       } catch (err) {

@@ -99,6 +99,10 @@ export interface GhlLeadRow {
   temperature: Temperature | null;
   /** False means temperature is a placeholder — not checked yet (see /api/dashboard/lead-temperature). */
   temperatureChecked: boolean;
+  /** True if the contact has opted out on any channel (SMS STOP keyword, email
+   * unsubscribe, etc.) per GHL's dndSettings. Overrides temperature with "MIA"
+   * regardless of any reply history, since they can no longer be messaged. */
+  optedOut: boolean;
 }
 
 export interface GhlFunnel {

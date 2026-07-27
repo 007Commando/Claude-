@@ -18,6 +18,10 @@ interface GhlContact {
   firstName?: string;
   lastName?: string;
   dateAdded?: string;
+  // Present (non-empty) whenever the contact has opted out on at least one
+  // channel — e.g. {SMS: {status: "permanent", message: "STOP_KEYWORD"}} for
+  // a lead who replied STOP. A clean contact has dndSettings: {}.
+  dndSettings?: Record<string, { status?: string }>;
 }
 
 export interface AshContact {
@@ -26,6 +30,7 @@ export interface AshContact {
   email: string;
   phone: string | null;
   dateAdded: string;
+  optedOut: boolean;
 }
 
 interface GhlContactsPage {
@@ -161,6 +166,7 @@ export async function getAshLeads(): Promise<AshLeadsResult> {
       email: c.email as string,
       phone: c.phone ?? null,
       dateAdded: c.dateAdded ?? "",
+      optedOut: Object.keys(c.dndSettings ?? {}).length > 0,
     })),
     contactsTruncated: stoppedEarly || total > contactsWithEmail.length,
   };
