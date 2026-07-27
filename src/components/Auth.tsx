@@ -145,6 +145,17 @@ export default function Auth() {
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Set the instant a signup submission starts, and never cleared — once this
+  // page has kicked off account creation, it must never independently decide
+  // to send the new user to /dashboard. That decision belongs entirely to
+  // ApexAuth.signUp()'s own post-signup redirect (to Stripe checkout, since a
+  // plan is always attached). Without this guard, Firebase's auth state
+  // flips to "signed in" ~synchronously on account creation, while spinning
+  // up a Checkout Session is an async round trip — the onAuthStateChanged
+  // listener below would win that race and drop brand-new, unpaid signups
+  // straight into the dashboard before checkout ever loads.
+  const signupInFlightRef = useRef(false);
+
   useEffect(() => {
     let cancelled = false;
     let unsub: (() => void) | void;
@@ -153,7 +164,7 @@ export default function Auth() {
         if (cancelled) return;
         const fn = await Promise.resolve(
           auth.onAuthStateChanged((user) => {
-            if (user) {
+            if (user && !signupInFlightRef.current) {
               const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
               if (!redirect) auth.redirectToApp("/dashboard");
             }
@@ -196,6 +207,7 @@ export default function Auth() {
       if (mode === "signup") {
         const parsed = signupSchema.safeParse({ name, email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
+        signupInFlightRef.current = true;
         await withAuthRetry(() =>
           auth.signUp({
             name: parsed.data.name,
