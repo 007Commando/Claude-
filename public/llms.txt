@@ -1,0 +1,31 @@
+# Apex Applications
+
+> Apex Applications is an all-in-one Amazon wholesale software suite. It connects
+> product sourcing, supplier/vendor management, purchase orders, financial (P&L)
+> analytics, and automated review generation into one platform, so Amazon
+> wholesale sellers can go from their first sale to scaling a multi-brand
+> operation without stitching together separate spreadsheets and tools.
+
+Apex Applications is organized into four connected modules — Apex Black, Apex
+Blue, Apex Green, and Apex Red — plus a free lifetime Review Booster tool and a
+7-day free trial on every paid plan.
+
+## Product
+
+- [Home](https://apexapplications.io/): Overview of the full Apex Applications suite and what it replaces.
+- [Pricing](https://apexapplications.io/pricing): Starter Plan and Pro Plan, both with a 7-day free trial before billing starts.
+- [Apex Black](https://apexapplications.io/features/black): The command center — dashboard, review automation, and the Apex University education center.
+- [Apex Blue](https://apexapplications.io/features/blue): Financial analytics, vendor/supplier management, market intelligence databases, purchase orders, and operating expense (Opex) tracking.
+- [Apex Green](https://apexapplications.io/features/green): High-speed product sourcing — master catalog merging, UPC scanning, and brand/product discovery.
+- [Apex Red](https://apexapplications.io/features/red): Logistics — shipments, warehouses, inventory, and prep center coordination and billing.
+- [Review Booster](https://apexapplications.io/review-booster): Free-for-life automated tool for generating Amazon order reviews and seller feedback.
+- [How Amazon Wholesale Works](https://apexapplications.io/how-it-works): A roadmap for starting and scaling an Amazon FBA wholesale business.
+- [Ungating Guide](https://apexapplications.io/ungating-guide): Step-by-step guide to getting category/brand ungated on Amazon, including the Grocery category.
+- [Rewards & Benefits](https://apexapplications.io/rewards-benefits): Member perks, including the Prep Center Network and Distributor Vault.
+- [Amazon FBA Starter Bundle](https://apexapplications.io/fba-starter-bundle): A low-cost entry offer bundling an extended software trial, free suppliers, Review Booster, the Keepa Playbook, and core training modules.
+
+## Company
+
+- [Contact](https://apexapplications.io/contact-us)
+- [Terms of Service](https://apexapplications.io/terms)
+- [Privacy Policy](https://apexapplications.io/privacy)

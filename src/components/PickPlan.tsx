@@ -94,6 +94,38 @@ const PRICE_LIMITED_M = 149.99;
 const PRICE_UNLIMITED_M = 299;
 const ANNUAL_DISCOUNT = 0.2;
 
+const faqs = [
+  {
+    question: "How much does Apex Applications cost?",
+    answer:
+      "The Starter Plan is $149.99/month and the Pro Plan is $299/month. Paying annually saves 20% on either plan.",
+  },
+  {
+    question: "Is there a free trial?",
+    answer:
+      "Yes. Every plan, Starter and Pro, includes a 7-day free trial before your card is charged.",
+  },
+  {
+    question: "What's the difference between the Starter and Pro plans?",
+    answer:
+      "Starter includes 5 authorized users and email support. Pro includes 10 authorized users, priority onboarding, and everything in Starter, along with higher usage limits across the suite.",
+  },
+  {
+    question: "Can I cancel anytime?",
+    answer: "Yes, you can cancel your subscription at any time, no long-term contract required.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+};
+
 export default function PickPlan() {
   const router = useRouter();
   const [isAnnual, setIsAnnual] = useState(false);
@@ -293,6 +325,24 @@ export default function PickPlan() {
           </div>
         </div>
         </div>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+        <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-slate-900 text-center mb-10">
+          Pricing Questions
+        </h2>
+        <div className="space-y-6">
+          {faqs.map((faq) => (
+            <div key={faq.question} className="border-b border-slate-100 pb-6">
+              <h3 className="text-base font-bold text-slate-900 mb-2">{faq.question}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

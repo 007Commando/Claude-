@@ -4,7 +4,10 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
 import LeadAttribution from "../components/LeadAttribution";
+import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import "../index.css";
+
+const SITE_URL = "https://apexapplications.io";
 
 const OG_IMAGE =
   "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/72d97ab6-3399-4642-9df9-825e9c60a21b/id-preview-bdd3505f--6faac52a-fe63-48e8-95e5-619fb0da6fb7.lovable.app-1782857715383.png";
@@ -47,9 +50,52 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Apex Applications",
-  url: "https://apexapplications.io",
+  url: SITE_URL,
+  logo: `${SITE_URL}${apexBullLogo.url}`,
   description:
     "All-in-one Amazon wholesale software suite for sourcing, analytics, purchase orders, and review automation.",
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Apex Applications",
+  url: SITE_URL,
+  description:
+    "Apex Applications is the all-in-one Amazon wholesale suite: sourcing, vendor management, P&L analytics, purchase orders, and review automation.",
+  publisher: { "@type": "Organization", name: "Apex Applications" },
+};
+
+// One SoftwareApplication entity for the whole suite (Apex Black, Blue, Green,
+// Red) rather than four separate listings — they're sold and trialed together
+// as a single subscription, not standalone products.
+const softwareApplicationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Apex Applications",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "All-in-one Amazon wholesale software suite: sourcing, vendor management, purchase orders, P&L analytics, logistics, and automated review generation.",
+  url: SITE_URL,
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Starter Plan",
+      price: "149.99",
+      priceCurrency: "USD",
+      category: "subscription",
+      url: `${SITE_URL}/pricing`,
+    },
+    {
+      "@type": "Offer",
+      name: "Pro Plan",
+      price: "299",
+      priceCurrency: "USD",
+      category: "subscription",
+      url: `${SITE_URL}/pricing`,
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -59,6 +105,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationJsonLd) }}
         />
         <Script src="https://app.apexapplications.io/apex-auth.js" strategy="afterInteractive" />
         <Script
