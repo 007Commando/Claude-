@@ -4,6 +4,8 @@ import type { BlogPost } from "../lib/blog";
 import { getSortedPosts } from "../lib/blog";
 import BlogPostBody from "./BlogPostBody";
 import BlogCta from "./BlogCta";
+import BlogCtaBar from "./BlogCtaBar";
+import BlogToc from "./BlogToc";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
@@ -36,7 +38,7 @@ export default function BlogPostView({ post }: { post: BlogPost }) {
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-4 text-sm text-slate-400 font-semibold mb-10 pb-10 border-b border-slate-100">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-slate-400 font-semibold mb-8 pb-8 border-b border-slate-100">
           <span>Apex Applications Team</span>
           <span>·</span>
           <span>{formatDate(post.publishedAt)}</span>
@@ -46,6 +48,9 @@ export default function BlogPostView({ post }: { post: BlogPost }) {
             {post.readingTime}
           </span>
         </div>
+
+        <BlogCtaBar />
+        <BlogToc content={post.content} />
 
         <BlogPostBody blocks={firstHalf} />
         <BlogCta />

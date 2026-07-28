@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import type { ContentBlock } from "../lib/blog";
+import { slugifyHeading } from "../lib/blog";
 
 // Supports a minimal "[label](url)" markdown link syntax inside plain text
 // blocks, so blog copy can cross-link to other guides/product pages without
@@ -64,7 +65,11 @@ export default function BlogPostBody({ blocks }: { blocks: ContentBlock[] }) {
         switch (block.type) {
           case "h2":
             return (
-              <h2 key={i} className="text-2xl font-black text-slate-900 tracking-tight pt-4">
+              <h2
+                key={i}
+                id={slugifyHeading(block.text)}
+                className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight pt-4 scroll-mt-28"
+              >
                 {block.text}
               </h2>
             );
@@ -129,14 +134,11 @@ export default function BlogPostBody({ blocks }: { blocks: ContentBlock[] }) {
           case "table":
             return (
               <div key={i} className="my-6 overflow-x-auto rounded-2xl border border-slate-100">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm min-w-[480px]">
                   <thead>
                     <tr className="bg-slate-50">
                       {block.headers.map((h) => (
-                        <th
-                          key={h}
-                          className="text-left font-black text-slate-900 px-4 py-3 whitespace-nowrap"
-                        >
+                        <th key={h} className="text-left font-black text-slate-900 px-4 py-3">
                           {h}
                         </th>
                       ))}
@@ -146,7 +148,7 @@ export default function BlogPostBody({ blocks }: { blocks: ContentBlock[] }) {
                     {block.rows.map((row, r) => (
                       <tr key={r} className="border-t border-slate-100">
                         {row.map((cell, c) => (
-                          <td key={c} className="px-4 py-3 text-slate-600 whitespace-nowrap">
+                          <td key={c} className="px-4 py-3 text-slate-600 align-top">
                             {cell}
                           </td>
                         ))}
