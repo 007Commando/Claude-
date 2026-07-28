@@ -276,6 +276,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "If you are also weighing wholesale against private label or retail arbitrage, see our [business model comparison](/blog/wholesale-vs-private-label). If you are wondering what a realistic starting budget looks like, we broke that down in [how much it actually costs to start](/blog/cost-to-start-wholesale). And once you have a supplier relationship going, our guide to [negotiating with wholesale distributors](/blog/negotiate-with-distributors) covers how to turn a first order into better long term terms.",
       },
+      {
+        type: "h2",
+        text: "Frequently asked questions about starting Amazon wholesale",
+      },
+      {
+        type: "h3",
+        text: "How long does it actually take to start an Amazon FBA wholesale business?",
+      },
+      {
+        type: "p",
+        text: "For an organized seller who already has business formation and a Seller Central account sorted out, the realistic timeline from first supplier outreach to a live, ungated listing is two to six weeks. The variable that swings this most is ungating. A category that does not require approval can have inventory live within days of a purchase order landing, while a gated category like Grocery or Beauty can add one to three weeks if the first invoice attempt gets rejected. This is exactly why lining up an authorized distributor and a clean invoice before you source is worth the extra care up front.",
+      },
+      {
+        type: "h3",
+        text: "Is Amazon wholesale still a profitable business model in 2026?",
+      },
+      {
+        type: "p",
+        text: "Yes, though profitability now depends much more on operational discipline than it did when the category was less crowded. Amazon wholesale sellers who track true landed cost, reorder proven SKUs on a schedule, and maintain relationships with multiple authorized distributors are still building sustainable, six and seven figure businesses in 2026. Sellers who skip that discipline and treat wholesale as a series of one off product bets are the ones who struggle, regardless of what year it is.",
+      },
+      {
+        type: "h3",
+        text: "What is the difference between Amazon wholesale and dropshipping?",
+      },
+      {
+        type: "p",
+        text: "In Amazon wholesale, you purchase inventory upfront from an authorized distributor or brand and ship it into Amazon's fulfillment network, so you own the stock and control quality and speed of delivery through FBA. In dropshipping, you typically never hold inventory and rely on a third party to ship directly to the customer, which Amazon's own policies restrict heavily for third party sellers. Wholesale requires more upfront capital but gives you far more control over fulfillment speed, product authenticity, and long term account health.",
+      },
+      {
+        type: "h3",
+        text: "Can I do Amazon FBA wholesale as a side business?",
+      },
+      {
+        type: "p",
+        text: "Many successful wholesale sellers start part time, since the core weekly workload, sourcing, reviewing purchase orders, and checking inventory, can realistically be run in a few focused hours a week once the initial setup is done. The main constraint is responsiveness during the first few weeks of a new supplier relationship or an ungating application, where slow replies can cost you momentum. A software system that surfaces what needs attention, rather than requiring you to check five different places, is what makes running this as a side business practical at all.",
+      },
     ],
   },
   {
@@ -412,6 +448,50 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "Once you are ungated and sourcing real inventory, the next bottleneck is usually vetting which of the newly unlocked products are actually worth a purchase order. Our [Keepa reading framework](/blog/reading-keepa-charts) covers that next step.",
       },
+      {
+        type: "h2",
+        text: "How ungating differs from brand approval",
+      },
+      {
+        type: "p",
+        text: "Category gating and brand gating are related but distinct restrictions, and confusing the two wastes time. Category gating restricts an entire Amazon category, such as Grocery, regardless of which brand you want to sell within it, and clearing it once generally unlocks the whole category for future products. Brand gating restricts a specific brand regardless of category, meaning a brand can require its own separate approval even in a category that is otherwise open. A seller expanding into wholesale should expect to encounter both types over time, and keeping a running log of which categories and brands are already cleared saves real time on every new product evaluation.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon ungating",
+      },
+      {
+        type: "h3",
+        text: "How long does Amazon ungating approval typically take?",
+      },
+      {
+        type: "p",
+        text: "Many applications with a clean, correctly formatted invoice are approved within minutes to a few hours. Applications that require manual review, or categories with additional compliance requirements such as Supplements, can take several business days. A rejected application effectively restarts this clock, which is the real cost of submitting a weak invoice the first time.",
+      },
+      {
+        type: "h3",
+        text: "Can I get ungated without an invoice from an authorized distributor?",
+      },
+      {
+        type: "p",
+        text: "In most cases, no. Amazon's ungating review is built around verifying an authorized, traceable supply chain, and a retail receipt or an invoice from an unauthorized reseller almost never satisfies that requirement. There are limited alternative documentation paths for some categories, such as a letter of authorization directly from the brand, but these are harder to obtain than a standard wholesale invoice and should be treated as a backup option, not a first choice.",
+      },
+      {
+        type: "h3",
+        text: "Does getting ungated in one category help with others?",
+      },
+      {
+        type: "p",
+        text: "Not directly. Each gated category and each gated brand requires its own approval. However, a track record of clean applications and an Amazon account in good standing does tend to make subsequent applications smoother, since your account history is part of what Amazon's automated review considers.",
+      },
+      {
+        type: "h3",
+        text: "Is Amazon ungating the same as Amazon brand registry?",
+      },
+      {
+        type: "p",
+        text: "No. Brand registry is for sellers who own or are authorized to manage a brand's own listings on Amazon, typically private label sellers. Ungating is the separate approval process wholesale sellers go through to be allowed to list existing products in a restricted category or under a restricted brand they do not own. A wholesale seller generally never needs brand registry for the products they are reselling.",
+      },
     ],
   },
   {
@@ -546,6 +626,42 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "Once a product clears all three checks, the next step is turning it into a real purchase order. See our [complete purchase order workflow guide](/blog/purchase-order-workflow) for how to do that without losing track of margin.",
+      },
+      {
+        type: "h2",
+        text: "Keepa alternatives and how they compare",
+      },
+      {
+        type: "p",
+        text: "Keepa is not the only historical price and sales rank tracking tool available to Amazon sellers, though it is the most widely used and the one most wholesale specific software integrates with. Some sellers also use built in estimators inside broader research suites, but these tend to lean on the same underlying historical data Keepa already surfaces directly and more transparently. For a wholesale seller specifically evaluating existing, proven ASINs rather than researching brand new product ideas, Keepa's raw historical charts are usually more useful than a tool that adds a proprietary sales estimate on top, since you can apply the exact three line framework above without a black box estimate in between.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about reading Keepa for wholesale",
+      },
+      {
+        type: "h3",
+        text: "Is Keepa free to use for Amazon wholesale sourcing?",
+      },
+      {
+        type: "p",
+        text: "Keepa offers a free tier with basic chart access, and a paid premium tier that unlocks longer historical windows, additional data fields, and higher usage limits. For serious wholesale sourcing, the premium tier is generally worth the modest monthly cost, since the extended historical view is what makes the seasonality check in this framework possible.",
+      },
+      {
+        type: "h3",
+        text: "What sales rank is considered good for Amazon wholesale?",
+      },
+      {
+        type: "p",
+        text: "There is no single good number, since a healthy sales rank varies enormously by category. A rank of 20,000 might represent strong, steady demand in a smaller category and mediocre demand in a large one like Grocery. This is exactly why the framework in this guide focuses on trend and stability rather than an absolute rank threshold. Comparing a candidate product's rank pattern against other products in the same category is far more reliable than comparing it to a generic benchmark.",
+      },
+      {
+        type: "h3",
+        text: "Can Keepa tell me exactly how many units a product sells per month?",
+      },
+      {
+        type: "p",
+        text: "No, and treating any tool's estimate as exact is a common mistake. Keepa's Sales Rank Drops chart is a directional proxy for sales events, not a precise unit count, and the relationship between rank and actual monthly units varies by category, price point, and season. Use it to compare candidates against each other rather than to build a precise revenue forecast.",
       },
     ],
   },
@@ -687,6 +803,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "With one supplier and five SKUs, you can run this in your head. With eight suppliers and eighty SKUs, you cannot, and the sellers who stall out at that stage are almost always the ones still trying to. A connected system across sourcing, purchasing, and inventory is not a nice to have at that point. It is the difference between scaling and drowning in your own spreadsheets. See what that actually costs versus stitching together separate tools in our breakdown of [what a typical seller software stack really costs](/blog/cost-of-seller-software).",
       },
+      {
+        type: "h2",
+        text: "Purchase order templates: what a good one actually includes",
+      },
+      {
+        type: "p",
+        text: "Whether you build one in a spreadsheet or use dedicated purchase order software, every wholesale purchase order should capture the same core fields: supplier name and contact, order date, expected ship date, expected landing date, unit cost per SKU, quantity ordered, total order value, and a running status such as submitted, in transit, or received. Sellers who skip any of these fields tend to be the ones who cannot answer a simple question, such as how much is currently outstanding across all suppliers, without opening several different emails to piece it together.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon FBA purchase orders",
+      },
+      {
+        type: "h3",
+        text: "How do I create a purchase order for Amazon FBA wholesale?",
+      },
+      {
+        type: "p",
+        text: "A wholesale purchase order is an agreement between you and your supplier specifying the products, quantities, and agreed unit cost for a given order. It does not need to be complicated. What matters is that it is documented in writing, ideally with the supplier confirming the same terms back, and that it is tracked through to delivery rather than treated as complete the moment it is sent.",
+      },
+      {
+        type: "h3",
+        text: "What is a good purchase order turnaround time for Amazon wholesale?",
+      },
+      {
+        type: "p",
+        text: "This varies significantly by supplier and product category, but most established distributors can ship a standard order within one to two weeks of confirmation. Sellers evaluating a new supplier should ask about typical turnaround explicitly before the first order, since a slow, unpredictable supplier can undermine an otherwise solid reorder strategy.",
+      },
+      {
+        type: "h3",
+        text: "How often should I reorder inventory for Amazon FBA?",
+      },
+      {
+        type: "p",
+        text: "Reorder frequency should be driven by your actual sales velocity and supplier lead time, not a fixed calendar schedule. A fast moving SKU with a two week supplier lead time might need a reorder trigger set at three to four weeks of remaining stock, while a slower mover with the same lead time might only need to reorder every couple of months. The goal is always the same: place the next order early enough that a new shipment lands before the current stock runs out.",
+      },
     ],
   },
   {
@@ -792,11 +944,39 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "The bottom line",
+        text: "How review count and rating actually influence Amazon's search ranking",
       },
       {
         type: "p",
-        text: "Automating review requests is safe and smart. Automating review manipulation is a fast way to lose your account. The line between them is not subtle. It is whether you are asking everyone neutrally, or steering the outcome. Stay firmly on the first side of that line and automation is a pure win.",
+        text: "Amazon has never published the exact weighting of reviews in its ranking algorithm, but the mechanism is well understood indirectly. Reviews influence conversion rate, and conversion rate is one of the clearest signals Amazon's system uses to decide how much organic traffic a listing deserves relative to competing listings for the same search term. A listing that converts better sells more per impression, which Amazon interprets as a better match for that customer search, which in turn earns more impressions going forward. This is why review velocity in the first weeks of a new listing has outsized long term impact. It is not that reviews are a direct ranking input, it is that they drive the conversion signal that is.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon review automation",
+      },
+      {
+        type: "h3",
+        text: "Is it legal to automate Amazon review requests?",
+      },
+      {
+        type: "p",
+        text: "Yes, provided the automation only sends neutral, unconditional requests to every customer equally, matching what Amazon's own Request a Review feature does. Automation becomes a problem only when it is used to filter which customers get asked, or to attach any kind of incentive to the request.",
+      },
+      {
+        type: "h3",
+        text: "How many reviews does a new Amazon listing need to start converting well?",
+      },
+      {
+        type: "p",
+        text: "There is no hard threshold, but the jump from zero reviews to even ten to twenty reviews tends to produce the most noticeable improvement in shopper trust and conversion rate. Beyond that range, additional reviews still help, but the marginal impact per review gradually decreases as the listing already has enough social proof to clear the initial trust bar.",
+      },
+      {
+        type: "h3",
+        text: "What should I do if a customer leaves a negative review?",
+      },
+      {
+        type: "p",
+        text: "Do not attempt to have it removed unless it violates Amazon's content policies, such as containing profanity or being about the wrong product entirely. Amazon allows sellers to publicly respond to reviews, and a calm, helpful response to a legitimate complaint often does more for shopper trust than the negative review itself does damage. What you should never do is offer compensation in exchange for removing or revising the review, which is treated the same as any other incentivized review violation.",
       },
     ],
   },
@@ -901,6 +1081,42 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "Evaluating prep centers cold takes real time: reference checks, sample shipments, rate comparisons. Apex members get a shortcut. The [Prep Center Network](/prep-center-network) is a vetted list of US prep centers with negotiated member pricing, so the reference checking work is already done before you ever request a quote. Once your prep flow is solid, the next lever is making sure you never miss a reorder window. See our [purchase order workflow guide](/blog/purchase-order-workflow) for how to set that up.",
+      },
+      {
+        type: "h2",
+        text: "Prep center versus self prep: which makes sense for your Amazon FBA business",
+      },
+      {
+        type: "p",
+        text: "Some sellers, particularly very early on with low volume, choose to prep and label inventory themselves rather than pay a prep center. This can make sense purely on cost when order volume is small enough that the time investment does not compete with other higher leverage work, such as sourcing new products. The math flips quickly as volume grows. Once a seller is receiving multiple shipments a month, the hours spent receiving, inspecting, labeling, and boxing inventory almost always cost more in opportunity cost than a prep center's per unit fee, and self prep also introduces more risk of a labeling mistake that gets an entire shipment rejected by Amazon.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon FBA prep centers",
+      },
+      {
+        type: "h3",
+        text: "How much does an Amazon FBA prep center typically cost per unit?",
+      },
+      {
+        type: "p",
+        text: "Pricing varies by service level and region, but a rough range for basic receiving, labeling, and poly bagging is fifty cents to two dollars per unit, with bundling or special handling costing more. Always request an itemized rate sheet rather than relying on a single quoted number, since the gap between a vague quote and the real invoice is where most surprises happen.",
+      },
+      {
+        type: "h3",
+        text: "Do I need a prep center for Amazon FBA wholesale?",
+      },
+      {
+        type: "p",
+        text: "Not strictly, but for any seller beyond very low volume, a prep center is close to essential for keeping turnaround fast and consistent. Wholesale inventory typically arrives in bulk cartons from a distributor that still need individual unit prep before Amazon will accept it into FBA, and a dedicated prep center handles this far more reliably and quickly than most sellers can manage alongside everything else running the business requires.",
+      },
+      {
+        type: "h3",
+        text: "Can I use multiple prep centers for one Amazon FBA business?",
+      },
+      {
+        type: "p",
+        text: "Yes, and many established sellers do, often splitting volume across two prep centers in different regions to reduce shipping costs and add redundancy if one center has a delay. This does add coordination overhead, which is exactly why real time inventory visibility across every prep center matters more as a seller scales past a single location.",
       },
     ],
   },
@@ -1015,6 +1231,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "A product priced well below competitors on the buy box can look like an obvious win until you run the full landed cost math and realize the margin is thinner than a product at a higher unit cost but lower fees or shipping weight. Always compare full landed cost margin, never just unit cost against sale price. It is the difference between a spreadsheet that looks good and a business that actually is.",
       },
+      {
+        type: "h2",
+        text: "Gross margin versus net margin: why the distinction matters",
+      },
+      {
+        type: "p",
+        text: "Gross margin measures the gap between sale price and product cost alone, before Amazon fees, shipping, and other operating costs are subtracted. Net margin subtracts everything, and it is the number that actually tells you whether the business is profitable. A product can have a healthy looking 40 percent gross margin and still be barely profitable once referral fees, fulfillment fees, storage, and software costs are counted, which is exactly the trap this guide's benchmarks are designed to help you avoid. Whenever a margin number is quoted, including by a supplier or in a sourcing tool, confirm whether it is gross or net before using it to make a purchase order decision.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon wholesale margins",
+      },
+      {
+        type: "h3",
+        text: "What is a good ROI for Amazon wholesale products?",
+      },
+      {
+        type: "p",
+        text: "Many experienced wholesale sourcers use a minimum ROI threshold of 20 to 30 percent as a starting filter, where ROI is calculated as net profit divided by total landed cost rather than by sale price. A product below that threshold can still be worth ordering if velocity is extremely high, but it leaves very little cushion if costs rise or a price war erodes the sale price after the purchase order is already placed.",
+      },
+      {
+        type: "h3",
+        text: "Why is my Amazon wholesale margin lower than expected?",
+      },
+      {
+        type: "p",
+        text: "The most common cause is incomplete landed cost accounting, meaning a seller priced a product using unit cost and sale price alone without factoring in referral fees, fulfillment fees, inbound shipping, and prep costs. The second most common cause is a price change on the listing since the purchase order was placed, which is why monitoring buy box price after an order goes out, not just before, matters as much as the original Keepa check.",
+      },
+      {
+        type: "h3",
+        text: "How do returns affect Amazon wholesale profit margin?",
+      },
+      {
+        type: "p",
+        text: "Returns reduce net margin in two ways: the lost revenue on the returned unit, and often a refurbishment or disposal cost if the unit cannot be resold as new. Categories with naturally higher return rates, such as apparel adjacent products, should have a return rate assumption built into the margin model from the start rather than treated as an unexpected cost after the fact.",
+      },
     ],
   },
   {
@@ -1107,6 +1359,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "For the full step by step of what to actually do with that starting budget, see our [complete guide to starting Amazon wholesale in 2026](/blog/start-amazon-wholesale).",
       },
+      {
+        type: "h2",
+        text: "Financing options if you need more than personal savings",
+      },
+      {
+        type: "p",
+        text: "Not every seller starts with enough cash on hand for a comfortable first purchase order plus reserve. A business credit card, ideally one with a 0 percent introductory APR period, is the financing option most wholesale sellers reach for first, since it provides flexible short term capital without giving up equity. Some sellers also use inventory financing products designed specifically for ecommerce sellers once they have a few months of sales history to show. Whatever the source, the same discipline applies: financed capital should still be split with a reorder reserve in mind, not spent entirely on a single opening order.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon wholesale startup costs",
+      },
+      {
+        type: "h3",
+        text: "Can I start Amazon FBA wholesale with $500?",
+      },
+      {
+        type: "p",
+        text: "It is possible but tight. $500 covers a very small first purchase order plus part of the Professional Seller subscription, with little room for a reorder reserve or an unexpected prep cost. A budget in the $1,000 to $1,500 range gives meaningfully more flexibility to test a product properly and reorder quickly once it proves itself, which is usually a better outcome than stretching $500 across too many risks at once.",
+      },
+      {
+        type: "h3",
+        text: "What is the minimum viable budget for Amazon wholesale in 2026?",
+      },
+      {
+        type: "p",
+        text: "Most successful low capital starts fall in the $1,000 to $3,000 range, covering the Seller Central subscription, a modest first purchase order, and prep costs, with at least some reserve held back. Below that range, the margin for error on a single bad product decision becomes very thin, since there is little capital left to recover from a slow moving SKU.",
+      },
+      {
+        type: "h3",
+        text: "Do I need to pay for software when I first start Amazon wholesale?",
+      },
+      {
+        type: "p",
+        text: "Not immediately, though most sellers add sourcing and margin tracking tools within the first few weeks once they realize how quickly a spreadsheet based approach breaks down across multiple suppliers and purchase orders. Starting with a free trial of a connected tool, rather than paying for multiple separate subscriptions from day one, keeps early costs down while still building the tracking habit from the start.",
+      },
     ],
   },
   {
@@ -1182,6 +1470,42 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "Whichever model you choose, the operational backbone, meaning purchase orders, supplier relationships, inventory, and margin tracking, is the same problem to solve. That is exactly what [Apex Black, Blue, Green, and Red](/) are built around.",
+      },
+      {
+        type: "h2",
+        text: "Can you combine business models on Amazon?",
+      },
+      {
+        type: "p",
+        text: "Many established Amazon sellers eventually run more than one model at once, most commonly starting with wholesale to build cash flow and sourcing experience, then layering in a private label product once they have capital and market knowledge to invest in developing a brand. This sequencing tends to work better than the reverse, since wholesale's faster path to revenue provides both the working capital and the hands on experience with Amazon's systems that make a private label launch less risky.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon business models",
+      },
+      {
+        type: "h3",
+        text: "Which Amazon business model has the lowest risk?",
+      },
+      {
+        type: "p",
+        text: "Wholesale generally carries the lowest demand risk of the three, since you are sourcing products with already proven sales history rather than betting on an unproven private label launch or hoping arbitrage sourcing keeps turning up deals. It does not eliminate risk entirely, since price wars and thin margins are real risks of their own, but the core question of whether a product will sell at all is largely answered before you commit capital.",
+      },
+      {
+        type: "h3",
+        text: "Is private label better than wholesale for beginners?",
+      },
+      {
+        type: "p",
+        text: "Not typically. Private label requires product development, sampling, and a cold launch with no existing reviews or sales history, all of which are harder for a first time seller to navigate than sourcing an already proven wholesale product. Most successful private label sellers built their initial Amazon experience through wholesale or arbitrage first.",
+      },
+      {
+        type: "h3",
+        text: "Can I switch from retail arbitrage to wholesale later?",
+      },
+      {
+        type: "p",
+        text: "Yes, and it is a common progression. Arbitrage teaches the mechanics of listing, pricing, and fulfillment with very low upfront risk, and many sellers use it as a low cost way to learn the platform before committing real capital to wholesale purchase orders. The skills largely transfer directly, since the Amazon side of the business, meaning listings, FBA, and customer experience, works the same way regardless of how the inventory was sourced.",
       },
     ],
   },
@@ -1268,6 +1592,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "If you are weighing this decision as part of a broader startup budget, see our [full startup cost breakdown](/blog/cost-to-start-wholesale), or read more about [why we built Apex this way](/blog/why-apex-applications).",
       },
+      {
+        type: "h2",
+        text: "How to evaluate a software cost decision like an experienced seller",
+      },
+      {
+        type: "p",
+        text: "Before adding any new subscription to an Amazon FBA wholesale software stack, ask three questions. Does this tool solve a problem I am currently solving manually and losing real time to. Does it duplicate something another tool in my stack already does. And critically, does it connect to the rest of my workflow, or will its output need to be manually copied somewhere else. A tool that answers yes to the first question and no to the second and third is worth paying for. A tool that fails any of those checks is usually adding cost without proportionally reducing the actual work of running the business.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon seller software costs",
+      },
+      {
+        type: "h3",
+        text: "How much should I budget for Amazon seller software each month?",
+      },
+      {
+        type: "p",
+        text: "A reasonable range for a wholesale seller running real volume is $100 to $300 a month, depending on whether that spend covers a stack of separate point tools or one connected suite. The number itself matters less than what it actually buys, since a $300 stack that still requires manual reconciliation between tools delivers less real value than a $150 suite that eliminates that reconciliation entirely.",
+      },
+      {
+        type: "h3",
+        text: "Is it worth paying for Amazon seller software as a beginner?",
+      },
+      {
+        type: "p",
+        text: "Yes, though the specific tools worth paying for change as volume grows. A brand new seller with one supplier and a handful of SKUs can manage margin tracking manually for a short while, but the habit of using proper tooling from day one, rather than retrofitting it after the business has already outgrown a spreadsheet, tends to prevent the exact margin blindness and untracked purchase order problems covered throughout this blog.",
+      },
+      {
+        type: "h3",
+        text: "Do I need separate software for sourcing, purchase orders, and inventory?",
+      },
+      {
+        type: "p",
+        text: "Not necessarily. This entire guide exists because most sellers default to separate tools for each function simply because that is how the market is structured, not because it is the best approach. A connected suite that covers sourcing, purchasing, and inventory together eliminates the manual handoffs between separate tools, which is often worth more in saved time and reduced errors than any single point tool's specialized features.",
+      },
     ],
   },
   {
@@ -1343,6 +1703,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "Our bet is simple. Sellers do not actually want more tools. They want fewer logins, one place their numbers live, and a system that gets them from I found a good product to the reorder happened on time and I know my real margin without five separate subscriptions in between. That is what we built, and if you are currently stitching that together yourself, [Apex Applications](/pricing) is worth the 7 days it takes to find out if it fits.",
       },
+      {
+        type: "h2",
+        text: "Who Apex Applications is actually built for",
+      },
+      {
+        type: "p",
+        text: "Apex works best for sellers running or seriously starting an Amazon FBA wholesale business, meaning sourcing existing, proven products from authorized brands and distributors rather than developing a private label brand from scratch. It fits sellers who are past the stage of wondering whether Amazon wholesale is a real business model and are ready to treat sourcing, purchasing, and inventory as a system rather than a series of one off decisions. New sellers get the fastest possible start with the free suppliers and playbook library. Established sellers running multiple suppliers get the operational visibility that a spreadsheet stopped providing months ago.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Apex Applications",
+      },
+      {
+        type: "h3",
+        text: "Is Apex Applications good for beginners to Amazon wholesale?",
+      },
+      {
+        type: "p",
+        text: "Yes, and it is arguably where the value is highest for a beginner specifically, since the 3 free authorized distributors and the $300 playbook library solve the two hardest early problems, finding a first supplier and knowing what to actually do, before a new seller has spent weeks figuring either out alone.",
+      },
+      {
+        type: "h3",
+        text: "Does Apex Applications replace Helium 10 or Jungle Scout?",
+      },
+      {
+        type: "p",
+        text: "No, and we are direct about that. Apex does not do keyword research or PPC campaign management, which are the core strengths of tools like Helium 10 and Jungle Scout. Apex replaces the operational side of wholesale selling: purchase orders, supplier management, financial analytics, inventory, and prep coordination, none of which those tools are built to handle.",
+      },
+      {
+        type: "h3",
+        text: "What happens after the 7 day free trial ends?",
+      },
+      {
+        type: "p",
+        text: "Your card is charged for the plan you selected at signup, either the Starter Plan or the Pro Plan, and billing continues on a monthly or annual cycle depending on which you chose. You can cancel anytime before the trial ends with no charge, and cancel anytime afterward as well.",
+      },
     ],
   },
   {
@@ -1411,6 +1807,50 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "Every fee in this breakdown should be part of the same landed cost calculation covered in our [profit margins guide](/blog/wholesale-profit-margins). A product is not worth a purchase order because the sale price looks good next to the wholesale cost. It is worth a purchase order once referral fees, fulfillment fees, and a realistic assumption about storage time are all subtracted and a real margin, not an estimated one, remains.",
+      },
+      {
+        type: "h2",
+        text: "How referral fees vary by category",
+      },
+      {
+        type: "p",
+        text: "The commonly cited 8 to 15 percent referral fee range hides significant variation by category, and checking the exact rate for your category before pricing a product matters. Categories like Consumer Electronics tend to sit at the lower end, while categories like Grocery and Beauty often sit in the middle to upper end of that range. Amazon publishes an official referral fee schedule by category, and it is worth checking directly rather than assuming a flat percentage across every product in your catalog, since even a few percentage points of difference changes the real margin calculation meaningfully at scale.",
+      },
+      {
+        type: "h2",
+        text: "FBA fulfillment fee tiers explained",
+      },
+      {
+        type: "p",
+        text: "The FBA fulfillment fee is based on a product's size and weight tier, not its price, which means two products with very different sale prices but similar dimensions can carry the same fulfillment fee. This is why lightweight, compact products with a higher price point tend to produce stronger wholesale margins than bulky, low priced items, even when both look similar on a simple markup basis. Checking the exact size tier a candidate product falls into, rather than estimating, is a habit worth building into the same product evaluation pass as the Keepa check.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon FBA fees",
+      },
+      {
+        type: "h3",
+        text: "What percentage of the sale price do Amazon fees typically take?",
+      },
+      {
+        type: "p",
+        text: "Combined referral and fulfillment fees typically consume 20 to 35 percent of the sale price for a wholesale product, though this varies by category, size, and weight. Building this range into your initial margin estimate, rather than discovering the real number after a purchase order, is the single habit covered throughout this guide.",
+      },
+      {
+        type: "h3",
+        text: "Do Amazon FBA fees change seasonally?",
+      },
+      {
+        type: "p",
+        text: "Storage fees specifically increase during the Q4 peak season, reflecting higher demand for Amazon's warehouse space. Referral and fulfillment fees are generally stable year round, though Amazon does periodically update its full fee schedule, which is why checking current rates rather than relying on last year's numbers matters for any seller pricing new inventory.",
+      },
+      {
+        type: "h3",
+        text: "How can I reduce Amazon FBA fees as a wholesale seller?",
+      },
+      {
+        type: "p",
+        text: "The most effective lever most sellers underuse is choosing products with favorable size and weight tiers relative to their price point during the sourcing stage, rather than trying to reduce fees after a product is already committed to. Beyond that, keeping inventory turning quickly avoids long term storage fees entirely, and bundling compatible products where appropriate can improve the fee to revenue ratio on individual units.",
       },
     ],
   },
@@ -1519,6 +1959,48 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "Once you have a supplier relationship in motion, the next skill worth building is negotiation. See our [guide to negotiating with wholesale distributors](/blog/negotiate-with-distributors) for how to turn a first order into better long term terms.",
       },
+      {
+        type: "h2",
+        text: "Red flags to watch for when evaluating a potential supplier",
+      },
+      {
+        type: "ul",
+        items: [
+          "Unwillingness to confirm they are an authorized distributor for the brand, or vague answers to a direct question about authorization.",
+          "Cannot or will not produce an invoice in a wholesale friendly format with business name, brand name, and UPCs.",
+          "Pricing that is dramatically below what other distributors quote for the same authorized product, which often signals gray market or unauthorized inventory.",
+          "No verifiable business address or contact information beyond a personal email address.",
+          "Pressure to commit to a large first order before any track record of reliable shipping exists.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about finding Amazon wholesale suppliers",
+      },
+      {
+        type: "h3",
+        text: "How do I know if a wholesale supplier is legitimate?",
+      },
+      {
+        type: "p",
+        text: "Ask directly whether they are an authorized distributor for the specific brands you want to source, and ask for documentation confirming it if the category requires ungating. A legitimate wholesale supplier will readily provide a proper invoice with their business name, address, and contact information, and will not be evasive about basic questions regarding how they source the brands they carry.",
+      },
+      {
+        type: "h3",
+        text: "How many wholesale suppliers should a new Amazon seller have?",
+      },
+      {
+        type: "p",
+        text: "Starting with one or two is reasonable while you learn the sourcing and ungating process, but the goal within the first few months should be three or more active relationships. This protects against the single point of failure risk of depending entirely on one supplier's pricing, stock availability, and business decisions.",
+      },
+      {
+        type: "h3",
+        text: "Can I find Amazon wholesale suppliers without attending trade shows?",
+      },
+      {
+        type: "p",
+        text: "Yes. Trade shows are effective but not required. Distributor outreach, manufacturer distributor lists, and referrals from other sellers or your prep center can all produce solid supplier relationships without any travel or event cost, which is exactly why those methods are worth exhausting before treating trade shows as a necessary first step.",
+      },
     ],
   },
   {
@@ -1590,6 +2072,42 @@ export const posts: BlogPost[] = [
         type: "p",
         text: "If you are still building your supplier relationships, our guide on [finding wholesale suppliers](/blog/find-wholesale-suppliers) covers how to build the kind of documented, authorized sourcing base that keeps this entire problem from ever becoming a risk in the first place.",
       },
+      {
+        type: "h2",
+        text: "How to write a plan of action that actually gets a suspension reversed",
+      },
+      {
+        type: "p",
+        text: "Amazon's appeal process expects a specific format, generally covering three parts: the root cause of the issue, the immediate action taken to fix it, such as removing the flagged inventory or sourcing documentation, and the long term process change that prevents it from happening again. A plan of action that only apologizes or disputes the finding without addressing all three parts is far less likely to succeed than one that treats the appeal as a real business process review, because that is effectively what Amazon's review team is evaluating.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about Amazon seller account suspension",
+      },
+      {
+        type: "h3",
+        text: "How long does an Amazon seller account suspension typically last?",
+      },
+      {
+        type: "p",
+        text: "There is no fixed timeline. A straightforward case with clear documentation can be resolved within days of a well prepared appeal, while a complex case involving multiple complaints or unclear sourcing documentation can take weeks or longer. This variability is exactly why prevention through clean sourcing and account health monitoring matters more than knowing how to appeal well.",
+      },
+      {
+        type: "h3",
+        text: "Will Amazon tell me exactly why my account was suspended?",
+      },
+      {
+        type: "p",
+        text: "Usually yes, in general terms, through a performance notification that cites the policy violated and often references specific ASINs or order IDs involved. The notification is not always detailed enough to immediately know the full root cause, which is why keeping organized invoice and order records matters. You often need to investigate your own records to fully understand what triggered the specific complaint.",
+      },
+      {
+        type: "h3",
+        text: "Can a single customer complaint suspend an entire Amazon account?",
+      },
+      {
+        type: "p",
+        text: "It is uncommon for a single isolated complaint to trigger a full account suspension on its own, but a pattern of complaints, or one complaint involving a serious issue like suspected counterfeit inventory, can. This is part of why maintaining clean, authorized sourcing across every single product matters, not just the ones that feel higher risk.",
+      },
     ],
   },
   {
@@ -1658,6 +2176,42 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "A negotiated price only helps if it flows straight into your margin tracking. Update your landed cost assumptions the moment new terms take effect, using the same [purchase order workflow](/blog/purchase-order-workflow) you already run for every order, so the benefit of the negotiation shows up in your real numbers rather than getting lost in an outdated cost assumption from before the terms changed.",
+      },
+      {
+        type: "h2",
+        text: "Negotiating with new versus established distributors",
+      },
+      {
+        type: "p",
+        text: "A brand new distributor relationship has almost no negotiating leverage on your side yet, since there is no order history to point to. The right approach at this stage is not to negotiate hard, it is to ask clearly what it would take to qualify for better terms in the future, such as a specific order volume or a certain number of consecutive on time payments. This turns the first few orders into a defined path toward better pricing rather than a one time ask that gets declined. With an established distributor where you already have six months or more of consistent orders, you have real leverage, and it is worth revisiting terms proactively rather than waiting for the distributor to offer better pricing unprompted, since they rarely will.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about negotiating with wholesale distributors",
+      },
+      {
+        type: "h3",
+        text: "Is it normal to negotiate prices with Amazon wholesale suppliers?",
+      },
+      {
+        type: "p",
+        text: "Yes. Wholesale distributors generally expect serious accounts to negotiate, especially around volume pricing and payment terms, and a price list is typically treated as a starting point rather than a fixed number for accounts placing meaningful, recurring orders.",
+      },
+      {
+        type: "h3",
+        text: "How much of a discount can I realistically negotiate on wholesale pricing?",
+      },
+      {
+        type: "p",
+        text: "This varies widely by supplier, product, and order volume, but modest volume based discounts in the range of a few percentage points to around ten percent are common for accounts with a solid order history. Larger discounts typically require either a significant volume commitment or an exclusive or near exclusive purchasing relationship.",
+      },
+      {
+        type: "h3",
+        text: "Should I mention competitor pricing when negotiating with a distributor?",
+      },
+      {
+        type: "p",
+        text: "Use this carefully and only when it is true and specific. A vague claim that you can get it cheaper elsewhere without details tends to come across as a bluff and can damage trust. A specific, honest comparison, especially paired with a genuine offer to consolidate more volume with the distributor willing to match it, is a far more credible and effective approach.",
       },
     ],
   },
@@ -1746,6 +2300,42 @@ export const posts: BlogPost[] = [
       {
         type: "p",
         text: "Once you have identified a category worth pursuing, the next step is building real supplier relationships inside it. Our guide on [finding wholesale suppliers](/blog/find-wholesale-suppliers) covers exactly how.",
+      },
+      {
+        type: "h2",
+        text: "Should you specialize in one category or diversify across several",
+      },
+      {
+        type: "p",
+        text: "Early on, specializing in one or two strong categories is usually the better path, since it lets you build deep supplier relationships and pattern recognition for what a good product looks like within that category rather than spreading diligence thin across unrelated products. Once a seller has a proven system and enough capital to support it, diversifying across a few complementary categories reduces exposure to a single category specific risk, such as a sudden regulatory change or a wave of new competition in one niche. The mistake to avoid is diversifying before the sourcing and purchase order process is solid in even one category, since that just multiplies the same operational gaps across more products.",
+      },
+      {
+        type: "h2",
+        text: "Frequently asked questions about choosing an Amazon wholesale category",
+      },
+      {
+        type: "h3",
+        text: "What is the most profitable Amazon wholesale category in 2026?",
+      },
+      {
+        type: "p",
+        text: "There is no single most profitable category, since margin and opportunity depend heavily on the specific products and suppliers within a category, not the category label alone. Grocery, Health and Household, and Beauty consistently show up as strong options because of repeat purchase behavior and gating that limits casual competition, but the actual profitability of any individual product still depends on running the full Keepa and landed cost evaluation covered elsewhere in this blog.",
+      },
+      {
+        type: "h3",
+        text: "Are gated categories more profitable than ungated ones for Amazon wholesale?",
+      },
+      {
+        type: "p",
+        text: "Often yes, precisely because the approval requirement filters out sellers unwilling to do the invoice and documentation work, which reduces the number of competitors chasing the same listings. This is not a guarantee for every gated category or every product within one, but it is a real, consistent pattern worth factoring into category selection.",
+      },
+      {
+        type: "h3",
+        text: "How do I know if a category is oversaturated for wholesale sellers?",
+      },
+      {
+        type: "p",
+        text: "High offer counts across multiple products in a category, combined with visibly declining buy box prices on Keepa charts, are the clearest signals. A category where most candidate products show ten or more competing sellers and a downward trending price is one where new entrants are likely competing on price alone, which tends to compress margin for everyone including you.",
       },
     ],
   },
