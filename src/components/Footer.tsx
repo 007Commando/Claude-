@@ -94,6 +94,11 @@ export default function Footer() {
                   Ungating Guide
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="hover:text-brand transition-colors">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
