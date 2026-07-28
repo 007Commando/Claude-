@@ -31,17 +31,64 @@ interface RawGhlLeads {
     phone: string | null;
     dateAdded: string;
     optedOut: boolean;
+    sourceLabel: string;
   }>;
+}
+
+interface FunnelAppearance {
+  source: LeadSource;
+  dateAdded: string;
+}
+
+// Every email's appearances across all three GHL accounts, keyed by lowercased
+// email — used to detect "this lead already existed in a different funnel
+// before joining this one" (e.g. a PrimeWell signup who later filled ASH's
+// form), which is a stronger source signal than any single funnel's own UTMs.
+function buildAppearanceIndex(
+  primewellRaw: RawGhlLeads,
+  facebookRaw: RawGhlLeads,
+  ashRaw: RawGhlLeads,
+): Map<string, FunnelAppearance[]> {
+  const index = new Map<string, FunnelAppearance[]>();
+  const add = (contacts: RawGhlLeads["contacts"], source: LeadSource) => {
+    for (const c of contacts) {
+      const key = c.email.toLowerCase();
+      const list = index.get(key) ?? [];
+      list.push({ source, dateAdded: c.dateAdded });
+      index.set(key, list);
+    }
+  };
+  add(primewellRaw.contacts, "primewell");
+  add(facebookRaw.contacts, "facebook");
+  add(ashRaw.contacts, "ash");
+  return index;
+}
+
+function findPriorFunnel(
+  email: string,
+  ownDateAdded: string,
+  ownSource: LeadSource,
+  appearanceIndex: Map<string, FunnelAppearance[]>,
+): LeadSource | null {
+  const others = (appearanceIndex.get(email.toLowerCase()) ?? []).filter((a) => a.source !== ownSource);
+  if (others.length === 0) return null;
+  const earliest = others.reduce((a, b) => (new Date(a.dateAdded).getTime() <= new Date(b.dateAdded).getTime() ? a : b));
+  const ownTime = new Date(ownDateAdded).getTime();
+  const earliestTime = new Date(earliest.dateAdded).getTime();
+  if (!Number.isFinite(ownTime) || !Number.isFinite(earliestTime)) return null;
+  return earliestTime < ownTime ? earliest.source : null;
 }
 
 // Shared shape between PrimeWell's, Facebook's, and ASH's GHL leads — all
 // cross-reference against the same Apex signups/Stripe status the same way.
 function buildGhlFunnel(
   raw: RawGhlLeads,
+  ownSource: LeadSource,
   eagerEmails: Set<string>,
   apexSignupEmails: Set<string>,
   stripeStatusByEmail: Map<string, StripeCustomerLookup>,
   payingCustomersTruncated: boolean,
+  appearanceIndex: Map<string, FunnelAppearance[]>,
 ): GhlFunnel {
   const rows: GhlLeadRow[] = raw.contacts.map((c) => {
     const stripeChecked = eagerEmails.has(c.email);
@@ -64,6 +111,8 @@ function buildGhlFunnel(
       temperature: null,
       temperatureChecked: false,
       optedOut: c.optedOut,
+      sourceLabel: c.sourceLabel,
+      priorFunnel: findPriorFunnel(c.email, c.dateAdded, ownSource, appearanceIndex),
     };
   });
 
@@ -125,27 +174,34 @@ export async function GET() {
 
   const signups = buildSignupsSummary(signupEntries, stripeStatusByEmail);
   const apexSignupEmails = new Set(signups.rows.map((r) => r.email));
+  const appearanceIndex = buildAppearanceIndex(primewellRaw, facebookRaw, ashRaw);
 
   const primewell = buildGhlFunnel(
     primewellRaw,
+    "primewell",
     new Set(eagerPrimewellContacts.map((c) => c.email)),
     apexSignupEmails,
     stripeStatusByEmail,
     signups.payingCustomersTruncated,
+    appearanceIndex,
   );
   const facebook = buildGhlFunnel(
     facebookRaw,
+    "facebook",
     new Set(eagerFacebookContacts.map((c) => c.email)),
     apexSignupEmails,
     stripeStatusByEmail,
     signups.payingCustomersTruncated,
+    appearanceIndex,
   );
   const ash = buildGhlFunnel(
     ashRaw,
+    "ash",
     new Set(eagerAshContacts.map((c) => c.email)),
     apexSignupEmails,
     stripeStatusByEmail,
     signups.payingCustomersTruncated,
+    appearanceIndex,
   );
 
   // Tags each Stripe subscription/trial with which GHL funnel its email came

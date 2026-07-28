@@ -103,6 +103,15 @@ export interface GhlLeadRow {
    * unsubscribe, etc.) per GHL's dndSettings. Overrides temperature with "MIA"
    * regardless of any reply history, since they can no longer be messaged. */
   optedOut: boolean;
+  /** First-touch traffic source within this funnel's own GHL account (e.g.
+   * "Google", "ChatGPT", "Facebook Ads", "Imported"), derived from GHL's
+   * attributions data. Overridden for display by priorFunnel when set. */
+  sourceLabel: string;
+  /** Set when this email already existed as a contact in a DIFFERENT funnel's
+   * GHL account before joining this one — e.g. a PrimeWell signup who later
+   * filled out ASH's form. Takes priority over sourceLabel since "already
+   * knew them from PrimeWell" is a stronger signal than a guessed UTM tag. */
+  priorFunnel: LeadSource | null;
 }
 
 export interface GhlFunnel {

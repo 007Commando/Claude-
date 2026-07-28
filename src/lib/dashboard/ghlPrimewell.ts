@@ -1,3 +1,5 @@
+import { deriveTrafficSource, type GhlAttribution } from "./leadSource";
+
 const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 
@@ -22,6 +24,7 @@ interface GhlContact {
   // channel — e.g. {SMS: {status: "permanent", message: "STOP_KEYWORD"}} for
   // a lead who replied STOP. A clean contact has dndSettings: {}.
   dndSettings?: Record<string, { status?: string }>;
+  attributions?: GhlAttribution[];
 }
 
 export interface PrimewellContact {
@@ -31,6 +34,7 @@ export interface PrimewellContact {
   phone: string | null;
   dateAdded: string;
   optedOut: boolean;
+  sourceLabel: string;
 }
 
 interface GhlContactsPage {
@@ -167,6 +171,7 @@ export async function getPrimewellLeads(): Promise<PrimewellLeadsResult> {
       phone: c.phone ?? null,
       dateAdded: c.dateAdded ?? "",
       optedOut: Object.keys(c.dndSettings ?? {}).length > 0,
+      sourceLabel: deriveTrafficSource(c.attributions),
     })),
     contactsTruncated: stoppedEarly || total > contactsWithEmail.length,
   };

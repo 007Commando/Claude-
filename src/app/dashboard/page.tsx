@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   BadgeDollarSign,
@@ -56,6 +56,16 @@ function SourceBadge({ source }: { source: LeadSource }) {
   return <Badge tone={SOURCE_TAG_TONE[source]}>{SOURCE_LABELS[source]}</Badge>;
 }
 
+// A prior appearance in a different funnel (e.g. already a PrimeWell contact
+// before filling out ASH's form) is a stronger, more specific origin signal
+// than a guessed UTM tag, so it takes priority over the in-funnel sourceLabel.
+function LeadSourceTag({ row }: { row: GhlLeadRow }) {
+  if (row.priorFunnel) {
+    return <Badge tone={SOURCE_TAG_TONE[row.priorFunnel]}>{`From ${SOURCE_LABELS[row.priorFunnel]}`}</Badge>;
+  }
+  return <span className="text-slate-600 whitespace-nowrap">{row.sourceLabel}</span>;
+}
+
 const EVENT_LABELS: Record<string, string> = {
   apex_landing: "Landed on Apex",
   apex_signup: "Apex signup",
@@ -74,19 +84,22 @@ function FunnelStep({
   value,
   accent,
   suffix,
+  caption,
 }: {
   label: string;
-  value: number;
+  value: number | null;
   accent?: boolean;
   suffix?: string;
+  caption?: string;
 }) {
   return (
     <div className={`rounded-xl px-4 py-3 ${accent ? "bg-brand/5 border border-brand/30" : "bg-slate-50"}`}>
       <div className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</div>
       <div className={`text-2xl font-black ${accent ? "text-brand" : "text-slate-900"}`}>
-        {value}
+        {value ?? "…"}
         {suffix}
       </div>
+      {caption && <div className="text-[11px] text-slate-400 mt-0.5">{caption}</div>}
     </div>
   );
 }
@@ -584,18 +597,27 @@ interface TemperatureOverride {
   hasReplied: boolean;
 }
 
+interface TemperatureCounts {
+  checkedCount: number;
+  totalCount: number;
+  hot: number;
+  veryHot: number;
+}
+
 function GhlLeadsTable({
   rows,
   signupsConnected,
   sourceLabel,
   csvPrefix,
   source,
+  onTemperatureCounts,
 }: {
   rows: GhlLeadRow[];
   signupsConnected: boolean;
   sourceLabel: string;
   csvPrefix: string;
   source: "primewell" | "ash" | "facebook";
+  onTemperatureCounts?: (counts: TemperatureCounts) => void;
 }) {
   const [search, setSearch] = useState("");
   const [payingFilter, setPayingFilter] = useState<TriState>("all");
@@ -605,7 +627,7 @@ function GhlLeadsTable({
   const [overrides, setOverrides] = useState<Record<string, StripeStatusOverride>>({});
   const [temperatureOverrides, setTemperatureOverrides] = useState<Record<string, TemperatureOverride>>({});
   const [checking, setChecking] = useState(false);
-  const [checkingAllForFilter, setCheckingAllForFilter] = useState(false);
+  const [checkingTemperature, setCheckingTemperature] = useState(false);
   const [exporting, setExporting] = useState(false);
   const temperatureInFlightRef = useRef<Set<string>>(new Set());
 
@@ -718,6 +740,11 @@ function GhlLeadsTable({
           if (res.ok) {
             const data = await res.json();
             Object.assign(fetched, data.results);
+            // Merge each chunk in as soon as it lands rather than waiting for
+            // the whole (possibly 1000+ contact) scan to finish — this is
+            // what makes the funnel-level Hot/Very Hot counts fill in
+            // progressively instead of jumping from nothing to everything.
+            setTemperatureOverrides((prev) => ({ ...prev, ...data.results }));
           }
         } catch {
           // Leave these unchecked — the UI just won't show a temperature for them yet.
@@ -725,9 +752,6 @@ function GhlLeadsTable({
       }
     } finally {
       toCheck.forEach((id) => temperatureInFlightRef.current.delete(id));
-    }
-    if (Object.keys(fetched).length > 0) {
-      setTemperatureOverrides((prev) => ({ ...prev, ...fetched }));
     }
     return fetched;
   };
@@ -745,27 +769,35 @@ function GhlLeadsTable({
     // Re-run whenever the visible page's underlying data changes.
   }, [clampedPage, filteredRows]);
 
-  // Fetches temperature for whichever contacts currently need it: just the
-  // visible page normally, but the ENTIRE (pre-temperature-filter) result set
-  // once a temperature filter is active, since filtering needs to know every
-  // candidate's temperature, not just what's on screen. Converted and opted-
-  // out leads are skipped entirely — they're excluded from the filter and
-  // shown as "Converted"/"MIA" regardless of any computed temperature, so
-  // there's no reason to spend a GHL API call finding out theirs.
+  // Fetches temperature for the ENTIRE funnel in the background, not just the
+  // visible page — this is what lets the funnel-overview Hot/Very Hot counts
+  // (and the temperature filter) reflect the whole list rather than only
+  // whatever's currently on screen. Converted and opted-out leads are skipped
+  // entirely since they're shown as "Converted"/"MIA" regardless of any
+  // computed temperature, so there's no reason to spend a GHL API call
+  // finding out theirs. The in-flight guard inside checkTemperature keeps
+  // this from double-fetching as mergedRows changes on every chunk merge.
   useEffect(() => {
-    const source = temperatureFilter.size > 0 ? baseFilteredRows : pagedRows;
-    const uncheckedIds = source
+    const uncheckedIds = mergedRows
       .filter((r) => !r.temperatureChecked && !r.isApexSubscriber && !r.isPayingCustomer && !r.optedOut)
       .map((r) => r.id);
     if (uncheckedIds.length === 0) return;
-    const filterActive = temperatureFilter.size > 0;
-    if (filterActive) setCheckingAllForFilter(true);
-    else setChecking(true);
-    checkTemperature(uncheckedIds).finally(() => {
-      if (filterActive) setCheckingAllForFilter(false);
-      else setChecking(false);
+    setCheckingTemperature(true);
+    checkTemperature(uncheckedIds).finally(() => setCheckingTemperature(false));
+  }, [mergedRows]);
+
+  // Reports Hot/Very Hot counts (and how much of the funnel has been checked
+  // so far) up to the parent, which surfaces them in the funnel overview.
+  useEffect(() => {
+    if (!onTemperatureCounts) return;
+    const relevant = mergedRows.filter((r) => !r.isApexSubscriber && !r.isPayingCustomer && !r.optedOut);
+    onTemperatureCounts({
+      checkedCount: relevant.filter((r) => r.temperatureChecked).length,
+      totalCount: relevant.length,
+      hot: relevant.filter((r) => r.temperature === "hot").length,
+      veryHot: relevant.filter((r) => r.temperature === "very_hot").length,
     });
-  }, [temperatureFilter, baseFilteredRows, pagedRows]);
+  }, [mergedRows, onTemperatureCounts]);
 
   const exportCsv = async () => {
     setExporting(true);
@@ -794,6 +826,7 @@ function GhlLeadsTable({
           "Email",
           "Phone",
           `Joined ${sourceLabel}`,
+          "Source",
           "Subscribed to Apex",
           "Paying Customer",
           "Customer Since",
@@ -806,6 +839,7 @@ function GhlLeadsTable({
           row.email,
           row.phone ?? "",
           row.joinedAt ? new Date(row.joinedAt).toLocaleDateString() : "",
+          row.priorFunnel ? `From ${SOURCE_LABELS[row.priorFunnel]}` : row.sourceLabel,
           !signupsConnected ? "Unknown" : row.isApexSubscriber ? "Yes" : "No",
           row.isPayingCustomer ? "Yes" : "No",
           row.customerSince ? new Date(row.customerSince).toLocaleDateString() : "",
@@ -900,8 +934,8 @@ function GhlLeadsTable({
             Clear
           </button>
         )}
-        {checkingAllForFilter && (
-          <span className="text-xs text-slate-400">checking engagement for all matching leads…</span>
+        {checkingTemperature && (
+          <span className="text-xs text-slate-400">checking engagement across the full list…</span>
         )}
       </div>
 
@@ -915,6 +949,7 @@ function GhlLeadsTable({
                   <th className="px-2 py-2">Name</th>
                   <th className="px-2 py-2">Email</th>
                   <th className="px-2 py-2">Phone</th>
+                  <th className="px-2 py-2">Source</th>
                   <th className="px-2 py-2">Subscribed to Apex</th>
                   <th className="px-2 py-2">Paying Customer</th>
                   <th className="px-2 py-2">Customer Since</th>
@@ -934,6 +969,9 @@ function GhlLeadsTable({
                       <CopyableEmail email={row.email} />
                     </td>
                     <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">{row.phone ?? "—"}</td>
+                    <td className="px-2 py-2.5">
+                      <LeadSourceTag row={row} />
+                    </td>
                     <td className="px-2 py-2.5">
                       {!row.stripeChecked ? (
                         <Badge tone="slate">…</Badge>
@@ -1018,6 +1056,24 @@ export default function DashboardPage() {
   const [subscriptionsModal, setSubscriptionsModal] = useState<"mrr" | "arr" | null>(null);
   const [showTrialsModal, setShowTrialsModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "ash" | "apex" | "leads">("primewell");
+  const [temperatureCounts, setTemperatureCounts] = useState<
+    Record<"primewell" | "facebook" | "ash", TemperatureCounts | null>
+  >({ primewell: null, facebook: null, ash: null });
+
+  // Stable references so GhlLeadsTable's counts-reporting effect only re-runs
+  // when the counts themselves actually change, not on every parent render.
+  const reportPrimewellCounts = useCallback(
+    (counts: TemperatureCounts) => setTemperatureCounts((prev) => ({ ...prev, primewell: counts })),
+    [],
+  );
+  const reportFacebookCounts = useCallback(
+    (counts: TemperatureCounts) => setTemperatureCounts((prev) => ({ ...prev, facebook: counts })),
+    [],
+  );
+  const reportAshCounts = useCallback(
+    (counts: TemperatureCounts) => setTemperatureCounts((prev) => ({ ...prev, ash: counts })),
+    [],
+  );
 
   const load = async () => {
     setLoading(true);
@@ -1157,6 +1213,25 @@ export default function DashboardPage() {
                       <FunnelStep label="PrimeWell Leads" value={data.primewell.totalLeads} />
                       <FunnelStep label="New Leads (7d)" value={data.primewell.newLeads7d} />
                       <FunnelStep label="New Leads (30d)" value={data.primewell.newLeads30d} />
+                      <FunnelStep
+                        label="Hot Leads"
+                        value={temperatureCounts.primewell?.hot ?? null}
+                        caption={
+                          temperatureCounts.primewell
+                            ? `of ${temperatureCounts.primewell.checkedCount}/${temperatureCounts.primewell.totalCount} checked`
+                            : undefined
+                        }
+                      />
+                      <FunnelStep
+                        label="Very Hot Leads"
+                        value={temperatureCounts.primewell?.veryHot ?? null}
+                        accent
+                        caption={
+                          temperatureCounts.primewell
+                            ? `of ${temperatureCounts.primewell.checkedCount}/${temperatureCounts.primewell.totalCount} checked`
+                            : undefined
+                        }
+                      />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
                       <FunnelStep label="PrimeWell → Apex Converts" value={data.primewell.crossConverted} accent />
                     </div>
@@ -1197,6 +1272,7 @@ export default function DashboardPage() {
                         sourceLabel="PrimeWell"
                         csvPrefix="primewell"
                         source="primewell"
+                        onTemperatureCounts={reportPrimewellCounts}
                       />
                     </>
                   ) : (
@@ -1217,6 +1293,25 @@ export default function DashboardPage() {
                       <FunnelStep label="Facebook Leads" value={data.facebook.totalLeads} />
                       <FunnelStep label="New Leads (7d)" value={data.facebook.newLeads7d} />
                       <FunnelStep label="New Leads (30d)" value={data.facebook.newLeads30d} />
+                      <FunnelStep
+                        label="Hot Leads"
+                        value={temperatureCounts.facebook?.hot ?? null}
+                        caption={
+                          temperatureCounts.facebook
+                            ? `of ${temperatureCounts.facebook.checkedCount}/${temperatureCounts.facebook.totalCount} checked`
+                            : undefined
+                        }
+                      />
+                      <FunnelStep
+                        label="Very Hot Leads"
+                        value={temperatureCounts.facebook?.veryHot ?? null}
+                        accent
+                        caption={
+                          temperatureCounts.facebook
+                            ? `of ${temperatureCounts.facebook.checkedCount}/${temperatureCounts.facebook.totalCount} checked`
+                            : undefined
+                        }
+                      />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
                       <FunnelStep label="Facebook → Apex Converts" value={data.facebook.crossConverted} accent />
                     </div>
@@ -1257,6 +1352,7 @@ export default function DashboardPage() {
                         sourceLabel="Facebook"
                         csvPrefix="facebook"
                         source="facebook"
+                        onTemperatureCounts={reportFacebookCounts}
                       />
                     </>
                   ) : (
@@ -1277,6 +1373,25 @@ export default function DashboardPage() {
                       <FunnelStep label="ASH Leads" value={data.ash.totalLeads} />
                       <FunnelStep label="New Leads (7d)" value={data.ash.newLeads7d} />
                       <FunnelStep label="New Leads (30d)" value={data.ash.newLeads30d} />
+                      <FunnelStep
+                        label="Hot Leads"
+                        value={temperatureCounts.ash?.hot ?? null}
+                        caption={
+                          temperatureCounts.ash
+                            ? `of ${temperatureCounts.ash.checkedCount}/${temperatureCounts.ash.totalCount} checked`
+                            : undefined
+                        }
+                      />
+                      <FunnelStep
+                        label="Very Hot Leads"
+                        value={temperatureCounts.ash?.veryHot ?? null}
+                        accent
+                        caption={
+                          temperatureCounts.ash
+                            ? `of ${temperatureCounts.ash.checkedCount}/${temperatureCounts.ash.totalCount} checked`
+                            : undefined
+                        }
+                      />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
                       <FunnelStep label="ASH → Apex Converts" value={data.ash.crossConverted} accent />
                     </div>
@@ -1317,6 +1432,7 @@ export default function DashboardPage() {
                         sourceLabel="ASH"
                         csvPrefix="ash"
                         source="ash"
+                        onTemperatureCounts={reportAshCounts}
                       />
                     </>
                   ) : (
