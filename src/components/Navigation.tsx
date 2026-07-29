@@ -46,7 +46,7 @@ export default function Navigation() {
   const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
-  const isFbaBundlePage = pathname === "/fba-starter-bundle";
+  const isDistractionFreePage = pathname === "/fba-starter-bundle" || pathname === "/apex-elite";
 
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function Navigation() {
     setIsMenuOpen(false);
   };
 
-  if (isFbaBundlePage) {
+  if (isDistractionFreePage) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
