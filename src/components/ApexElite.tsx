@@ -10,8 +10,6 @@ import {
   BookOpen,
   Truck,
   Users,
-  PhoneCall,
-  UserCheck,
   Check,
   ShieldCheck,
   Zap,
@@ -22,12 +20,12 @@ import {
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
+import { prepCenters, projectToMapPercent } from "../data/prepCenters";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
 const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
-const prepCenterImage = "/images/rewards-prep-center.png";
 
 const CHECKOUT_URL = "https://buy.stripe.com/3cIeV50IGcuzfdofPldwc0b";
 
@@ -43,7 +41,7 @@ const coreIncludes = [
   },
   {
     icon: Rocket,
-    title: "Full Access to the Apex Software Suite",
+    title: "Full Apex Suite for 90 Days",
     body: "Apex Black, Blue, Green & Red: your dashboard, financial analytics, purchase order tracking, sourcing tools, and logistics, all connected in one system instead of five separate subscriptions.",
     image: {
       src: apexSuiteOverviewImage,
@@ -53,12 +51,9 @@ const coreIncludes = [
   },
   {
     icon: Truck,
-    title: "Complete Logistics System",
-    body: "Access to our vetted Prep Center Network with negotiated member pricing, plus real-time inventory and restock tools, so a slow prep center never turns into a stockout.",
-    photo: {
-      src: prepCenterImage,
-      alt: "Apex Prep Center team preparing and boxing inventory",
-    },
+    title: "Connect to Prep Centers",
+    body: "Access to our vetted Prep Center Network across the US with negotiated member pricing, plus real-time inventory and restock tools, so a slow prep center never turns into a stockout.",
+    map: true,
   },
   {
     icon: Star,
@@ -81,53 +76,37 @@ const coreIncludes = [
 const bonusIncludes = [
   {
     icon: Users,
-    title: "Premium Community Access",
+    title: "Private Amazon Community",
     body: "Join a private network of serious wholesale sellers using the same systems you are, to trade suppliers, ask questions, and stay accountable as you scale.",
-  },
-  {
-    icon: PhoneCall,
-    title: "1-on-1 Strategy Call With Our Team",
-    body: "A real, scheduled call with the Apex team to make sure your systems, suppliers, and first purchase order are all set up right before you scale.",
-  },
-  {
-    icon: UserCheck,
-    title: "Dedicated Account Manager",
-    body: "Direct access to a real person who understands your workflow, plus white-glove onboarding to get your software and systems installed correctly from day one.",
   },
 ];
 
-const valueStack = [
+const valueStack: { label: string; value: number | null }[] = [
   { label: "3 Starting Suppliers", value: 500 },
-  { label: "Full Apex Software Suite Access", value: 300 },
-  { label: "Complete Logistics System", value: 200 },
-  { label: "Premium Community Access", value: 500 },
+  { label: "Full Apex Suite (90 Days)", value: 450 },
+  { label: "Connect to Prep Centers", value: 200 },
+  { label: "Private Amazon Community", value: null },
   { label: "Free Lifetime Review Booster", value: 300 },
   { label: "Complete Playbook Library", value: 300 },
-  { label: "1-on-1 Strategy Call", value: 500 },
-  { label: "Dedicated Account Manager & Setup", value: 300 },
 ];
-const totalValue = valueStack.reduce((sum, item) => sum + item.value, 0);
+const totalValue = valueStack.reduce((sum, item) => sum + (item.value ?? 0), 0);
 
 const faqs = [
   {
     q: "Is this a subscription, or a one-time payment?",
-    a: "This is a one-time payment of $297. It is not a recurring subscription. Continued access to the Apex software suite beyond the included period follows our standard Starter or Pro plans, which you can review on our pricing page at any time.",
-  },
-  {
-    q: "How is this different from the $29 Starter Bundle?",
-    a: "The Starter Bundle is an entry point built to get your first supplier and software access started for as little as possible. Apex Elite is the complete system: more supplier relationships to build from, full logistics and prep center access, premium community access, a 1-on-1 strategy call with our team, and a dedicated account manager guiding your setup.",
+    a: "This is a one-time payment of $297. It is not a recurring subscription. Continued access to the Apex software suite beyond the included 90 days follows our standard Starter or Pro plans, which you can review on our pricing page at any time.",
   },
   {
     q: "I already have an Apex account. Can I still get this?",
-    a: "Yes. Existing members can add Apex Elite to layer in the additional suppliers, logistics access, community, and 1-on-1 support. Reach out through Contact Us and our team will get you set up correctly.",
+    a: "Yes. Existing members can add Apex Elite to layer in the additional suppliers, logistics access, and community. Reach out through Contact Us and our team will get you set up correctly.",
   },
   {
     q: "What exactly happens after I purchase?",
-    a: "You will get immediate access to your software setup and playbook library, an email to schedule your 1-on-1 strategy call, your community access, and an introduction to your dedicated account manager, who will help you get your first supplier relationship and purchase order moving.",
+    a: "You will get immediate access to your software setup, your suppliers, and the playbook library, plus your invite to the Private Amazon Community, so you can start moving on your first purchase order right away.",
   },
   {
     q: "Do I need any prior experience with Amazon or wholesale?",
-    a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, logistics, and a real person guiding you through it. The playbook library and your strategy call both start from first principles.",
+    a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, logistics, and a real community around you. The playbook library starts from first principles.",
   },
 ];
 
@@ -154,6 +133,67 @@ function BrowserFrame({ src, alt, caption }: { src: string; alt: string; caption
         <span className="ml-2.5 text-[11px] text-slate-400 font-medium tracking-wide truncate">{caption}</span>
       </div>
       <img src={src} alt={alt} className="w-full h-auto block" />
+    </div>
+  );
+}
+
+const MAP_REGIONS = [
+  { label: "West", from: 0, to: 33.3 },
+  { label: "Central", from: 33.3, to: 66.6 },
+  { label: "East", from: 66.6, to: 100 },
+];
+
+const mapDots = prepCenters.map((c) => ({
+  key: c.name,
+  ...projectToMapPercent(c.lat, c.long),
+}));
+
+function PrepNetworkMap() {
+  return (
+    <div className="relative rounded-3xl border border-slate-200 shadow-sm overflow-hidden aspect-[4/3] bg-gradient-to-b from-slate-50 to-white">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+          maskImage: "radial-gradient(ellipse 75% 75% at 50% 50%, black 55%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 75% 75% at 50% 50%, black 55%, transparent 100%)",
+        }}
+      />
+      {MAP_REGIONS.slice(0, -1).map((r) => (
+        <div
+          key={r.label}
+          className="absolute top-0 bottom-0 border-r border-dashed border-slate-200"
+          style={{ left: `${r.to}%` }}
+        />
+      ))}
+      {MAP_REGIONS.map((r) => (
+        <div
+          key={`label-${r.label}`}
+          className="absolute top-3 text-[10px] font-black text-slate-300 uppercase tracking-widest"
+          style={{ left: `${(r.from + r.to) / 2}%`, transform: "translateX(-50%)" }}
+        >
+          {r.label}
+        </div>
+      ))}
+      {mapDots.map((dot) => (
+        <span
+          key={dot.key}
+          style={{ left: `${dot.x}%`, top: `${dot.y}%` }}
+          className="absolute -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-slate-900 border-2 border-white shadow"
+        />
+      ))}
+      <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-bold text-slate-400">
+        {MAP_REGIONS.map((r) => {
+          const count = mapDots.filter((d) => d.x >= r.from && d.x < r.to).length;
+          return (
+            <span key={r.label} className="inline-flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-slate-900" />
+              {r.label} · {count}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -333,6 +373,27 @@ export default function ApexElite() {
                 );
               }
 
+              if ("map" in item && item.map) {
+                const mapOnLeft = i % 2 === 1;
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className={`flex flex-col ${
+                      mapOnLeft ? "lg:flex-row-reverse" : "lg:flex-row"
+                    } items-center gap-8 lg:gap-12 rounded-[28px] bg-slate-50/70 border border-slate-100 p-6 sm:p-8`}
+                  >
+                    {textBlock}
+                    <div className="flex-1 w-full">
+                      <PrepNetworkMap />
+                    </div>
+                  </motion.div>
+                );
+              }
+
               if ("photo" in item && item.photo) {
                 const photoOnLeft = i % 2 === 1;
                 return (
@@ -392,11 +453,11 @@ export default function ApexElite() {
               Plus, You Also Get
             </h2>
           </div>
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className="max-w-md mx-auto">
             {bonusIncludes.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[24px] bg-slate-50/70 border border-slate-100 p-7 text-center flex flex-col items-center"
+                className="rounded-[24px] bg-slate-50/70 border border-slate-100 p-8 text-center flex flex-col items-center"
               >
                 <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center shrink-0 mb-4">
                   <item.icon size={22} className="text-white" strokeWidth={1.75} />
@@ -430,11 +491,11 @@ export default function ApexElite() {
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
               <div className="flex items-baseline justify-center gap-2 mb-1">
-                <span className="text-2xl font-bold text-slate-300 line-through">${totalValue}</span>
+                <span className="text-2xl font-bold text-slate-300 line-through">${totalValue}+</span>
                 <span className="text-5xl font-black text-slate-900">$297</span>
               </div>
               <div className="text-center text-xs font-bold text-emerald-600 uppercase tracking-wide mb-6">
-                One-time payment · Save ${totalValue - 297}
+                One-time payment · Save ${totalValue - 297}+
               </div>
               <ul className="space-y-3 mb-8">
                 {valueStack.map((item) => (
@@ -443,7 +504,9 @@ export default function ApexElite() {
                       <Check size={18} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
                       <span className="text-sm font-semibold text-slate-700">{item.label}</span>
                     </span>
-                    <span className="text-sm font-bold text-slate-400 shrink-0">${item.value}</span>
+                    <span className="text-sm font-bold text-slate-400 shrink-0">
+                      {item.value === null ? "Priceless" : `$${item.value}`}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -473,10 +536,10 @@ export default function ApexElite() {
           </h2>
           <p className="text-slate-600 leading-relaxed max-w-xl mx-auto">
             We stand behind every supplier, tool, and system in Apex Elite. This isn't a product
-            you buy and get left alone with. Complete your onboarding and 1-on-1 strategy call,
-            and our team stays hands-on with you, through your account manager and our support
-            channels, until your suppliers, software, and logistics are actually set up and
-            working. We built this system to be used, and we're invested in you actually using it.
+            you buy and get left alone with. Complete your onboarding, and our team stays
+            hands-on with you, through our support channels and the Private Amazon Community,
+            until your suppliers, software, and logistics are actually set up and working. We
+            built this system to be used, and we're invested in you actually using it.
           </p>
         </motion.section>
 
