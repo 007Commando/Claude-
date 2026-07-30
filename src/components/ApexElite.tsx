@@ -29,8 +29,7 @@ const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
 const prepCenterImage = "/images/rewards-prep-center.png";
 
-// TODO: replace with the real Stripe Payment Link for the $297 offer once created.
-const CHECKOUT_URL = "#";
+const CHECKOUT_URL = "https://buy.stripe.com/3cIeV50IGcuzfdofPldwc0b";
 
 const coreIncludes = [
   {
