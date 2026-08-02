@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { z } from "zod";
-import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User } from "lucide-react";
+import Link from "next/link";
+import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User, CreditCard } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import { readStoredAttribution } from "./LeadAttribution";
+import { getAuthUserEmail, hasActiveSubscription } from "../lib/subscriptionGate";
 
 // Global ApexAuth from https://app.apexapplications.io/apex-auth.js
 declare global {
@@ -144,6 +146,9 @@ export default function Auth() {
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  // Set when a signed-in user has no active Stripe subscription — blocks the
+  // dashboard redirect below and shows a payment-required notice instead.
+  const [needsPayment, setNeedsPayment] = useState(false);
 
   // Set the instant a signup submission starts, and never cleared — once this
   // page has kicked off account creation, it must never independently decide
@@ -164,10 +169,28 @@ export default function Auth() {
         if (cancelled) return;
         const fn = await Promise.resolve(
           auth.onAuthStateChanged((user) => {
-            if (user && !signupInFlightRef.current) {
-              const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
-              if (!redirect) auth.redirectToApp("/dashboard");
+            if (!user || signupInFlightRef.current) return;
+            const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
+            if (redirect) return;
+
+            const userEmail = getAuthUserEmail(user);
+            if (!userEmail) {
+              // Can't verify subscription status without an email to look up
+              // — fall back to the previous behavior rather than block someone
+              // we have no way to check.
+              auth.redirectToApp("/dashboard");
+              return;
             }
+
+            hasActiveSubscription(userEmail).then((subscribed) => {
+              if (cancelled) return;
+              if (subscribed) {
+                setNeedsPayment(false);
+                auth.redirectToApp("/dashboard");
+              } else {
+                setNeedsPayment(true);
+              }
+            });
           })
         );
         if (cancelled) {
@@ -355,6 +378,40 @@ export default function Auth() {
               transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
               className="bg-white rounded-[28px] border border-slate-200 p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full"
             >
+              {needsPayment ? (
+                <div className="text-center py-4">
+                  <div className="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-5">
+                    <CreditCard className="w-6 h-6 text-amber-600" strokeWidth={2} />
+                  </div>
+                  <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-2">
+                    One Step Left
+                  </h2>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                    Your account is created, but your subscription hasn't been activated yet
+                    because a payment method wasn't added. Reach out to our team and we'll get
+                    you set up right away.
+                  </p>
+                  <Link
+                    href="/contact-us"
+                    className="inline-flex items-center justify-center w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all"
+                  >
+                    Contact Us
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const auth = await waitForApexAuth().catch(() => null);
+                      await auth?.signOut();
+                      setNeedsPayment(false);
+                      setMode("login");
+                    }}
+                    className="mt-4 text-xs font-bold text-slate-400 hover:text-slate-600"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+              <>
               <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
                 <button
                   type="button"
@@ -526,6 +583,8 @@ export default function Auth() {
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
                 Cancel anytime
               </div>
+              </>
+              )}
             </motion.div>
           </div>
         </div>
