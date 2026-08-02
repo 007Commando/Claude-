@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
@@ -17,6 +17,7 @@ import {
   ArrowRight,
   ChevronDown,
   Award,
+  Clock,
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
@@ -28,6 +29,8 @@ const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
 
 const CHECKOUT_URL = "https://buy.stripe.com/3cIeV50IGcuzfdofPldwc0b";
+
+const COUNTDOWN_SECONDS = 30 * 60;
 
 const coreIncludes = [
   {
@@ -109,6 +112,34 @@ const faqs = [
     a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, logistics, and a real community around you. The playbook library starts from first principles.",
   },
 ];
+
+function CountdownBar() {
+  const [secondsLeft, setSecondsLeft] = useState(COUNTDOWN_SECONDS);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-red-600 text-white flex items-center justify-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-2.5 text-center flex-wrap">
+        <Clock size={14} className="shrink-0" />
+        <span className="text-xs sm:text-sm font-bold uppercase tracking-wide">
+          Limited-Time Offer: Price Ends In
+        </span>
+        <span className="tabular-nums text-xs sm:text-sm font-black bg-white/15 rounded-md px-2 py-0.5">
+          {minutes}:{seconds.toString().padStart(2, "0")}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
@@ -249,7 +280,8 @@ const trustPoints = [
 
 export default function ApexElite() {
   return (
-    <div className="pt-28 sm:pt-32 pb-24 bg-white">
+    <div className="pt-36 sm:pt-40 pb-24 bg-white">
+      <CountdownBar />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
