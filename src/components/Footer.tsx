@@ -1,8 +1,50 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isApexElitePage = pathname === "/apex-elite";
+
+  if (isApexElitePage) {
+    return (
+      <footer className="bg-white text-slate-900 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-8">
+            <Link href="/" className="inline-block">
+              <img
+                src={apexBullLogo.url}
+                alt="Apex Applications"
+                className="h-16 w-auto object-contain"
+              />
+            </Link>
+            <img
+              src={amazonPartnerBadge.url}
+              alt="Amazon Selling Partner Appstore Software Partner"
+              className="h-24 w-auto object-contain"
+            />
+            <div className="w-full pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-center items-center gap-4">
+              <div className="flex gap-8 text-slate-600 text-sm">
+                <Link href="/terms" className="hover:text-brand transition-colors">
+                  Terms of Service
+                </Link>
+                <Link href="/privacy" className="hover:text-brand transition-colors">
+                  Privacy Policy
+                </Link>
+              </div>
+              <div className="text-slate-500 text-sm">
+                © 2026 Apex Applications. All rights reserved.
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="bg-white text-slate-900 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
