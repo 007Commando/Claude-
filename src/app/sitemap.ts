@@ -14,6 +14,7 @@ const ENTRIES: Entry[] = [
   { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
   { path: "/fba-starter-bundle", changeFrequency: "weekly", priority: 0.9 },
   { path: "/apex-elite", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/premium-membership", changeFrequency: "weekly", priority: 0.9 },
   { path: "/features/black", changeFrequency: "monthly", priority: 0.8 },
   { path: "/features/blue", changeFrequency: "monthly", priority: 0.8 },
   { path: "/features/green", changeFrequency: "monthly", priority: 0.8 },

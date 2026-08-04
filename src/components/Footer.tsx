@@ -7,9 +7,9 @@ import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isApexElitePage = pathname === "/apex-elite";
+  const isMinimalFooterPage = pathname === "/apex-elite" || pathname === "/premium-membership";
 
-  if (isApexElitePage) {
+  if (isMinimalFooterPage) {
     return (
       <footer className="bg-white text-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
