@@ -113,6 +113,9 @@ function buildGhlFunnel(
       optedOut: c.optedOut,
       sourceLabel: c.sourceLabel,
       priorFunnel: findPriorFunnel(c.email, c.dateAdded, ownSource, appearanceIndex),
+      alsoInAsh:
+        ownSource !== "ash" &&
+        (appearanceIndex.get(c.email.toLowerCase()) ?? []).some((a) => a.source === "ash"),
     };
   });
 

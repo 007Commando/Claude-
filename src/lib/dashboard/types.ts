@@ -112,6 +112,10 @@ export interface GhlLeadRow {
    * filled out ASH's form. Takes priority over sourceLabel since "already
    * knew them from PrimeWell" is a stronger signal than a guessed UTM tag. */
   priorFunnel: LeadSource | null;
+  /** True if this email also appears as a contact in ASH's GHL account,
+   * regardless of which funnel they joined first (unlike priorFunnel, which
+   * only counts an earlier appearance). Always false for ASH's own rows. */
+  alsoInAsh: boolean;
 }
 
 export interface GhlFunnel {

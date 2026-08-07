@@ -611,6 +611,8 @@ function GhlLeadsTable({
   csvPrefix,
   source,
   onTemperatureCounts,
+  dateFrom,
+  dateTo,
 }: {
   rows: GhlLeadRow[];
   signupsConnected: boolean;
@@ -618,7 +620,14 @@ function GhlLeadsTable({
   csvPrefix: string;
   source: "primewell" | "ash" | "facebook";
   onTemperatureCounts?: (counts: TemperatureCounts) => void;
+  /** ISO date (yyyy-mm-dd) lower bound on joinedAt, inclusive — "" means unbounded. */
+  dateFrom: string;
+  /** ISO date (yyyy-mm-dd) upper bound on joinedAt, inclusive — "" means unbounded. */
+  dateTo: string;
 }) {
+  // ASH membership is only shown on the PrimeWell table — on ASH's own table
+  // it would be trivially true for every row, and it wasn't asked for on Facebook.
+  const showAshColumn = source === "primewell";
   const [search, setSearch] = useState("");
   const [payingFilter, setPayingFilter] = useState<TriState>("all");
   const [subscribedFilter, setSubscribedFilter] = useState<SubscribedFilter>("all");
@@ -661,9 +670,16 @@ function GhlLeadsTable({
         const status = !signupsConnected ? "unknown" : row.isApexSubscriber ? "yes" : "no";
         if (status !== subscribedFilter) return false;
       }
+      if (dateFrom && row.joinedAt && new Date(row.joinedAt) < new Date(dateFrom)) return false;
+      if (dateTo && row.joinedAt) {
+        // Include the entire "to" day rather than cutting off at midnight.
+        const toEnd = new Date(dateTo);
+        toEnd.setHours(23, 59, 59, 999);
+        if (new Date(row.joinedAt) > toEnd) return false;
+      }
       return true;
     });
-  }, [mergedRows, search, payingFilter, subscribedFilter, signupsConnected]);
+  }, [mergedRows, search, payingFilter, subscribedFilter, signupsConnected, dateFrom, dateTo]);
 
   const filteredRows = useMemo(() => {
     if (temperatureFilter.size === 0) return baseFilteredRows;
@@ -682,7 +698,7 @@ function GhlLeadsTable({
 
   useEffect(() => {
     setPage(0);
-  }, [search, payingFilter, subscribedFilter, temperatureFilter]);
+  }, [search, payingFilter, subscribedFilter, temperatureFilter, dateFrom, dateTo]);
 
   // Checks Stripe status for whatever emails aren't already known, in batches
   // of 100 (the server-side cap per call). Returns the freshly-fetched
@@ -827,6 +843,7 @@ function GhlLeadsTable({
           "Phone",
           `Joined ${sourceLabel}`,
           "Source",
+          ...(showAshColumn ? ["ASH Member"] : []),
           "Subscribed to Apex",
           "Paying Customer",
           "Customer Since",
@@ -840,6 +857,7 @@ function GhlLeadsTable({
           row.phone ?? "",
           row.joinedAt ? new Date(row.joinedAt).toLocaleDateString() : "",
           row.priorFunnel ? `From ${SOURCE_LABELS[row.priorFunnel]}` : row.sourceLabel,
+          ...(showAshColumn ? [row.alsoInAsh ? "Yes" : "No"] : []),
           !signupsConnected ? "Unknown" : row.isApexSubscriber ? "Yes" : "No",
           row.isPayingCustomer ? "Yes" : "No",
           row.customerSince ? new Date(row.customerSince).toLocaleDateString() : "",
@@ -950,6 +968,7 @@ function GhlLeadsTable({
                   <th className="px-2 py-2">Email</th>
                   <th className="px-2 py-2">Phone</th>
                   <th className="px-2 py-2">Source</th>
+                  {showAshColumn && <th className="px-2 py-2">ASH Member</th>}
                   <th className="px-2 py-2">Subscribed to Apex</th>
                   <th className="px-2 py-2">Paying Customer</th>
                   <th className="px-2 py-2">Customer Since</th>
@@ -972,6 +991,15 @@ function GhlLeadsTable({
                     <td className="px-2 py-2.5">
                       <LeadSourceTag row={row} />
                     </td>
+                    {showAshColumn && (
+                      <td className="px-2 py-2.5">
+                        {row.alsoInAsh ? (
+                          <Badge tone="amber">ASH Member</Badge>
+                        ) : (
+                          <span className="text-slate-300">—</span>
+                        )}
+                      </td>
+                    )}
                     <td className="px-2 py-2.5">
                       {!row.stripeChecked ? (
                         <Badge tone="slate">…</Badge>
@@ -1056,6 +1084,10 @@ export default function DashboardPage() {
   const [subscriptionsModal, setSubscriptionsModal] = useState<"mrr" | "arr" | null>(null);
   const [showTrialsModal, setShowTrialsModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "ash" | "apex" | "leads">("primewell");
+  // Shared across the PrimeWell/Facebook/ASH lead tables so switching tabs
+  // keeps the same window applied — "" means unbounded on that side.
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [temperatureCounts, setTemperatureCounts] = useState<
     Record<"primewell" | "facebook" | "ash", TemperatureCounts | null>
   >({ primewell: null, facebook: null, ash: null });
@@ -1202,6 +1234,42 @@ export default function DashboardPage() {
               ))}
             </div>
 
+            {(activeTab === "primewell" || activeTab === "facebook" || activeTab === "ash") && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  Joined between:
+                </span>
+                <input
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                  max={dateTo || undefined}
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm bg-white"
+                />
+                <span className="text-slate-400 text-sm">to</span>
+                <input
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                  min={dateFrom || undefined}
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm bg-white"
+                />
+                {(dateFrom || dateTo) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDateFrom("");
+                      setDateTo("");
+                    }}
+                    className="text-xs font-bold text-slate-400 hover:text-slate-600 underline"
+                  >
+                    Clear
+                  </button>
+                )}
+                <span className="text-xs text-slate-400">Applies across PrimeWell, Facebook &amp; ASH.</span>
+              </div>
+            )}
+
             {activeTab === "primewell" && (
               <div className="space-y-8">
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -1273,6 +1341,8 @@ export default function DashboardPage() {
                         csvPrefix="primewell"
                         source="primewell"
                         onTemperatureCounts={reportPrimewellCounts}
+                        dateFrom={dateFrom}
+                        dateTo={dateTo}
                       />
                     </>
                   ) : (
@@ -1353,6 +1423,8 @@ export default function DashboardPage() {
                         csvPrefix="facebook"
                         source="facebook"
                         onTemperatureCounts={reportFacebookCounts}
+                        dateFrom={dateFrom}
+                        dateTo={dateTo}
                       />
                     </>
                   ) : (
@@ -1433,6 +1505,8 @@ export default function DashboardPage() {
                         csvPrefix="ash"
                         source="ash"
                         onTemperatureCounts={reportAshCounts}
+                        dateFrom={dateFrom}
+                        dateTo={dateTo}
                       />
                     </>
                   ) : (
