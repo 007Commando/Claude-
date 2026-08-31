@@ -224,6 +224,7 @@ export async function GET() {
     ...stripe,
     subscriptions: stripe.subscriptions.map((s) => ({ ...s, source: sourceFor(s.customerEmail) })),
     trials: stripe.trials.map((t) => ({ ...t, source: sourceFor(t.customerEmail) })),
+    cancelledTrials: stripe.cancelledTrials.map((t) => ({ ...t, source: sourceFor(t.customerEmail) })),
   };
 
   const summary: DashboardSummary = {

@@ -1,6 +1,29 @@
 import Stripe from "stripe";
 import type { StripeMetrics } from "./types";
 
+// A canceled subscription only counts as a "cancelled trial" if it was
+// canceled at or shortly after its trial ended — this grace window covers
+// Stripe's own processing delay without pulling in customers who paid for
+// months and churned much later (a different, unrelated kind of churn).
+const CANCELLED_TRIAL_GRACE_SECONDS = 3 * 24 * 60 * 60;
+
+const CANCELLATION_REASON_LABELS: Record<string, string> = {
+  // Customer-submitted feedback (Subscription.cancellation_details.feedback)
+  customer_service: "Customer service",
+  low_quality: "Low quality",
+  missing_features: "Missing features",
+  other: "Other",
+  switched_service: "Switched service",
+  too_complex: "Too complex",
+  too_expensive: "Too expensive",
+  unused: "Unused",
+  // Stripe's own system reason (Subscription.cancellation_details.reason)
+  cancellation_requested: "Requested by customer",
+  payment_disputed: "Payment disputed",
+  payment_failed: "Payment failed",
+  canceled_by_retention_policy: "Retention policy",
+};
+
 // maxNetworkRetries turns on the SDK's built-in exponential-backoff retry for
 // transient errors, including 429s — measured empirically to be necessary:
 // without it, batches of concurrent lookups reliably hit Stripe's rate limit
@@ -65,6 +88,8 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
     trialsTruncated: false,
     potentialMrr: 0,
     potentialArr: 0,
+    cancelledTrials: [],
+    cancelledTrialsTruncated: false,
   };
 
   if (!secretKey) {
@@ -77,15 +102,21 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
     const since7d = now - 7 * 24 * 60 * 60;
     const since30d = now - 30 * 24 * 60 * 60;
 
-    const [subscriptions, trialSubscriptions, charges30d, charges7d, customers30d, productNameById] =
+    const [subscriptions, trialSubscriptions, canceledSubscriptions, charges30d, charges7d, customers30d, productNameById] =
       await Promise.all([
         stripe.subscriptions.list({ status: "active", limit: 100, expand: ["data.customer"] }),
         stripe.subscriptions.list({ status: "trialing", limit: 100, expand: ["data.customer"] }),
+        stripe.subscriptions.list({ status: "canceled", limit: 100, expand: ["data.customer"] }),
         stripe.charges.list({ created: { gte: since30d }, limit: 100 }),
         stripe.charges.list({ created: { gte: since7d }, limit: 100 }),
         stripe.customers.list({ created: { gte: since30d }, limit: 100 }),
         getProductNameMap(stripe),
       ]);
+
+    const cancelledTrialSubs = canceledSubscriptions.data.filter((sub) => {
+      if (sub.trial_end == null || sub.canceled_at == null) return false;
+      return sub.canceled_at <= sub.trial_end + CANCELLED_TRIAL_GRACE_SECONDS;
+    });
 
     const mrr = subscriptions.data.reduce((sum, sub) => {
       const itemTotal = sub.items.data.reduce((itemSum, item) => itemSum + monthlyAmount(item), 0);
@@ -181,6 +212,30 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
           (sum, sub) => sum + sub.items.data.reduce((s, item) => s + annualAmount(item), 0),
           0,
         ) / 100,
+      cancelledTrials: cancelledTrialSubs.map((sub) => {
+        const customer = sub.customer;
+        const planItem = sub.items.data[0];
+        const productId = typeof planItem?.price.product === "string" ? planItem.price.product : undefined;
+        const planName = planItem?.price.nickname ?? (productId && productNameById.get(productId)) ?? "—";
+        const reasonKey = sub.cancellation_details?.feedback ?? sub.cancellation_details?.reason ?? null;
+        return {
+          id: sub.id,
+          customerName:
+            (customer && typeof customer === "object" && !customer.deleted ? customer.name : null) ?? null,
+          customerEmail: customer && typeof customer === "object" && !customer.deleted ? customer.email : null,
+          planName,
+          interval: planItem?.price.recurring?.interval ?? null,
+          amount: (planItem?.price.unit_amount ?? 0) / 100,
+          trialStartAt: sub.trial_start ? new Date(sub.trial_start * 1000).toISOString() : null,
+          trialEndAt: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,
+          canceledAt: sub.canceled_at ? new Date(sub.canceled_at * 1000).toISOString() : null,
+          cancellationReason: reasonKey ? (CANCELLATION_REASON_LABELS[reasonKey] ?? reasonKey) : null,
+          // Enriched in the summary route by cross-referencing GHL emails —
+          // this file has no knowledge of lead sources.
+          source: "unknown" as const,
+        };
+      }),
+      cancelledTrialsTruncated: canceledSubscriptions.data.length >= 100,
     };
   } catch (err) {
     return { ...empty, error: err instanceof Error ? err.message : "Failed to reach Stripe" };

@@ -35,6 +35,22 @@ export interface TrialRow {
   source: LeadSource;
 }
 
+export interface CancelledTrialRow {
+  id: string;
+  customerName: string | null;
+  customerEmail: string | null;
+  planName: string;
+  interval: string | null;
+  amount: number;
+  trialStartAt: string | null;
+  trialEndAt: string | null;
+  canceledAt: string | null;
+  /** Customer-given reason if they supplied one (e.g. "Too expensive"), else
+   * Stripe's own system reason (e.g. "Payment failed"), else null. */
+  cancellationReason: string | null;
+  source: LeadSource;
+}
+
 export interface StripeMetrics {
   connected: boolean;
   error?: string;
@@ -57,6 +73,12 @@ export interface StripeMetrics {
   potentialMrr: number;
   /** Sum of predictedArrContribution across all trials — revenue added to ARR if every trial converts. */
   potentialArr: number;
+  /** Trials that were canceled during (or within a few days of) their trial period —
+   * excludes long-time paying customers who churned well after converting. */
+  cancelledTrials: CancelledTrialRow[];
+  /** True if there are more than 100 canceled subscriptions (Stripe's per-request page limit) —
+   * cancelledTrials may be missing some that fell outside that page. */
+  cancelledTrialsTruncated: boolean;
 }
 
 export interface MailchimpMetrics {

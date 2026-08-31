@@ -17,10 +17,12 @@ import {
   Rocket,
   ShoppingBag,
   Target,
+  UserX,
   Users,
   X,
 } from "lucide-react";
 import type {
+  CancelledTrialRow,
   DashboardSummary,
   GhlLeadRow,
   LeadSource,
@@ -579,6 +581,154 @@ function TrialsModal({
   );
 }
 
+function CancelledTrialsModal({
+  cancelledTrials,
+  truncated,
+  onClose,
+}: {
+  cancelledTrials: CancelledTrialRow[];
+  truncated: boolean;
+  onClose: () => void;
+}) {
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return cancelledTrials;
+    return cancelledTrials.filter((t) =>
+      `${t.customerName ?? ""} ${t.customerEmail ?? ""} ${t.planName} ${t.cancellationReason ?? ""}`
+        .toLowerCase()
+        .includes(q),
+    );
+  }, [cancelledTrials, search]);
+
+  // Most recently canceled first — that's what you'd check first to follow up.
+  const sorted = useMemo(
+    () =>
+      [...filtered].sort((a, b) => {
+        const aTime = a.canceledAt ? new Date(a.canceledAt).getTime() : 0;
+        const bTime = b.canceledAt ? new Date(b.canceledAt).getTime() : 0;
+        return bTime - aTime;
+      }),
+    [filtered],
+  );
+
+  const exportCsv = () => {
+    downloadCsv(
+      `stripe-cancelled-trials-${new Date().toISOString().slice(0, 10)}.csv`,
+      [
+        "Customer Name",
+        "Customer Email",
+        "Source",
+        "Plan",
+        "Amount",
+        "Interval",
+        "Trial Started",
+        "Trial Ended",
+        "Cancelled On",
+        "Reason",
+      ],
+      sorted.map((t) => [
+        t.customerName ?? "",
+        t.customerEmail ?? "",
+        SOURCE_LABELS[t.source],
+        t.planName,
+        t.amount.toFixed(2),
+        t.interval ?? "",
+        t.trialStartAt ? new Date(t.trialStartAt).toLocaleDateString() : "",
+        t.trialEndAt ? new Date(t.trialEndAt).toLocaleDateString() : "",
+        t.canceledAt ? new Date(t.canceledAt).toLocaleDateString() : "",
+        t.cancellationReason ?? "",
+      ]),
+    );
+  };
+
+  return (
+    <Modal title="Cancelled Trials" onClose={onClose}>
+      <p className="text-xs text-slate-500 mb-4">
+        Customers who cancelled during (or within a few days of) their trial — this excludes
+        long-time paying customers who cancelled after converting.
+      </p>
+      <div className="flex flex-wrap items-center gap-4 mb-6">
+        <FunnelStep label="Cancelled Trials" value={cancelledTrials.length} accent />
+      </div>
+      {truncated && (
+        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
+          Showing the first 100 cancelled subscriptions checked — there may be more.
+        </p>
+      )}
+      <div className="flex items-center gap-2 mb-4">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search customer, email, plan, reason…"
+          className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand"
+        />
+        <button
+          onClick={exportCsv}
+          disabled={sorted.length === 0}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 whitespace-nowrap"
+        >
+          <Download className="w-3.5 h-3.5" />
+          Export CSV
+        </button>
+      </div>
+      {sorted.length > 0 ? (
+        <div className="overflow-x-auto -mx-2">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs font-bold uppercase tracking-wider text-slate-500">
+                <th className="px-2 py-2">Customer</th>
+                <th className="px-2 py-2">Email</th>
+                <th className="px-2 py-2">Source</th>
+                <th className="px-2 py-2">Plan</th>
+                <th className="px-2 py-2">Amount</th>
+                <th className="px-2 py-2">Cancelled</th>
+                <th className="px-2 py-2">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map((t) => (
+                <tr key={t.id} className="border-t border-slate-100">
+                  <td className="px-2 py-2.5 text-slate-900 font-bold whitespace-nowrap">
+                    {t.customerName ?? "—"}
+                  </td>
+                  <td className="px-2 py-2.5 text-slate-700">
+                    <CopyableEmail email={t.customerEmail} />
+                  </td>
+                  <td className="px-2 py-2.5">
+                    <SourceBadge source={t.source} />
+                  </td>
+                  <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">{t.planName}</td>
+                  <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">
+                    {money(t.amount)}
+                    {t.interval ? `/${t.interval}` : ""}
+                  </td>
+                  <td className="px-2 py-2.5 text-slate-500 whitespace-nowrap">
+                    {t.canceledAt ? new Date(t.canceledAt).toLocaleDateString() : "—"}
+                  </td>
+                  <td className="px-2 py-2.5">
+                    {t.cancellationReason ? (
+                      <Badge tone="red">{t.cancellationReason}</Badge>
+                    ) : (
+                      <span className="text-slate-300">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="text-sm text-slate-500">
+          {cancelledTrials.length === 0 ? "No cancelled trials — nice." : "No cancelled trials match this search."}
+        </p>
+      )}
+    </Modal>
+  );
+}
+
 type TriState = "all" | "yes" | "no";
 type SubscribedFilter = "all" | "yes" | "no" | "unknown";
 const PAGE_SIZE = 50;
@@ -1083,6 +1233,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [subscriptionsModal, setSubscriptionsModal] = useState<"mrr" | "arr" | null>(null);
   const [showTrialsModal, setShowTrialsModal] = useState(false);
+  const [showCancelledTrialsModal, setShowCancelledTrialsModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "ash" | "apex" | "leads">("primewell");
   // Shared across the PrimeWell/Facebook/ASH lead tables so switching tabs
   // keeps the same window applied — "" means unbounded on that side.
@@ -1161,6 +1312,12 @@ export default function DashboardPage() {
           label: "Trials Started",
           value: data.stripe.connected ? String(data.stripe.trials.length) : null,
           onClick: () => setShowTrialsModal(true),
+        },
+        {
+          icon: UserX,
+          label: "Cancelled Trials",
+          value: data.stripe.connected ? String(data.stripe.cancelledTrials.length) : null,
+          onClick: () => setShowCancelledTrialsModal(true),
         },
         {
           icon: Users,
@@ -1661,6 +1818,14 @@ export default function DashboardPage() {
           potentialMrr={data.stripe.potentialMrr}
           potentialArr={data.stripe.potentialArr}
           onClose={() => setShowTrialsModal(false)}
+        />
+      )}
+
+      {showCancelledTrialsModal && data && (
+        <CancelledTrialsModal
+          cancelledTrials={data.stripe.cancelledTrials}
+          truncated={data.stripe.cancelledTrialsTruncated}
+          onClose={() => setShowCancelledTrialsModal(false)}
         />
       )}
     </section>
