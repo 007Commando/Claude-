@@ -45,7 +45,7 @@ export default function ReviewBooster() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="grid lg:grid-cols-2 gap-12 items-center mb-32"
+          className="interiorHero grid lg:grid-cols-2 gap-12 items-center mb-32"
         >
           <div>
             <h1 className="text-5xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-[1.05]">

@@ -97,7 +97,7 @@ export default function RewardsBenefits() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="text-center mb-16"
+          className="interiorHero text-center mb-16"
         >
           <div className="text-brand text-sm font-black uppercase tracking-[0.2em] mb-4">
             Apex Rewards & Benefits

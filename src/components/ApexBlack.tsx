@@ -28,7 +28,7 @@ export default function ApexBlack() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="max-w-4xl mx-auto mb-8"
+          className="interiorHero max-w-4xl mx-auto mb-8"
         >
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 border border-slate-800 text-white text-[11px] font-bold rounded-full uppercase tracking-[0.1em] shadow-2xl">

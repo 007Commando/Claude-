@@ -27,7 +27,7 @@ export default function ApexRed() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="max-w-4xl mx-auto text-center"
+          className="interiorHero max-w-4xl mx-auto text-center"
         >
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 border border-red-100 text-red-600 text-[11px] font-bold rounded-full uppercase tracking-[0.1em] shadow-sm">
@@ -36,8 +36,8 @@ export default function ApexRed() {
             </div>
           </div>
           <h1 className="text-5xl lg:text-7xl font-black text-slate-900 mb-8 tracking-tighter leading-[0.95]">
-            ENHANCE YOUR ENTIRE <br />
-            <span className="text-red-600">WORKFLOW LOGISTICS</span>
+            Enhance your entire <br />
+            <span className="text-red-600">workflow logistics</span>
           </h1>
           <p className="text-xl text-slate-600 leading-relaxed font-medium mb-12 max-w-2xl mx-auto">
             Apex Red brings your shipments, warehouses, inventory, and prep centers together into one streamlined logistics command center.

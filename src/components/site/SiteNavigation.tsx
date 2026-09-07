@@ -1,0 +1,11 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect,useRef } from "react";
+import { Menu, UserRound } from "lucide-react";
+import { MotionToggle } from "../landing/Motion";
+import s from "../landing/landing.module.css";
+const links=[["Sourcing","/features/green"],["Operations","/features/blue"],["Features","/#landing-features"],["Learning","/features/black"],["Plans","/pricing"]];
+export default function SiteNavigation(){const path=usePathname();const menu=useRef<HTMLDetailsElement>(null);useEffect(()=>{if(menu.current)menu.current.open=false},[path]);return <nav className={`${s.nav} ${s.navWithPartner}`} aria-label="Main navigation" style={path==='/apex-elite'?{top:48}:undefined}>
+<div className={s.navBrand}><Link href="/" className={s.logo} aria-label="APEX home">APEX</Link><div className={s.partnerLockup} aria-label="Amazon Software Partner"><svg width="0" height="0" aria-hidden="true" style={{position:"absolute"}}><defs><filter id="amazon-remove-white" colorInterpolationFilters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg><span className={s.amazonLogoCrop} aria-hidden="true"><img src="/images/landing/amazon-software-partner.png" alt="" width={699} height={247}/></span><span>Software Partner</span></div></div><div className={s.navLinks}>{links.map(([name,url])=><Link key={name} href={url} aria-current={path===url||(path==='/'&&name==='Features')?'page':undefined}>{name}</Link>)}</div>
+<div className={s.navActions}><Link href="/auth" className={s.accountPill}><UserRound size={19}/> Sign in</Link><details ref={menu} className={s.navMenu} onKeyDown={e=>{if(e.key==='Escape'&&menu.current){menu.current.open=false;menu.current.querySelector('summary')?.focus()}}}><summary aria-label="Open navigation menu"><Menu size={20}/></summary><div onClick={e=>{if((e.target as HTMLElement).closest('a')&&menu.current)menu.current.open=false}}>{[["Home","/"],["Sign in","/auth"],["How it works","/how-it-works"],...links,["Logistics","/features/red"],["Rewards & benefits","/rewards-benefits"],["Blog","/blog"],["Contact","/contact-us"]].map(([name,url])=><Link href={url} key={name}>{name}</Link>)}<MotionToggle/></div></details></div></nav>}
