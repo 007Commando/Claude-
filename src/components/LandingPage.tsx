@@ -20,7 +20,7 @@ export default function LandingPage() {
         <img className={styles.heroArt} src="/images/landing/warehouse-hero.png" alt="" fetchPriority="high" width="1536" height="1024" />
 
         <div className={styles.heroContent}>
-          <div className={styles.badge}><PackageCheck size={20} aria-hidden="true" /><span>Built for Amazon wholesale sellers<small>ONE PLATFORM</small></span></div>
+          <div className={styles.badge}><PackageCheck size={20} aria-hidden="true" /><span>Built for Amazon wholesale sellers</span></div>
           <HeroTitle />
           <p>Source products, manage suppliers, and see your profits.<br className={styles.desktopBreak} /> One connected workspace for your Amazon business.</p>
           <div className={styles.actions}>

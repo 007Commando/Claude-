@@ -90,10 +90,10 @@ export default function FullLayout() {
 
     <section className={s.orbitSection} aria-labelledby="orbit-heading">
       <div className={s.orbitCanvas}>
-        <div className={s.outerRing} /><svg className={s.flowPaths} viewBox="0 0 1000 667" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="500" cy="333" rx="280" ry="173"/><ellipse cx="500" cy="333" rx="440" ry="260"/></svg><div className={s.innerRing} /><span className={s.shootingStar} aria-hidden="true" />
+        <div className={s.outerRing} /><svg className={s.flowPaths} viewBox="0 0 1000 667" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="500" cy="333" rx="280" ry="173"/><ellipse cx="500" cy="333" rx="440" ry="260"/></svg><div className={s.innerRing} />
         <span className={s.orbitLabel}>YOUR WHOLESALE WORKSPACE</span>
         <div className={s.orbitCenter}><h2 id="orbit-heading">Everything connected<br /> around your business</h2><p>Sourcing, suppliers, purchasing, and profitability.<br />Keep your next step in the same orbit.</p></div>
-        {orbit.map(({label,Icon,href},i) => <Link key={label} href={href} className={`${s.orbitNode} ${s[`node${i}`]}`}><span><Icon size={40} strokeWidth={1.6} /></span><strong>{label}</strong><i className={s.nodeActivity} aria-hidden="true"><b/><b/><b/><b/></i></Link>)}
+        {orbit.map(({label,Icon,href},i) => <Link key={label} href={href} className={`${s.orbitNode} ${s[`node${i}`]}`}><span><Icon size={40} strokeWidth={1.6} /></span><strong>{label}</strong></Link>)}
         <div className={`${s.outerNode} ${s.outerLeft}`}><FileText size={30} /><span>Supplier catalogs</span></div>
         <div className={`${s.outerNode} ${s.outerRight}`}><Wallet size={30} /><span>Business expenses</span></div>
       </div>
