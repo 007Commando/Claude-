@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, PackageCheck, Menu, UserRound } from "lucide-react";
+import EcosystemPillars from "./landing/EcosystemPillars";
 import FeatureExplorer from "./landing/FeatureExplorer";
 import LandingDemo from "./landing/LandingDemo";
 import { MotionPage, MotionToggle, HeroTitle } from "./landing/Motion";
@@ -31,6 +32,8 @@ export default function LandingPage() {
         </div>
         <Drone />
       </section>
+
+      <EcosystemPillars />
 
       <FeatureExplorer />
 

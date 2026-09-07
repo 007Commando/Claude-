@@ -46,3 +46,7 @@
 .productStrip{background:linear-gradient(#fff,#f3faff)}.productArt{background:#e7f5ff}.productRoi{background:#e7f5ff;color:#174f70}.productCard>svg{stroke:#4aafd8}.phoneCopy em{background:linear-gradient(100deg,#2387ba,#74c7e8);background-clip:text;color:transparent}.courseArt{background:linear-gradient(135deg,#103851,#277ca4);color:#dcf4ff}.costBar a,.recommended,.planGrid article>a,.floatingCta{background:#ffdf50;color:#123147}.planGrid .pro>a{background:#ffdf50;color:#123147}.starter{border-color:#8ed1ed}.pro{background:#f4fbff}.footer{background:linear-gradient(#edf8ff,#f5f8fb 60%)}
 
 .partnerBadge{display:block;width:180px;max-width:100%;height:auto;margin-top:26px;object-fit:contain}
+
+.annualNote{max-width:520px;margin:16px auto 0;text-align:center;font-size:12px;line-height:1.7;color:#8fc3d6}
+.annualNote a{color:#fff;text-decoration:underline;text-underline-offset:3px;font-weight:600}
+@media(max-width:700px){.annualNote{font-size:11px;padding:0 8px}}
