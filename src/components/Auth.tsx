@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { z } from "zod";
 import Link from "next/link";
-import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User, CreditCard } from "lucide-react";
+import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User, CreditCard, Loader2, Eye, EyeOff } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import { readStoredAttribution } from "./LeadAttribution";
 import { getAuthUserEmail, hasActiveSubscription } from "../lib/subscriptionGate";
@@ -19,6 +19,10 @@ declare global {
         name: string;
         email: string;
         password: string;
+        plan?: "starter" | "plus" | "pro" | "enterprise";
+        period?: "monthly" | "yearly";
+      }) => Promise<unknown>;
+      signInWithGoogle?: (opts?: {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
       }) => Promise<unknown>;
@@ -46,6 +50,31 @@ const signupSchema = z.object({
 
 type Mode = "login" | "signup" | "forgot";
 
+const nameField = z.string().trim().min(1, "Enter your name").max(120);
+const emailField = z.string().trim().email("Enter a valid email").max(255);
+// Signup enforces Firebase's real minimum so the error shows up on blur
+// instead of after a round trip to the server; login just checks non-empty,
+// since an existing account may predate that minimum.
+const signupPasswordField = z.string().min(6, "At least 6 characters");
+const loginPasswordField = z.string().min(1, "Enter a password");
+
+function validateField(
+  field: "name" | "email" | "password",
+  value: string,
+  mode: Mode,
+): string | undefined {
+  const schema =
+    field === "name"
+      ? nameField
+      : field === "email"
+      ? emailField
+      : mode === "signup"
+      ? signupPasswordField
+      : loginPasswordField;
+  const parsed = schema.safeParse(value);
+  return parsed.success ? undefined : parsed.error.issues[0].message;
+}
+
 function getFriendlyAuthError(message: string): string {
   if (/is not a function/i.test(message)) {
     return "The login service didn't finish loading in time. Please try again.";
@@ -67,6 +96,11 @@ function getFriendlyAuthError(message: string): string {
       return "Too many attempts. Please wait a moment and try again.";
     case "email-already-in-use":
       return "An account with this email already exists. Try logging in instead.";
+    case "account-exists-with-different-credential":
+      return "An account with this email already exists. Log in with your password instead.";
+    case "popup-closed-by-user":
+    case "cancelled-popup-request":
+      return "";
     case "weak-password":
       return "Choose a stronger password (at least 6 characters).";
     case "network-request-failed":
@@ -146,9 +180,30 @@ export default function Auth() {
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  // Per-field errors surface the moment someone leaves a bad field, instead
+  // of making them submit the whole form just to find out it's wrong.
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
   // Set when a signed-in user has no active Stripe subscription — blocks the
   // dashboard redirect below and shows a payment-required notice instead.
   const [needsPayment, setNeedsPayment] = useState(false);
+
+  const handleFieldBlur = (field: "name" | "email" | "password", value: string) => {
+    // Skip validating a field the user never actually typed into — e.g.
+    // autofocus landing on an empty field, then clicking straight to
+    // "Continue with Google" shouldn't slap a "required" error on it.
+    // Submitting the form still catches a truly empty required field.
+    if (!value) return;
+    setFieldErrors((prev) => ({ ...prev, [field]: validateField(field, value, mode) }));
+  };
+
+  // First relevant field gets focus automatically on load and on every tab
+  // switch, so typing can start immediately without an extra click.
+  const firstFieldRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    firstFieldRef.current?.focus();
+  }, [mode]);
 
   // Set the instant a signup submission starts, and never cleared — once this
   // page has kicked off account creation, it must never independently decide
@@ -209,6 +264,7 @@ export default function Auth() {
   const setMode = (m: Mode) => {
     setError(null);
     setInfo(null);
+    setFieldErrors({});
     setModeOverride(m);
     const next = new URLSearchParams(params.toString());
     if (m === "login") next.delete("mode");
@@ -287,6 +343,29 @@ export default function Auth() {
       setError(getFriendlyAuthError(msg));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setInfo(null);
+    setGoogleLoading(true);
+    try {
+      const auth = await waitForApexAuth();
+      if (!auth.signInWithGoogle) {
+        throw new Error("Google sign-in isn't available yet. Please use email instead.");
+      }
+      signupInFlightRef.current = true;
+      await withAuthRetry(() => auth.signInWithGoogle!({ plan: planTier, period }));
+      // Auto-redirects: to Stripe checkout for a brand-new account with a
+      // plan, or straight into the app for a returning Google user.
+    } catch (err: unknown) {
+      signupInFlightRef.current = false;
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      const friendly = getFriendlyAuthError(msg);
+      if (friendly) setError(friendly);
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -442,6 +521,47 @@ export default function Auth() {
                 </div>
               )}
 
+              {mode !== "forgot" && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    disabled={googleLoading || loading}
+                    className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3.5 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-60"
+                  >
+                    {googleLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                        <path
+                          fill="#4285F4"
+                          d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
+                        />
+                        <path
+                          fill="#34A853"
+                          d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11C3.24 21.3 7.29 24 12 24Z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M5.27 14.28A7.2 7.2 0 0 1 4.9 12c0-.79.14-1.56.37-2.28V6.61H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.11Z"
+                        />
+                        <path
+                          fill="#EA4335"
+                          d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.61l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
+                        />
+                      </svg>
+                    )}
+                    {googleLoading ? "Please wait…" : `${mode === "signup" ? "Sign up" : "Log in"} with Google`}
+                  </button>
+
+                  <div className="flex items-center gap-3 my-6">
+                    <div className="h-px flex-1 bg-slate-200" />
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">or</span>
+                    <div className="h-px flex-1 bg-slate-200" />
+                  </div>
+                </>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" && (
                   <div>
@@ -451,16 +571,27 @@ export default function Auth() {
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <input
+                        ref={firstFieldRef}
                         id="name"
                         type="text"
                         autoComplete="name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none text-slate-900"
+                        onChange={(e) => {
+                          setName(e.target.value);
+                          if (fieldErrors.name) setFieldErrors((prev) => ({ ...prev, name: undefined }));
+                        }}
+                        onBlur={(e) => handleFieldBlur("name", e.target.value)}
+                        aria-invalid={!!fieldErrors.name}
+                        className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                          fieldErrors.name
+                            ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                            : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                        }`}
                         placeholder="John Doe"
                         required
                       />
                     </div>
+                    {fieldErrors.name && <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.name}</p>}
                   </div>
                 )}
 
@@ -471,16 +602,27 @@ export default function Auth() {
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
+                      ref={mode !== "signup" ? firstFieldRef : undefined}
                       id="email"
                       type="email"
                       autoComplete="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none text-slate-900"
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }));
+                      }}
+                      onBlur={(e) => handleFieldBlur("email", e.target.value)}
+                      aria-invalid={!!fieldErrors.email}
+                      className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                        fieldErrors.email
+                          ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                          : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                      }`}
                       placeholder="your.email@example.com"
                       required
                     />
                   </div>
+                  {fieldErrors.email && <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.email}</p>}
                 </div>
 
                 {mode !== "forgot" && (
@@ -503,15 +645,40 @@ export default function Auth() {
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         autoComplete={mode === "signup" ? "new-password" : "current-password"}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none text-slate-900"
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }));
+                        }}
+                        onBlur={(e) => handleFieldBlur("password", e.target.value)}
+                        aria-invalid={!!fieldErrors.password}
+                        className={`w-full pl-11 pr-11 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                          fieldErrors.password
+                            ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                            : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                        }`}
                         placeholder="Your password"
                         required
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        tabIndex={-1}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
                     </div>
+                    {fieldErrors.password ? (
+                      <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.password}</p>
+                    ) : (
+                      mode === "signup" && (
+                        <p className="mt-1.5 text-xs text-slate-400">At least 6 characters</p>
+                      )
+                    )}
                   </div>
                 )}
 
@@ -537,7 +704,11 @@ export default function Auth() {
                   disabled={loading}
                   className="w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-60 inline-flex items-center justify-center gap-2"
                 >
-                  <Zap className="w-4 h-4" fill="currentColor" />
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Zap className="w-4 h-4" fill="currentColor" />
+                  )}
                   {loading ? "Please wait…" : cta}
                 </button>
               </form>
