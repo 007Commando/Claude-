@@ -104,7 +104,7 @@ const faqs = [
   {
     question: "Is there a free trial?",
     answer:
-      "Yes. Every plan, Starter and Pro, includes a 7-day free trial before your card is charged.",
+      "Yes. Every plan, Starter and Pro, includes a 7-day free trial before your card is charged, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one.",
   },
   {
     question: "What's the difference between the Starter and Pro plans?",

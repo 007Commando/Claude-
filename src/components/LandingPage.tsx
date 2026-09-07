@@ -27,7 +27,7 @@ export default function LandingPage() {
             <Link className={styles.primary} href={signup}>Start free trial <ArrowRight size={19} aria-hidden="true" /></Link>
             <LandingDemo />
           </div>
-          <p className={styles.trialNote}>7 days free · Then from $149.99/month</p>
+          <p className={styles.trialNote}>7 days free · 3 free authorized suppliers included · Then from $149.99/month</p>
 
         </div>
         <Drone />

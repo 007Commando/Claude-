@@ -371,6 +371,10 @@ export default function Auth() {
 
   const benefits = [
     {
+      title: "3 free authorized suppliers",
+      desc: "Vetted, authorized US wholesale distributors handed to you when your trial starts — skip months of cold outreach.",
+    },
+    {
       title: "White-glove onboarding",
       desc: "Included with your account: 160 minutes of Amazon education plus full software installation and setup.",
     },
