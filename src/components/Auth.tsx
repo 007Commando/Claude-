@@ -5,16 +5,34 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { z } from "zod";
 import Link from "next/link";
-import { Mail, Lock, Zap, ShieldCheck, CheckCircle2, User, CreditCard, Loader2, Eye, EyeOff } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Zap,
+  ShieldCheck,
+  CheckCircle2,
+  User,
+  CreditCard,
+  Loader2,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import { readStoredAttribution } from "./LeadAttribution";
-import { getAuthUserEmail, hasActiveSubscription } from "../lib/subscriptionGate";
+import {
+  getAuthUserEmail,
+  hasActiveSubscription,
+} from "../lib/subscriptionGate";
 
 // Global ApexAuth from https://app.apexapplications.io/apex-auth.js
 declare global {
   interface Window {
     ApexAuth?: {
-      signIn: (email: string, password: string, opts?: { redirect?: boolean }) => Promise<unknown>;
+      signIn: (
+        email: string,
+        password: string,
+        opts?: { redirect?: boolean },
+      ) => Promise<unknown>;
       signUp: (opts: {
         name: string;
         email: string;
@@ -31,7 +49,9 @@ declare global {
       redirectToApp: (path?: string) => void;
       redirectBackToApp?: (redirectUri?: string) => Promise<unknown>;
       getCurrentUser: () => Promise<unknown>;
-      onAuthStateChanged: (cb: (user: unknown) => void) => (() => void) | void | Promise<(() => void) | void>;
+      onAuthStateChanged: (
+        cb: (user: unknown) => void,
+      ) => (() => void) | void | Promise<(() => void) | void>;
     };
     // ChatGPT Ads pixel, initialized in layout.tsx
     oaiq?: (...args: unknown[]) => void;
@@ -68,10 +88,10 @@ function validateField(
     field === "name"
       ? nameField
       : field === "email"
-      ? emailField
-      : mode === "signup"
-      ? signupPasswordField
-      : loginPasswordField;
+        ? emailField
+        : mode === "signup"
+          ? signupPasswordField
+          : loginPasswordField;
   const parsed = schema.safeParse(value);
   return parsed.success ? undefined : parsed.error.issues[0].message;
 }
@@ -126,12 +146,15 @@ async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
   }
 }
 
-function waitForApexAuth(timeoutMs = 8000): Promise<NonNullable<Window["ApexAuth"]>> {
+function waitForApexAuth(
+  timeoutMs = 8000,
+): Promise<NonNullable<Window["ApexAuth"]>> {
   return new Promise((resolve, reject) => {
     const start = Date.now();
     const tick = () => {
       if (window.ApexAuth) return resolve(window.ApexAuth);
-      if (Date.now() - start > timeoutMs) return reject(new Error("Auth service unavailable. Please refresh."));
+      if (Date.now() - start > timeoutMs)
+        return reject(new Error("Auth service unavailable. Please refresh."));
       setTimeout(tick, 100);
     };
     tick();
@@ -151,7 +174,11 @@ export default function Auth() {
   const params = useSearchParams();
   const router = useRouter();
   const modeFromParams: Mode =
-    params.get("mode") === "signup" ? "signup" : params.get("mode") === "forgot" ? "forgot" : "login";
+    params.get("mode") === "signup"
+      ? "signup"
+      : params.get("mode") === "forgot"
+        ? "forgot"
+        : "login";
   // Tab clicks flip this immediately so the UI never waits on a router
   // round-trip; it's reconciled back to null once the URL catches up.
   const [modeOverride, setModeOverride] = useState<Mode | null>(null);
@@ -172,7 +199,10 @@ export default function Auth() {
 
   const formCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    formCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    formCardRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   }, []);
 
   const [name, setName] = useState("");
@@ -185,18 +215,28 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   // Per-field errors surface the moment someone leaves a bad field, instead
   // of making them submit the whole form just to find out it's wrong.
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+  }>({});
   // Set when a signed-in user has no active Stripe subscription — blocks the
   // dashboard redirect below and shows a payment-required notice instead.
   const [needsPayment, setNeedsPayment] = useState(false);
 
-  const handleFieldBlur = (field: "name" | "email" | "password", value: string) => {
+  const handleFieldBlur = (
+    field: "name" | "email" | "password",
+    value: string,
+  ) => {
     // Skip validating a field the user never actually typed into — e.g.
     // autofocus landing on an empty field, then clicking straight to
     // "Continue with Google" shouldn't slap a "required" error on it.
     // Submitting the form still catches a truly empty required field.
     if (!value) return;
-    setFieldErrors((prev) => ({ ...prev, [field]: validateField(field, value, mode) }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: validateField(field, value, mode),
+    }));
   };
 
   // First relevant field gets focus automatically on load and on every tab
@@ -217,6 +257,32 @@ export default function Auth() {
   // straight into the dashboard before checkout ever loads.
   const signupInFlightRef = useRef(false);
 
+  // Signing out in the app only clears the app domain's Firebase session; this
+  // domain keeps its own. Without this the app hands a signed-out user back
+  // here, the listener below sees a still-valid session and forwards them
+  // straight into the app again — so "log out" reads as "log back in" and
+  // switching accounts is impossible. The app appends ?switch=1 on sign-out.
+  const switchingAccount = params.get("switch") === "1";
+  // Held true from first render until the old session is actually gone, so the
+  // listener below cannot forward on it while the sign-out is still in flight.
+  const suppressForwardRef = useRef(switchingAccount);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    if (!switchingAccount || startedRef.current) return;
+    startedRef.current = true;
+    waitForApexAuth()
+      .then((auth) => Promise.resolve(auth.signOut()))
+      .catch(() => undefined)
+      .finally(() => {
+        suppressForwardRef.current = false;
+        // Drop the flag so a refresh doesn't sign a fresh session straight out.
+        const url = new URL(window.location.href);
+        url.searchParams.delete("switch");
+        window.history.replaceState({}, "", url.toString());
+      });
+  }, [switchingAccount]);
+
   useEffect(() => {
     let cancelled = false;
     let unsub: (() => void) | void;
@@ -226,7 +292,12 @@ export default function Auth() {
         const fn = await Promise.resolve(
           auth.onAuthStateChanged((user) => {
             if (!user || signupInFlightRef.current) return;
-            const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
+            // Arrived here specifically to change accounts: never auto-forward
+            // on the session we are in the middle of clearing.
+            if (suppressForwardRef.current) return;
+            const redirect = new URL(window.location.href).searchParams.get(
+              "redirect_uri",
+            );
 
             const userEmail = getAuthUserEmail(user);
             // The app sends users here with a redirect_uri when it needs a
@@ -260,7 +331,7 @@ export default function Auth() {
                 setNeedsPayment(true);
               }
             });
-          })
+          }),
         );
         if (cancelled) {
           if (typeof fn === "function") fn();
@@ -308,7 +379,7 @@ export default function Auth() {
             password: parsed.data.password,
             plan: planTier,
             period,
-          })
+          }),
         );
         const attribution = readStoredAttribution();
         fetch("/api/track", {
@@ -334,7 +405,11 @@ export default function Auth() {
         }).catch(() => {});
         // Auto-redirects: to Stripe checkout if a plan was selected, otherwise into the app
       } else if (mode === "forgot") {
-        const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
+        const parsed = z
+          .string()
+          .trim()
+          .email("Enter a valid email")
+          .safeParse(email);
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
         try {
           await withAuthRetry(() => auth.sendPasswordResetEmail(parsed.data));
@@ -349,7 +424,9 @@ export default function Auth() {
       } else {
         const parsed = loginSchema.safeParse({ email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
-        await withAuthRetry(() => auth.signIn(parsed.data.email, parsed.data.password));
+        await withAuthRetry(() =>
+          auth.signIn(parsed.data.email, parsed.data.password),
+        );
         // Auto-redirects on success
       }
     } catch (err: unknown) {
@@ -367,10 +444,14 @@ export default function Auth() {
     try {
       const auth = await waitForApexAuth();
       if (!auth.signInWithGoogle) {
-        throw new Error("Google sign-in isn't available yet. Please use email instead.");
+        throw new Error(
+          "Google sign-in isn't available yet. Please use email instead.",
+        );
       }
       signupInFlightRef.current = true;
-      await withAuthRetry(() => auth.signInWithGoogle!({ plan: planTier, period }));
+      await withAuthRetry(() =>
+        auth.signInWithGoogle!({ plan: planTier, period }),
+      );
       // Auto-redirects: to Stripe checkout for a brand-new account with a
       // plan, or straight into the app for a returning Google user.
     } catch (err: unknown) {
@@ -403,15 +484,23 @@ export default function Auth() {
   ];
 
   const heading =
-    mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome back";
+    mode === "signup"
+      ? "Create your account"
+      : mode === "forgot"
+        ? "Reset your password"
+        : "Welcome back";
   const sub =
     mode === "signup"
       ? "Start your free trial today"
       : mode === "forgot"
-      ? "We'll email you a reset link"
-      : "Log in to your Apex dashboard";
+        ? "We'll email you a reset link"
+        : "Log in to your Apex dashboard";
   const cta =
-    mode === "signup" ? "Start free trial" : mode === "forgot" ? "Send reset link" : "Log in";
+    mode === "signup"
+      ? "Start free trial"
+      : mode === "forgot"
+        ? "Send reset link"
+        : "Log in";
 
   return (
     <section className="relative min-h-screen bg-white overflow-hidden">
@@ -424,19 +513,26 @@ export default function Auth() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div className="pt-4">
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 leading-[1.05]">
-              The #1 Amazon Wholesale Software <span className="text-brand">All-In-One Suite</span>
+              The #1 Amazon Wholesale Software{" "}
+              <span className="text-brand">All-In-One Suite</span>
             </h1>
             <p className="mt-6 text-lg text-slate-500 max-w-xl leading-relaxed">
-              Apex Black, Blue & Green connect sourcing, purchasing, and profit tracking into one
-              streamlined platform — so you can scale with clarity and speed.
+              Apex Black, Blue & Green connect sourcing, purchasing, and profit
+              tracking into one streamlined platform — so you can scale with
+              clarity and speed.
             </p>
 
             <ul className="mt-10 space-y-6 max-w-lg">
               {benefits.map((b) => (
                 <li key={b.title} className="flex gap-4">
-                  <CheckCircle2 className="w-6 h-6 text-brand flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                  <CheckCircle2
+                    className="w-6 h-6 text-brand flex-shrink-0 mt-0.5"
+                    strokeWidth={2.5}
+                  />
                   <div>
-                    <div className="text-base font-bold text-slate-900">{b.title}</div>
+                    <div className="text-base font-bold text-slate-900">
+                      {b.title}
+                    </div>
                     <div className="text-sm text-slate-500 mt-1">{b.desc}</div>
                   </div>
                 </li>
@@ -451,13 +547,18 @@ export default function Auth() {
                   className="w-11 h-11 rounded-full object-cover border border-slate-200"
                 />
                 <div>
-                  <div className="text-sm font-bold text-slate-900">Michael R.</div>
-                  <div className="text-xs text-slate-500">New Seller • 3 Months In</div>
+                  <div className="text-sm font-bold text-slate-900">
+                    Michael R.
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    New Seller • 3 Months In
+                  </div>
                 </div>
               </div>
               <p className="mt-4 text-sm italic text-slate-600 leading-relaxed">
-                "Apex replaced the scattered tools we were juggling and gave us one source of truth. The
-                time savings alone paid for the subscription within the first month."
+                "Apex replaced the scattered tools we were juggling and gave us
+                one source of truth. The time savings alone paid for the
+                subscription within the first month."
               </p>
             </div>
           </div>
@@ -478,15 +579,18 @@ export default function Auth() {
               {needsPayment ? (
                 <div className="text-center py-4">
                   <div className="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-5">
-                    <CreditCard className="w-6 h-6 text-amber-600" strokeWidth={2} />
+                    <CreditCard
+                      className="w-6 h-6 text-amber-600"
+                      strokeWidth={2}
+                    />
                   </div>
                   <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-2">
                     One Step Left
                   </h2>
                   <p className="text-sm text-slate-500 leading-relaxed mb-6">
-                    Your account is created, but your subscription hasn't been activated yet
-                    because a payment method wasn't added. Reach out to our team and we'll get
-                    you set up right away.
+                    Your account is created, but your subscription hasn't been
+                    activated yet because a payment method wasn't added. Reach
+                    out to our team and we'll get you set up right away.
                   </p>
                   <Link
                     href="/contact-us"
@@ -508,271 +612,337 @@ export default function Auth() {
                   </button>
                 </div>
               ) : (
-              <>
-              <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
-                <button
-                  type="button"
-                  onClick={() => setMode("login")}
-                  className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
-                    mode === "login" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
-                  }`}
-                >
-                  Log In
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode("signup")}
-                  className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
-                    mode === "signup" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500"
-                  }`}
-                >
-                  Sign Up
-                </button>
-              </div>
-
-              <h2 className="text-2xl font-black tracking-tight text-slate-900 text-center">{heading}</h2>
-              <p className="text-sm text-slate-500 text-center mt-1 mb-8">{sub}</p>
-
-              {mode === "signup" && (
-                <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
-                  Signing up for the {PLAN_TIER_LABELS[planTier]} plan — {period === "yearly" ? "Annual" : "Monthly"} billing
-                </div>
-              )}
-
-              {mode !== "forgot" && (
                 <>
-                  <button
-                    type="button"
-                    onClick={handleGoogleSignIn}
-                    disabled={googleLoading || loading}
-                    className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3.5 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-60"
-                  >
-                    {googleLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
-                        <path
-                          fill="#4285F4"
-                          d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
-                        />
-                        <path
-                          fill="#34A853"
-                          d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11C3.24 21.3 7.29 24 12 24Z"
-                        />
-                        <path
-                          fill="#FBBC05"
-                          d="M5.27 14.28A7.2 7.2 0 0 1 4.9 12c0-.79.14-1.56.37-2.28V6.61H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.11Z"
-                        />
-                        <path
-                          fill="#EA4335"
-                          d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.61l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
-                        />
-                      </svg>
-                    )}
-                    {googleLoading ? "Please wait…" : `${mode === "signup" ? "Sign up" : "Log in"} with Google`}
-                  </button>
-
-                  <div className="flex items-center gap-3 my-6">
-                    <div className="h-px flex-1 bg-slate-200" />
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">or</span>
-                    <div className="h-px flex-1 bg-slate-200" />
-                  </div>
-                </>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {mode === "signup" && (
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-bold text-slate-700 mb-2">
-                      Full name
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input
-                        ref={firstFieldRef}
-                        id="name"
-                        type="text"
-                        autoComplete="name"
-                        value={name}
-                        onChange={(e) => {
-                          setName(e.target.value);
-                          if (fieldErrors.name) setFieldErrors((prev) => ({ ...prev, name: undefined }));
-                        }}
-                        onBlur={(e) => handleFieldBlur("name", e.target.value)}
-                        aria-invalid={!!fieldErrors.name}
-                        className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
-                          fieldErrors.name
-                            ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                            : "border-slate-200 focus:border-brand focus:ring-brand/20"
-                        }`}
-                        placeholder="John Doe"
-                        required
-                      />
-                    </div>
-                    {fieldErrors.name && <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.name}</p>}
-                  </div>
-                )}
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-bold text-slate-700 mb-2">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input
-                      ref={mode !== "signup" ? firstFieldRef : undefined}
-                      id="email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }));
-                      }}
-                      onBlur={(e) => handleFieldBlur("email", e.target.value)}
-                      aria-invalid={!!fieldErrors.email}
-                      className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
-                        fieldErrors.email
-                          ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                          : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                  <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
+                    <button
+                      type="button"
+                      onClick={() => setMode("login")}
+                      className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
+                        mode === "login"
+                          ? "bg-white text-slate-900 shadow-sm"
+                          : "text-slate-500"
                       }`}
-                      placeholder="your.email@example.com"
-                      required
-                    />
-                  </div>
-                  {fieldErrors.email && <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.email}</p>}
-                </div>
-
-                {mode !== "forgot" && (
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label htmlFor="password" className="block text-sm font-bold text-slate-700">
-                        Password
-                      </label>
-                      {mode === "login" && (
-                        <button
-                          type="button"
-                          onClick={() => setMode("forgot")}
-                          className="text-xs font-bold text-brand hover:underline"
-                        >
-                          Forgot?
-                        </button>
-                      )}
-                    </div>
-                    <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        autoComplete={mode === "signup" ? "new-password" : "current-password"}
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }));
-                        }}
-                        onBlur={(e) => handleFieldBlur("password", e.target.value)}
-                        aria-invalid={!!fieldErrors.password}
-                        className={`w-full pl-11 pr-11 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
-                          fieldErrors.password
-                            ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                            : "border-slate-200 focus:border-brand focus:ring-brand/20"
-                        }`}
-                        placeholder="Your password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((v) => !v)}
-                        tabIndex={-1}
-                        aria-label={showPassword ? "Hide password" : "Show password"}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                      >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    {fieldErrors.password ? (
-                      <p className="mt-1.5 text-xs font-medium text-red-600">{fieldErrors.password}</p>
-                    ) : (
-                      mode === "signup" && (
-                        <p className="mt-1.5 text-xs text-slate-400">At least 6 characters</p>
-                      )
-                    )}
-                  </div>
-                )}
-
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                  <ShieldCheck className="w-4 h-4 text-green-600" />
-                  Your data is secure and encrypted
-                </div>
-
-                {error && (
-                  <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
-                    {error}
-                  </div>
-                )}
-                {info && (
-                  <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    {info}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-60 inline-flex items-center justify-center gap-2"
-                >
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Zap className="w-4 h-4" fill="currentColor" />
-                  )}
-                  {loading ? "Please wait…" : cta}
-                </button>
-              </form>
-
-              <p className="text-center text-sm text-slate-500 mt-6">
-                {mode === "signup" ? (
-                  <>
-                    Already have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => setMode("login")}
-                      className="text-brand font-bold hover:underline"
                     >
-                      Sign in
+                      Log In
                     </button>
-                  </>
-                ) : mode === "forgot" ? (
-                  <>
-                    Remembered it?{" "}
-                    <button
-                      type="button"
-                      onClick={() => setMode("login")}
-                      className="text-brand font-bold hover:underline"
-                    >
-                      Back to login
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    New to Apex?{" "}
                     <button
                       type="button"
                       onClick={() => setMode("signup")}
-                      className="text-brand font-bold hover:underline"
+                      className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
+                        mode === "signup"
+                          ? "bg-white text-slate-900 shadow-sm"
+                          : "text-slate-500"
+                      }`}
                     >
-                      Sign up
+                      Sign Up
                     </button>
-                  </>
-                )}
-              </p>
+                  </div>
 
-              <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                Cancel anytime
-              </div>
-              </>
+                  <h2 className="text-2xl font-black tracking-tight text-slate-900 text-center">
+                    {heading}
+                  </h2>
+                  <p className="text-sm text-slate-500 text-center mt-1 mb-8">
+                    {sub}
+                  </p>
+
+                  {mode === "signup" && (
+                    <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
+                      Signing up for the {PLAN_TIER_LABELS[planTier]} plan —{" "}
+                      {period === "yearly" ? "Annual" : "Monthly"} billing
+                    </div>
+                  )}
+
+                  {mode !== "forgot" && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleGoogleSignIn}
+                        disabled={googleLoading || loading}
+                        className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3.5 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-60"
+                      >
+                        {googleLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="w-4 h-4"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill="#4285F4"
+                              d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
+                            />
+                            <path
+                              fill="#34A853"
+                              d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11C3.24 21.3 7.29 24 12 24Z"
+                            />
+                            <path
+                              fill="#FBBC05"
+                              d="M5.27 14.28A7.2 7.2 0 0 1 4.9 12c0-.79.14-1.56.37-2.28V6.61H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.11Z"
+                            />
+                            <path
+                              fill="#EA4335"
+                              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.61l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
+                            />
+                          </svg>
+                        )}
+                        {googleLoading
+                          ? "Please wait…"
+                          : `${mode === "signup" ? "Sign up" : "Log in"} with Google`}
+                      </button>
+
+                      <div className="flex items-center gap-3 my-6">
+                        <div className="h-px flex-1 bg-slate-200" />
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                          or
+                        </span>
+                        <div className="h-px flex-1 bg-slate-200" />
+                      </div>
+                    </>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {mode === "signup" && (
+                      <div>
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-bold text-slate-700 mb-2"
+                        >
+                          Full name
+                        </label>
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                          <input
+                            ref={firstFieldRef}
+                            id="name"
+                            type="text"
+                            autoComplete="name"
+                            value={name}
+                            onChange={(e) => {
+                              setName(e.target.value);
+                              if (fieldErrors.name)
+                                setFieldErrors((prev) => ({
+                                  ...prev,
+                                  name: undefined,
+                                }));
+                            }}
+                            onBlur={(e) =>
+                              handleFieldBlur("name", e.target.value)
+                            }
+                            aria-invalid={!!fieldErrors.name}
+                            className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                              fieldErrors.name
+                                ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                                : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                            }`}
+                            placeholder="John Doe"
+                            required
+                          />
+                        </div>
+                        {fieldErrors.name && (
+                          <p className="mt-1.5 text-xs font-medium text-red-600">
+                            {fieldErrors.name}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-bold text-slate-700 mb-2"
+                      >
+                        Email
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          ref={mode !== "signup" ? firstFieldRef : undefined}
+                          id="email"
+                          type="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            if (fieldErrors.email)
+                              setFieldErrors((prev) => ({
+                                ...prev,
+                                email: undefined,
+                              }));
+                          }}
+                          onBlur={(e) =>
+                            handleFieldBlur("email", e.target.value)
+                          }
+                          aria-invalid={!!fieldErrors.email}
+                          className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                            fieldErrors.email
+                              ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                              : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                          }`}
+                          placeholder="your.email@example.com"
+                          required
+                        />
+                      </div>
+                      {fieldErrors.email && (
+                        <p className="mt-1.5 text-xs font-medium text-red-600">
+                          {fieldErrors.email}
+                        </p>
+                      )}
+                    </div>
+
+                    {mode !== "forgot" && (
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label
+                            htmlFor="password"
+                            className="block text-sm font-bold text-slate-700"
+                          >
+                            Password
+                          </label>
+                          {mode === "login" && (
+                            <button
+                              type="button"
+                              onClick={() => setMode("forgot")}
+                              className="text-xs font-bold text-brand hover:underline"
+                            >
+                              Forgot?
+                            </button>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                          <input
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            autoComplete={
+                              mode === "signup"
+                                ? "new-password"
+                                : "current-password"
+                            }
+                            value={password}
+                            onChange={(e) => {
+                              setPassword(e.target.value);
+                              if (fieldErrors.password)
+                                setFieldErrors((prev) => ({
+                                  ...prev,
+                                  password: undefined,
+                                }));
+                            }}
+                            onBlur={(e) =>
+                              handleFieldBlur("password", e.target.value)
+                            }
+                            aria-invalid={!!fieldErrors.password}
+                            className={`w-full pl-11 pr-11 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
+                              fieldErrors.password
+                                ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                                : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                            }`}
+                            placeholder="Your password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((v) => !v)}
+                            tabIndex={-1}
+                            aria-label={
+                              showPassword ? "Hide password" : "Show password"
+                            }
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                        {fieldErrors.password ? (
+                          <p className="mt-1.5 text-xs font-medium text-red-600">
+                            {fieldErrors.password}
+                          </p>
+                        ) : (
+                          mode === "signup" && (
+                            <p className="mt-1.5 text-xs text-slate-400">
+                              At least 6 characters
+                            </p>
+                          )
+                        )}
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 text-xs text-slate-500">
+                      <ShieldCheck className="w-4 h-4 text-green-600" />
+                      Your data is secure and encrypted
+                    </div>
+
+                    {error && (
+                      <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                        {error}
+                      </div>
+                    )}
+                    {info && (
+                      <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
+                        <CheckCircle2 className="w-4 h-4 shrink-0" />
+                        {info}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-60 inline-flex items-center justify-center gap-2"
+                    >
+                      {loading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Zap className="w-4 h-4" fill="currentColor" />
+                      )}
+                      {loading ? "Please wait…" : cta}
+                    </button>
+                  </form>
+
+                  <p className="text-center text-sm text-slate-500 mt-6">
+                    {mode === "signup" ? (
+                      <>
+                        Already have an account?{" "}
+                        <button
+                          type="button"
+                          onClick={() => setMode("login")}
+                          className="text-brand font-bold hover:underline"
+                        >
+                          Sign in
+                        </button>
+                      </>
+                    ) : mode === "forgot" ? (
+                      <>
+                        Remembered it?{" "}
+                        <button
+                          type="button"
+                          onClick={() => setMode("login")}
+                          className="text-brand font-bold hover:underline"
+                        >
+                          Back to login
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        New to Apex?{" "}
+                        <button
+                          type="button"
+                          onClick={() => setMode("signup")}
+                          className="text-brand font-bold hover:underline"
+                        >
+                          Sign up
+                        </button>
+                      </>
+                    )}
+                  </p>
+
+                  <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                    Cancel anytime
+                  </div>
+                </>
               )}
             </motion.div>
           </div>
