@@ -29,6 +29,7 @@ declare global {
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
       signOut: () => Promise<unknown> | void;
       redirectToApp: (path?: string) => void;
+      redirectBackToApp?: (redirectUri?: string) => Promise<unknown>;
       getCurrentUser: () => Promise<unknown>;
       onAuthStateChanged: (cb: (user: unknown) => void) => (() => void) | void | Promise<(() => void) | void>;
     };
@@ -226,14 +227,27 @@ export default function Auth() {
           auth.onAuthStateChanged((user) => {
             if (!user || signupInFlightRef.current) return;
             const redirect = new URL(window.location.href).searchParams.get("redirect_uri");
-            if (redirect) return;
 
             const userEmail = getAuthUserEmail(user);
+            // The app sends users here with a redirect_uri when it needs a
+            // session. Someone who is already signed in must be handed straight
+            // back, otherwise they sit on this form staring at a login box
+            // while the app keeps bouncing them here — an endless loop.
+            const sendToApp = () => {
+              if (redirect && auth.redirectBackToApp) {
+                auth.redirectBackToApp(redirect).catch(() => {
+                  auth.redirectToApp("/dashboard");
+                });
+              } else {
+                auth.redirectToApp("/dashboard");
+              }
+            };
+
             if (!userEmail) {
               // Can't verify subscription status without an email to look up
               // — fall back to the previous behavior rather than block someone
               // we have no way to check.
-              auth.redirectToApp("/dashboard");
+              sendToApp();
               return;
             }
 
@@ -241,7 +255,7 @@ export default function Auth() {
               if (cancelled) return;
               if (subscribed) {
                 setNeedsPayment(false);
-                auth.redirectToApp("/dashboard");
+                sendToApp();
               } else {
                 setNeedsPayment(true);
               }
