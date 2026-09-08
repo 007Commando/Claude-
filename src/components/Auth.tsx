@@ -45,7 +45,7 @@ declare global {
         period?: "monthly" | "yearly";
       }) => Promise<unknown>;
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
-      signOut: () => Promise<unknown> | void;
+      signOut: (opts?: { clearApp?: boolean }) => Promise<unknown> | void;
       redirectToApp: (path?: string) => void;
       redirectBackToApp?: (redirectUri?: string) => Promise<unknown>;
       getCurrentUser: () => Promise<unknown>;
@@ -272,7 +272,10 @@ export default function Auth() {
     if (!switchingAccount || startedRef.current) return;
     startedRef.current = true;
     waitForApexAuth()
-      .then((auth) => Promise.resolve(auth.signOut()))
+      // clearApp:false is essential — the default bounces through the app's
+      // logout page and back to this URL, which still carries ?switch=1 and
+      // would start the whole round trip again.
+      .then((auth) => Promise.resolve(auth.signOut({ clearApp: false })))
       .catch(() => undefined)
       .finally(() => {
         suppressForwardRef.current = false;
