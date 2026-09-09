@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Lock } from "lucide-react";
 
 /**
  * Distributors a member can actually reach through the vault.
@@ -7,55 +8,75 @@ import Image from "next/image";
  * only persuasive if it is true, and a name a seller cannot actually find in
  * their account would be the fastest way to lose them.
  *
- * KeHE ships as an image because we hold the asset; the rest render as
- * wordmarks rather than invented logo art. Drop real files into
- * /images/distributors and add them to `logo` to swap any of them in.
+ * KeHE reads clearly; the rest are blurred. The point is the shape of the
+ * list, not the reading of it: a visitor sees one name they recognise and
+ * seven more they cannot quite make out, which is the same feeling as the
+ * locked rows inside the vault itself.
+ *
+ * To render a real logo for any of these, drop the file into
+ * /public/images/distributors and add a `logo` path below.
  */
-const DISTRIBUTORS: { name: string; logo?: string; note: string }[] = [
-  { name: "KeHE", logo: "/images/distributors/kehe.png", note: "Natural & specialty grocery" },
-  { name: "UNFI", note: "Natural & organic" },
-  { name: "C&S Wholesale Grocers", note: "Grocery" },
-  { name: "Bozzuto's", note: "Grocery & HBA" },
-  { name: "Imperial Distributors", note: "HBA & general merchandise" },
-  { name: "Nassau Candy", note: "Candy & snacks" },
-  { name: "Redstone Foods", note: "Candy & snacks" },
-  { name: "Four Seasons Trading", note: "General merchandise" },
+const DISTRIBUTORS: { name: string; logo?: string }[] = [
+  { name: "KeHE", logo: "/images/distributors/kehe.png" },
+  { name: "UNFI" },
+  { name: "C&S Wholesale Grocers" },
+  { name: "Bozzuto's" },
+  { name: "Imperial Distributors" },
+  { name: "Nassau Candy" },
+  { name: "Redstone Foods" },
+  { name: "Four Seasons Trading" },
 ];
 
 export default function DistributorStrip() {
   return (
     <div className="mt-12">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-5">
+      <p className="mb-5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
         Names in the vault include
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {DISTRIBUTORS.map(({ name, logo, note }) => (
-          <div
-            key={name}
-            title={note}
-            className="group flex h-[74px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
-          >
-            {logo ? (
-              <Image
-                src={logo}
-                alt={name}
-                width={110}
-                height={34}
-                className="h-7 w-auto object-contain opacity-70 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0"
-              />
-            ) : (
-              <span className="text-[13px] font-black leading-tight tracking-tight text-slate-500 transition-colors group-hover:text-slate-800">
-                {name}
-              </span>
-            )}
-          </div>
-        ))}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {DISTRIBUTORS.map(({ name, logo }, i) => {
+          const locked = i > 0;
+          return (
+            <div
+              key={name}
+              className={
+                "relative flex h-[74px] items-center justify-center overflow-hidden rounded-2xl border px-3 text-center shadow-sm " +
+                (locked
+                  ? "border-slate-200/70 bg-slate-50/60"
+                  : "border-brand/30 bg-white shadow-[0_8px_24px_-12px_rgba(35,135,186,0.45)]")
+              }
+            >
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={name}
+                  width={110}
+                  height={34}
+                  className="h-8 w-auto object-contain"
+                />
+              ) : (
+                <span
+                  aria-hidden
+                  className="select-none text-[13px] font-black leading-tight tracking-tight text-slate-500 blur-[5px]"
+                >
+                  {name}
+                </span>
+              )}
+
+              {locked && (
+                <span className="absolute bottom-2 right-2 text-slate-300">
+                  <Lock className="h-3 w-3" />
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <p className="mt-4 text-xs text-slate-400">
-        389 vetted distributors in total. Which three open first depends on your
-        categories.
+        389 vetted distributors in total. Three unlock the day you start —
+        which three depends on your categories.
       </p>
     </div>
   );
