@@ -98,13 +98,13 @@ export default function StartPage() {
         }
       />
 
-      <section className="py-20 bg-slate-900">
+      <section className="py-14 sm:py-20 bg-slate-900">
         <Rail>
           <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tight">
+            <h3 className="text-[1.875rem] sm:text-4xl lg:text-5xl font-black text-white mb-5 sm:mb-6 leading-tight tracking-tight">
               One dollar to find out whether wholesale works for you.
             </h3>
-            <p className="text-xl text-slate-300 mb-10 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-300 mb-8 sm:mb-10 leading-relaxed">
               Suppliers, software and a mentor that writes the first order.
               Cancel before the week is out and that is all you pay.
             </p>

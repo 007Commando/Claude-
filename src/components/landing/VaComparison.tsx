@@ -83,13 +83,13 @@ export default function VaComparison() {
   ] as const;
 
   return (
-    <section id="compare" className="scroll-mt-24 bg-white py-16 lg:py-20">
+    <section id="compare" className="scroll-mt-24 bg-white py-12 sm:py-16 lg:py-20">
       <Rail>
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <h3 className="mb-5 text-4xl font-extrabold tracking-tight text-slate-900">
+          <h3 className="mb-4 sm:mb-5 text-[1.75rem] sm:text-4xl font-extrabold leading-tight tracking-tight text-slate-900">
             The same hour. Two very different things you are buying.
           </h3>
-          <p className="text-lg leading-relaxed text-slate-600">
+          <p className="text-base sm:text-lg leading-relaxed text-slate-600">
             We are not the expensive option. We are the one where you know what
             arrives.
           </p>
@@ -121,7 +121,7 @@ export default function VaComparison() {
                 i > 0 ? "border-t border-slate-200" : "lg:border-t lg:border-slate-200"
               }`}
             >
-              <div className="bg-slate-50 px-7 py-5 lg:bg-white lg:py-7">
+              <div className="bg-slate-50 px-5 sm:px-7 py-5 lg:bg-white lg:py-7">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   {row.label}
                 </span>
@@ -133,7 +133,7 @@ export default function VaComparison() {
                 return (
                   <div
                     key={key}
-                    className={`border-t border-slate-100 px-7 py-5 lg:border-t-0 lg:py-7 ${
+                    className={`border-t border-slate-100 px-5 sm:px-7 py-5 lg:border-t-0 lg:py-7 ${
                       isApex ? "bg-brand/[0.06]" : "bg-white"
                     }`}
                   >
@@ -163,47 +163,89 @@ export default function VaComparison() {
           ))}
 
           {/* Capability block */}
-          <div className="border-t border-slate-200 bg-slate-50 px-7 py-5">
+          <div className="border-t border-slate-200 bg-slate-50 px-5 sm:px-7 py-5">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Experience in
             </span>
           </div>
 
-          {SKILLS.map((skill) => (
-            <div
-              key={skill}
-              className="grid grid-cols-1 border-t border-slate-100 lg:grid-cols-[1.1fr_1.2fr_1fr_1fr]"
-            >
-              <div className="bg-white px-7 pt-5 lg:py-6">
-                <span className="text-sm font-medium text-slate-700">
-                  {skill}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 bg-brand/[0.06] px-7 py-4 lg:justify-center lg:py-6">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-brand lg:hidden">
-                  Apex
-                </span>
-                <Check className="size-4 shrink-0 text-brand" aria-hidden />
-                <span className="text-sm font-semibold text-slate-800">
-                  Trained
-                </span>
-              </div>
-
-              {(["fiverr", "upwork"] as const).map((key) => (
-                <div
-                  key={key}
-                  className="flex items-center gap-3 bg-white px-7 py-4 lg:justify-center lg:py-6"
-                >
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 lg:hidden">
-                    {key === "fiverr" ? "Fiverr" : "Upwork"}
+          {/*
+            Stacked on a phone, this block was five rows x three cells = fifteen
+            boxes that between them said only two things. The full grid is kept
+            for wide screens, where the columns carry the comparison; below lg
+            it collapses to one claim per side.
+          */}
+          <div className="hidden lg:block">
+            {SKILLS.map((skill) => (
+              <div
+                key={skill}
+                className="grid grid-cols-1 border-t border-slate-100 lg:grid-cols-[1.1fr_1.2fr_1fr_1fr]"
+              >
+                <div className="bg-white px-5 sm:px-7 pt-5 lg:py-6">
+                  <span className="text-sm font-medium text-slate-700">
+                    {skill}
                   </span>
-                  <Minus className="size-4 shrink-0 text-slate-300" aria-hidden />
-                  <span className="text-sm text-slate-500">Varies by hire</span>
                 </div>
-              ))}
+
+                <div className="flex items-center gap-3 bg-brand/[0.06] px-5 sm:px-7 py-4 lg:justify-center lg:py-6">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand lg:hidden">
+                    Apex
+                  </span>
+                  <Check className="size-4 shrink-0 text-brand" aria-hidden />
+                  <span className="text-sm font-semibold text-slate-800">
+                    Trained
+                  </span>
+                </div>
+
+                {(["fiverr", "upwork"] as const).map((key) => (
+                  <div
+                    key={key}
+                    className="flex items-center gap-3 bg-white px-5 sm:px-7 py-4 lg:justify-center lg:py-6"
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 lg:hidden">
+                      {key === "fiverr" ? "Fiverr" : "Upwork"}
+                    </span>
+                    <Minus className="size-4 shrink-0 text-slate-300" aria-hidden />
+                    <span className="text-sm text-slate-500">Varies by hire</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div className="lg:hidden">
+            <div className="border-t border-slate-200 bg-brand/[0.06] px-5 py-5">
+              <span className="mb-3 block text-[10px] font-bold uppercase tracking-widest text-brand">
+                Apex
+              </span>
+              <ul className="space-y-2.5">
+                {SKILLS.map((skill) => (
+                  <li key={skill} className="flex items-start gap-3">
+                    <Check
+                      className="mt-0.5 size-4 shrink-0 text-brand"
+                      aria-hidden
+                    />
+                    <span className="text-sm font-semibold text-slate-800">
+                      {skill}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
+
+            <div className="border-t border-slate-100 bg-white px-5 py-5">
+              <span className="mb-3 block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                Fiverr / Upwork
+              </span>
+              <div className="flex gap-3">
+                <Minus className="mt-1 size-4 shrink-0 text-slate-300" aria-hidden />
+                <p className="text-sm leading-relaxed text-slate-500">
+                  Varies by hire, on all five. You find out which you have
+                  after you have paid for the hours.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-slate-400">
@@ -227,9 +269,9 @@ export default function VaComparison() {
  */
 export function SatisfactionGuarantee() {
   return (
-    <section className="bg-slate-50 py-16 lg:py-20">
+    <section className="bg-slate-50 py-12 sm:py-16 lg:py-20">
       <Rail>
-        <div className="mx-auto grid max-w-5xl items-center gap-12 rounded-[32px] border border-slate-200 bg-white p-10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.15)] lg:grid-cols-[auto_1fr] lg:gap-16 lg:p-14">
+        <div className="mx-auto grid max-w-5xl items-center gap-9 sm:gap-12 rounded-[28px] sm:rounded-[32px] border border-slate-200 bg-white p-7 sm:p-10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.15)] lg:grid-cols-[auto_1fr] lg:gap-16 lg:p-14">
           {/* Seal */}
           <div className="mx-auto shrink-0">
             <svg
@@ -351,11 +393,11 @@ export function SatisfactionGuarantee() {
               Our guarantee
             </div>
 
-            <h3 className="mb-5 text-4xl font-extrabold leading-tight tracking-tight text-slate-900">
+            <h3 className="mb-4 sm:mb-5 text-[1.75rem] sm:text-4xl font-extrabold leading-tight tracking-tight text-slate-900">
               Judge the work before you pay for any of it.
             </h3>
 
-            <p className="mb-8 text-lg leading-relaxed text-slate-600">
+            <p className="mb-8 text-base sm:text-lg leading-relaxed text-slate-600">
               Your first seven days cost nothing. Hand your assistant the work
               that has been sitting on your desk, watch it land in your Apex
               account, and decide from what you can see rather than from a

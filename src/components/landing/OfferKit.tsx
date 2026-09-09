@@ -212,7 +212,7 @@ export function OfferHero({
   art: ReactNode;
 }) {
   return (
-    <section className="pt-28 pb-12 lg:pt-36 lg:pb-16 overflow-hidden">
+    <section className="pt-20 pb-10 sm:pt-28 sm:pb-12 lg:pt-36 lg:pb-16 overflow-hidden">
       <Rail>
         <div className="lg:grid lg:grid-cols-[1fr_1.2fr] lg:gap-16 items-center">
           <motion.div
@@ -222,17 +222,17 @@ export function OfferHero({
             className="max-w-2xl"
           >
             {eyebrow}
-            <h1 className="text-5xl lg:text-6xl font-black text-slate-900 leading-[1.05] mb-6 tracking-tight">
+            <h1 className="text-[2.125rem] sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.08] sm:leading-[1.05] mb-5 sm:mb-6 tracking-tight">
               {titleTop} <br />
               <span className="text-slate-300 italic">{titleAccent}</span>
             </h1>
-            <p className="text-2xl text-slate-500 mb-8 leading-relaxed font-medium">
+            <p className="text-lg sm:text-xl lg:text-2xl text-slate-500 mb-8 leading-relaxed font-medium">
               {lede}
             </p>
-            <div className="flex flex-col sm:flex-row gap-5">{actions}</div>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">{actions}</div>
             {note && <p className="mt-6 text-sm text-slate-500">{note}</p>}
           </motion.div>
-          <div className="mt-14 lg:mt-0">{art}</div>
+          <div className="mt-10 sm:mt-14 lg:mt-0">{art}</div>
         </div>
       </Rail>
     </section>
@@ -258,7 +258,7 @@ export function OfferRow({
   below?: ReactNode;
 }) {
   return (
-    <section className="py-16 lg:py-20 bg-white border-b border-slate-200">
+    <section className="py-12 sm:py-16 lg:py-20 bg-white border-b border-slate-200">
       <Rail>
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-16 items-center">
           <motion.div
@@ -268,10 +268,10 @@ export function OfferRow({
             className={flip ? "lg:order-2" : undefined}
           >
             {eyebrow}
-            <h3 className="text-4xl font-extrabold text-slate-900 mb-5">
+            <h3 className="text-[1.75rem] sm:text-4xl font-extrabold text-slate-900 mb-4 sm:mb-5 leading-tight">
               {title}
             </h3>
-            <p className="text-lg text-slate-600 mb-6 leading-relaxed">{body}</p>
+            <p className="text-base sm:text-lg text-slate-600 mb-6 leading-relaxed">{body}</p>
             <CheckList items={items} />
             {below}
           </motion.div>

@@ -98,13 +98,13 @@ export default function VirtualAssistantsPage() {
 
       <SatisfactionGuarantee />
 
-      <section id="plans" className="py-16 lg:py-20 bg-white">
+      <section id="plans" className="py-12 sm:py-16 lg:py-20 bg-white">
         <Rail>
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h3 className="text-4xl font-extrabold text-slate-900 mb-5">
+            <h3 className="text-[1.75rem] sm:text-4xl font-extrabold text-slate-900 mb-4 sm:mb-5 leading-tight">
               Part time or full time.
             </h3>
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
               Both start with 7 days free, so you can judge the work before you
               pay for it.
             </p>
@@ -114,12 +114,12 @@ export default function VirtualAssistantsPage() {
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
-                className="bg-white rounded-[32px] border border-slate-200 p-10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.15)]"
+                className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200 p-7 sm:p-10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.15)]"
               >
                 <p className="text-[10px] font-bold uppercase tracking-wider text-brand mb-3">
                   {plan.name}
                 </p>
-                <p className="text-3xl font-black text-slate-900 mb-3 tracking-tight">
+                <p className="text-2xl sm:text-3xl font-black text-slate-900 mb-3 tracking-tight">
                   {plan.hours}
                 </p>
                 <p className="text-slate-600 mb-8 leading-relaxed">{plan.body}</p>
@@ -137,10 +137,10 @@ export default function VirtualAssistantsPage() {
         </Rail>
       </section>
 
-      <section className="py-20 bg-slate-900">
+      <section className="py-14 sm:py-20 bg-slate-900">
         <Rail>
           <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tight">
+            <h3 className="text-[1.875rem] sm:text-4xl lg:text-5xl font-black text-white mb-5 sm:mb-6 leading-tight tracking-tight">
               Your first week costs nothing.
             </h3>
             <p className="text-xl text-slate-300 mb-10 leading-relaxed">
