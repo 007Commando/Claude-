@@ -13,6 +13,8 @@ import {
   ctaSecondary,
 } from "../../components/landing/OfferKit";
 
+import DistributorStrip from "../../components/landing/DistributorStrip";
+
 import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
 import vendorsDashboard from "../../assets/vendors-dashboard.png.asset.json";
 import marketDatabase from "../../assets/market-database.png.asset.json";
@@ -68,6 +70,7 @@ export default function StartPage() {
           ["Vetted for Amazon-friendly terms", "Distributors that permit resale on the marketplace."],
           ["Three more every month you stay", "Your catalogue keeps widening as you grow."],
         ]}
+        below={<DistributorStrip />}
         art={<ProductFrame src={vendorsDashboard.url} alt="Supplier management inside Apex" />}
       />
 

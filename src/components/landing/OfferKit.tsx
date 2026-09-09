@@ -133,6 +133,7 @@ export function OfferRow({
   items,
   art,
   flip,
+  below,
 }: {
   eyebrow: ReactNode;
   title: string;
@@ -140,6 +141,7 @@ export function OfferRow({
   items: [string, string][];
   art: ReactNode;
   flip?: boolean;
+  below?: ReactNode;
 }) {
   return (
     <section className="py-24 bg-white border-b border-slate-200">
@@ -157,6 +159,7 @@ export function OfferRow({
             </h3>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">{body}</p>
             <CheckList items={items} />
+            {below}
           </motion.div>
           <div className={flip ? "lg:order-1" : undefined}>{art}</div>
         </div>
