@@ -19,9 +19,9 @@ import DistributorStrip from "../../components/landing/DistributorStrip";
 import sourcingSpeed from "../../assets/sourcing-speed.mp4.asset.json";
 
 export const metadata: Metadata = {
-  title: "Start your Amazon wholesale business for $1 — Apex Applications",
+  title: "Start your Amazon wholesale business free for 7 days — Apex Applications",
   description:
-    "Three authorized supplier accounts, the full Apex software suite, and an AI mentor that builds your first purchase order. Your first week for $1.",
+    "Three authorized supplier accounts, the full Apex software suite, and an AI mentor that builds your first purchase order. Free for your first 7 days.",
   robots: { index: false, follow: false },
 };
 
@@ -32,22 +32,22 @@ export default function StartPage() {
     <>
       <OfferHero
         eyebrow={
-          <Eyebrow icon={<PackageCheck size={14} />}>The $1 starter offer</Eyebrow>
+          <Eyebrow icon={<PackageCheck size={14} />}>The 7-day starter offer</Eyebrow>
         }
         titleTop="Three Suppliers. The Software. Your First PO."
-        titleAccent="All For One Dollar."
+        titleAccent="Free For Seven Days."
         lede="Most sellers never place a first wholesale order because no distributor replies. Start with three accounts already open, and an AI mentor that turns them into a purchase order."
         actions={
           <>
             <Link href={SIGNUP} className={ctaPrimary}>
-              Start for $1 <ArrowRight size={18} />
+              Start 7 Days Free <ArrowRight size={18} />
             </Link>
             <Link href="/how-it-works" className={ctaSecondary}>
               How It Works
             </Link>
           </>
         }
-        note="3 authorized suppliers included · Cancel any time · No long contract"
+        note="3 authorized suppliers included · No card charged for 7 days · Cancel any time"
         art={
           <VideoFrame
             src="/videos/dashboard-hero-demo.mp4"
@@ -102,17 +102,20 @@ export default function StartPage() {
         <Rail>
           <div className="max-w-3xl mx-auto text-center">
             <h3 className="text-[1.875rem] sm:text-4xl lg:text-5xl font-black text-white mb-5 sm:mb-6 leading-tight tracking-tight">
-              One dollar to find out whether wholesale works for you.
+              Seven days to find out whether wholesale works for you.
             </h3>
             <p className="text-base sm:text-lg lg:text-xl text-slate-300 mb-8 sm:mb-10 leading-relaxed">
               Suppliers, software and a mentor that writes the first order.
-              Cancel before the week is out and that is all you pay.
+              Cancel before the week is out and you are charged nothing at all.
             </p>
             <div className="flex justify-center">
               <Link href={SIGNUP} className={ctaPrimary}>
-                Start for $1 <ArrowRight size={18} />
+                Start 7 Days Free <ArrowRight size={18} />
               </Link>
             </div>
+            <p className="mt-6 text-sm text-slate-400">
+              $149.99 a month after the trial. Cancel any time before it ends.
+            </p>
           </div>
         </Rail>
       </section>
