@@ -101,6 +101,25 @@ const softwareApplicationJsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/*
+          Signing in touches four origins in sequence — the auth script, the
+          Firebase SDK, the identity API, then the app itself. Warming the
+          connections here means the handshake for each is already done when
+          the user clicks, rather than being paid mid-login.
+        */}
+        <link rel="preconnect" href="https://app.apexapplications.io" crossOrigin="" />
+        <link rel="preconnect" href="https://www.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossOrigin="" />
+        <link rel="preconnect" href="https://securetoken.googleapis.com" crossOrigin="" />
+        {/* Fetch starts immediately instead of waiting for hydration. */}
+        <link
+          rel="preload"
+          as="script"
+          href="https://app.apexapplications.io/apex-auth.js"
+          crossOrigin=""
+        />
+      </head>
       <body>
         <script
           type="application/ld+json"
