@@ -44,7 +44,7 @@ export default function FeatureSection({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="interiorFeaturePanel relative grid lg:grid-cols-2 gap-12 lg:gap-16 items-center scroll-mt-28"
+      className="relative grid lg:grid-cols-2 gap-12 lg:gap-16 items-center scroll-mt-28"
     >
       <div className={imageFirst ? "lg:order-2" : "lg:order-1"}>
         <div className="flex items-center gap-3 mb-4">

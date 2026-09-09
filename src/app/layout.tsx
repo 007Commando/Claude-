@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import SiteShell from "../components/site/SiteShell";
-import "../components/site/site.css";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
@@ -138,11 +136,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
         <div className="min-h-screen bg-white">
-          <SiteShell><Navigation />
+          <Navigation />
           <HashScrollHandler />
           <LeadAttribution />
           <main>{children}</main>
-          <Footer /></SiteShell>
+          <Footer />
         </div>
       </body>
     </html>

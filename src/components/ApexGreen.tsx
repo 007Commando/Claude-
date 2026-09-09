@@ -27,7 +27,7 @@ export default function ApexGreen() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="interiorHero max-w-4xl mx-auto mb-8"
+          className="max-w-4xl mx-auto mb-8"
         >
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
@@ -36,8 +36,8 @@ export default function ApexGreen() {
             </div>
           </div>
           <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
-            Hunting <br/>
-            <span className="text-green-600 italic">algorithms.</span>
+            HUNTING <br/>
+            <span className="text-green-600 italic">ALGORITHMS.</span>
           </h1>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Green is built for the hunt. High-speed catalog processing and scanning tools that find profit in thousands of spreadsheet rows in seconds.

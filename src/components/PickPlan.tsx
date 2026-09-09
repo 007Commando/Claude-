@@ -1,5 +1,4 @@
 "use client";
-import { ArrowRight } from "lucide-react";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -155,7 +154,7 @@ export default function PickPlan() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="interiorHero pricingHero grid lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
         {/* Brand collage */}
           <div className="relative flex items-center justify-center">
             <img
@@ -206,9 +205,6 @@ export default function PickPlan() {
           </div>
         </div>
 
-        <div className="mobilePlanChoices" aria-label="Choose your plan">
-          {[{name:"Starter",tier:"starter" as const,price:limitedPrice,description:"For growing wholesale businesses"},{name:"Pro",tier:"pro" as const,price:unlimitedPrice,description:"For teams ready to scale"}].map(plan=><article key={plan.tier}><small>{plan.description}</small><h2>{plan.name}</h2><strong>${plan.price}<span>/month</span></strong><p>7-day free trial · {isAnnual?"Billed annually":"Billed monthly"}</p><button onClick={()=>handleStart(plan.tier)}>Start free trial <ArrowRight size={18}/></button></article>)}
-        </div>
         {/* Unified comparison container */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">

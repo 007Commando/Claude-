@@ -29,7 +29,7 @@ export default function FbaThankYou() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="interiorHero text-center mb-12"
+          className="text-center mb-12"
         >
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-6">
             <CheckCircle2 size={32} className="text-emerald-600" strokeWidth={2} />

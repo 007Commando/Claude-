@@ -42,7 +42,7 @@ export default function ApexBlue() {
           initial="initial"
           animate="animate"
           variants={fadeIn}
-          className="interiorHero max-w-4xl mx-auto mb-8"
+          className="max-w-4xl mx-auto mb-8"
         >
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
@@ -51,8 +51,8 @@ export default function ApexBlue() {
             </div>
           </div>
           <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
-            Operational <br/>
-            <span className="text-blue-600 italic">dominance.</span>
+            OPERATIONAL <br/>
+            <span className="text-blue-600 italic">DOMINANCE.</span>
           </h1>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Blue is the engine room of your enterprise. Built specifically for wholesale high-volume operations, automating the complex financial and logistical workflows.
