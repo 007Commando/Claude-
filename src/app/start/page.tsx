@@ -8,6 +8,7 @@ import {
   OfferHero,
   OfferRow,
   ProductFrame,
+  SceneFrame,
   VideoFrame,
   Rail,
   ctaPrimary,
@@ -17,7 +18,6 @@ import {
 import DistributorStrip from "../../components/landing/DistributorStrip";
 
 import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
-import vendorsDashboard from "../../assets/vendors-dashboard.png.asset.json";
 
 export const metadata: Metadata = {
   title: "Start your Amazon wholesale business for $1 — Apex Applications",
@@ -71,7 +71,12 @@ export default function StartPage() {
           ["Three more every month you stay", "Your catalogue keeps widening as you grow."],
         ]}
         below={<DistributorStrip />}
-        art={<ProductFrame src={vendorsDashboard.url} alt="Supplier management inside Apex" />}
+        art={
+          <SceneFrame
+            src="/images/vendors-with-products.webp"
+            alt="The Apex vendor list surrounded by the branded products a wholesale seller sources"
+          />
+        }
       />
 
       <OfferRow

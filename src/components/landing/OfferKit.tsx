@@ -90,6 +90,25 @@ export function VideoFrame({ src, label }: { src: string; label: string }) {
   );
 }
 
+export function SceneFrame({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative">
+      {/*
+        The composite carries its own pale ground, a shade off the white
+        section behind it. Left square that edge reads as a pasted rectangle,
+        so it is rounded and lifted into a panel on purpose instead.
+      */}
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-auto rounded-[28px] shadow-[0_40px_80px_-24px_rgba(16,24,40,0.18)]"
+      />
+      <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-500/10 blur-[70px] rounded-full -z-10" />
+      <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-brand/10 blur-[70px] rounded-full -z-10" />
+    </div>
+  );
+}
+
 export function ProductFrame({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="relative">
