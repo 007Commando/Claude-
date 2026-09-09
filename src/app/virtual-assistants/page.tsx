@@ -11,6 +11,9 @@ import {
   ctaPrimary,
   ctaSecondary,
 } from "../../components/landing/OfferKit";
+import VaComparison, {
+  SatisfactionGuarantee,
+} from "../../components/landing/VaComparison";
 
 import resourceLibrary from "../../assets/resource-library.png.asset.json";
 import inventoryRestocking from "../../assets/inventory-restocking.png.asset.json";
@@ -53,14 +56,16 @@ export default function VirtualAssistantsPage() {
             <Link href={CONTACT} className={ctaPrimary}>
               Start 7 Days Free <ArrowRight size={18} />
             </Link>
-            <Link href="#plans" className={ctaSecondary}>
-              Compare Plans
+            <Link href="#compare" className={ctaSecondary}>
+              Compare Rates
             </Link>
           </>
         }
-        note="First 7 days free · Part time or full time · Competitive professional rates"
+        note="First 7 days free · Part time or full time · $5.00 – $6.50 an hour, fixed"
         art={<ProductFrame src={purchaseOrders.url} alt="Work an Apex assistant takes off your desk" />}
       />
+
+      <VaComparison />
 
       <OfferRow
         eyebrow={
@@ -91,7 +96,9 @@ export default function VirtualAssistantsPage() {
         art={<ProductFrame src={inventoryRestocking.url} alt="Restock dashboard" />}
       />
 
-      <section id="plans" className="py-24 bg-slate-50">
+      <SatisfactionGuarantee />
+
+      <section id="plans" className="py-16 lg:py-20 bg-white">
         <Rail>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h3 className="text-4xl font-extrabold text-slate-900 mb-5">
@@ -124,7 +131,8 @@ export default function VirtualAssistantsPage() {
           </div>
 
           <p className="text-center text-sm text-slate-500 mt-10 max-w-xl mx-auto">
-            Rates are quoted on a short call once we know what you need covered.
+            Both are billed at the same fixed $5.00 – $6.50 an hour. No platform
+            fee, no agency retainer, no charge for the first seven days.
           </p>
         </Rail>
       </section>
