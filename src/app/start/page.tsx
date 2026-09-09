@@ -7,7 +7,6 @@ import {
   Eyebrow,
   OfferHero,
   OfferRow,
-  ProductFrame,
   SceneFrame,
   VideoFrame,
   Rail,
@@ -17,7 +16,7 @@ import {
 
 import DistributorStrip from "../../components/landing/DistributorStrip";
 
-import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
+import sourcingSpeed from "../../assets/sourcing-speed.mp4.asset.json";
 
 export const metadata: Metadata = {
   title: "Start your Amazon wholesale business for $1 — Apex Applications",
@@ -89,7 +88,14 @@ export default function StartPage() {
           ["Shows the working", "Every step carries the profit and ROI that justified it."],
           ["Ends in a sent purchase order", "Step by step to an order, not a chat transcript."],
         ]}
-        art={<ProductFrame src={purchaseOrders.url} alt="A purchase order with projected revenue, margin and ROI" />}
+        art={
+          <VideoFrame
+            src={sourcingSpeed.url}
+            label="Sourcing analysis running across a supplier catalogue"
+            variant="panel"
+            lazy
+          />
+        }
       />
 
       <section className="py-20 bg-slate-900">

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { CheckCircle2 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 /**
  * The landing page's own patterns, lifted verbatim so the offer pages are the
@@ -70,34 +70,102 @@ export function CheckList({ items }: { items: [string, string][] }) {
  * whole reason the landing page leads with it. Padding is p-2 rather than the
  * p-3 of ProductFrame because the video has no white margin of its own.
  */
-export function VideoFrame({ src, label }: { src: string; label: string }) {
+/**
+ * The home page's demo videos, in the frames it uses for them.
+ *
+ * A still screenshot has to be read; these move on their own, which is the
+ * reason the landing page leads with them.
+ *
+ * "hero" matches the top-of-page frame (p-2, no inner border — the video has
+ * no white margin of its own). "panel" matches the mid-page sourcing frame.
+ *
+ * `lazy` is not decoration. An autoplaying video is fetched eagerly, and the
+ * sourcing clip is 5MB — four times the hero's. Below the fold that is 5MB
+ * spent before a visitor has scrolled far enough to know they want it, on a
+ * page whose whole job is a $1 signup. So the source is withheld until the
+ * frame nears the viewport, then attached and played.
+ */
+export function VideoFrame({
+  src,
+  label,
+  variant = "hero",
+  lazy = false,
+}: {
+  src: string;
+  label: string;
+  variant?: "hero" | "panel";
+  lazy?: boolean;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!lazy || !el) return;
+
+    // No IntersectionObserver (or a very old browser): load it rather than
+    // leave an empty frame on the page.
+    if (typeof IntersectionObserver === "undefined") {
+      el.src = src;
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        el.src = src;
+        // Autoplay can still be refused; there is nothing useful to do about
+        // it, and the frame simply shows the first decoded frame instead.
+        void el.play().catch(() => {});
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [lazy, src]);
+
+  const panel = variant === "panel";
+
   return (
     <div className="relative">
-      <div className="relative bg-white rounded-[40px] p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-200 overflow-hidden">
+      <div
+        className={`relative bg-white rounded-[40px] ${panel ? "p-3" : "p-2"} shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-200 overflow-hidden`}
+      >
         <video
-          src={src}
+          ref={ref}
+          src={lazy ? undefined : src}
+          preload={lazy ? "none" : "auto"}
           autoPlay
           muted
           loop
           playsInline
           aria-label={label}
-          className="w-full h-auto rounded-[34px]"
+          className={
+            panel
+              ? "w-full h-auto rounded-[34px] border border-slate-100 scale-[1.02] hover:scale-[1.04] transition-transform duration-500"
+              : "w-full h-auto rounded-[34px]"
+          }
         />
       </div>
-      <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand/20 blur-[80px] rounded-full" />
-      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 blur-[80px] rounded-full" />
+      <div
+        className={`absolute -top-10 -right-10 w-40 h-40 ${panel ? "bg-purple-500/15" : "bg-brand/20"} blur-[80px] rounded-full`}
+      />
+      <div
+        className={`absolute -bottom-10 -left-10 w-40 h-40 ${panel ? "bg-brand/15" : "bg-blue-500/10"} blur-[80px] rounded-full`}
+      />
     </div>
   );
 }
 
+/**
+ * A composed scene rather than a screenshot: the packaging already breaks the
+ * frame, so ProductFrame's white card would draw a border straight through the
+ * products. The image carries its own pale ground, which reads as a pasted
+ * rectangle against a white section, so it is rounded into a panel on purpose.
+ */
 export function SceneFrame({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="relative">
-      {/*
-        The composite carries its own pale ground, a shade off the white
-        section behind it. Left square that edge reads as a pasted rectangle,
-        so it is rounded and lifted into a panel on purpose instead.
-      */}
       <img
         src={src}
         alt={alt}
