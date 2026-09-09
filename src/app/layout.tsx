@@ -107,17 +107,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Firebase SDK, the identity API, then the app itself. Warming the
           connections here means the handshake for each is already done when
           the user clicks, rather than being paid mid-login.
+
+          crossOrigin matters and is not cosmetic: a hint must match the mode
+          of the request it is warming, or the browser opens a second
+          connection and the hint buys nothing. The first two are fetched as
+          plain scripts (no CORS); the googleapis endpoints are fetched by the
+          Firebase SDK with CORS.
         */}
-        <link rel="preconnect" href="https://app.apexapplications.io" crossOrigin="" />
-        <link rel="preconnect" href="https://www.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://app.apexapplications.io" />
+        <link rel="preconnect" href="https://www.gstatic.com" />
         <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossOrigin="" />
         <link rel="preconnect" href="https://securetoken.googleapis.com" crossOrigin="" />
-        {/* Fetch starts immediately instead of waiting for hydration. */}
+        {/*
+          apex-auth.js is loaded below by next/script as afterInteractive, so
+          without this its fetch waits for hydration. No crossOrigin, to match
+          that plain script tag — the origin sends no Access-Control-Allow-Origin,
+          so a CORS-mode preload would simply fail.
+        */}
         <link
           rel="preload"
           as="script"
           href="https://app.apexapplications.io/apex-auth.js"
-          crossOrigin=""
         />
       </head>
       <body>

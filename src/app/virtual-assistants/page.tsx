@@ -129,7 +129,7 @@ export default function VirtualAssistantsPage() {
         </Rail>
       </section>
 
-      <section className="py-24 bg-slate-900">
+      <section className="py-20 bg-slate-900">
         <Rail>
           <div className="max-w-3xl mx-auto text-center">
             <h3 className="text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tight">

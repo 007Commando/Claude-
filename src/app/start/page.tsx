@@ -8,6 +8,7 @@ import {
   OfferHero,
   OfferRow,
   ProductFrame,
+  VideoFrame,
   Rail,
   ctaPrimary,
   ctaSecondary,
@@ -17,7 +18,6 @@ import DistributorStrip from "../../components/landing/DistributorStrip";
 
 import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
 import vendorsDashboard from "../../assets/vendors-dashboard.png.asset.json";
-import marketDatabase from "../../assets/market-database.png.asset.json";
 
 export const metadata: Metadata = {
   title: "Start your Amazon wholesale business for $1 — Apex Applications",
@@ -50,9 +50,9 @@ export default function StartPage() {
         }
         note="3 authorized suppliers included · Cancel any time · No long contract"
         art={
-          <ProductFrame
-            src={purchaseOrders.url}
-            alt="Purchase order with projected revenue, margin and ROI"
+          <VideoFrame
+            src="/videos/dashboard-hero-demo.mp4"
+            label="A walkthrough of the Apex dashboard"
           />
         }
       />
@@ -84,10 +84,10 @@ export default function StartPage() {
           ["Shows the working", "Every step carries the profit and ROI that justified it."],
           ["Ends in a sent purchase order", "Step by step to an order, not a chat transcript."],
         ]}
-        art={<ProductFrame src={marketDatabase.url} alt="Product database showing profit and ROI per ASIN" />}
+        art={<ProductFrame src={purchaseOrders.url} alt="A purchase order with projected revenue, margin and ROI" />}
       />
 
-      <section className="py-24 bg-slate-900">
+      <section className="py-20 bg-slate-900">
         <Rail>
           <div className="max-w-3xl mx-auto text-center">
             <h3 className="text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tight">
