@@ -10,6 +10,10 @@ import {
 } from "../../components/landing/OfferKit";
 import SiteNavigation from "../../components/site/SiteNavigation";
 
+import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
+import vendorsDashboard from "../../assets/vendors-dashboard.png.asset.json";
+import marketDatabase from "../../assets/market-database.png.asset.json";
+
 export const metadata: Metadata = {
   title: "Start for $1 (variant B) — Apex Applications",
   description:
@@ -67,8 +71,8 @@ export default function StartPage() {
 
               <div className="mt-24 lg:mt-0">
                 <ProductFrame
-                  alt="Purchase order built by the AI mentor — supplier, units, landed cost and projected profit"
-                  caption="Screenshot placeholder — drop in a demo-data capture"
+                  src={purchaseOrders.url}
+                  alt="Purchase order with projected revenue, margin and ROI"
                 />
               </div>
             </div>
@@ -119,8 +123,8 @@ export default function StartPage() {
               </div>
               <div className="mt-16 lg:mt-0">
                 <ProductFrame
-                  alt="Authorized distributor list with contact emails and categories"
-                  caption="Screenshot placeholder — Distributor Vault"
+                  src={vendorsDashboard.url}
+                  alt="Supplier management inside Apex"
                 />
               </div>
             </div>
@@ -133,8 +137,8 @@ export default function StartPage() {
             <div className="items-center gap-20 lg:grid lg:grid-cols-[1.4fr_1fr]">
               <div className="order-2 mt-16 lg:order-1 lg:mt-0">
                 <ProductFrame
-                  alt="AI mentor Action deck — restock, source and reprice steps with real numbers"
-                  caption="Screenshot placeholder — Apex Concierge"
+                  src={marketDatabase.url}
+                  alt="Product database showing profit and ROI per ASIN"
                 />
               </div>
               <div className="order-1 lg:order-2">

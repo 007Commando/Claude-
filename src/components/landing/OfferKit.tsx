@@ -75,20 +75,14 @@ export function ProductFrame({
   alt,
   caption,
 }: {
-  src?: string;
+  src: string;
   alt: string;
   caption?: string;
 }) {
   return (
     <div className="relative">
       <div className="relative overflow-hidden rounded-[40px] border border-slate-200 bg-white p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)]">
-        {src ? (
-          <img src={src} alt={alt} className="h-auto w-full rounded-[34px]" />
-        ) : (
-          <div className="flex aspect-[16/10] items-center justify-center rounded-[34px] bg-gradient-to-br from-slate-50 to-slate-100 px-6 text-center">
-            <p className="text-sm font-medium text-slate-400">{alt}</p>
-          </div>
-        )}
+        <img src={src} alt={alt} className="h-auto w-full rounded-[34px]" />
       </div>
       <div
         aria-hidden
