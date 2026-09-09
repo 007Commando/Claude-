@@ -31,6 +31,7 @@ import type {
   TrialRow,
 } from "../../lib/dashboard/types";
 import { downloadCsv } from "../../lib/dashboard/csv";
+import type { BookedMeeting } from "../../lib/dashboard/calendly";
 
 const money = (n: number) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
@@ -139,6 +140,68 @@ const TEMPERATURE_STYLES: Record<Temperature, { label: string; className: string
 const TEMPERATURE_ORDER: Temperature[] = ["cold", "cool", "warm", "hot", "very_hot"];
 
 const MIA_STYLE = { label: "MIA", className: "bg-gray-700 text-gray-100 border-gray-600" };
+
+/**
+ * Whether a lead has time on the calendar.
+ *
+ * An upcoming booking is the one that changes what you do today, so it is the
+ * only state given colour; a past meeting is context and stays quiet. Cancelled
+ * is called out rather than hidden, because "they booked and cancelled" is a
+ * different conversation from "they never booked".
+ */
+function MeetingCell({
+  meeting,
+  configured,
+}: {
+  meeting: BookedMeeting | null | undefined;
+  configured: boolean;
+}) {
+  if (!configured) {
+    return <span className="text-slate-300" title="Calendly is not connected">—</span>;
+  }
+  if (meeting === undefined) {
+    return <span className="text-slate-300">·</span>;
+  }
+  if (!meeting) {
+    return <span className="text-slate-400">—</span>;
+  }
+
+  const when = new Date(meeting.startsAt);
+  const label = when.toLocaleDateString(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const time = when.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  if (meeting.status === "canceled") {
+    return (
+      <span
+        className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500 line-through"
+        title={`Cancelled — was ${label} at ${time}`}
+      >
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={
+        meeting.isUpcoming
+          ? "inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-700"
+          : "inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600"
+      }
+      title={`${meeting.eventName ?? "Meeting"} — ${label} at ${time}`}
+    >
+      {meeting.isUpcoming ? "\u2192 " : ""}
+      {label}
+    </span>
+  );
+}
 
 function TemperatureBadge({
   temperature,
@@ -846,6 +909,50 @@ function GhlLeadsTable({
   const clampedPage = Math.min(page, pageCount - 1);
   const pagedRows = filteredRows.slice(clampedPage * PAGE_SIZE, (clampedPage + 1) * PAGE_SIZE);
 
+  /**
+   * Calendly bookings for the leads currently on screen.
+   *
+   * The server holds one cached email → meeting map for the whole calendar, so
+   * this only ever posts the emails it has not asked about yet; a second page
+   * of leads costs a lookup in that map rather than another calendar fetch.
+   */
+  const [meetingsByEmail, setMeetingsByEmail] = useState<
+    Record<string, BookedMeeting | null>
+  >({});
+  const [calendlyConfigured, setCalendlyConfigured] = useState(true);
+  const meetingsAskedRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const emails = pagedRows
+      .map((r) => r.email)
+      .filter((e): e is string => Boolean(e))
+      .filter((e) => !meetingsAskedRef.current.has(e));
+    if (emails.length === 0) return;
+
+    emails.forEach((e) => meetingsAskedRef.current.add(e));
+
+    (async () => {
+      try {
+        const res = await fetch("/api/dashboard/meetings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ emails }),
+        });
+        if (!res.ok) return;
+        const data = (await res.json()) as {
+          configured?: boolean;
+          meetings?: Record<string, BookedMeeting | null>;
+        };
+        if (data.configured === false) setCalendlyConfigured(false);
+        if (data.meetings) {
+          setMeetingsByEmail((prev) => ({ ...prev, ...data.meetings }));
+        }
+      } catch {
+        // A calendar outage leaves the column blank; the table is unaffected.
+      }
+    })();
+  }, [pagedRows]);
+
   useEffect(() => {
     setPage(0);
   }, [search, payingFilter, subscribedFilter, temperatureFilter, dateFrom, dateTo]);
@@ -1118,6 +1225,7 @@ function GhlLeadsTable({
                   <th className="px-2 py-2">Email</th>
                   <th className="px-2 py-2">Phone</th>
                   <th className="px-2 py-2">Source</th>
+                  <th className="px-2 py-2">Meeting</th>
                   {showAshColumn && <th className="px-2 py-2">ASH Member</th>}
                   <th className="px-2 py-2">Subscribed to Apex</th>
                   <th className="px-2 py-2">Paying Customer</th>
@@ -1140,6 +1248,12 @@ function GhlLeadsTable({
                     <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">{row.phone ?? "—"}</td>
                     <td className="px-2 py-2.5">
                       <LeadSourceTag row={row} />
+                    </td>
+                    <td className="px-2 py-2.5 whitespace-nowrap">
+                      <MeetingCell
+                        meeting={meetingsByEmail[row.email]}
+                        configured={calendlyConfigured}
+                      />
                     </td>
                     {showAshColumn && (
                       <td className="px-2 py-2.5">
