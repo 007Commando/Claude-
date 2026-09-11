@@ -26,6 +26,12 @@ const WEEKS_PER_QUARTER = 13;
 // Billing runs monthly. A month is 52/12 weeks -- flat four would quietly
 // drop four weeks of work a year from the price.
 const WEEKS_PER_MONTH = 52 / 12;
+/**
+ * Card processing on SERVICE offers only (VA hours and the like), not the
+ * software plans. The same 4% must be configured on the Stripe prices when
+ * checkout is wired up, so the page's quote and the charge always agree.
+ */
+const CARD_FEE_RATE = 0.04;
 
 interface VaProfile {
   name: string;
@@ -109,15 +115,20 @@ function VaCard({ va }: { va: VaProfile }) {
   const weeklyHours = dailyHours * DAYS_PER_WEEK;
   const fullTime = weeklyHours >= FULL_TIME_WEEKLY_HOURS;
   const rate = (fullTime ? FULL_TIME_RATE : PART_TIME_RATE) * (quarterly ? 1 - QUARTERLY_DISCOUNT : 1);
-  const monthlyCost = weeklyHours * rate * WEEKS_PER_MONTH;
-  const quarterlyCost = weeklyHours * rate * WEEKS_PER_QUARTER;
+  const withFee = 1 + CARD_FEE_RATE;
+  const monthlyCost = weeklyHours * rate * WEEKS_PER_MONTH * withFee;
+  const quarterlyCost = weeklyHours * rate * WEEKS_PER_QUARTER * withFee;
+  // What quarterly keeps in their pocket, in dollars they can picture --
+  // "5%" convinces nobody; a number does.
+  const baseRate = fullTime ? FULL_TIME_RATE : PART_TIME_RATE;
+  const quarterlySavings = weeklyHours * baseRate * WEEKS_PER_QUARTER * withFee * QUARTERLY_DISCOUNT;
 
   const requestHref = useMemo(() => {
     const subject = `Apex VA request — ${va.name}, ${weeklyHours} hrs/week`;
     const body = [
       `VA: ${va.name}`,
       `Schedule: Mon-Fri, ${hourLabel(startHour)} to ${hourLabel(safeEnd)} (${dailyHours} hrs/day, ${weeklyHours} hrs/week)`,
-      `Billing: ${quarterly ? "Quarterly (5% off)" : "Monthly"} at ${money(rate)}/hr = ${
+      `Billing: ${quarterly ? "Quarterly (5% off)" : "Monthly"} at ${money(rate)}/hr + 4% card processing = ${
         quarterly ? `${money(quarterlyCost)}/quarter` : `${money(monthlyCost)}/month`
       }`,
       "",
@@ -211,6 +222,10 @@ function VaCard({ va }: { va: VaProfile }) {
             </span>
             <span className="text-sm font-bold text-slate-900">{weeklyHours} hrs/week</span>
           </div>
+          <div className="flex items-baseline justify-between mb-1">
+            <span className="text-sm text-slate-500">Card processing</span>
+            <span className="text-sm text-slate-500">4%</span>
+          </div>
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-slate-500">{money(rate)}/hour{quarterly ? " (5% off)" : ""}</span>
             <span className="text-2xl font-black text-slate-900 tabular-nums">{money(monthlyCost)}<span className="text-sm font-semibold text-slate-400">/mo</span></span>
@@ -220,17 +235,41 @@ function VaCard({ va }: { va: VaProfile }) {
           </p>
         </div>
 
-        <label className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 mb-6 cursor-pointer">
-          <span className="text-sm font-semibold text-slate-700">
-            Pay quarterly <span className="text-emerald-600 font-bold">save 5%</span>
-          </span>
-          <input
-            type="checkbox"
-            checked={quarterly}
-            onChange={(e) => setQuarterly(e.target.checked)}
-            className="w-5 h-5 accent-indigo-600"
-          />
-        </label>
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <button
+            type="button"
+            onClick={() => setQuarterly(false)}
+            className={`rounded-2xl border px-4 py-3.5 text-left transition-all ${
+              !quarterly
+                ? "border-slate-400 bg-white ring-1 ring-slate-300"
+                : "border-slate-200 bg-white/60 hover:border-slate-300"
+            }`}
+          >
+            <span className="block text-sm font-bold text-slate-700">Monthly</span>
+            <span className="block text-xs text-slate-400 mt-0.5">standard rate</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setQuarterly(true)}
+            className={`relative rounded-2xl px-4 py-3.5 text-left transition-all ${
+              quarterly
+                ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-200 ring-2 ring-indigo-400"
+                : "border border-indigo-200 bg-indigo-50/50 hover:border-indigo-400 hover:shadow-md"
+            }`}
+          >
+            <span className={`absolute -top-2.5 right-3 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wide ${
+              quarterly ? "bg-amber-400 text-amber-950" : "bg-indigo-600 text-white"
+            }`}>
+              Smart choice
+            </span>
+            <span className={`block text-sm font-bold ${quarterly ? "text-white" : "text-indigo-700"}`}>
+              Quarterly
+            </span>
+            <span className={`block text-xs mt-0.5 font-semibold ${quarterly ? "text-indigo-100" : "text-indigo-500"}`}>
+              keep {money(quarterlySavings)} every quarter
+            </span>
+          </button>
+        </div>
 
         <a
           href={requestHref}
@@ -267,8 +306,15 @@ export default function ApexVas() {
       <section className="max-w-5xl mx-auto px-6 pb-14">
         <div className="grid sm:grid-cols-2 gap-6">
           {[
-            { title: "Part-Time", hours: "20+ hrs / week", rate: PART_TIME_RATE, icon: CalendarClock },
-            { title: "Full-Time", hours: "40 hrs / week", rate: FULL_TIME_RATE, icon: Users }
+            { title: "Part-Time", hours: "20+ hrs / week", rate: PART_TIME_RATE, icon: CalendarClock, savings: null },
+            {
+              title: "Full-Time",
+              hours: "40 hrs / week",
+              rate: FULL_TIME_RATE,
+              icon: Users,
+              // $1.50/hr under the part-time rate: at 40 hrs that is real money.
+              savings: (PART_TIME_RATE - FULL_TIME_RATE) * FULL_TIME_WEEKLY_HOURS * WEEKS_PER_MONTH
+            }
           ].map((tier, i) => (
             <motion.div
               // key first: after a spread, React 19's JSX transform no longer
@@ -288,6 +334,12 @@ export default function ApexVas() {
               <p className="text-sm text-emerald-600 font-semibold mt-2">
                 {money(tier.rate * (1 - QUARTERLY_DISCOUNT))}/hour paid quarterly (5% off)
               </p>
+              {tier.savings && (
+                <p className="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-bold text-emerald-700">
+                  {money(PART_TIME_RATE - FULL_TIME_RATE)}/hour less than part-time — going full-time keeps{" "}
+                  {money(tier.savings)} in your pocket every month
+                </p>
+              )}
             </motion.div>
           ))}
         </div>
