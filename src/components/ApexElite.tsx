@@ -17,11 +17,12 @@ import {
   ArrowRight,
   ChevronDown,
   Award,
-  Clock,
+  Headphones,
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
+import { PRICE_LIMITED_M } from "../data/planPricing";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
@@ -30,7 +31,15 @@ const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-c
 
 const CHECKOUT_URL = "https://buy.stripe.com/3cIeV50IGcuzfdofPldwc0b";
 
-const COUNTDOWN_SECONDS = 30 * 60;
+const ELITE_PRICE = 297;
+/**
+ * The comparison that sells this page honestly: Elite's 90 days of the full
+ * suite, priced against simply paying the Starter plan monthly for the same
+ * 90 days -- software alone, none of the suppliers, playbooks, booster or
+ * community. Computed from the live plan price so it can never go stale.
+ */
+const THREE_MONTHS_STARTER = PRICE_LIMITED_M * 3;
+const ELITE_SAVINGS = THREE_MONTHS_STARTER - ELITE_PRICE;
 
 const coreIncludes = [
   {
@@ -41,6 +50,12 @@ const coreIncludes = [
       src: productCatalogCollageImage,
       alt: "Real products and UPC catalogs from wholesale suppliers",
     },
+  },
+  {
+    icon: Headphones,
+    title: "7-Day VIP Trial With Our Expert VAs",
+    body: "Your first week, you are not alone: work directly with our virtual assistants -- 9+ years of Amazon experience -- giving you the push and day-by-day guidance to get your account, suppliers and first purchase order moving. Free of charge, included in Elite.",
+    highlights: ["Day-by-day guidance", "9+ years Amazon experience", "Free with Elite"],
   },
   {
     icon: Rocket,
@@ -86,6 +101,7 @@ const bonusIncludes = [
 
 const valueStack: { label: string; value: number | null }[] = [
   { label: "3 Starting Suppliers", value: 500 },
+  { label: "7-Day VIP Trial With Expert VAs", value: 150 },
   { label: "Full Apex Suite (90 Days)", value: 450 },
   { label: "Connect to Prep Centers", value: 200 },
   { label: "Private Amazon Community", value: null },
@@ -112,34 +128,6 @@ const faqs = [
     a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, logistics, and a real community around you. The playbook library starts from first principles.",
   },
 ];
-
-function CountdownBar() {
-  const [secondsLeft, setSecondsLeft] = useState(COUNTDOWN_SECONDS);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const minutes = Math.floor(secondsLeft / 60);
-  const seconds = secondsLeft % 60;
-
-  return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-10 bg-red-600 text-white flex items-center justify-center">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-2.5 text-center flex-wrap">
-        <Clock size={14} className="shrink-0" />
-        <span className="text-xs sm:text-sm font-bold uppercase tracking-wide">
-          Limited-Time Offer: Price Ends In
-        </span>
-        <span className="tabular-nums text-xs sm:text-sm font-black bg-white/15 rounded-md px-2 py-0.5">
-          {minutes}:{seconds.toString().padStart(2, "0")}
-        </span>
-      </div>
-    </div>
-  );
-}
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
@@ -280,8 +268,7 @@ const trustPoints = [
 
 export default function ApexElite() {
   return (
-    <div className="pt-36 sm:pt-40 pb-24 bg-white">
-      <CountdownBar />
+    <div className="pt-24 sm:pt-28 pb-24 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
@@ -301,7 +288,8 @@ export default function ApexElite() {
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
             Suppliers, software, logistics, community, and a real team behind you. Everything it
             takes to build a real Amazon wholesale business, in one system, instead of stitched
-            together from scratch.
+            together from scratch &mdash; for less than three months of the Starter plan costs on
+            its own.
           </p>
 
           <div className="flex flex-col items-center gap-4">
@@ -333,6 +321,116 @@ export default function ApexElite() {
             caption="Your complete Apex system"
           />
         </motion.div>
+
+        {/* Elite vs paying monthly */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-20"
+        >
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
+              Your First 90 Days, Two Ways
+            </h2>
+            <p className="text-slate-500 leading-relaxed">
+              Same software either way. One of them also hands you the suppliers, the playbooks,
+              and the community &mdash; and costs less.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto items-stretch">
+            {/* The monthly route */}
+            <div className="rounded-[28px] border border-slate-200 bg-white p-8 flex flex-col">
+              <div className="text-xs font-black uppercase tracking-[0.15em] text-slate-400 mb-3">
+                The monthly route
+              </div>
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-4xl font-black text-slate-900">${THREE_MONTHS_STARTER.toFixed(2)}</span>
+              </div>
+              <p className="text-sm font-bold text-slate-400 mb-6">
+                Starter plan, ${PRICE_LIMITED_M}/mo &times; 3 months
+              </p>
+              <ul className="space-y-3 text-sm text-slate-600 flex-1">
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-slate-300 shrink-0 mt-0.5" strokeWidth={3} />
+                  The Apex software suite
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
+                  Suppliers: found on your own
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
+                  Playbook library not included
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
+                  Review Booster only while subscribed
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
+                  No VA guidance included
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
+                  Keeps billing monthly after day 90
+                </li>
+              </ul>
+            </div>
+
+            {/* Elite */}
+            <div className="relative rounded-[28px] border-2 border-brand bg-white p-8 flex flex-col shadow-[0_24px_48px_-24px_rgba(249,115,22,0.35)]">
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand text-white text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap">
+                {`Save $${ELITE_SAVINGS.toFixed(2)} — and keep more`}
+              </span>
+              <div className="text-xs font-black uppercase tracking-[0.15em] text-brand mb-3">
+                Apex Elite
+              </div>
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-4xl font-black text-slate-900">${ELITE_PRICE}</span>
+                <span className="text-sm font-bold text-slate-400">once</span>
+              </div>
+              <p className="text-sm font-bold text-slate-400 mb-6">
+                One payment. No subscription.
+              </p>
+              <ul className="space-y-3 text-sm text-slate-700 flex-1">
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  The same full suite, 90 days
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  3 vetted wholesale suppliers, day one
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  Complete playbook library, yours forever
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  Review Booster free for life
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  Private community + prep network
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  7-day VIP trial with our expert VAs (9+ yrs Amazon)
+                </li>
+              </ul>
+              <BuyButton className="mt-6 w-full bg-brand text-white px-8 py-3.5 rounded-[18px] font-black hover:scale-[1.02] shadow-lg uppercase tracking-wide">
+                Get Apex Elite <ArrowRight size={16} />
+              </BuyButton>
+            </div>
+          </div>
+          <p className="text-center text-xs text-slate-400 mt-6 max-w-xl mx-auto">
+            After your 90 days, continue on any plan you like &mdash; or don&apos;t. The suppliers,
+            playbooks, Review Booster and community stay yours either way.
+          </p>
+        </motion.section>
 
         {/* Core includes */}
         <motion.section

@@ -24,6 +24,7 @@ import {
   FileDown,
 } from "lucide-react";
 import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
+import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
 
 type Row = {
   label: string;
@@ -90,9 +91,6 @@ const sections: Section[] = [
   },
 ];
 
-const PRICE_LIMITED_M = 149.99;
-const PRICE_UNLIMITED_M = 299;
-const ANNUAL_DISCOUNT = 0.2;
 
 const faqs = [
   {
