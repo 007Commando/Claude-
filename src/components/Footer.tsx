@@ -76,6 +76,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/apex-vas" className="hover:text-brand transition-colors">
+                  Apex VAs
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact-us" className="hover:text-brand transition-colors">
                   Contact Us
                 </Link>
