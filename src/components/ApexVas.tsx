@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, BadgeCheck, CalendarClock, Clock3, ShieldCheck, Users } from "lucide-react";
 
@@ -10,60 +10,20 @@ const fadeIn = {
   transition: { duration: 0.6, ease: "easeOut" }
 } as const;
 
-/**
- * Pricing is per hour and set by commitment, not by VA: part-time (20+ hrs a
- * week) bills $7.00/hr, full-time (40) bills $5.50/hr, and paying quarterly
- * takes 5% off either. Hours are Mon-Fri, chosen as one consecutive daily
- * block inside the VA's working window.
- */
-const PART_TIME_RATE = 7.0;
-const FULL_TIME_RATE = 5.5;
-const QUARTERLY_DISCOUNT = 0.05;
-const DAYS_PER_WEEK = 5;
-const MIN_WEEKLY_HOURS = 20;
-const FULL_TIME_WEEKLY_HOURS = 40;
-const WEEKS_PER_QUARTER = 13;
-// Billing runs monthly. A month is 52/12 weeks -- flat four would quietly
-// drop four weeks of work a year from the price.
-const WEEKS_PER_MONTH = 52 / 12;
-/**
- * Card processing on SERVICE offers only (VA hours and the like), not the
- * software plans. The same 4% must be configured on the Stripe prices when
- * checkout is wired up, so the page's quote and the charge always agree.
- */
-const CARD_FEE_RATE = 0.04;
-
-interface VaProfile {
-  name: string;
-  role: string;
-  available: boolean;
-  /** Working window in EST, 24h clock. */
-  windowStart: number;
-  windowEnd: number;
-  skills: { label: string; score: number }[];
-}
-
-const VAS: VaProfile[] = [
-  {
-    name: "Amir",
-    role: "Amazon Wholesale VA",
-    available: true,
-    windowStart: 9,
-    windowEnd: 15,
-    skills: [
-      { label: "Pricing knowledge", score: 10 },
-      { label: "Catalog management", score: 10 },
-      { label: "Product research", score: 8 },
-      { label: "Account health", score: 8 },
-      { label: "Distributor outreach", score: 7 }
-    ]
-  }
-];
-
-const hourLabel = (hour: number) => {
-  const h12 = hour % 12 === 0 ? 12 : hour % 12;
-  return `${h12}:00 ${hour < 12 ? "AM" : "PM"} EST`;
-};
+import {
+  CARD_FEE_RATE,
+  DAYS_PER_WEEK,
+  FULL_TIME_RATE,
+  FULL_TIME_WEEKLY_HOURS,
+  MIN_WEEKLY_HOURS,
+  PART_TIME_RATE,
+  QUARTERLY_DISCOUNT,
+  VAS,
+  WEEKS_PER_MONTH,
+  computeVaQuote,
+  hourLabel,
+  type VaProfile
+} from "../lib/vaPricing";
 
 const money = (n: number) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 });
@@ -111,31 +71,37 @@ function VaCard({ va }: { va: VaProfile }) {
   }, [startHour, minDaily, va.windowEnd]);
 
   const safeEnd = Math.min(Math.max(endHour, startHour + minDaily), va.windowEnd);
-  const dailyHours = safeEnd - startHour;
-  const weeklyHours = dailyHours * DAYS_PER_WEEK;
-  const fullTime = weeklyHours >= FULL_TIME_WEEKLY_HOURS;
-  const rate = (fullTime ? FULL_TIME_RATE : PART_TIME_RATE) * (quarterly ? 1 - QUARTERLY_DISCOUNT : 1);
-  const withFee = 1 + CARD_FEE_RATE;
-  const monthlyCost = weeklyHours * rate * WEEKS_PER_MONTH * withFee;
-  const quarterlyCost = weeklyHours * rate * WEEKS_PER_QUARTER * withFee;
-  // What quarterly keeps in their pocket, in dollars they can picture --
-  // "5%" convinces nobody; a number does.
-  const baseRate = fullTime ? FULL_TIME_RATE : PART_TIME_RATE;
-  const quarterlySavings = weeklyHours * baseRate * WEEKS_PER_QUARTER * withFee * QUARTERLY_DISCOUNT;
+  // The same module the checkout route prices from, so the screen and the
+  // charge cannot drift apart.
+  const priced = computeVaQuote({ vaName: va.name, startHour, endHour: safeEnd, quarterly });
+  if (!priced.ok) return null;
+  const { dailyHours, weeklyHours, rate, monthlyCost, quarterlyCost, quarterlySavings } = priced.quote;
 
-  const requestHref = useMemo(() => {
-    const subject = `Apex VA request — ${va.name}, ${weeklyHours} hrs/week`;
-    const body = [
-      `VA: ${va.name}`,
-      `Schedule: Mon-Fri, ${hourLabel(startHour)} to ${hourLabel(safeEnd)} (${dailyHours} hrs/day, ${weeklyHours} hrs/week)`,
-      `Billing: ${quarterly ? "Quarterly (5% off)" : "Monthly"} at ${money(rate)}/hr + 4% card processing = ${
-        quarterly ? `${money(quarterlyCost)}/quarter` : `${money(monthlyCost)}/month`
-      }`,
-      "",
-      "My Amazon store / anything the VA should know:"
-    ].join("\n");
-    return `mailto:support@apexapplications.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [va.name, startHour, safeEnd, dailyHours, weeklyHours, quarterly, rate, monthlyCost, quarterlyCost]);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const startCheckout = async () => {
+    setCheckingOut(true);
+    setCheckoutError(null);
+    try {
+      const res = await fetch("/api/va-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vaName: va.name, startHour, endHour: safeEnd, quarterly })
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) throw new Error(data.error || "Checkout could not be started");
+      window.location.href = data.url;
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : "Checkout could not be started");
+      setCheckingOut(false);
+    }
+  };
+
+  const questionsHref = useMemo(() => {
+    const subject = `Apex VA question — ${va.name}`;
+    return `mailto:support@apexapplications.io?subject=${encodeURIComponent(subject)}`;
+  }, [va.name]);
 
   return (
     <motion.div
@@ -271,14 +237,22 @@ function VaCard({ va }: { va: VaProfile }) {
           </button>
         </div>
 
-        <a
-          href={requestHref}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-bold px-6 py-4"
+        <button
+          type="button"
+          onClick={startCheckout}
+          disabled={checkingOut}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-wait transition-colors text-white font-bold px-6 py-4"
         >
-          Request {va.name}&apos;s schedule <ArrowRight className="w-4 h-4" />
-        </a>
+          {checkingOut ? "Opening secure checkout…" : <>Hire {va.name} — checkout <ArrowRight className="w-4 h-4" /></>}
+        </button>
+        {checkoutError && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-3">
+            {checkoutError}
+          </p>
+        )}
         <p className="text-xs text-slate-400 text-center mt-3">
-          We confirm availability within one business day. Nothing is billed until you approve.
+          Secure payment by Stripe. {va.name} starts within one business day of your first invoice —{" "}
+          <a href={questionsHref} className="underline hover:text-slate-600">questions first?</a>
         </p>
       </div>
     </motion.div>
@@ -286,8 +260,32 @@ function VaCard({ va }: { va: VaProfile }) {
 }
 
 export default function ApexVas() {
+  const [checkoutResult, setCheckoutResult] = useState<"success" | "cancelled" | null>(null);
+
+  useEffect(() => {
+    const result = new URLSearchParams(window.location.search).get("checkout");
+    if (result === "success" || result === "cancelled") setCheckoutResult(result);
+  }, []);
+
   return (
     <main className="bg-white">
+      {checkoutResult && (
+        <div
+          className={`max-w-5xl mx-auto px-6 pt-8 ${checkoutResult === "success" ? "" : ""}`}
+        >
+          <p
+            className={`rounded-2xl border px-5 py-4 text-sm font-semibold ${
+              checkoutResult === "success"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                : "bg-amber-50 border-amber-200 text-amber-800"
+            }`}
+          >
+            {checkoutResult === "success"
+              ? "You're in — payment received. We'll email you within one business day to kick off your VA's first week."
+              : "Checkout was cancelled — your schedule is still configured below whenever you're ready."}
+          </p>
+        </div>
+      )}
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-14 text-center">
         <motion.p {...fadeIn} className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 mb-4">
@@ -346,7 +344,7 @@ export default function ApexVas() {
         <div className="flex items-start gap-2 mt-6 text-sm text-slate-500">
           <ShieldCheck className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
           <p>
-            Two scheduling rules keep it simple: at least {MIN_WEEKLY_HOURS} hours a week, and each day&apos;s
+            Two scheduling rules keep it simple: at least {MIN_WEEKLY_HOURS}{" "}hours a week, and each day&apos;s
             hours are one consecutive block — no split shifts.
           </p>
         </div>
