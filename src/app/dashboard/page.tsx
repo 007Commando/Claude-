@@ -31,6 +31,7 @@ import type {
   TrialRow,
 } from "../../lib/dashboard/types";
 import { downloadCsv } from "../../lib/dashboard/csv";
+import type { CrossFunnelSummary } from "../../lib/dashboard/crossFunnel";
 import type { BookedMeeting } from "../../lib/dashboard/calendly";
 
 const money = (n: number) =>
@@ -54,6 +55,95 @@ const SOURCE_TAG_TONE: Record<LeadSource, "purple" | "blue" | "amber" | "slate">
   ash: "amber",
   unknown: "slate",
 };
+
+
+function CrossFunnelCard({ summary }: { summary: CrossFunnelSummary | null }) {
+  const pct = (part: number, whole: number) => (whole ? `${((part / whole) * 100).toFixed(1)}%` : "—");
+  const rows = summary ? [...summary.cohorts, summary.total] : [];
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6">
+      <h2 className="text-lg font-black text-slate-900 tracking-tight mb-1">
+        PrimeWell → ASH Cross-Funnel
+      </h2>
+      <p className="text-xs text-slate-400 mb-5">
+        Same person in both locations, matched by email (phone as fallback). US requires a +1 phone
+        AND a US timezone — the CRM&apos;s country field is stamped &quot;US&quot; on every contact
+        and is ignored.
+      </p>
+
+      {!summary && <p className="text-sm text-slate-400">Crunching both locations…</p>}
+
+      {summary && !summary.connected && (
+        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+          {summary.error ?? "Cross-funnel tracking is not configured yet."}
+        </p>
+      )}
+
+      {summary?.connected && (
+        <>
+          <div className="flex flex-wrap items-center gap-4 mb-6">
+            <FunnelStep label="PW Leads (90d)" value={summary.total.pwLeads} />
+            <FunnelStep label="US Leads" value={summary.total.pwUs} />
+            <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
+            <FunnelStep label="Moved to ASH" value={summary.total.moved} />
+            <FunnelStep label="US Movers" value={summary.total.movedUs} accent />
+            <FunnelStep
+              label="Median Time"
+              value={summary.medianDaysToMove}
+              suffix="d"
+              caption="PrimeWell entry → ASH entry"
+            />
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <th className="py-2 pr-4">Cohort</th>
+                  <th className="py-2 pr-4">Leads</th>
+                  <th className="py-2 pr-4">US</th>
+                  <th className="py-2 pr-4">→ ASH</th>
+                  <th className="py-2 pr-4">→ ASH US</th>
+                  <th className="py-2 pr-4">Conv (all)</th>
+                  <th className="py-2">Conv (US)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr
+                    key={row.label}
+                    className={`border-t border-slate-100 ${row.label === "total" ? "font-black text-slate-900" : "text-slate-600"}`}
+                  >
+                    <td className="py-2 pr-4">{row.label}</td>
+                    <td className="py-2 pr-4">{row.pwLeads}</td>
+                    <td className="py-2 pr-4">{row.pwUs}</td>
+                    <td className="py-2 pr-4">{row.moved}</td>
+                    <td className="py-2 pr-4">{row.movedUs}</td>
+                    <td className="py-2 pr-4">{pct(row.moved, row.pwLeads)}</td>
+                    <td className="py-2">{pct(row.movedUs, row.pwUs)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {summary.excludedAshFirst > 0 && (
+            <p className="text-xs text-slate-400 mt-3">
+              {summary.excludedAshFirst} contact{summary.excludedAshFirst === 1 ? "" : "s"} existed in
+              ASH before PrimeWell and are excluded — they moved the other way.
+            </p>
+          )}
+          {summary.truncated && (
+            <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-3">
+              One of the contact lists hit the fetch cap — numbers may undercount slightly.
+            </p>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
 
 function SourceBadge({ source }: { source: LeadSource }) {
   return <Badge tone={SOURCE_TAG_TONE[source]}>{SOURCE_LABELS[source]}</Badge>;
@@ -1349,6 +1439,33 @@ export default function DashboardPage() {
   const [showTrialsModal, setShowTrialsModal] = useState(false);
   const [showCancelledTrialsModal, setShowCancelledTrialsModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "ash" | "apex" | "leads">("primewell");
+  const [crossFunnel, setCrossFunnel] = useState<CrossFunnelSummary | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/dashboard/cross-funnel", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const body = (await res.json()) as CrossFunnelSummary;
+        if (!cancelled) setCrossFunnel(body);
+      } catch (err) {
+        if (!cancelled)
+          setCrossFunnel({
+            connected: false,
+            error: err instanceof Error ? err.message : "Failed to load cross-funnel",
+            cohorts: [],
+            total: { label: "total", pwLeads: 0, pwUs: 0, moved: 0, movedUs: 0 },
+            medianDaysToMove: null,
+            excludedAshFirst: 0,
+            truncated: false,
+          });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   // Shared across the PrimeWell/Facebook/ASH lead tables so switching tabs
   // keeps the same window applied — "" means unbounded on that side.
   const [dateFrom, setDateFrom] = useState("");
@@ -1543,6 +1660,7 @@ export default function DashboardPage() {
 
             {activeTab === "primewell" && (
               <div className="space-y-8">
+                <CrossFunnelCard summary={crossFunnel} />
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
                   <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">
                     PrimeWell → Apex Funnel
