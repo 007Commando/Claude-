@@ -46,6 +46,7 @@ declare global {
       }) => Promise<unknown>;
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
       signOut: (opts?: { clearApp?: boolean }) => Promise<unknown> | void;
+      getIdToken?: () => Promise<string | null>;
       redirectToApp: (path?: string) => void;
       redirectBackToApp?: (redirectUri?: string) => Promise<unknown>;
       getCurrentUser: () => Promise<unknown>;
