@@ -29,7 +29,12 @@ const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.p
 const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
 
-const CHECKOUT_URL = "https://buy.stripe.com/3cIeV50IGcuzfdofPldwc0b";
+/**
+ * Server route that opens Stripe Checkout: $297 today, $149.99/mo from day 91
+ * (one subscription, 90-day trial). Replaced the old $297-only payment link,
+ * which had no continuation.
+ */
+const CHECKOUT_URL = "/api/elite-checkout";
 
 const ELITE_PRICE = 297;
 /**
