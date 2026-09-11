@@ -23,6 +23,9 @@ const DAYS_PER_WEEK = 5;
 const MIN_WEEKLY_HOURS = 20;
 const FULL_TIME_WEEKLY_HOURS = 40;
 const WEEKS_PER_QUARTER = 13;
+// Billing runs monthly. A month is 52/12 weeks -- flat four would quietly
+// drop four weeks of work a year from the price.
+const WEEKS_PER_MONTH = 52 / 12;
 
 interface VaProfile {
   name: string;
@@ -106,19 +109,22 @@ function VaCard({ va }: { va: VaProfile }) {
   const weeklyHours = dailyHours * DAYS_PER_WEEK;
   const fullTime = weeklyHours >= FULL_TIME_WEEKLY_HOURS;
   const rate = (fullTime ? FULL_TIME_RATE : PART_TIME_RATE) * (quarterly ? 1 - QUARTERLY_DISCOUNT : 1);
-  const weeklyCost = weeklyHours * rate;
+  const monthlyCost = weeklyHours * rate * WEEKS_PER_MONTH;
+  const quarterlyCost = weeklyHours * rate * WEEKS_PER_QUARTER;
 
   const requestHref = useMemo(() => {
     const subject = `Apex VA request — ${va.name}, ${weeklyHours} hrs/week`;
     const body = [
       `VA: ${va.name}`,
       `Schedule: Mon-Fri, ${hourLabel(startHour)} to ${hourLabel(safeEnd)} (${dailyHours} hrs/day, ${weeklyHours} hrs/week)`,
-      `Billing: ${quarterly ? "Quarterly (5% off)" : "Weekly"} at ${money(rate)}/hr = ${money(weeklyCost)}/week${quarterly ? ` (${money(weeklyCost * WEEKS_PER_QUARTER)}/quarter)` : ""}`,
+      `Billing: ${quarterly ? "Quarterly (5% off)" : "Monthly"} at ${money(rate)}/hr = ${
+        quarterly ? `${money(quarterlyCost)}/quarter` : `${money(monthlyCost)}/month`
+      }`,
       "",
       "My Amazon store / anything the VA should know:"
     ].join("\n");
     return `mailto:support@apexapplications.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [va.name, startHour, safeEnd, dailyHours, weeklyHours, quarterly, rate, weeklyCost]);
+  }, [va.name, startHour, safeEnd, dailyHours, weeklyHours, quarterly, rate, monthlyCost, quarterlyCost]);
 
   return (
     <motion.div
@@ -207,13 +213,11 @@ function VaCard({ va }: { va: VaProfile }) {
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-slate-500">{money(rate)}/hour{quarterly ? " (5% off)" : ""}</span>
-            <span className="text-2xl font-black text-slate-900 tabular-nums">{money(weeklyCost)}<span className="text-sm font-semibold text-slate-400">/wk</span></span>
+            <span className="text-2xl font-black text-slate-900 tabular-nums">{money(monthlyCost)}<span className="text-sm font-semibold text-slate-400">/mo</span></span>
           </div>
-          {quarterly && (
-            <p className="text-xs text-slate-400 mt-1 text-right">
-              billed {money(weeklyCost * WEEKS_PER_QUARTER)} per quarter
-            </p>
-          )}
+          <p className="text-xs text-slate-400 mt-1 text-right">
+            {quarterly ? `billed ${money(quarterlyCost)} per quarter` : "billed monthly"}
+          </p>
         </div>
 
         <label className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 mb-6 cursor-pointer">
