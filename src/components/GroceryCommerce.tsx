@@ -56,8 +56,8 @@ const BRAND_WALL = [
   "Listerine", "Pringles", "Hershey's", "Gillette",
 ];
 
-/** A single carton face on the animated pallet. */
-function Carton({ hue, delay, candy = false }: { hue: string; delay: number; candy?: boolean }) {
+/** A single kraft carton face on the animated pallet. */
+function Carton({ hue, delay }: { hue: string; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -14, scale: 0.92 }}
@@ -67,15 +67,7 @@ function Carton({ hue, delay, candy = false }: { hue: string; delay: number; can
       className="relative h-10 sm:h-12 rounded-[4px] border overflow-hidden"
       style={{ background: hue, borderColor: "rgba(2,6,23,0.18)" }}
     >
-      {candy ? (
-        <div className="absolute inset-0 flex">
-          {["#ef4444", "#f97316", "#eab308", "#22c55e", "#8b5cf6"].map((c) => (
-            <span key={c} className="flex-1" style={{ background: c, opacity: 0.85 }} />
-          ))}
-        </div>
-      ) : (
-        <span className="absolute inset-x-2 top-1/2 -translate-y-1/2 h-[3px] rounded bg-slate-950/15" />
-      )}
+      <span className="absolute inset-x-2 top-1/2 -translate-y-1/2 h-[3px] rounded bg-slate-950/15" />
     </motion.div>
   );
 }
@@ -86,11 +78,11 @@ function Carton({ hue, delay, candy = false }: { hue: string; delay: number; can
  * page is actually selling -- lot, units, and the expiration date Apex
  * tracks per grocery listing.
  */
-function CandyPallet() {
+function PalletStack() {
   const rows = [
-    { hues: ["#d6bfa3", "#cbb191", "#d6bfa3"], candy: [false, true, false], delay: 0.5 },
-    { hues: ["#cbb191", "#d6bfa3", "#cbb191"], candy: [true, false, true], delay: 0.3 },
-    { hues: ["#d6bfa3", "#cbb191", "#d6bfa3"], candy: [false, false, false], delay: 0.1 },
+    { hues: ["#d6bfa3", "#cbb191", "#d6bfa3"], delay: 0.5 },
+    { hues: ["#cbb191", "#d6bfa3", "#cbb191"], delay: 0.3 },
+    { hues: ["#d6bfa3", "#cbb191", "#d6bfa3"], delay: 0.1 },
   ];
   return (
     <div className="relative w-full max-w-xs mx-auto select-none" aria-hidden>
@@ -98,7 +90,7 @@ function CandyPallet() {
         {rows.map((row, r) => (
           <div key={r} className="grid grid-cols-3 gap-1.5">
             {row.hues.map((hue, i) => (
-              <Carton key={i} hue={hue} candy={row.candy[i]} delay={row.delay + i * 0.08} />
+              <Carton key={i} hue={hue} delay={row.delay + i * 0.08} />
             ))}
           </div>
         ))}
@@ -169,11 +161,7 @@ function Forklift() {
 
 /** The hero's conveyor: cartons roll left on a belt of rollers, endlessly. */
 function Conveyor() {
-  const boxes = [
-    { w: 46, candy: false }, { w: 34, candy: true }, { w: 52, candy: false },
-    { w: 38, candy: false }, { w: 46, candy: true }, { w: 34, candy: false },
-    { w: 52, candy: false }, { w: 40, candy: false },
-  ];
+  const boxes = [46, 34, 52, 38, 46, 34, 52, 40];
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] py-6" aria-hidden>
       <style>{`
@@ -183,11 +171,11 @@ function Conveyor() {
       <div className="gc-belt flex w-[200%]" style={{ animation: "gc-belt 22s linear infinite" }}>
         {[0, 1].map((half) => (
           <div key={half} className="flex w-1/2 items-end justify-around px-4">
-            {boxes.map((box, i) => (
-              <div key={i} className="relative" style={{ width: box.w }}>
+            {boxes.map((width, i) => (
+              <div key={i} className="relative" style={{ width }}>
                 <div
                   className="h-9 rounded-[3px] border border-white/10"
-                  style={{ background: box.candy ? "linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e,#8b5cf6)" : "#b9a284" }}
+                  style={{ background: i % 2 ? "#b9a284" : "#c8b295" }}
                 />
               </div>
             ))}
@@ -306,7 +294,7 @@ export default function GroceryCommerce() {
 
           <div className="grid md:grid-cols-3 gap-6 items-stretch">
             <motion.div {...fadeIn} className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
-              <CandyPallet />
+              <PalletStack />
               <p className="text-sm text-slate-500 mt-6 leading-relaxed">
                 <span className="font-black text-slate-900">Palletized, dated, tracked.</span>{" "}
                 Every case that gets wrapped carries lot and expiration data Apex follows to the
