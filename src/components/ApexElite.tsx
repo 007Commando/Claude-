@@ -112,8 +112,8 @@ const totalValue = valueStack.reduce((sum, item) => sum + (item.value ?? 0), 0);
 
 const faqs = [
   {
-    q: "Is this a subscription, or a one-time payment?",
-    a: "This is a one-time payment of $297. It is not a recurring subscription. Continued access to the Apex software suite beyond the included 90 days follows our standard Starter or Pro plans, which you can review on our pricing page at any time.",
+    q: "How does the billing work?",
+    a: "You pay $297 today, which covers Apex Elite and your first 90 days of the full software suite. After those 90 days, your access simply continues at $149.99/month — the same standard Starter rate you would otherwise be paying from day one. Cancel anytime before or after; the suppliers, playbooks, Review Booster and community access are yours to keep either way.",
   },
   {
     q: "I already have an Apex account. Can I still get this?",
@@ -375,7 +375,7 @@ export default function ApexElite() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
-                  Keeps billing monthly after day 90
+                  {`Continues at $${PRICE_LIMITED_M}/mo after day 90`}
                 </li>
               </ul>
             </div>
@@ -390,10 +390,10 @@ export default function ApexElite() {
               </div>
               <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-4xl font-black text-slate-900">${ELITE_PRICE}</span>
-                <span className="text-sm font-bold text-slate-400">once</span>
+                <span className="text-sm font-bold text-slate-400">today</span>
               </div>
               <p className="text-sm font-bold text-slate-400 mb-6">
-                One payment. No subscription.
+                Your first 90 days &mdash; then ${PRICE_LIMITED_M}/mo. Cancel anytime.
               </p>
               <ul className="space-y-3 text-sm text-slate-700 flex-1">
                 <li className="flex items-start gap-3">
@@ -420,6 +420,10 @@ export default function ApexElite() {
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
                   7-day VIP trial with our expert VAs (9+ yrs Amazon)
                 </li>
+                <li className="flex items-start gap-3">
+                  <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
+                  {`Continues at the same $${PRICE_LIMITED_M}/mo — everything above stays yours`}
+                </li>
               </ul>
               <BuyButton className="mt-6 w-full bg-brand text-white px-8 py-3.5 rounded-[18px] font-black hover:scale-[1.02] shadow-lg uppercase tracking-wide">
                 Get Apex Elite <ArrowRight size={16} />
@@ -427,8 +431,9 @@ export default function ApexElite() {
             </div>
           </div>
           <p className="text-center text-xs text-slate-400 mt-6 max-w-xl mx-auto">
-            After your 90 days, continue on any plan you like &mdash; or don&apos;t. The suppliers,
-            playbooks, Review Booster and community stay yours either way.
+            {`After your 90 days, your software simply continues at $${PRICE_LIMITED_M}/month — the same
+            Starter rate you would be paying anyway. Cancel anytime; the suppliers, playbooks, Review
+            Booster and community stay yours even if you do.`}
           </p>
         </motion.section>
 
@@ -615,8 +620,9 @@ export default function ApexElite() {
               Get Everything for Just $297
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              A one-time payment of $297 gets you the complete system. No experience required,
-              real support included every step of the way.
+              {`$297 today gets you the complete system and your first 90 days — then it simply
+              continues at the Starter rate, $${PRICE_LIMITED_M}/month. No experience required, real
+              support every step of the way.`}
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
@@ -624,8 +630,11 @@ export default function ApexElite() {
                 <span className="text-2xl font-bold text-slate-300 line-through">${totalValue}+</span>
                 <span className="text-5xl font-black text-slate-900">$297</span>
               </div>
-              <div className="text-center text-xs font-bold text-emerald-600 uppercase tracking-wide mb-6">
-                One-time payment · Save ${totalValue - 297}+
+              <div className="text-center text-xs font-bold text-emerald-600 uppercase tracking-wide mb-1">
+                Save ${totalValue - 297}+ today
+              </div>
+              <div className="text-center text-[11px] font-semibold text-slate-400 mb-6">
+                {`$297 today for everything below + 90 days of the suite, then $${PRICE_LIMITED_M}/mo. Cancel anytime.`}
               </div>
               <ul className="space-y-3 mb-8">
                 {valueStack.map((item) => (
