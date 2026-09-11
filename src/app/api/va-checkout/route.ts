@@ -70,6 +70,9 @@ export async function POST(req: NextRequest) {
         }
       },
       metadata: { service: "apex-va" },
+      // Customer-specific deals are minted as single-use promotion codes;
+      // this is where they get typed.
+      allow_promotion_codes: true,
       success_url: `${origin}/apex-vas?checkout=success`,
       cancel_url: `${origin}/apex-vas?checkout=cancelled`
     });
