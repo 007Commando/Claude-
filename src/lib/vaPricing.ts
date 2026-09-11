@@ -40,7 +40,9 @@ export const VAS: VaProfile[] = [
     role: "Amazon Wholesale VA",
     available: true,
     windowStart: 9,
-    windowEnd: 15,
+    // 4 PM EST: up to 7 hrs/day, 35 hrs/week. Note the full-time tier needs
+    // 40 -- selling Amir at the full-time rate takes a 5 PM window.
+    windowEnd: 16,
     skills: [
       { label: "Pricing knowledge", score: 10 },
       { label: "Catalog management", score: 10 },
