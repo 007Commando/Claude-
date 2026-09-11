@@ -6,6 +6,20 @@ function withNoIndex(res: NextResponse): NextResponse {
 }
 
 export function middleware(req: NextRequest) {
+  /**
+   * Lowercase alias for the enterprise grocery page. This lives here and not
+   * in next.config redirects because those match case-insensitively: a
+   * config rule from /grocerycommerce also matched /GroceryCommerce and
+   * redirected the canonical URL to itself forever. String comparison in
+   * code is case-sensitive, so only genuinely miscased spellings redirect.
+   */
+  const { pathname } = req.nextUrl;
+  if (pathname.toLowerCase() === "/grocerycommerce" && pathname !== "/GroceryCommerce") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/GroceryCommerce";
+    return NextResponse.redirect(url, 308);
+  }
+
   const user = process.env.DASHBOARD_USER;
   const password = process.env.DASHBOARD_PASSWORD;
 
@@ -37,5 +51,7 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/dashboard/:path*"],
+  // GroceryCommerce (any casing) is here only for the alias redirect above —
+  // it returns before the dashboard auth gate and is never challenged.
+  matcher: ["/dashboard/:path*", "/api/dashboard/:path*", "/grocerycommerce"],
 };
