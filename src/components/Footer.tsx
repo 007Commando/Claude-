@@ -130,6 +130,34 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+            <h4 className="font-semibold text-slate-900 mb-5 mt-8">Compare</h4>
+            <ul className="space-y-3 text-slate-600">
+              <li>
+                <Link href="/compare/helium10" className="hover:text-brand transition-colors">
+                  vs Helium 10
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare/junglescout" className="hover:text-brand transition-colors">
+                  vs Jungle Scout
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare/smartscout" className="hover:text-brand transition-colors">
+                  vs SmartScout
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare/sellersnap" className="hover:text-brand transition-colors">
+                  vs Seller Snap
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare" className="hover:text-brand transition-colors">
+                  All comparisons
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* How Amazon Wholesale Works */}
