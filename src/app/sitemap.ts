@@ -23,6 +23,8 @@ const ENTRIES: Entry[] = [
   { path: "/features/gold", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/smartscout", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/sellersnap", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/compare/helium10", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/compare/junglescout", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },

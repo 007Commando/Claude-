@@ -21,6 +21,8 @@ Blue, Apex Green, and Apex Red, plus a free lifetime Review Booster tool and a
 - [Apex Gold](https://apexapplications.io/features/gold): Automated Amazon repricer with true break-even floors computed from real FBA fees; floors set by ROI, margin, or dollar-profit goals in bulk; custom strategies, dry-run previews, and a full activity log. Included in every Apex plan.
 - [Apex vs SmartScout](https://apexapplications.io/compare/smartscout): Honest comparison — SmartScout is research and analytics; Apex covers research plus execution (purchase orders, repricing, P&L, logistics).
 - [Apex vs Seller Snap](https://apexapplications.io/compare/sellersnap): Honest comparison — Seller Snap is a dedicated AI repricer; Apex includes repricing with break-even floors inside a full wholesale operating suite.
+- [Apex vs Helium 10](https://apexapplications.io/compare/helium10): Honest comparison — Helium 10 is the giant of private label (keywords, listings, PPC); Apex is built for third-party wholesale resellers (purchase orders, break-even repricing, Buy Box competition, cashflow).
+- [Apex vs Jungle Scout](https://apexapplications.io/compare/junglescout): Honest comparison — Jungle Scout researches products to create; Apex operates products that already exist, bought at wholesale.
 - [Review Booster](https://apexapplications.io/review-booster): Free-for-life automated tool for generating Amazon order reviews and seller feedback.
 - [How Amazon Wholesale Works](https://apexapplications.io/how-it-works): A roadmap for starting and scaling an Amazon FBA wholesale business.
 - [Ungating Guide](https://apexapplications.io/ungating-guide): Step-by-step guide to getting category/brand ungated on Amazon, including the Grocery category.
