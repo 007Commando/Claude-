@@ -18,6 +18,9 @@ Blue, Apex Green, and Apex Red, plus a free lifetime Review Booster tool and a
 - [Apex Blue](https://apexapplications.io/features/blue): Financial analytics, vendor/supplier management, market intelligence databases, purchase orders, and operating expense (Opex) tracking.
 - [Apex Green](https://apexapplications.io/features/green): High-speed product sourcing, including master catalog merging, UPC scanning, and brand/product discovery.
 - [Apex Red](https://apexapplications.io/features/red): Logistics, including shipments, warehouses, inventory, and prep center coordination and billing.
+- [Apex Gold](https://apexapplications.io/features/gold): Automated Amazon repricer with true break-even floors computed from real FBA fees; floors set by ROI, margin, or dollar-profit goals in bulk; custom strategies, dry-run previews, and a full activity log. Included in every Apex plan.
+- [Apex vs SmartScout](https://apexapplications.io/compare/smartscout): Honest comparison — SmartScout is research and analytics; Apex covers research plus execution (purchase orders, repricing, P&L, logistics).
+- [Apex vs Seller Snap](https://apexapplications.io/compare/sellersnap): Honest comparison — Seller Snap is a dedicated AI repricer; Apex includes repricing with break-even floors inside a full wholesale operating suite.
 - [Review Booster](https://apexapplications.io/review-booster): Free-for-life automated tool for generating Amazon order reviews and seller feedback.
 - [How Amazon Wholesale Works](https://apexapplications.io/how-it-works): A roadmap for starting and scaling an Amazon FBA wholesale business.
 - [Ungating Guide](https://apexapplications.io/ungating-guide): Step-by-step guide to getting category/brand ungated on Amazon, including the Grocery category.

@@ -3,27 +3,30 @@
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  ChevronDown,
-  Layers,
-  Menu,
-  X,
-  LayoutGrid,
-  Star,
-  GraduationCap,
-  BookText,
-  BookOpen,
-  School,
   BarChart,
-  Globe,
+  Barcode,
+  BookOpen,
+  BookText,
+  ChevronDown,
+  CreditCard,
   Database,
   FileText,
-  CreditCard,
-  Barcode,
+  Gauge,
+  Globe,
+  GraduationCap,
+  Layers,
+  LayoutGrid,
+  Menu,
+  MessageSquare,
+  Package,
+  Receipt,
+  School,
+  Sliders,
+  Star,
   Truck,
   Warehouse,
-  Package,
-  MessageSquare,
-  Receipt,
+  X,
+  Zap,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
@@ -42,7 +45,7 @@ export default function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isFeatureActive = ["/features/black", "/features/blue", "/features/green", "/features/red"].includes(pathname);
+  const isFeatureActive = ["/features/black", "/features/blue", "/features/green", "/features/red", "/features/gold"].includes(pathname);
   const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
@@ -144,7 +147,7 @@ export default function Navigation() {
                     }}
                   >
                     <div className="bg-white rounded-2xl shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-200/70 overflow-hidden">
-                      <div className="grid grid-cols-4 divide-x divide-slate-100">
+                      <div className="grid grid-cols-5 divide-x divide-slate-100">
 
                         {/* Column 1: Apex Black */}
                         <div className="p-6">
@@ -263,6 +266,38 @@ export default function Navigation() {
                               return (
                                 <button key={i} onClick={() => handleFeatureClick(`/features/red#${item.hash}`)} className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-red-50/60">
                                   <Icon className="text-slate-400 group-hover:text-red-600 transition-colors mt-0.5 shrink-0" size={20} strokeWidth={1.5} />
+                                  <div className="min-w-0">
+                                    <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">{item.title}</div>
+                                    <div className="text-[11px] text-slate-500 leading-snug">{item.desc}</div>
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Column 5: Apex Gold */}
+                        <div className="p-6">
+                          <button
+                            onClick={() => handleFeatureClick('/features/gold')}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 hover:shadow-[0_0_28px_-2px_rgba(245,158,11,0.5)]"
+                          >
+                            {/* Text mark until a gold logo PNG lands in /images/nav-logos */}
+                            <span className="h-11 flex items-center text-xl font-black tracking-tight text-slate-900">
+                              APEX <span className="text-amber-500 ml-1.5">GOLD</span>
+                            </span>
+                          </button>
+                          <div className="border-t border-slate-200 mb-3" />
+                          <div className="space-y-1">
+                            {[
+                              { title: "Repricer", desc: "Automated Repricing Across Your Whole Catalog", icon: Zap, hash: "repricer" },
+                              { title: "Break-Even Floors", desc: "Floors From Real Fees: ROI, Margin or $ Profit Goals", icon: Gauge, hash: "floor-goals" },
+                              { title: "Strategies", desc: "Build Once, Assign in Bulk, Preview With Dry-Run", icon: Sliders, hash: "strategies" },
+                            ].map((item, i) => {
+                              const Icon = item.icon;
+                              return (
+                                <button key={i} onClick={() => handleFeatureClick(`/features/gold#${item.hash}`)} className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-amber-50/60">
+                                  <Icon className="text-slate-400 group-hover:text-amber-600 transition-colors mt-0.5 shrink-0" size={20} strokeWidth={1.5} />
                                   <div className="min-w-0">
                                     <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">{item.title}</div>
                                     <div className="text-[11px] text-slate-500 leading-snug">{item.desc}</div>
