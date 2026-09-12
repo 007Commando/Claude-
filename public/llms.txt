@@ -24,6 +24,7 @@ Blue, Apex Green, and Apex Red, plus a free lifetime Review Booster tool and a
 - [Rewards & Benefits](https://apexapplications.io/rewards-benefits): Member perks, including the Prep Center Network and Distributor Vault.
 - [Amazon FBA Starter Bundle](https://apexapplications.io/fba-starter-bundle): A low-cost entry offer bundling an extended software trial, free suppliers, Review Booster, the Keepa Playbook, and core training modules.
 - [Apex Elite](https://apexapplications.io/apex-elite): A $297 one-time offer bundling 3 starting suppliers, 90 days of the full Apex Suite, Prep Center Network access, free lifetime Review Booster, and the complete playbook library.
+- [GroceryCommerce](https://apexapplications.io/GroceryCommerce): Enterprise tier for B2B Amazon and ecommerce grocery sellers doing $1M+ in monthly sales — restock and purchase order creation, cashflow and inventory turnover, expiration-date tracking on grocery listings, and automatic repricing. Demo only, no self-serve.
 - [Apex Premium Membership](https://apexapplications.io/premium-membership): A $5,999 one-time membership bundling 2 years of the full Apex Suite, every supplier in the Distributor Vault, full Prep Center Network access, and lifetime member discounts.
 
 ## Blog
