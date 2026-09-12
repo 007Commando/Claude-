@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn } from "./CompareShared";
+import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 
 export default function CompareHelium10() {
   return (
@@ -23,6 +23,17 @@ export default function CompareHelium10() {
           </p>
         </motion.header>
 
+        <WorkflowCoverage
+          rivalName="Helium 10"
+          rival={[
+            { state: "partial", note: "private-label" },
+            { state: "none" },
+            { state: "partial", note: "rule-based" },
+            { state: "none" },
+            { state: "partial", note: "profits dash" },
+          ]}
+        />
+
         <CompareTable
           rivalName="Helium 10"
           rows={[
@@ -39,6 +50,16 @@ export default function CompareHelium10() {
             { label: "Chrome extension", apex: false, rival: true },
           ]}
         />
+
+        <PriceBars
+          items={[
+            { label: "Helium 10 Platinum", price: 129, caption: "Keywords, listings, launch tooling" },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Wholesale research + POs + repricer + P&L", apex: true },
+            { label: "Helium 10 Diamond", price: 359, caption: "Higher limits, AI ad tools" },
+          ]}
+        />
+
+        <SuiteShot caption="Built around a wholesale reseller's week — not a launch calendar." />
 
         <HonestVerdict
           rivalName="Helium 10"

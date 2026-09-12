@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn } from "./CompareShared";
+import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 
 export default function CompareSmartScout() {
   return (
@@ -20,6 +20,17 @@ export default function CompareSmartScout() {
           </p>
         </motion.header>
 
+        <WorkflowCoverage
+          rivalName="SmartScout"
+          rival={[
+            { state: "full", note: "brand analytics" },
+            { state: "none" },
+            { state: "none" },
+            { state: "none" },
+            { state: "none" },
+          ]}
+        />
+
         <CompareTable
           rivalName="SmartScout"
           rows={[
@@ -36,6 +47,17 @@ export default function CompareSmartScout() {
             { label: "Chrome extension", apex: false, rival: true },
           ]}
         />
+
+        <PriceBars
+          items={[
+            { label: "SmartScout Basic", price: 49, caption: "Research only — 25 keyword searches/mo" },
+            { label: "SmartScout Essentials", price: 119, caption: "Full brand & keyword data" },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L + logistics", apex: true },
+            { label: "SmartScout Business", price: 299, caption: "Adds exports and automation" },
+          ]}
+        />
+
+        <SuiteShot caption="What the $149.99 actually opens: the whole operating suite, not a research tab." />
 
         <HonestVerdict
           rivalName="SmartScout"

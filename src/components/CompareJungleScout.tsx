@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn } from "./CompareShared";
+import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 
 export default function CompareJungleScout() {
   return (
@@ -23,6 +23,17 @@ export default function CompareJungleScout() {
           </p>
         </motion.header>
 
+        <WorkflowCoverage
+          rivalName="Jungle Scout"
+          rival={[
+            { state: "partial", note: "niche validation" },
+            { state: "partial", note: "manufacturers" },
+            { state: "none" },
+            { state: "none" },
+            { state: "partial", note: "sales analytics" },
+          ]}
+        />
+
         <CompareTable
           rivalName="Jungle Scout"
           rows={[
@@ -39,6 +50,17 @@ export default function CompareJungleScout() {
             { label: "Browser extension", apex: false, rival: true },
           ]}
         />
+
+        <PriceBars
+          items={[
+            { label: "Jungle Scout Starter", price: 49, caption: "Product research, browser extension" },
+            { label: "Jungle Scout Growth", price: 79, caption: "Adds listing & keyword tooling" },
+            { label: "Jungle Scout Brand Owner + CI", price: 149, caption: "Competitive Intelligence, top tier only" },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L + logistics", apex: true },
+          ]}
+        />
+
+        <SuiteShot caption="For sellers whose products already exist — bought, priced, restocked, and banked in one place." />
 
         <HonestVerdict
           rivalName="Jungle Scout"

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn } from "./CompareShared";
+import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 
 export default function CompareSellerSnap() {
   return (
@@ -23,6 +23,17 @@ export default function CompareSellerSnap() {
           </p>
         </motion.header>
 
+        <WorkflowCoverage
+          rivalName="Seller Snap"
+          rival={[
+            { state: "none" },
+            { state: "none" },
+            { state: "full", note: "game-theory AI" },
+            { state: "none" },
+            { state: "partial", note: "repricing analytics" },
+          ]}
+        />
+
         <CompareTable
           rivalName="Seller Snap"
           rows={[
@@ -40,6 +51,17 @@ export default function CompareSellerSnap() {
             { label: "Revenue caps on plans", apex: "None", rival: "Tiered by trailing revenue" },
           ]}
         />
+
+        <PriceBars
+          items={[
+            { label: "Seller Snap Starter", price: 100, caption: "1,000 SKUs, $15k/mo revenue cap, annual commitment" },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Repricer with break-even floors + everything else, no caps", apex: true },
+            { label: "Seller Snap Accelerator", price: 250, caption: "Repricing only, higher caps" },
+            { label: "Seller Snap Standard", price: 500, caption: "Repricing only" },
+          ]}
+        />
+
+        <SuiteShot caption="The repricer is one tab of this — the POs it protects and the P&L it feeds are the tabs next to it." />
 
         <HonestVerdict
           rivalName="Seller Snap"
