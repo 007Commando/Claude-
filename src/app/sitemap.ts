@@ -21,6 +21,7 @@ const ENTRIES: Entry[] = [
   { path: "/features/green", changeFrequency: "monthly", priority: 0.8 },
   { path: "/features/red", changeFrequency: "monthly", priority: 0.8 },
   { path: "/features/gold", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/compare", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/smartscout", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/sellersnap", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/helium10", changeFrequency: "monthly", priority: 0.8 },
