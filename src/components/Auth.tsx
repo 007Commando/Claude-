@@ -102,6 +102,10 @@ function getFriendlyAuthError(message: string): string {
     return "The login service didn't finish loading in time. Please try again.";
   }
 
+  if (/an unknown error occurred/i.test(message)) {
+    return "Something went wrong on our side. Please try again — if it keeps happening, email info@apexapplications.io and we'll set you up directly.";
+  }
+
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
   if (!codeMatch) return message;
 
