@@ -472,6 +472,47 @@ export default function Proposal({ angle = DEFAULT_ANGLE }: { angle?: Angle }) {
                     </button>
                   ))}
                 </div>
+
+                {/* The tool that answers this exact problem — real product, real video */}
+                {problem === "place-first-order" && (
+                  <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+                    <span className="inline-flex items-center gap-1.5 bg-brand text-white text-[11px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">
+                      <Sparkles className="w-3.5 h-3.5" /> Recommended
+                    </span>
+                    <h4 className="mt-4 text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                      Apex Applications Purchase Order Builder
+                    </h4>
+                    <p className="mt-2 text-slate-600 text-base sm:text-lg">
+                      The fastest way to build your first purchase order and ship it straight into
+                      Amazon, no spreadsheets, no guesswork.
+                    </p>
+                    <div className="mt-5 rounded-xl overflow-hidden border border-slate-200 shadow-lg bg-white">
+                      <video
+                        src="/videos/dashboard-hero-demo.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    <div className="mt-5 grid sm:grid-cols-2 gap-3 text-left">
+                      {[
+                        "Build Fast and Simple Purchase Orders",
+                        "Analyze Bulk Catalogs from Suppliers",
+                        "Connected to Amazon to Sync your Inventory",
+                        "Amazon App Store Partner",
+                      ].map((point) => (
+                        <div key={point} className="flex items-center gap-2.5">
+                          <span className="flex w-6 h-6 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                            <Check className="w-4 h-4" strokeWidth={3} />
+                          </span>
+                          <span className="font-bold text-slate-800">{point}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
