@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Check, GraduationCap, Rocket, Search, ShoppingCart, TrendingUp, Building2, Sparkles } from "lucide-react";
+import { Angle, DEFAULT_ANGLE } from "../lib/proposalAngles";
 
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
 
@@ -15,10 +15,6 @@ const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
  * Structure, quiz, CTA and offer stay identical across angles — only the
  * message is under test.
  */
-type Angle = "first_order_roadmap" | "wholesale_suppliers" | "better_buying";
-
-const DEFAULT_ANGLE: Angle = "first_order_roadmap";
-
 type Slide = {
   eyebrow: string;
   headline: React.ReactNode;
@@ -189,10 +185,6 @@ const ANGLES: Record<Angle, AngleContent> = {
   },
 };
 
-function isAngle(value: string): value is Angle {
-  return value in ANGLES;
-}
-
 type Segment = "beginner" | "established";
 type Problem = "learn-the-business" | "find-suppliers" | "place-first-order";
 type Model = "wholesale-brand-direct" | "online-retail-arbitrage" | "private-label";
@@ -226,10 +218,7 @@ function buildCalendlyUrl(angle: Angle, segment: Segment, detail: Problem | Mode
   return url.toString();
 }
 
-export default function Proposal() {
-  const params = useSearchParams();
-  const angleParam = params.get("angle") || params.get("utm_content") || "";
-  const angle: Angle = isAngle(angleParam) ? angleParam : DEFAULT_ANGLE;
+export default function Proposal({ angle = DEFAULT_ANGLE }: { angle?: Angle }) {
   const content = ANGLES[angle];
 
   const [index, setIndex] = useState(0);
