@@ -7,7 +7,8 @@ import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isMinimalFooterPage = pathname === "/apex-elite" || pathname === "/premium-membership";
+  const isMinimalFooterPage =
+    pathname === "/apex-elite" || pathname === "/premium-membership" || pathname === "/proposal";
 
   if (isMinimalFooterPage) {
     return (

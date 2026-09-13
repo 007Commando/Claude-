@@ -50,7 +50,10 @@ export default function Navigation() {
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
   const isDistractionFreePage =
-    pathname === "/fba-starter-bundle" || pathname === "/apex-elite" || pathname === "/premium-membership";
+    pathname === "/fba-starter-bundle" ||
+    pathname === "/apex-elite" ||
+    pathname === "/premium-membership" ||
+    pathname === "/proposal";
   // apex-elite renders its own countdown bar fixed above this nav, so the nav
   // itself has to sit lower to avoid overlapping it.
   const isApexElitePage = pathname === "/apex-elite";
