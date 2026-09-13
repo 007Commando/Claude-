@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Check, GraduationCap, Rocket, Search, ShoppingCart, TrendingUp } from "lucide-react";
 
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
 
@@ -68,8 +69,38 @@ const SLIDES: Slide[] = [
   },
 ];
 
+type Segment = "beginner" | "established";
+type Problem = "learn-the-business" | "find-suppliers" | "place-first-order";
+
+const PROBLEMS: { id: Problem; label: string; icon: typeof GraduationCap }[] = [
+  { id: "learn-the-business", label: "Learn the Business", icon: GraduationCap },
+  { id: "find-suppliers", label: "Find Suppliers", icon: Search },
+  { id: "place-first-order", label: "Place Your First Order", icon: ShoppingCart },
+];
+
+/**
+ * The booked call must carry both the ad that paid for the click and the
+ * quiz answers, so forward the page's utm_* params to Calendly untouched
+ * and pack the qualification into utm_term (the one slot ads don't use).
+ */
+function buildCalendlyUrl(segment: Segment, problem: Problem | null) {
+  const url = new URL(CALENDLY_URL);
+  const incoming = new URLSearchParams(window.location.search);
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content"]) {
+    const value = incoming.get(key);
+    if (value) url.searchParams.set(key, value);
+  }
+  url.searchParams.set("utm_term", problem ? `${segment}-${problem}` : segment);
+  return url.toString();
+}
+
 export default function Proposal() {
   const [index, setIndex] = useState(0);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [segment, setSegment] = useState<Segment | null>(null);
+  const [problem, setProblem] = useState<Problem | null>(null);
+  const quizRef = useRef<HTMLDivElement>(null);
+  const bookRef = useRef<HTMLDivElement>(null);
   const last = SLIDES.length - 1;
 
   const go = useCallback(
@@ -87,6 +118,19 @@ export default function Proposal() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
+
+  const openQuiz = () => {
+    setQuizOpen(true);
+    requestAnimationFrame(() => quizRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
+
+  const pickSegment = (s: Segment) => {
+    setSegment(s);
+    if (s === "established") setProblem(null);
+    requestAnimationFrame(() => bookRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+  };
+
+  const readyToBook = segment === "established" || (segment === "beginner" && problem !== null);
 
   const trackSchedule = () => {
     const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
@@ -164,13 +208,154 @@ export default function Proposal() {
           button below and book a call on the next page:
         </p>
 
-        <a
-          href={CALENDLY_URL}
-          onClick={trackSchedule}
-          className="mt-8 inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
-        >
-          Schedule a Call Here
-        </a>
+        {!quizOpen && (
+          <button
+            type="button"
+            onClick={openQuiz}
+            className="mt-8 inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+          >
+            Schedule a Call Here
+          </button>
+        )}
+
+        {/* Qualifier — expands in place of the button */}
+        {quizOpen && (
+          <div ref={quizRef} className="mt-10 text-left scroll-mt-28">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+              Are you currently selling, or getting started?
+            </h3>
+            <p className="mt-1 text-slate-500">Tap the card that fits you best.</p>
+
+            <div className="mt-5 grid sm:grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => pickSegment("beginner")}
+                className={`relative flex items-start gap-4 rounded-2xl border-2 p-5 text-left transition-all ${
+                  segment === "beginner"
+                    ? "border-brand bg-brand/5 shadow-md"
+                    : "border-slate-200 bg-white hover:border-slate-300"
+                }`}
+              >
+                <span
+                  className={`flex w-12 h-12 shrink-0 items-center justify-center rounded-xl ${
+                    segment === "beginner" ? "bg-brand text-white" : "bg-slate-100 text-slate-500"
+                  }`}
+                >
+                  <Rocket className="w-6 h-6" />
+                </span>
+                <span className="pr-8">
+                  <span className="block text-lg font-extrabold text-slate-900">
+                    I&apos;m a complete beginner
+                  </span>
+                  <span className="mt-1 block text-slate-500">
+                    New to Amazon and ready to begin the right way.
+                  </span>
+                </span>
+                <span
+                  className={`absolute top-4 right-4 flex w-6 h-6 items-center justify-center rounded-full border-2 ${
+                    segment === "beginner" ? "border-brand bg-brand text-white" : "border-slate-300"
+                  }`}
+                >
+                  {segment === "beginner" && <Check className="w-4 h-4" strokeWidth={3} />}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => pickSegment("established")}
+                className={`relative flex items-start gap-4 rounded-2xl border-2 p-5 text-left transition-all ${
+                  segment === "established"
+                    ? "border-brand bg-brand/5 shadow-md"
+                    : "border-slate-200 bg-white hover:border-slate-300"
+                }`}
+              >
+                <span
+                  className={`flex w-12 h-12 shrink-0 items-center justify-center rounded-xl ${
+                    segment === "established" ? "bg-brand text-white" : "bg-slate-100 text-slate-500"
+                  }`}
+                >
+                  <TrendingUp className="w-6 h-6" />
+                </span>
+                <span className="pr-8">
+                  <span className="block text-lg font-extrabold text-slate-900">
+                    I&apos;m doing $10k+ per month
+                  </span>
+                  <span className="mt-1 block text-slate-500">
+                    Established and ready to scale faster.
+                  </span>
+                </span>
+                <span
+                  className={`absolute top-4 right-4 flex w-6 h-6 items-center justify-center rounded-full border-2 ${
+                    segment === "established" ? "border-brand bg-brand text-white" : "border-slate-300"
+                  }`}
+                >
+                  {segment === "established" && <Check className="w-4 h-4" strokeWidth={3} />}
+                </span>
+              </button>
+            </div>
+
+            {/* Beginner branch */}
+            {segment === "beginner" && (
+              <div className="mt-8 pt-8 border-t border-slate-200">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                  What would you say your biggest problems are?
+                </h3>
+                <p className="mt-1 text-slate-500">
+                  Pick the one that fits best, we&apos;ll tailor your next steps.
+                </p>
+
+                <div className="mt-5 grid sm:grid-cols-3 gap-4">
+                  {PROBLEMS.map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => {
+                        setProblem(id);
+                        requestAnimationFrame(() =>
+                          bookRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
+                        );
+                      }}
+                      className={`relative rounded-2xl border-2 p-5 text-left transition-all ${
+                        problem === id
+                          ? "border-brand bg-brand/5 shadow-md"
+                          : "border-slate-200 bg-white hover:border-slate-300"
+                      }`}
+                    >
+                      <span
+                        className={`flex w-12 h-12 items-center justify-center rounded-xl ${
+                          problem === id ? "bg-brand text-white" : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        <Icon className="w-6 h-6" />
+                      </span>
+                      <span className="mt-6 block text-base font-extrabold text-slate-900">{label}</span>
+                      <span
+                        className={`absolute top-4 right-4 flex w-6 h-6 items-center justify-center rounded-full border-2 ${
+                          problem === id ? "border-brand bg-brand text-white" : "border-slate-300"
+                        }`}
+                      >
+                        {problem === id && <Check className="w-4 h-4" strokeWidth={3} />}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Handoff to Calendly once qualified */}
+            <div ref={bookRef} className="mt-10 text-center scroll-mt-28">
+              {readyToBook && (
+                <a
+                  href={buildCalendlyUrl(segment as Segment, problem)}
+                  onClick={trackSchedule}
+                  className="inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+                >
+                  Continue — Book Your Call
+                </a>
+              )}
+            </div>
+          </div>
+        )}
 
         <p className="mt-14 text-[11px] leading-relaxed text-slate-400 max-w-2xl mx-auto">
           This site is not a part of the Facebook™ website or Facebook™ Inc. Additionally, this
