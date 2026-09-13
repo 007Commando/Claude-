@@ -430,9 +430,13 @@ export default function Navigation() {
               <button onClick={() => handleFeatureClick('/features/black#apex-university')} className="w-full border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all">
                 FREE AMAZON COURSE
               </button>
-              <button className="w-full bg-slate-50 text-slate-900 px-5 py-4 rounded-2xl font-bold">
+              <Link
+                href="/contact-us"
+                onClick={() => setIsMenuOpen(false)}
+                className="block w-full text-center bg-slate-50 text-slate-900 px-5 py-4 rounded-2xl font-bold"
+              >
                 Contact Support
-              </button>
+              </Link>
             </div>
           </motion.div>
         )}
