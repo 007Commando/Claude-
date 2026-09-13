@@ -1,82 +1,197 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  Building2,
-  Check,
-  GraduationCap,
-  Rocket,
-  Search,
-  ShoppingCart,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Check, GraduationCap, Rocket, Search, ShoppingCart, TrendingUp, Building2, Sparkles } from "lucide-react";
 
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
+
+/**
+ * Three complete messages over one held-constant offer (Apex software and
+ * coaching, the "Sell the Right Way" strategy, 389+ vetted suppliers, the
+ * selling-approval roadmap, buying/restock tools). Ads pick the variant via
+ * ?angle=<tag>; the tag rides into Calendly's utm_term and the pixel's
+ * Schedule event so every booking and sale reports back to its angle.
+ * Structure, quiz, CTA and offer stay identical across angles — only the
+ * message is under test.
+ */
+type Angle = "first_order_roadmap" | "wholesale_suppliers" | "better_buying";
+
+const DEFAULT_ANGLE: Angle = "first_order_roadmap";
 
 type Slide = {
   eyebrow: string;
   headline: React.ReactNode;
   body?: string;
+  finePrint?: string;
   hint?: string;
 };
 
-const SLIDES: Slide[] = [
-  {
-    eyebrow: "The Apex System",
-    headline: (
-      <>
-        Turn distributor price lists into{" "}
-        <span className="bg-brand text-white px-2">predictable Amazon profit.</span>
-      </>
-    ),
-    hint: "Press the arrow to see how it works →",
+type AngleContent = {
+  headline: string;
+  subline: string;
+  slides: Slide[];
+};
+
+const ANGLES: Record<Angle, AngleContent> = {
+  first_order_roadmap: {
+    headline: "New to Amazon? Know what to do before your first order.",
+    subline:
+      "Find suppliers. Learn the approval steps. Check the numbers with Apex software and coaching.",
+    slides: [
+      {
+        eyebrow: "Your first Amazon order",
+        headline: (
+          <>
+            A clear plan <span className="bg-brand text-white px-2">before your first order</span>
+          </>
+        ),
+        body: "Apex software and coaching help you learn what to check before you buy.",
+        hint: "Press the arrow to continue →",
+      },
+      {
+        eyebrow: "The sticking point",
+        headline: "You want to start. But what should you buy?",
+        body: "Which supplier can I use?\nCan I sell this product?\nWill the numbers work?",
+      },
+      {
+        eyebrow: "The roadmap",
+        headline: "A path you can follow",
+        body: "Find suppliers. Work through the approval steps. Check products before you order.",
+      },
+      {
+        eyebrow: "Suppliers and approvals",
+        headline: (
+          <>
+            A place to <span className="bg-brand text-white px-2">start your search</span>
+          </>
+        ),
+        body: "389+ vetted Amazon FBA suppliers, plus a roadmap for selling approvals.",
+        finePrint: "Each supplier has its own terms. Amazon decides selling approvals.",
+      },
+      {
+        eyebrow: "The product check",
+        headline: "The price tag is only part of the cost",
+        body: "Use Apex to check product costs and fees, then build your purchase order.",
+      },
+      {
+        eyebrow: "The support",
+        headline: "Tools to do the work. Coaching to learn how.",
+        body: "Learn the “Sell the Right Way” strategy, then use Apex to put it into practice.",
+      },
+      {
+        eyebrow: "Your next step",
+        headline: "What is holding up your first order?",
+        body: "Book a free strategy call below. Tell us where you are stuck.",
+      },
+    ],
   },
-  {
-    eyebrow: "The Problem",
-    headline: "Most wholesale sellers still source one UPC at a time.",
-    body:
-      "Copy a code, paste it, check the fees, check the Buy Box, repeat 4,000 times. The catalog wins by exhaustion — and the profitable items stay buried.",
+  wholesale_suppliers: {
+    headline: "For Amazon wholesale FBA sellers tired of hunting for suppliers.",
+    subline:
+      "Get 389+ vetted suppliers, a selling-approval roadmap, and Apex tools to help check what is worth buying.",
+    slides: [
+      {
+        eyebrow: "For Amazon wholesale FBA sellers",
+        headline: (
+          <>
+            Still <span className="bg-brand text-white px-2">hunting for suppliers?</span>
+          </>
+        ),
+        body: "Get a place to start and a plan for checking what to buy.",
+        hint: "Press the arrow to continue →",
+      },
+      {
+        eyebrow: "The next hurdle",
+        headline: "A supplier list leads to more questions",
+        body: "Will they open an account?\nCan I sell their products?\nWhich items are worth a closer look?",
+      },
+      {
+        eyebrow: "The supplier list",
+        headline: (
+          <>
+            <span className="bg-brand text-white px-2">389+ vetted</span> Amazon FBA suppliers
+          </>
+        ),
+        body: "Find suppliers to contact. Ask about their terms and request their product lists.",
+        finePrint: "Account acceptance, stock and order sizes vary by supplier.",
+      },
+      {
+        eyebrow: "Selling approvals",
+        headline: "A roadmap for getting approved",
+        body: "Learn the steps for selling approvals before you plan an order.",
+        finePrint: "Amazon decides selling approvals.",
+      },
+      {
+        eyebrow: "The catalog check",
+        headline: "A product list you can work through",
+        body: "Use Apex to check product costs and fees, then build your purchase order.",
+      },
+      {
+        eyebrow: "The full offer",
+        headline: "A plan after you find a supplier",
+        body: "The “Sell the Right Way” strategy brings coaching and Apex software into your buying process.",
+      },
+      {
+        eyebrow: "Your next step",
+        headline: "Where does your sourcing get stuck?",
+        body: "Book a free strategy call below. Let’s talk about your next step.",
+      },
+    ],
   },
-  {
-    eyebrow: "Step 1 — Scan",
-    headline: (
-      <>
-        Upload the whole catalog. Apex scans every line against{" "}
-        <span className="bg-brand text-white px-2">122M+ Amazon products.</span>
-      </>
-    ),
-    body:
-      "ROI, fees, sales rank and Buy Box data on every match — the winners float to the top instead of hiding in row 3,817.",
+  better_buying: {
+    headline: "Already selling on Amazon? Know what to check before your next order.",
+    subline:
+      "Use Apex software and coaching to check your costs, plan orders, and understand what to buy again.",
+    slides: [
+      {
+        eyebrow: "For sellers already placing orders",
+        headline: (
+          <>
+            Your next order <span className="bg-brand text-white px-2">deserves a clear plan</span>
+          </>
+        ),
+        body: "Apex software and coaching help you check the numbers behind what you buy.",
+        hint: "Press the arrow to continue →",
+      },
+      {
+        eyebrow: "The buying decision",
+        headline: "More choices. The same budget.",
+        body: "Which products should you buy?\nHow much should you order?\nWhat should you buy again?",
+      },
+      {
+        eyebrow: "The cost check",
+        headline: "What is left after costs?",
+        body: "Apex helps you check product costs and fees as you plan an order.",
+      },
+      {
+        eyebrow: "The purchase order",
+        headline: "A clearer way to plan your order",
+        body: "Use the Purchase Order Builder to organize the products you choose to buy.",
+      },
+      {
+        eyebrow: "The next order",
+        headline: "A closer look at what to buy again",
+        body: "Use restock tools and profit reports to help guide your next buying decision.",
+      },
+      {
+        eyebrow: "The support behind it",
+        headline: "A buying process you can keep using",
+        body: "Apex software and coaching, plus 389+ vetted suppliers and a selling-approval roadmap.",
+        finePrint: "Supplier terms vary. Amazon decides selling approvals.",
+      },
+      {
+        eyebrow: "Your next step",
+        headline: "What would help you plan your next order?",
+        body: "Book a free strategy call below. Tell us how you buy today.",
+      },
+    ],
   },
-  {
-    eyebrow: "Step 2 — Buy",
-    headline: "Purchase orders, landed costs and cashflow in the same place you sourced.",
-    body:
-      "Every PO shows gross profit, ROI and profit per sale before you commit a dollar — and your P&L tracks it after.",
-  },
-  {
-    eyebrow: "Step 3 — Sell",
-    headline: (
-      <>
-        The Apex Gold repricer bids the Buy Box for you —{" "}
-        <span className="bg-brand text-white px-2">with a floor you set.</span>
-      </>
-    ),
-    body: "Win the rotation without racing to the bottom.",
-  },
-  {
-    eyebrow: "Step 4 — People",
-    headline: "You're not handed a login and left alone.",
-    body:
-      "White-glove onboarding gets the system installed around your business — and when you want hands, our virtual assistants with 9+ years of Amazon experience run the daily work inside it.",
-  },
-  {
-    eyebrow: "The Call",
-    headline: "20 minutes. We look at how you source today and show you exactly what Apex changes.",
-    body: "If it's not a fit, we'll tell you that too. Book below ↓",
-  },
-];
+};
+
+function isAngle(value: string): value is Angle {
+  return value in ANGLES;
+}
 
 type Segment = "beginner" | "established";
 type Problem = "learn-the-business" | "find-suppliers" | "place-first-order";
@@ -95,22 +210,28 @@ const MODELS: { id: Model; label: string; icon: typeof Building2 }[] = [
 ];
 
 /**
- * The booked call must carry both the ad that paid for the click and the
- * quiz answers, so forward the page's utm_* params to Calendly untouched
- * and pack the qualification into utm_term (the one slot ads don't use).
+ * The booked call must name the ad that paid for the click, the angle under
+ * test, and the quiz answers. The ad's utm_* params pass through untouched;
+ * utm_term packs angle and qualification as `<angle>:<segment>-<detail>` so
+ * the CRM can split performance by angle without touching campaign naming.
  */
-function buildCalendlyUrl(segment: Segment, detail: Problem | Model | null) {
+function buildCalendlyUrl(angle: Angle, segment: Segment, detail: Problem | Model | null) {
   const url = new URL(CALENDLY_URL);
   const incoming = new URLSearchParams(window.location.search);
   for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content"]) {
     const value = incoming.get(key);
     if (value) url.searchParams.set(key, value);
   }
-  url.searchParams.set("utm_term", detail ? `${segment}-${detail}` : segment);
+  url.searchParams.set("utm_term", `${angle}:${detail ? `${segment}-${detail}` : segment}`);
   return url.toString();
 }
 
 export default function Proposal() {
+  const params = useSearchParams();
+  const angleParam = params.get("angle") || params.get("utm_content") || "";
+  const angle: Angle = isAngle(angleParam) ? angleParam : DEFAULT_ANGLE;
+  const content = ANGLES[angle];
+
   const [index, setIndex] = useState(0);
   const [quizOpen, setQuizOpen] = useState(false);
   const [segment, setSegment] = useState<Segment | null>(null);
@@ -118,7 +239,7 @@ export default function Proposal() {
   const [model, setModel] = useState<Model | null>(null);
   const quizRef = useRef<HTMLDivElement>(null);
   const bookRef = useRef<HTMLDivElement>(null);
-  const last = SLIDES.length - 1;
+  const last = content.slides.length - 1;
 
   const go = useCallback(
     (delta: number) => {
@@ -153,23 +274,25 @@ export default function Proposal() {
 
   const trackSchedule = () => {
     const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
-    fbq?.("track", "Schedule");
+    fbq?.("track", "Schedule", { content_category: angle });
   };
 
-  const slide = SLIDES[index];
+  const slide = content.slides[index];
 
   return (
     <div className="pt-20 bg-white">
       <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-12 pb-16 sm:pt-16 text-center">
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-brand">
-          Only for Amazon sellers doing $10k+/month.
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-brand text-balance">
+          {content.headline}
         </h1>
-        <p className="mt-4 text-lg text-slate-700 font-medium">
-          Click through the slides below to see how the Apex system works:
+        <p className="mt-4 text-lg text-slate-700 font-medium">{content.subline}</p>
+
+        <p className="mt-8 text-sm font-bold uppercase tracking-wider text-slate-500">
+          Read these 7 short slides to see how Apex can help.
         </p>
 
         {/* Slide deck */}
-        <div className="mt-8 border-4 border-slate-900 rounded-md overflow-hidden text-left shadow-[8px_8px_0_0_rgba(15,23,42,0.15)]">
+        <div className="mt-4 border-4 border-slate-900 rounded-md overflow-hidden text-left shadow-[8px_8px_0_0_rgba(15,23,42,0.15)]">
           <div className="relative bg-white min-h-[340px] sm:min-h-[380px] flex flex-col justify-center px-6 sm:px-12 py-12">
             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand mb-4">
               {slide.eyebrow}
@@ -177,7 +300,14 @@ export default function Proposal() {
             <h2 className="text-2xl sm:text-[1.9rem] leading-snug font-extrabold text-slate-900 [&>span]:box-decoration-clone">
               {slide.headline}
             </h2>
-            {slide.body && <p className="mt-5 text-base sm:text-lg text-slate-600">{slide.body}</p>}
+            {slide.body && (
+              <p className="mt-5 text-base sm:text-lg text-slate-600 whitespace-pre-line">
+                {slide.body}
+              </p>
+            )}
+            {slide.finePrint && (
+              <p className="mt-4 text-xs text-slate-400">{slide.finePrint}</p>
+            )}
             {slide.hint && <p className="mt-8 text-sm text-slate-400 font-medium">{slide.hint}</p>}
           </div>
 
@@ -194,7 +324,7 @@ export default function Proposal() {
                 ‹
               </button>
               <span className="text-sm font-bold tabular-nums">
-                {index + 1} / {SLIDES.length}
+                {index + 1} / {content.slides.length}
               </span>
               <button
                 type="button"
@@ -207,7 +337,7 @@ export default function Proposal() {
               </button>
             </div>
             <div className="flex items-center gap-1.5">
-              {SLIDES.map((s, i) => (
+              {content.slides.map((s, i) => (
                 <button
                   key={s.eyebrow}
                   type="button"
@@ -222,18 +352,13 @@ export default function Proposal() {
           </div>
         </div>
 
-        <p className="mt-10 text-lg sm:text-xl text-slate-800 font-semibold">
-          If you sell on Amazon and want more consistent, scalable wholesale profit, click the
-          button below and book a call on the next page:
-        </p>
-
         {!quizOpen && (
           <button
             type="button"
             onClick={openQuiz}
-            className="mt-8 inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+            className="mt-10 inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
           >
-            Schedule a Call Here
+            Book a Free Strategy Call
           </button>
         )}
 
@@ -413,7 +538,7 @@ export default function Proposal() {
             <div ref={bookRef} className="mt-10 text-center scroll-mt-28">
               {readyToBook && (
                 <a
-                  href={buildCalendlyUrl(segment as Segment, problem ?? model)}
+                  href={buildCalendlyUrl(angle, segment as Segment, problem ?? model)}
                   onClick={trackSchedule}
                   className="inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
                 >
