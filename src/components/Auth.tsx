@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import TrialTimeline from "./TrialTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { z } from "zod";
@@ -535,6 +536,12 @@ export default function Auth() {
               tracking into one streamlined platform — so you can scale with
               clarity and speed.
             </p>
+
+            {mode === "signup" && (
+              <div className="mt-10 max-w-lg">
+                <TrialTimeline plan={planTier} period={period} />
+              </div>
+            )}
 
             <ul className="mt-10 space-y-6 max-w-lg">
               {benefits.map((b) => (
