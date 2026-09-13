@@ -1,7 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Check, GraduationCap, Rocket, Search, ShoppingCart, TrendingUp } from "lucide-react";
+import {
+  Building2,
+  Check,
+  GraduationCap,
+  Rocket,
+  Search,
+  ShoppingCart,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
 
@@ -71,6 +80,7 @@ const SLIDES: Slide[] = [
 
 type Segment = "beginner" | "established";
 type Problem = "learn-the-business" | "find-suppliers" | "place-first-order";
+type Model = "wholesale-brand-direct" | "online-retail-arbitrage" | "private-label";
 
 const PROBLEMS: { id: Problem; label: string; icon: typeof GraduationCap }[] = [
   { id: "learn-the-business", label: "Learn the Business", icon: GraduationCap },
@@ -78,19 +88,25 @@ const PROBLEMS: { id: Problem; label: string; icon: typeof GraduationCap }[] = [
   { id: "place-first-order", label: "Place Your First Order", icon: ShoppingCart },
 ];
 
+const MODELS: { id: Model; label: string; icon: typeof Building2 }[] = [
+  { id: "wholesale-brand-direct", label: "Wholesale & Brand Direct", icon: Building2 },
+  { id: "online-retail-arbitrage", label: "Online Arbitrage & Retail Arbitrage", icon: ShoppingCart },
+  { id: "private-label", label: "Private Label", icon: Sparkles },
+];
+
 /**
  * The booked call must carry both the ad that paid for the click and the
  * quiz answers, so forward the page's utm_* params to Calendly untouched
  * and pack the qualification into utm_term (the one slot ads don't use).
  */
-function buildCalendlyUrl(segment: Segment, problem: Problem | null) {
+function buildCalendlyUrl(segment: Segment, detail: Problem | Model | null) {
   const url = new URL(CALENDLY_URL);
   const incoming = new URLSearchParams(window.location.search);
   for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content"]) {
     const value = incoming.get(key);
     if (value) url.searchParams.set(key, value);
   }
-  url.searchParams.set("utm_term", problem ? `${segment}-${problem}` : segment);
+  url.searchParams.set("utm_term", detail ? `${segment}-${detail}` : segment);
   return url.toString();
 }
 
@@ -99,6 +115,7 @@ export default function Proposal() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [segment, setSegment] = useState<Segment | null>(null);
   const [problem, setProblem] = useState<Problem | null>(null);
+  const [model, setModel] = useState<Model | null>(null);
   const quizRef = useRef<HTMLDivElement>(null);
   const bookRef = useRef<HTMLDivElement>(null);
   const last = SLIDES.length - 1;
@@ -127,10 +144,12 @@ export default function Proposal() {
   const pickSegment = (s: Segment) => {
     setSegment(s);
     if (s === "established") setProblem(null);
+    if (s === "beginner") setModel(null);
     requestAnimationFrame(() => bookRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
   };
 
-  const readyToBook = segment === "established" || (segment === "beginner" && problem !== null);
+  const readyToBook =
+    (segment === "beginner" && problem !== null) || (segment === "established" && model !== null);
 
   const trackSchedule = () => {
     const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
@@ -342,11 +361,59 @@ export default function Proposal() {
               </div>
             )}
 
+            {/* Established branch */}
+            {segment === "established" && (
+              <div className="mt-8 pt-8 border-t border-slate-200">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                  Which business model are you following?
+                </h3>
+                <p className="mt-1 text-slate-500">
+                  Select the model that best describes how you source products today.
+                </p>
+
+                <div className="mt-5 grid sm:grid-cols-3 gap-4">
+                  {MODELS.map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => {
+                        setModel(id);
+                        requestAnimationFrame(() =>
+                          bookRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
+                        );
+                      }}
+                      className={`relative rounded-2xl border-2 p-5 text-left transition-all ${
+                        model === id
+                          ? "border-brand bg-brand/5 shadow-md"
+                          : "border-slate-200 bg-white hover:border-slate-300"
+                      }`}
+                    >
+                      <span
+                        className={`flex w-12 h-12 items-center justify-center rounded-xl ${
+                          model === id ? "bg-brand text-white" : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        <Icon className="w-6 h-6" />
+                      </span>
+                      <span className="mt-6 block text-base font-extrabold text-slate-900">{label}</span>
+                      <span
+                        className={`absolute top-4 right-4 flex w-6 h-6 items-center justify-center rounded-full border-2 ${
+                          model === id ? "border-brand bg-brand text-white" : "border-slate-300"
+                        }`}
+                      >
+                        {model === id && <Check className="w-4 h-4" strokeWidth={3} />}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Handoff to Calendly once qualified */}
             <div ref={bookRef} className="mt-10 text-center scroll-mt-28">
               {readyToBook && (
                 <a
-                  href={buildCalendlyUrl(segment as Segment, problem)}
+                  href={buildCalendlyUrl(segment as Segment, problem ?? model)}
                   onClick={trackSchedule}
                   className="inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
                 >
