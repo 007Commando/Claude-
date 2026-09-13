@@ -127,6 +127,12 @@ function getFriendlyAuthError(message: string): string {
     case "popup-closed-by-user":
     case "cancelled-popup-request":
       return "";
+    case "popup-blocked":
+      return "Your browser blocked the Google sign-in window. Allow popups for this site, or sign up with email below.";
+    case "operation-not-allowed":
+    case "unauthorized-domain":
+    case "internal-error":
+      return "Google sign-in isn't available right now. Please sign up with your email instead — it takes the same 30 seconds.";
     case "weak-password":
       return "Choose a stronger password (at least 6 characters).";
     case "network-request-failed":
