@@ -85,20 +85,17 @@ export default function LandingPage() {
                 Everything you need to source products, manage suppliers, build purchase orders, and grow your Amazon business from your first sale to your next million.
               </p>
               <div className="flex flex-col sm:flex-row gap-5">
-                <button 
-                  onClick={() => router.push("/pricing")}
+                <button
+                  onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}
                   className="bg-brand text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(249,115,22,0.3)] flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
-                  Run It <ArrowRight size={18} />
+                  Start Free Trial <ArrowRight size={18} />
                 </button>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById("features-section");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }}
+                <button
+                  onClick={() => router.push("/apex-elite")}
                   className="bg-slate-50 text-slate-900 border border-slate-200 px-10 py-5 rounded-2xl text-sm font-black hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
-                  Learn More
+                  Get First Month LaunchPad
                 </button>
               </div>
             </motion.div>
