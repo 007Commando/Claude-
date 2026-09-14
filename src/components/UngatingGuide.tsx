@@ -35,7 +35,7 @@ const invoiceRequirements = [
   "Dated within the last 180 days",
   "Your business name and address",
   "The distributor's name and address",
-  "A combined purchase of at least 10 units",
+  "The unit quantity your application asks for — Amazon has commonly required at least 10 units, but confirm it in your own application",
   "Pricing on the invoice is optional — you can leave it off",
 ];
 
@@ -89,7 +89,7 @@ const quickWinSteps = [
   {
     icon: PackagePlus,
     title: "Order 10 Units of Pumpkin Pie Spice",
-    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items — a low-cost way to get a real, verifiable invoice for a Grocery ASIN. Ten units puts the total around $62 before shipping.",
+    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items — a low-cost way to get a real, verifiable invoice for a Grocery ASIN. Ten units is a low-cost way to reach the usual threshold; confirm the current price and the quantity your own application asks for before ordering.",
     product: {
       name: "Frontier Co-op Pumpkin Pie Spice",
       size: "1.72 oz bottle",
@@ -119,8 +119,8 @@ const quickWinSteps = [
   },
   {
     icon: RotateCw,
-    title: "Resubmit if Needed",
-    body: "Approval isn't always instant on the first try. If it gets rejected, resubmit the exact same invoice and photos — a second or third attempt often goes through once Amazon's review queue catches up.",
+    title: "If It Is Rejected, Read the Reason",
+    body: "A rejection names what Amazon could not verify — a missing address, an unreadable invoice, a quantity below the threshold. Fix that specific thing and submit again. Sending identical documents a second time does not change the answer, and repeated identical submissions can count against the account.",
   },
   {
     icon: PartyPopper,
@@ -133,7 +133,7 @@ const nextSteps = [
   {
     icon: Rocket,
     title: "Sign Up & Get Ungated Today",
-    body: "Start your free trial and the Foundation Guide, Distributor Vault, and this exact walkthrough are unlocked from day one.",
+    body: "Start your free trial and the Foundation Guide and this walkthrough are open from day one. Three authorized distributors from the Vault are open the day your subscription starts, three more each full month you stay, and an annual plan opens all of them at once.",
     highlights: ["7-Day Free Trial", "Ungating Unlock SOP"],
     linkLabel: "Start Free Trial",
     linkHref: "/auth?mode=signup&plan=starter&period=monthly",
@@ -342,7 +342,7 @@ export default function UngatingGuide() {
               </div>
               <div>
                 <div className="font-bold text-slate-900 text-sm mb-0.5">Use the Distributor Vault</div>
-                <div className="text-xs text-slate-500">389+ authorized suppliers. Annual members only.</div>
+                <div className="text-xs text-slate-500">390 authorized suppliers. 3 open on subscribing, 3 more a month; annual opens all.</div>
               </div>
               <ArrowRight size={16} className="text-brand shrink-0 ml-auto" />
             </button>
@@ -399,8 +399,9 @@ export default function UngatingGuide() {
             <div className="mt-6 pt-6 border-t border-slate-100 flex items-start gap-3">
               <Calendar size={16} className="text-slate-400 shrink-0 mt-0.5" />
               <p className="text-xs text-slate-500 leading-relaxed">
-                This is exactly why the walkthrough below has you order 10 units — it's the
-                minimum Amazon looks for on a single invoice.
+                The walkthrough below orders 10 units because that has been Amazon&apos;s usual
+                threshold on a single invoice. Your own application states the number that applies
+                to you; if it differs, follow the application.
               </p>
             </div>
           </motion.div>
@@ -631,8 +632,8 @@ export default function UngatingGuide() {
               Let's Embark on Winning on Amazon
             </h2>
             <p className="text-lg text-blue-100 mb-8">
-              3 Free Suppliers the moment you register — everything else you just saw is already
-              built into Apex.
+              3 authorized suppliers the day your trial starts — everything else you just saw is
+              already built into Apex.
             </p>
             <button
               onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}

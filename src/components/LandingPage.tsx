@@ -64,7 +64,7 @@ function SalesCounter() {
 
 export default function LandingPage() {
   const router = useRouter();
-                const paths: Record<string, string> = { blue: "/features/blue", green: "/features/green", black: "/features/black" };
+                const paths: Record<string, string> = { blue: "/features/blue", green: "/features/green", black: "/features/black", gold: "/features/gold" };
                 return (
     <>
       {/* Hero Section */}
@@ -204,18 +204,18 @@ export default function LandingPage() {
             {[
               {
                 title: "Live Profit & Loss",
-                desc: "Financial clarity is your primary competitive advantage. Know exactly which SKUs are driving growth and which are draining capital in real-time.",
+                desc: "Financial clarity is your primary competitive advantage. Know which SKUs are driving growth and which are draining capital, with sales synced from Amazon every few minutes.",
                 icon: <BarChart3 className="w-6 h-6" />,
                 color: "bg-blue-500",
-                usp: "Live-Sync Advantage",
+                usp: "Synced Every Few Minutes",
                 view: 'blue'
               },
               {
                 title: "High-Speed Sourcing",
-                desc: "Turn weeks of manual catalog scanning into minutes of automated profit discovery. Scale your sourcing without increasing your headcount.",
+                desc: "Hand Apex a whole supplier price list and it works every row against the Amazon catalogue in the background. Scale your sourcing without increasing your headcount.",
                 icon: <Search className="w-6 h-6" />,
                 color: "bg-purple-500",
-                usp: "Intelligent Filter Engine",
+                usp: "Whole-Catalog Scanning",
                 view: 'green'
               },
               {
@@ -257,7 +257,7 @@ export default function LandingPage() {
               <div className="bg-white p-8 rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-slate-100 relative group overflow-hidden">
                 {/* Gross Sales Counter */}
                 <div className="absolute top-8 left-8 z-10">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Sales</div>
+                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Sales — illustration, not customer data</div>
                   <div className="text-2xl font-black text-slate-900 font-mono tracking-tighter">
                     <SalesCounter />
                   </div>
@@ -305,12 +305,12 @@ export default function LandingPage() {
               </div>
               <h3 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight">Clarity over <span className="text-slate-300 italic">Guesswork.</span></h3>
               <p className="text-xl text-slate-600 mb-10 leading-relaxed font-medium">
-                Most sellers fly blind with delayed data. Apex syncs directly with Amazon to provide a crystal-clear, real-time map of your net profit, accounting for every hidden fee automatically.
+                Most sellers fly blind between monthly statements. Apex syncs with Amazon every few minutes and maps your net profit with Amazon's fees deducted automatically — and your own costs where you enter them.
               </p>
               <div className="space-y-6">
                 {[
                   { title: "True Net Margin Logic", desc: "Automated landed cost calculation per unit." },
-                  { title: "Real-time Fee Scraping", desc: "Instantly adjust for storage and shipping changes." }
+                  { title: "Fees Kept Current", desc: "Amazon fee changes picked up on the regular sync, not at month end." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-5 group">
                     <div className="shrink-0 w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3">

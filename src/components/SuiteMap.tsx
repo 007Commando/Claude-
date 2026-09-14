@@ -3,6 +3,10 @@
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import {
+  Tag,
+  SlidersHorizontal,
+  Eye,
+  ScrollText,
   LayoutGrid,
   Star,
   School,
@@ -28,9 +32,12 @@ import bullBlack from "../assets/bull-black.png.asset.json";
 import bullBlue from "../assets/bull-blue.png.asset.json";
 import bullGreen from "../assets/bull-green.png.asset.json";
 import bullRed from "../assets/bull-red.png.asset.json";
+import bullGold from "../assets/apex-bull-logo.png.asset.json";
 
 type Suite = {
-  key: "core" | "blue" | "green" | "red";
+  key: "core" | "blue" | "green" | "gold" | "red";
+  /** Shown on the card. Red is beta and the map has to say so where it names it. */
+  beta?: boolean;
   number: string;
   label: string;
   labelAccent: string;
@@ -99,9 +106,33 @@ const suites: Suite[] = [
       { icon: Package, title: "Products", desc: "Discover New Listings and Opportunities" },
     ],
   },
+  /**
+   * Gold was missing from this map entirely while the pricing page and five
+   * comparison pages sold it as included. The audit's first homepage finding.
+   */
+  {
+    key: "gold",
+    number: "04",
+    label: "APEX",
+    labelAccent: "GOLD",
+    kicker: "Repricing with profit controls",
+    bull: bullGold.url,
+    route: "/features/gold",
+    accent: "text-amber-500",
+    ring: "group-hover:ring-amber-500/20",
+    iconText: "text-amber-500",
+    beta: true,
+    items: [
+      { icon: Tag, title: "Repricer", desc: "Break-even floors computed from your own costs and fees" },
+      { icon: SlidersHorizontal, title: "Strategies", desc: "Assign a strategy across the catalog or tune it per SKU" },
+      { icon: Eye, title: "Dry-Run Preview", desc: "See every proposed move before it goes anywhere" },
+      { icon: ScrollText, title: "Activity Log", desc: "What was proposed, when, and why" },
+    ],
+  },
   {
     key: "red",
-    number: "04",
+    number: "05",
+    beta: true,
     label: "APEX",
     labelAccent: "RED",
     kicker: "Workflow logistics",
@@ -146,7 +177,7 @@ export default function SuiteMap() {
             The Apex Ecosystem
           </div>
           <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 mb-4 tracking-tight">
-            Four suites. One operating system.
+            Five suites. One operating system.
           </h2>
           <p className="text-base text-slate-500 leading-relaxed">
             Every tool built for Amazon wholesale, unified under a single command layer.
@@ -188,6 +219,11 @@ export default function SuiteMap() {
                           {s.label} <span className={s.accent}>{s.labelAccent}</span>
                         </div>
                         <div className="text-sm text-slate-500 mt-1">{s.kicker}</div>
+                        {s.beta && (
+                          <div className="mt-2 inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-amber-700">
+                            Beta
+                          </div>
+                        )}
                       </div>
                     </button>
                   </div>
