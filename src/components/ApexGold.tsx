@@ -74,7 +74,7 @@ export default function ApexGold() {
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <Zap size={14} className="stroke-[3]" />
-              Automated Repricing
+              Repricing engine — beta
             </div>
           </div>
           <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
@@ -82,8 +82,26 @@ export default function ApexGold() {
             <span className="text-amber-500 italic">REFLEXES.</span>
           </h1>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Gold reprices every listing around the clock — anchored to true break-evens
-            computed from your real Amazon fees, never a guess.
+            Apex Gold works out what every listing should sell for — anchored to true break-evens
+            computed from your real Amazon fees, never a guess. Preview each move before it
+            goes anywhere near your storefront.
+          </p>
+        </motion.div>
+
+        {/*
+          The same thing the application says to a first-time Gold user, said
+          before they pay rather than after. The in-app notice reads "this
+          feature is in beta — check your prices in Seller Central until you're
+          confident in the results", and a marketing page that promised a
+          finished autopilot was contradicting our own product.
+        */}
+        <motion.div {...sectionReveal} className="max-w-3xl mx-auto mb-24 rounded-2xl border border-amber-200 bg-amber-50/50 p-6">
+          <p className="text-sm font-black text-amber-900 mb-1.5">Apex Gold is in beta</p>
+          <p className="text-sm leading-relaxed text-amber-900/80">
+            Set a floor on every listing before switching repricing on, keep an eye on your
+            listings while you get started, and check your prices in Seller Central until you are
+            confident in the results. Pricing is one of several factors in Amazon&apos;s offer
+            selection — no repricer can promise you the Buy Box, and this one does not.
           </p>
         </motion.div>
 
@@ -105,12 +123,12 @@ export default function ApexGold() {
                   <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">01 — The Repricer</div>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
-                  Every listing, repriced while you sleep
+                  A floor under every listing, before anything moves
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Turn the whole catalog on with one switch, or tune strategy per SKU. Gold watches
-                  the Buy Box, the featured offer, and every competing seller — and answers in
-                  minutes, not mornings.
+                  Assign a strategy across the whole catalog or tune it per SKU. Gold reads the Buy Box,
+                  the featured offer and every competing seller, then works the price your rules
+                  and your costs imply — and shows you the result before you act on it.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[

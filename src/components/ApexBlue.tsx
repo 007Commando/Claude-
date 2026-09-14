@@ -158,14 +158,14 @@ export default function ApexBlue() {
                 >
                   <div className="max-w-xl">
                     <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4">Profit & Loss</div>
-                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Real-Time Margin Clarity</h3>
+                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Margin Clarity, Minutes Behind Amazon</h3>
                     <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                      Connect your Amazon accounts once and never deal with fragmented spreadsheets again. Apex's analytics engine accounts for storage fees, PPC spend, and overhead automatically — so you always know your true margin.
+                      Connect your Amazon account once and stop rebuilding the same spreadsheet. Apex pulls your sales and Amazon's fees automatically, and your own costs — landed cost, prep, shipping, advertising and overhead — go in as operating expenses, so the margin you read is the one you actually made.
                     </p>
                     <div className="space-y-4 mb-8">
                       {[
-                        "Real-time Profit & Loss across every marketplace",
-                        "Automatic deduction of fees, PPC spend and OpEx",
+                        "Profit & Loss that follows your sales, synced from Amazon every few minutes",
+                        "Amazon fees deducted automatically; advertising and overhead recorded as your own OpEx",
                         "SKU-level profitability and margin breakdown",
                         "Portfolio-wide trend tracking with daily updates"
                       ].map((item, i) => (
@@ -260,9 +260,9 @@ export default function ApexBlue() {
             eyebrow="Database"
             icon={Database}
             title="Market Intelligence"
-            description="Apex's Database is real-time market intelligence for your listings — instantly see what's profitable across all your suppliers, with live Buy Box pricing, fees, ROI, and margins on thousands of ASINs so you can build faster, smarter POs."
+            description="Apex's Database is the market intelligence behind your buying — what is profitable across every supplier you hold, with Buy Box pricing, fees, ROI and margins on thousands of ASINs, refreshed on a few-minute cycle rather than on request."
             bullets={[
-              "Real-time data — live Buy Box prices, 30/60/90-day sold averages",
+              "Buy Box price and 30, 60 and 90-day sold averages, refreshed every few minutes",
               "Know what's profitable across every supplier at a glance",
               "Net proceeds, profit, ROI & margin calculated automatically",
               "Build faster POs and create listings straight from the data"

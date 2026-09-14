@@ -40,7 +40,7 @@ export default function ApexGreen() {
             <span className="text-green-600 italic">ALGORITHMS.</span>
           </h1>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Green is built for the hunt. High-speed catalog processing and scanning tools that find profit in thousands of spreadsheet rows in seconds.
+            Apex Green is built for the hunt. Hand it a supplier's whole price list and it works through every row against the Amazon catalogue in the background, so the shortlist is waiting for you instead of you waiting for it.
           </p>
         </motion.div>
 
@@ -68,7 +68,7 @@ export default function ApexGreen() {
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Green — Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Sourcing intelligence built for speed. Scan massive supplier lists, unify your catalogs, and surface profitable products in seconds — not days.
+                  Sourcing intelligence built for volume. Scan whole supplier lists, unify them into one catalogue, and get back the products worth buying — with the ones that did not match shown rather than quietly dropped.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[
@@ -105,7 +105,7 @@ export default function ApexGreen() {
             eyebrow="UPC Scanner"
             icon={Barcode}
             title="High-Volume Scanning"
-            description="Upload a CSV of UPCs or EANs and get instant mapping to Amazon listings — rank, estimated sales, and live competition for every product in your supplier list."
+            description="Upload a spreadsheet of UPCs or EANs and Apex matches each row to the Amazon catalogue, returning rank, estimated sales and competition. Matches are not guaranteed: pack sizes, variations and catalogue records create ambiguity, so unmatched and uncertain rows are shown as exactly that rather than counted as opportunities."
             bullets={[
               "Scan up to 100,000 UPCs per hour",
               "Auto-match UPC/EAN to ASIN with full catalog data",
@@ -126,7 +126,7 @@ export default function ApexGreen() {
             eyebrow="Master Catalog"
             icon={Layers}
             title="Unified Data"
-            description="Managing multiple supplier feeds is a thing of the past. Apex Green merges every price list into a single Master Catalog so you can see exactly who has the best price, instantly."
+            description="Managing multiple supplier feeds is a thing of the past. Apex Green merges every price list into a single Master Catalog, so you can see which supplier has the best price on a product you already sell."
             bullets={[
               "Cross-vendor price comparison on every SKU",
               "Automatic stock-level reconciliation across feeds",
