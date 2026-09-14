@@ -27,14 +27,24 @@ const ENROL_HREF = "/auth?mode=signup&plan=free";
 const LOGIN_HREF = "/auth?mode=login&plan=free";
 
 /**
- * The paid Keepa Playbook offer that follows the free course.
+ * The paid offer that follows the free course: the FBA Starter Bundle.
  *
- * Price and destination are one constant each because they have to agree: a
+ * The Keepa Playbook is the part of it this section shows, but the bundle is
+ * what is actually sold, so the price and the extras below are the bundle's.
+ * Price and destination are one constant each because they have to agree — a
  * button that advertises one number and charges another is the fastest way to
  * lose someone who already trusted us enough to click.
  */
-const PLAYBOOK_PRICE = "$27";
-const PLAYBOOK_HREF = "/fba-starter-bundle";
+const BUNDLE_PRICE = "$29";
+const BUNDLE_HREF = "/fba-starter-bundle";
+
+/** The rest of what the bundle carries, read off /fba-starter-bundle. */
+const bundleExtras = [
+  "Extended trial of Apex Black, Blue & Green",
+  "3 vetted US wholesale suppliers",
+  "Review Booster, free for life",
+  "The Ungating SOP",
+];
 
 /**
  * The worksheets the playbook is made of. The figures are the ones printed on
@@ -458,16 +468,17 @@ export default function ZeroToHero() {
 
         <section className="playbook section">
           <div className="section-heading">
-            <p className="eyebrow">WHEN THE FREE COURSE RUNS OUT</p>
+            <p className="eyebrow">AFTER THE FREE COURSE</p>
             <h2>
               The Keepa Playbook,
               <br />
-              on paper.
+              and a head start with it.
             </h2>
             <p>
               The course teaches you to read a listing. The playbook is the worksheets you fill in
               while you do it — the roadmap, the profit maths, the supplier script and the purchase
-              order, printed and worked through.
+              order. It comes in the {BUNDLE_PRICE} Starter Bundle, alongside the software and the
+              suppliers to use it on.
             </p>
           </div>
 
@@ -543,17 +554,27 @@ export default function ZeroToHero() {
                 loading="lazy"
               />
               <figcaption>
-                <span className="playbook-price">{PLAYBOOK_PRICE}</span>
+                <span className="playbook-price">{BUNDLE_PRICE}</span>
                 <span>one-time</span>
               </figcaption>
             </figure>
           </div>
 
           <div className="playbook-cta-wrap">
-            <a className="playbook-cta" href={PLAYBOOK_HREF}>
-              Get the {PLAYBOOK_PRICE} Playbook <span aria-hidden="true">&rarr;</span>
+            <ul className="playbook-includes">
+              {bundleExtras.map((extra) => (
+                <li key={extra}>
+                  <span aria-hidden="true">✓</span>
+                  {extra}
+                </li>
+              ))}
+            </ul>
+            <a className="playbook-cta" href={BUNDLE_HREF}>
+              Get the Starter Bundle — {BUNDLE_PRICE} <span aria-hidden="true">&rarr;</span>
             </a>
-            <p className="form-helper">Instant access. Work through it at your own pace.</p>
+            <p className="form-helper">
+              Instant access, one-time payment. The free course stays free either way.
+            </p>
           </div>
         </section>
       </main>
