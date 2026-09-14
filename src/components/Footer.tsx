@@ -19,7 +19,8 @@ export default function Footer() {
    * footer under one of those gives the page two footers and two copyright
    * lines.
    */
-  const hasOwnFooter = pathname === "/first-order-roadmap";
+  const hasOwnFooter =
+    pathname === "/first-order-roadmap" || pathname === "/zero-to-hero";
   if (hasOwnFooter) return null;
 
   if (isMinimalFooterPage) {

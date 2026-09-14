@@ -204,7 +204,15 @@ export default function Auth() {
   // a bare /auth (e.g. the header "Log In" link) and switches to Sign Up
   // from inside the page still triggers Stripe checkout, never a free
   // account with direct app access.
+  //
+  // `?plan=free` is the one deliberate exception, and it has to be asked for
+  // by name. ApexAuth.signUp takes plan optionally and drops a plan-less
+  // signup into the app instead of checkout, which is how the free course and
+  // Review Booster are reached — the app has always had a free-account state
+  // (see the light lock and the three free scans), there was simply no way to
+  // arrive in it from here.
   const planParam = params.get("plan");
+  const isFreeSignup = planParam === "free";
   const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "starter";
   const periodParam = params.get("period");
   const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
@@ -235,6 +243,11 @@ export default function Auth() {
   // Set when a signed-in user has no active Stripe subscription — blocks the
   // dashboard redirect below and shows a payment-required notice instead.
   const [needsPayment, setNeedsPayment] = useState(false);
+
+  // The auth-state effect below runs once (deps: []), so it can't close over
+  // isFreeSignup directly — a ref keeps the current value available to it.
+  const freeSignupRef = useRef(isFreeSignup);
+  freeSignupRef.current = isFreeSignup;
 
   const handleFieldBlur = (
     field: "name" | "email" | "password",
@@ -337,6 +350,16 @@ export default function Auth() {
               return;
             }
 
+            // A plan-less free account is a legitimate end state, not a failed
+            // checkout: the subscription gate below would flag it as an
+            // unfinished payment and dead-end the free-course funnel. Only
+            // ?plan=free takes this path, so paid signups are unaffected.
+            if (freeSignupRef.current) {
+              setNeedsPayment(false);
+              sendToApp();
+              return;
+            }
+
             hasActiveSubscription(userEmail).then((subscribed) => {
               if (cancelled) return;
               if (subscribed) {
@@ -392,8 +415,7 @@ export default function Auth() {
             name: parsed.data.name,
             email: parsed.data.email,
             password: parsed.data.password,
-            plan: planTier,
-            period,
+            ...(isFreeSignup ? {} : {plan: planTier, period}),
           }),
         );
         const attribution = readStoredAttribution();
@@ -465,7 +487,7 @@ export default function Auth() {
       }
       signupInFlightRef.current = true;
       await withAuthRetry(() =>
-        auth.signInWithGoogle!({ plan: planTier, period }),
+        auth.signInWithGoogle!(isFreeSignup ? {} : { plan: planTier, period }),
       );
       // Auto-redirects: to Stripe checkout for a brand-new account with a
       // plan, or straight into the app for a returning Google user.
@@ -537,7 +559,7 @@ export default function Auth() {
               clarity and speed.
             </p>
 
-            {mode === "signup" && (
+            {mode === "signup" && !isFreeSignup && (
               <div className="mt-10 max-w-lg">
                 <TrialTimeline plan={planTier} period={period} />
               </div>
@@ -668,8 +690,14 @@ export default function Auth() {
 
                   {mode === "signup" && (
                     <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
-                      Signing up for the {PLAN_TIER_LABELS[planTier]} plan —{" "}
-                      {period === "yearly" ? "Annual" : "Monthly"} billing
+                      {isFreeSignup ? (
+                        <>Free account — no card, no plan. Apex University and Review Booster included.</>
+                      ) : (
+                        <>
+                          Signing up for the {PLAN_TIER_LABELS[planTier]} plan —{" "}
+                          {period === "yearly" ? "Annual" : "Monthly"} billing
+                        </>
+                      )}
                     </div>
                   )}
 
