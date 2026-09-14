@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { ArrowRight, Check, Minus } from "lucide-react";
 import Link from "next/link";
+import { isBeta } from "../config/features";
 
 export const fadeIn = {
   initial: { opacity: 0, y: 24 },
@@ -160,11 +161,21 @@ function CoverageCell({ cell, tone }: { cell: Coverage; tone: "apex" | "rival" }
 }
 
 export function WorkflowCoverage({ rivalName, rival }: { rivalName: string; rival: Coverage[] }) {
+  /**
+   * The Fulfill cell reads from MODULE_STATUS rather than being drawn filled.
+   *
+   * It was a solid tick on every comparison, which claimed a shipping product
+   * you cannot buy: Apex Red is in beta, as the product pages say. A chart is a
+   * claim like any other sentence, and this one was contradicting the rest of
+   * the site on all sixteen pages at once.
+   */
   const apex: Coverage[] = [
     { state: "full", note: "122M products" },
     { state: "full", note: "POs + restock" },
     { state: "full", note: "break-even floors" },
-    { state: "full", note: "prep network" },
+    isBeta("red")
+      ? { state: "partial", note: "Red — beta" }
+      : { state: "full", note: "prep network" },
     { state: "full", note: "P&L + cashflow" },
   ];
   return (

@@ -45,7 +45,7 @@ export default function CompareHelium10() {
             { label: "Wholesale brand & seller research", apex: "122M+ product catalog, brand intel", rival: "Private-label product discovery" },
             { label: "Repricer with break-even floors from live fees", apex: true, rival: "Rule-based repricing, floors set manually" },
             { label: "Purchase orders & restock math", apex: true, rival: false },
-            { label: "Prep center & logistics coordination", apex: true, rival: false },
+            { label: "Prep center & logistics coordination", apex: "Apex Red — beta", rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: "Profits dashboard" },
             { label: "Chrome extension", apex: false, rival: true },
           ]}
@@ -80,6 +80,7 @@ export default function CompareHelium10() {
         <FactsFootnote
           rivalName="Helium 10"
           sources={[
+            { label: "Helium 10 pricing", href: "https://www.helium10.com/pricing/" },
             { label: "Helium 10 pricing breakdown", href: "https://www.demandsage.com/helium-10-pricing/" },
             { label: "RevenueGeeks", href: "https://revenuegeeks.com/helium-10-pricing/" },
           ]}

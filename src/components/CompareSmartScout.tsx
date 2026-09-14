@@ -15,7 +15,8 @@ export default function CompareSmartScout() {
           <p className="text-lg text-slate-500 leading-relaxed">
             The short version: SmartScout is a research and analytics tool — and a good one.
             Apex covers research <em>and then runs the business you find</em>: purchase orders,
-            repricing, P&amp;L, and logistics in the same platform. Which one you need depends on
+            repricing and P&amp;L in the same platform, with shipment handling (Apex Red) still in
+            beta. Which one you need depends on
             whether you want to study the market or operate in it.
           </p>
         </motion.header>
@@ -38,12 +39,13 @@ export default function CompareSmartScout() {
             { label: "Entry price", apex: "$149.99/mo (Starter)", rival: "$49/mo (Basic, $29 on annual)" },
             { label: "Free trial", apex: "7 days, every plan", rival: "No trial; 7-day money-back" },
             { label: "Brand & product research", apex: true, rival: true },
+            { label: "Supplier price-list scanning", apex: true, rival: true },
             { label: "Keyword & traffic analytics", apex: false, rival: true },
             { label: "Automated repricer", apex: "Included, with break-even floors", rival: false },
             { label: "Purchase orders & restock", apex: true, rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: false },
-            { label: "Prep & logistics coordination", apex: true, rival: false },
-            { label: "Review automation", apex: "Free for life", rival: false },
+            { label: "Prep & logistics coordination", apex: "Apex Red — beta", rival: false },
+            { label: "Review automation", apex: "Included", rival: true },
             { label: "Chrome extension", apex: false, rival: true },
           ]}
         />
@@ -52,7 +54,7 @@ export default function CompareSmartScout() {
           items={[
             { label: "SmartScout Basic", price: 49, caption: "Research only — 25 keyword searches/mo" },
             { label: "SmartScout Essentials", price: 119, caption: "Full brand & keyword data" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L + logistics", apex: true },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
             { label: "SmartScout Business", price: 299, caption: "Adds exports and automation" },
           ]}
         />
@@ -68,7 +70,7 @@ export default function CompareSmartScout() {
           ]}
           chooseApex={[
             "You want the products you find to flow into purchase orders, repricing, and P&L without exporting spreadsheets between tools.",
-            "A repricer with true break-even floors matters to you — SmartScout does not reprice at all.",
+            "A repricer with true break-even floors matters to you, computed from your own landed costs rather than bounds you maintain by hand.",
             "You'd rather pay for one platform than stack a research tool, a repricer, and an accounting sheet separately.",
           ]}
         />
@@ -78,6 +80,7 @@ export default function CompareSmartScout() {
         <FactsFootnote
           rivalName="SmartScout"
           sources={[
+            { label: "SmartScout pricing", href: "https://www.smartscout.com/pricing" },
             { label: "Capterra", href: "https://www.capterra.com/p/237572/SmartScout/" },
             { label: "SmartScout pricing review", href: "https://revenuegeeks.com/software/smartscout/pricing" },
           ]}

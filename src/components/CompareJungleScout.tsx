@@ -45,7 +45,7 @@ export default function CompareJungleScout() {
             { label: "Wholesale brand & seller intelligence", apex: "122M+ products, per-brand seller maps", rival: "Top tier only (Competitive Intelligence)" },
             { label: "Automated repricer", apex: "Included, break-even floors", rival: false },
             { label: "Purchase orders & restock math", apex: true, rival: false },
-            { label: "Prep center & logistics coordination", apex: true, rival: false },
+            { label: "Prep center & logistics coordination", apex: "Apex Red — beta", rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: "Sales analytics" },
             { label: "Browser extension", apex: false, rival: true },
           ]}
@@ -56,7 +56,7 @@ export default function CompareJungleScout() {
             { label: "Jungle Scout Starter", price: 49, caption: "Product research, browser extension" },
             { label: "Jungle Scout Growth", price: 79, caption: "Adds listing & keyword tooling" },
             { label: "Jungle Scout Brand Owner + CI", price: 149, caption: "Competitive Intelligence, top tier only" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L + logistics", apex: true },
+            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
           ]}
         />
 
@@ -71,7 +71,7 @@ export default function CompareJungleScout() {
           ]}
           chooseApex={[
             "Your products already exist — you buy Skittles and Tide at wholesale, and your questions are break-even, restock, and Buy Box.",
-            "You need the tools after research: purchase orders, repricing with fee-derived floors, prep logistics, and P&L in one place.",
+            "You need the tools after research: purchase orders, repricing with fee-derived floors, and P&L in one place — with shipment handling arriving via the Apex Red beta.",
             "Seller-level competition data matters on every listing you run, not as a top-tier add-on.",
           ]}
         />
@@ -81,6 +81,7 @@ export default function CompareJungleScout() {
         <FactsFootnote
           rivalName="Jungle Scout"
           sources={[
+            { label: "Jungle Scout pricing", href: "https://www.junglescout.com/pricing/catalyst-plans/" },
             { label: "Capterra", href: "https://www.capterra.com/p/249574/Jungle-Scout/pricing/" },
             { label: "Jungle Scout pricing breakdown", href: "https://www.demandsage.com/jungle-scout-pricing/" },
           ]}
