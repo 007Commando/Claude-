@@ -30,6 +30,8 @@ import {
   ANNUAL_DISCOUNT_PERCENT,
   countLabel,
   formatPrice,
+  limitLabel,
+  PAID_TRIALS,
   PLAN_LIMITS,
   planById,
   salesCeilingLabel,
@@ -70,14 +72,15 @@ const sections: Section[] = [
     title: "Apex Black",
     rows: [
       { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Review Booster", icon: <Star className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
+      { label: "Review Booster", icon: <Star className="w-4 h-4" />, limited: `${PLAN_LIMITS.starter.reviewRequestsPerMonth}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.reviewRequestsPerMonth) },
     ],
   },
   {
     title: "Apex Green",
     rows: [
       { label: "Master Catalog", icon: <Layers className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "UPC Scanner", icon: <Barcode className="w-4 h-4" />, limited: yes, unlimited: yes },
+      { label: "UPC Scanner", icon: <Barcode className="w-4 h-4" />, limited: `${PLAN_LIMITS.starter.upcScansPerMonth} scans/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcScansPerMonth) },
+      { label: "SKUs Scanned", icon: <Barcode className="w-4 h-4" />, limited: `${limitLabel(PLAN_LIMITS.starter.upcSkusPerMonth)}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcSkusPerMonth) },
       { label: "Monthly UPC Scanned", limited: "Unlimited", unlimited: "Unlimited" },
     ],
   },
@@ -91,7 +94,7 @@ const sections: Section[] = [
       { label: "ASINs in Your Database", limited: countLabel(PLAN_LIMITS.starter.housedAsins, "ASINs"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "ASINs") },
       { label: "Prep Centre Connections", limited: String(PLAN_LIMITS.starter.prepCenterConnections), unlimited: String(PLAN_LIMITS.pro.prepCenterConnections) },
       { label: "Purchase Orders", icon: <FileText className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Purchase Order Discrepancy", limited: yes, unlimited: yes },
+      { label: "Purchase Order Discrepancy", limited: PLAN_LIMITS.starter.purchaseOrderDiscrepancy ? yes : no, unlimited: PLAN_LIMITS.pro.purchaseOrderDiscrepancy ? yes : no },
       { label: "Opex", icon: <Wallet className="w-4 h-4" />, limited: yes, unlimited: yes },
     ],
   },
@@ -129,8 +132,8 @@ const sections: Section[] = [
       { label: "Additional Seat $8.99 / Month", limited: yes, unlimited: yes },
       { label: "Email Support", icon: <Mail className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Priority Onboarding", icon: <Rocket className="w-4 h-4" />, limited: no, unlimited: yes },
-      { label: "Historical Data", icon: <Hourglass className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Export Data", icon: <FileDown className="w-4 h-4" />, limited: yes, unlimited: yes },
+      { label: "30/60/90 Day Buy Box History", icon: <Hourglass className="w-4 h-4" />, limited: PLAN_LIMITS.starter.historicalBuyBoxAverages ? yes : no, unlimited: PLAN_LIMITS.pro.historicalBuyBoxAverages ? yes : no },
+      { label: "Export Data", icon: <FileDown className="w-4 h-4" />, limited: PLAN_LIMITS.starter.exports ? yes : no, unlimited: PLAN_LIMITS.pro.exports ? yes : no },
     ],
   },
 ];
@@ -147,8 +150,13 @@ const faqs = [
     answer: `The Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Paying annually saves ${ANNUAL_DISCOUNT_PERCENT}% on either plan.`,
   },
   {
-    question: "Is there a free trial?",
-    answer: `Yes. Every plan, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
+    question: "How does the trial work?",
+    /**
+     * Starter no longer has free days — it opens at $1 for 5 — so "every plan
+     * includes a free trial" stopped being true the moment the prices changed.
+     * Both shapes are stated rather than the friendlier one generalised.
+     */
+    answer: `Starter starts at ${formatPrice(PAID_TRIALS.starter!.price)} for your first ${PAID_TRIALS.starter!.days} days, then ${formatPrice(planById("starter").monthly)} a month. Pro includes a ${TRIAL_DAYS}-day free trial. Either way we take a card when you start so billing can continue automatically, every trial comes with 3 free authorized US wholesale suppliers, and you can cancel before the first monthly charge.`,
   },
   {
     question: "Is the repricer included?",

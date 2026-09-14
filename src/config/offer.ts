@@ -18,11 +18,33 @@
  */
 
 /**
- * VERIFIED — backend `controllers/api/auth.ts` and
- * `services/stripe/subscriptions.ts` all create the subscription with
- * `trial_period_days: 7`. Three call sites, one value.
+ * VERIFIED — `services/stripe/subscriptions.ts` applies
+ * `trial_period_days: 7` to a first-time customer who is not on a paid trial,
+ * which is Plus and Pro.
+ *
+ * Starter no longer has free days: it opens with a paid phase (see
+ * PAID_TRIALS). This constant is therefore no longer "the trial" — it is the
+ * free one, and copy that quotes it must say which plan it belongs to.
  */
 export const TRIAL_DAYS = 7;
+
+/**
+ * PUBLISHED — a paid first phase, charged once, in place of free days.
+ *
+ * Starter opens at $1 for 5 days and then bills monthly. Stripe has no "trial
+ * at a price", so this is a two-phase subscription schedule: the phase price
+ * is charged once and the plan price follows. Plus has the same shape at $1
+ * for 3 days, reachable only from a funnel link rather than the plan picker,
+ * so it is deliberately not described on this page.
+ */
+export interface PaidTrial {
+  days: number;
+  price: number;
+}
+
+export const PAID_TRIALS: Partial<Record<Plan["id"], PaidTrial>> = {
+  starter: {days: 5, price: 1},
+};
 
 /**
  * VERIFIED — checkout runs in Stripe `mode: "subscription"` with
@@ -49,7 +71,7 @@ export const TRIAL_REQUIRES_CARD = true;
 export const GOLD_INCLUDED_IN_EVERY_PLAN = true;
 
 export interface Plan {
-  id: "starter" | "pro";
+  id: "starter" | "plus" | "pro";
   name: string;
   /** PUBLISHED — monthly price in USD. Must match the live Stripe Price. */
   monthly: number;
@@ -59,20 +81,31 @@ export interface Plan {
 }
 
 /**
- * PUBLISHED — the two plans the website sells.
+ * PUBLISHED — the three plans the website sells.
  *
- * The billing system also defines `plus` and `enterprise` tiers with live
- * Stripe prices. They are deliberately not listed: the site has never
- * advertised them, and publishing a plan whose limits nobody has written down
- * would create exactly the kind of unverifiable claim this file exists to
- * prevent. Ask the product owner before surfacing either.
+ * Plus joins them: it was previously withheld because nobody had written down
+ * what it allows, and that is no longer true — the limits below are enforced
+ * by `services/plans/entitlements.ts`, which the app reads on every gated
+ * action. Enterprise is still not listed, for the original reason.
+ *
+ * Starter was $149.99 and is now $69. Customers already on the old price stay
+ * on it; Stripe does not reprice an existing subscription when the Price
+ * changes, and no migration was asked for. So this figure is what a new
+ * customer pays, which is what a pricing page is for.
  */
 export const PLANS: Plan[] = [
   {
     id: "starter",
     name: "Starter",
-    monthly: 149.99,
+    monthly: 69,
     fitsWho: "Sellers building their first supplier catalogue and purchase orders.",
+    href: "/pricing",
+  },
+  {
+    id: "plus",
+    name: "Plus",
+    monthly: 149,
+    fitsWho: "Sellers scanning whole supplier catalogues and reconciling every delivery.",
     href: "/pricing",
   },
   {
@@ -103,11 +136,27 @@ export const formatPrice = (amount: number): string =>
  */
 export const trialTerms = (planId: Plan["id"] = "starter"): string => {
   const plan = planById(planId);
+  const paid = PAID_TRIALS[planId];
+
+  if (paid) {
+    return `${formatPrice(paid.price)} for your first ${paid.days} days, then ${formatPrice(
+      plan.monthly,
+    )} a month. Cancel any time before day ${paid.days + 1}.`;
+  }
+
   return `${TRIAL_DAYS} days free, then ${formatPrice(plan.monthly)} a month. Card required, nothing charged until day ${TRIAL_DAYS + 1}. Cancel any time before then.`;
 };
 
 /** Short form, for places with no room for the full terms. */
-export const trialCta = `Start my ${TRIAL_DAYS}-day trial`;
+export const trialCtaFor = (planId: Plan["id"] = "starter"): string => {
+  const paid = PAID_TRIALS[planId];
+  return paid
+    ? `Start for ${formatPrice(paid.price)}`
+    : `Start my ${TRIAL_DAYS}-day trial`;
+};
+
+/** Kept for the copy that speaks for the site rather than for one plan. */
+export const trialCta = trialCtaFor("starter");
 
 /**
  * The entry price, for comparison tables that quote "from".
@@ -147,6 +196,19 @@ export interface PlanLimits {
   prepCenterConnections: number;
   /** Seats included before the per-seat charge applies. */
   authorizedUsers: number;
+
+  /** Review Booster requests per month. `null` means unlimited. */
+  reviewRequestsPerMonth: number | null;
+  /** UPC scans started per month. `null` means unlimited. */
+  upcScansPerMonth: number | null;
+  /** SKUs searched across those scans per month. `null` means unlimited. */
+  upcSkusPerMonth: number | null;
+  /** The purchase order discrepancy tab. */
+  purchaseOrderDiscrepancy: boolean;
+  /** CSV and Excel downloads. */
+  exports: boolean;
+  /** 30/60/90 day average Buy Box prices. */
+  historicalBuyBoxAverages: boolean;
 }
 
 export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
@@ -155,14 +217,42 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
     housedAsins: 1_000,
     prepCenterConnections: 1,
     authorizedUsers: 1,
+    reviewRequestsPerMonth: 50,
+    upcScansPerMonth: 5,
+    upcSkusPerMonth: 60_000,
+    purchaseOrderDiscrepancy: false,
+    exports: false,
+    historicalBuyBoxAverages: false,
+  },
+  plus: {
+    monthlySales: null,
+    housedAsins: 5_000,
+    prepCenterConnections: 2,
+    authorizedUsers: 3,
+    reviewRequestsPerMonth: null,
+    upcScansPerMonth: null,
+    upcSkusPerMonth: 300_000,
+    purchaseOrderDiscrepancy: true,
+    exports: true,
+    historicalBuyBoxAverages: true,
   },
   pro: {
     monthlySales: null,
-    housedAsins: 4_000,
+    housedAsins: 20_000,
     prepCenterConnections: 3,
     authorizedUsers: 5,
+    reviewRequestsPerMonth: null,
+    upcScansPerMonth: null,
+    upcSkusPerMonth: null,
+    purchaseOrderDiscrepancy: true,
+    exports: true,
+    historicalBuyBoxAverages: true,
   },
 };
+
+/** `Unlimited`, `60,000` — a limit as a pricing table should state it. */
+export const limitLabel = (value: number | null): string =>
+  value === null ? "Unlimited" : value.toLocaleString("en-US");
 
 /** `$10K`, `Unlimited` — the sales ceiling as a pricing table should say it. */
 export const salesCeilingLabel = (planId: Plan["id"]): string => {
