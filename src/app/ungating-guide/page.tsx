@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Ungating Guide — Apex Applications",
   description:
     "How category and brand ungating works on Amazon, and a real step-by-step way to get ungated in the Grocery category.",
-  alternates: { canonical: "https://apexapplications.io/ungating-guide" },
+  alternates: { canonical: "https://www.apexapplications.io/ungating-guide" },
 };
 
 export default function Page() {

@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
             id: crypto.randomUUID(),
             type: "trial_started",
             timestamp_ms: Date.now(),
-            source_url: parsed.data.sourceUrl ?? "https://apexapplications.io/auth",
+            source_url: parsed.data.sourceUrl ?? "https://www.apexapplications.io/auth",
             action_source: "web",
             data: { type: "plan_enrollment" },
           },

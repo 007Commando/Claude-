@@ -16,7 +16,7 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
 
-  const url = `https://apexapplications.io/blog/${post.slug}`;
+  const url = `https://www.apexapplications.io/blog/${post.slug}`;
   return {
     title: `${post.title} | Apex Applications`,
     description: post.description,
@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
-  const url = `https://apexapplications.io/blog/${post.slug}`;
+  const url = `https://www.apexapplications.io/blog/${post.slug}`;
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

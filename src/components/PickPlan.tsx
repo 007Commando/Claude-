@@ -22,9 +22,16 @@ import {
   Rocket,
   Hourglass,
   FileDown,
+  Tag,
 } from "lucide-react";
 import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
 import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
+import {
+  ANNUAL_DISCOUNT_PERCENT,
+  formatPrice,
+  planById,
+  TRIAL_DAYS,
+} from "../config/offer";
 
 type Row = {
   label: string;
@@ -78,6 +85,33 @@ const sections: Section[] = [
       { label: "Opex", icon: <Wallet className="w-4 h-4" />, limited: yes, unlimited: yes },
     ],
   },
+  /**
+   * Gold was missing from this matrix entirely while the comparison pages
+   * claimed the repricer was included — a buyer could read both and not know
+   * which to believe. It is included: every Gold route is gated by a
+   * subscription check with no plan restriction, so any active plan reaches it.
+   */
+  {
+    title: "Apex Gold",
+    rows: [
+      { label: "Repricer", icon: <Tag className="w-4 h-4" />, limited: yes, unlimited: yes },
+      { label: "Break-Even Floors", limited: yes, unlimited: yes },
+      { label: "Repricing Strategies", limited: yes, unlimited: yes },
+      { label: "Dry-Run Previews & Activity Log", limited: yes, unlimited: yes },
+    ],
+  },
+  /**
+   * Red is beta and says so here. It was absent from the matrix while some
+   * comparison pages counted fulfilment as a live feature, which is the
+   * contradiction the audit picked up.
+   */
+  {
+    title: "Apex Red (beta)",
+    rows: [
+      { label: "Shipments & Warehouses", limited: "Beta access", unlimited: "Beta access" },
+      { label: "Prep Centre Workflows", limited: "Beta access", unlimited: "Beta access" },
+    ],
+  },
   {
     title: "Essentials",
     rows: [
@@ -92,16 +126,24 @@ const sections: Section[] = [
 ];
 
 
+/**
+ * These answers are serialized into the FAQPage structured data below, so a
+ * stale price here is not just wrong on the page — it is wrong in what Google
+ * reads. Built from the shared offer config for that reason.
+ */
 const faqs = [
   {
     question: "How much does Apex Applications cost?",
-    answer:
-      "The Starter Plan is $149.99/month and the Pro Plan is $299/month. Paying annually saves 20% on either plan.",
+    answer: `The Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Paying annually saves ${ANNUAL_DISCOUNT_PERCENT}% on either plan.`,
   },
   {
     question: "Is there a free trial?",
+    answer: `Yes. Every plan, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
+  },
+  {
+    question: "Is the repricer included?",
     answer:
-      "Yes. Every plan, Starter and Pro, includes a 7-day free trial before your card is charged, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one.",
+      "Yes, on both plans. Apex Gold is available to every account with an active subscription, Starter included.",
   },
   {
     question: "What's the difference between the Starter and Pro plans?",

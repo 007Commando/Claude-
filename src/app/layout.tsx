@@ -5,14 +5,22 @@ import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
 import LeadAttribution from "../components/LeadAttribution";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
+import { SITE_URL } from "../config/site";
 import "../index.css";
-
-const SITE_URL = "https://apexapplications.io";
 
 const OG_IMAGE =
   "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/72d97ab6-3399-4642-9df9-825e9c60a21b/id-preview-bdd3505f--6faac52a-fe63-48e8-95e5-619fb0da6fb7.lovable.app-1782857715383.png";
 
 export const metadata: Metadata = {
+  /**
+   * Without this every relative URL in a page's metadata resolves against
+   * whatever host Next guesses at build time. Setting it once means a page can
+   * write `alternates: { canonical: "/pricing" }` and get the right absolute
+   * URL, instead of each page hand-writing the host and one of them getting it
+   * wrong — which is how the whole site ended up canonicalising to a domain
+   * that redirects.
+   */
+  metadataBase: new URL(SITE_URL),
   title: "Apex Applications — Amazon Wholesale Software Suite",
   description:
     "Apex Applications is the all-in-one Amazon wholesale suite: sourcing, vendor management, P&L analytics, purchase orders, and review automation. Built for serious sellers.",
@@ -25,16 +33,20 @@ export const metadata: Metadata = {
     "Apex Applications",
   ],
   authors: [{ name: "Apex Applications" }],
-  alternates: {
-    canonical: "https://apexapplications.io/",
-  },
+  /**
+   * No canonical here on purpose. A canonical in the root layout is inherited
+   * by every page that does not set its own, so a new page added without one
+   * would quietly declare itself a duplicate of the homepage — telling Google
+   * not to index it at all. The homepage sets its own in app/page.tsx; a page
+   * that forgets now simply self-canonicalises, which is the right default.
+   */
   openGraph: {
     type: "website",
     siteName: "Apex Applications",
     title: "Apex Applications — Amazon Wholesale Software Suite",
     description:
       "Sourcing, vendors, P&L, purchase orders, and review automation — all in one Amazon wholesale suite.",
-    url: "https://apexapplications.io/",
+    url: "https://www.apexapplications.io/",
     images: [OG_IMAGE],
   },
   twitter: {
@@ -66,37 +78,22 @@ const websiteJsonLd = {
   publisher: { "@type": "Organization", name: "Apex Applications" },
 };
 
-// One SoftwareApplication entity for the whole suite (Apex Black, Blue, Green,
-// Red) rather than four separate listings — they're sold and trialed together
-// as a single subscription, not standalone products.
-const softwareApplicationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Apex Applications",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
-  description:
-    "All-in-one Amazon wholesale software suite: sourcing, vendor management, purchase orders, P&L analytics, logistics, and automated review generation.",
-  url: SITE_URL,
-  offers: [
-    {
-      "@type": "Offer",
-      name: "Starter Plan",
-      price: "149.99",
-      priceCurrency: "USD",
-      category: "subscription",
-      url: `${SITE_URL}/pricing`,
-    },
-    {
-      "@type": "Offer",
-      name: "Pro Plan",
-      price: "299",
-      priceCurrency: "USD",
-      category: "subscription",
-      url: `${SITE_URL}/pricing`,
-    },
-  ],
-};
+/**
+ * The SoftwareApplication block used to live here, in the root layout, which
+ * put a product listing with two priced offers on every route the site has —
+ * all 26 blog posts, the sign-in page, the sign-out page, the checkout, the
+ * privacy policy and the terms. That is what the audit counted as 50 invalid
+ * software-app items: one block in the wrong place, multiplied by the routes.
+ *
+ * It now lives on /pricing alone, which is the page it actually describes and
+ * the only page where an offer is in context. Organization and WebSite stay
+ * global, because those genuinely are facts about every page.
+ *
+ * Google also wants a rating or review before it will show a software-app rich
+ * result. We have no review system and no permission to quote anyone, so the
+ * markup stays truthful and simply is not eligible for that rich result. An
+ * invented five-star score would fix the warning and be a lie.
+ */
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -138,10 +135,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationJsonLd) }}
         />
         <Script src="https://app.apexapplications.io/apex-auth.js" strategy="afterInteractive" />
         <Script

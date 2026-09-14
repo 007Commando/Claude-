@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getSortedPosts } from "../lib/blog";
-
-const SITE_URL = "https://apexapplications.io";
+import { NOINDEX_ROUTES, SITE_URL } from "../config/site";
 
 type Entry = {
   path: string;
@@ -33,7 +32,13 @@ const ENTRIES: Entry[] = [
   { path: "/prep-center-network", changeFrequency: "monthly", priority: 0.6 },
   { path: "/distributor-vault", changeFrequency: "monthly", priority: 0.6 },
   { path: "/review-booster", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/auth", changeFrequency: "monthly", priority: 0.5 },
+  /**
+   * `/auth` sat here at priority 0.5, inviting Google to index a sign-in form
+   * and rank it for the brand. It is a conversion surface, not a page anyone
+   * should arrive on from search — and the same crawl that found it also
+   * reported it as missing an H1, which is a fair complaint about a commercial
+   * page and a meaningless one about a login box.
+   */
   { path: "/contact-us", changeFrequency: "monthly", priority: 0.5 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
@@ -41,7 +46,18 @@ const ENTRIES: Entry[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  const staticEntries: MetadataRoute.Sitemap = ENTRIES.map((entry) => ({
+
+  /**
+   * Enforced rather than trusted: the noindex list and the sitemap are edited
+   * months apart by different people, and a sitemap that advertises a page
+   * whose own metadata says noindex asks Google to resolve a contradiction we
+   * created. Filtering here means the two can never disagree again.
+   */
+  const indexable = ENTRIES.filter(
+    (entry) => !NOINDEX_ROUTES.some((route) => entry.path === route),
+  );
+
+  const staticEntries: MetadataRoute.Sitemap = indexable.map((entry) => ({
     url: `${SITE_URL}${entry.path}`,
     lastModified,
     changeFrequency: entry.changeFrequency,

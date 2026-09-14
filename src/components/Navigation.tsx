@@ -413,8 +413,22 @@ export default function Navigation() {
                         <img src={apexRedLogo} alt="Apex Red" className="h-7 w-auto object-contain" />
                         <span className="font-medium text-slate-700">Apex Red</span>
                       </button>
+                      {/*
+                        Gold was in the desktop mega-menu and missing here, so
+                        the repricer — the thing the paid search plan is built
+                        around — was unreachable from the menu on a phone. Text
+                        mark, matching desktop, until a gold logo PNG lands in
+                        /images/nav-logos.
+                      */}
+                      <button onClick={() => handleFeatureClick('/features/gold')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
+                        <span className="h-7 flex items-center font-black tracking-tight text-amber-500">APEX GOLD</span>
+                        <span className="font-medium text-slate-700">Repricer</span>
+                      </button>
                  </div>
               </div>
+              {/* Pricing had no mobile entry at all — the page a buyer looks
+                  for first was reachable only by typing the URL. */}
+              <Link href="/pricing" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Pricing</Link>
               <Link href="/rewards-benefits" onClick={() => setIsMenuOpen(false)} className="block text-slate-900 font-bold text-lg w-full text-left">Rewards & Benefits</Link>
               <button onClick={() => handleFeatureClick('/features/black#resource-library')} className="block text-slate-900 font-bold text-lg w-full text-left">Resources</button>
             </div>

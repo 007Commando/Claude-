@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = "https://apexapplications.io";
+import { SITE_URL } from "../config/site";
 
 // Every crawler that respects robots.txt and either (a) sends traffic via a
 // traditional search index, or (b) can cite this site in an AI-generated
