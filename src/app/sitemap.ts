@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getSortedPosts } from "../lib/blog";
 import { NOINDEX_ROUTES, SITE_URL } from "../config/site";
+import { COMPARISONS } from "../data/comparisons";
 
 type Entry = {
   path: string;
@@ -25,6 +26,23 @@ const ENTRIES: Entry[] = [
   { path: "/compare/sellersnap", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/helium10", changeFrequency: "monthly", priority: 0.8 },
   { path: "/compare/junglescout", changeFrequency: "monthly", priority: 0.8 },
+  /**
+   * The rest of the comparisons come from the data file rather than being
+   * listed again here. A page and its sitemap entry added by different hands
+   * at different times is how a sitemap starts lying; deriving them means a
+   * new comparison cannot be published without being listed, or listed
+   * without existing.
+   */
+  ...COMPARISONS.map((comparison) => ({
+    path: `/compare/${comparison.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  })),
+  { path: "/amazon-inventory-management-software", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/amazon-review-automation", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/amazon-wholesale-suppliers", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/amazon-fba-prep-centers", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/tools/amazon-profit-calculator", changeFrequency: "monthly", priority: 0.7 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },

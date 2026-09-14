@@ -183,6 +183,31 @@ export default function Footer() {
                   Blog
                 </Link>
               </li>
+              <li>
+                <Link href="/tools/amazon-profit-calculator" className="hover:text-brand transition-colors">
+                  Profit &amp; ROI Calculator
+                </Link>
+              </li>
+              <li>
+                <Link href="/amazon-inventory-management-software" className="hover:text-brand transition-colors">
+                  Inventory &amp; Restock Planning
+                </Link>
+              </li>
+              <li>
+                <Link href="/amazon-wholesale-suppliers" className="hover:text-brand transition-colors">
+                  Vetting Wholesale Suppliers
+                </Link>
+              </li>
+              <li>
+                <Link href="/amazon-fba-prep-centers" className="hover:text-brand transition-colors">
+                  Choosing a Prep Center
+                </Link>
+              </li>
+              <li>
+                <Link href="/amazon-review-automation" className="hover:text-brand transition-colors">
+                  Review Request Automation
+                </Link>
+              </li>
             </ul>
           </div>
 

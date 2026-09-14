@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import CompareIndex from "../../components/CompareIndex";
+import { absoluteUrl } from "../../config/site";
 
 export const metadata: Metadata = {
-  title: "Apex Applications vs Helium 10, Jungle Scout, SmartScout & Seller Snap | Apex Applications",
+  title: "Compare Amazon Seller Software | Apex Applications",
   description:
-    "Honest comparisons of Apex Applications against Helium 10, Jungle Scout, SmartScout, and Seller Snap — current 2026 pricing, where each tool wins, and which Amazon business each is built for.",
-  alternates: { canonical: "https://www.apexapplications.io/compare" },
+    "Sixteen honest comparisons: Apex against the repricers, scanners, profit dashboards and prep tools Amazon sellers actually shortlist. Current 2026 pricing, sources, and where each rival wins.",
+  alternates: { canonical: absoluteUrl("/compare") },
 };
 
 export default function Page() {
