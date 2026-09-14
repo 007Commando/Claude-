@@ -42,9 +42,23 @@ export interface PaidTrial {
   price: number;
 }
 
-export const PAID_TRIALS: Partial<Record<Plan["id"], PaidTrial>> = {
-  starter: {days: 5, price: 1},
-};
+/**
+ * Whether the repriced offer exists in Stripe yet.
+ *
+ * The site must never quote a price checkout will not honour, and the new
+ * Prices are not created: the paid-trial and monthly price ids in the backend
+ * are still empty strings, so a signup today is charged the old $149.99 and
+ * given seven free days. Until those ids are filled in, this file keeps
+ * publishing what is actually charged.
+ *
+ * Flip this and the Stripe ids together, never one without the other. It is a
+ * single switch precisely so the two cannot drift.
+ */
+export const NEW_PRICING_LIVE = false;
+
+export const PAID_TRIALS: Partial<Record<Plan["id"], PaidTrial>> = NEW_PRICING_LIVE
+  ? {starter: {days: 5, price: 1}}
+  : {};
 
 /**
  * VERIFIED — checkout runs in Stripe `mode: "subscription"` with
@@ -97,7 +111,7 @@ export const PLANS: Plan[] = [
   {
     id: "starter",
     name: "Starter",
-    monthly: 69,
+    monthly: NEW_PRICING_LIVE ? 69 : 149.99,
     fitsWho: "Sellers building their first supplier catalogue and purchase orders.",
     href: "/pricing",
   },
@@ -105,6 +119,9 @@ export const PLANS: Plan[] = [
     id: "plus",
     name: "Plus",
     monthly: 149,
+    // Not shown on the pricing page yet: the live Stripe amount for Plus has
+    // not been confirmed against this figure, and the comparison table has no
+    // column for it. See PLANS_SHOWN below.
     fitsWho: "Sellers scanning whole supplier catalogues and reconciling every delivery.",
     href: "/pricing",
   },
@@ -116,6 +133,15 @@ export const PLANS: Plan[] = [
     href: "/pricing",
   },
 ];
+
+/**
+ * The plans the pricing page actually displays.
+ *
+ * Plus is defined above but withheld here until its live Stripe amount is
+ * confirmed and the comparison table has a column for it. Publishing a third
+ * price nobody has reconciled is the mistake this file exists to prevent.
+ */
+export const PLANS_SHOWN: Plan[] = PLANS.filter((plan) => plan.id !== "plus");
 
 export const planById = (id: Plan["id"]): Plan =>
   PLANS.find((plan) => plan.id === id) ?? PLANS[0];

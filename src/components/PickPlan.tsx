@@ -156,7 +156,9 @@ const faqs = [
      * includes a free trial" stopped being true the moment the prices changed.
      * Both shapes are stated rather than the friendlier one generalised.
      */
-    answer: `Starter starts at ${formatPrice(PAID_TRIALS.starter!.price)} for your first ${PAID_TRIALS.starter!.days} days, then ${formatPrice(planById("starter").monthly)} a month. Pro includes a ${TRIAL_DAYS}-day free trial. Either way we take a card when you start so billing can continue automatically, every trial comes with 3 free authorized US wholesale suppliers, and you can cancel before the first monthly charge.`,
+    answer: PAID_TRIALS.starter
+      ? `Starter starts at ${formatPrice(PAID_TRIALS.starter.price)} for your first ${PAID_TRIALS.starter.days} days, then ${formatPrice(planById("starter").monthly)} a month. Pro includes a ${TRIAL_DAYS}-day free trial. Either way we take a card when you start so billing can continue automatically, every trial comes with 3 free authorized US wholesale suppliers, and you can cancel before the first monthly charge.`
+      : `Yes. Every plan, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
   },
   {
     question: "Is the repricer included?",

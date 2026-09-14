@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PickPlan from "../../components/PickPlan";
-import { PLANS, TRIAL_DAYS } from "../../config/offer";
+import { PLANS_SHOWN, TRIAL_DAYS } from "../../config/offer";
 import { absoluteUrl, SITE_URL } from "../../config/site";
 
 export const metadata: Metadata = {
@@ -32,7 +32,10 @@ const softwareApplicationJsonLd = {
   description:
     "Amazon wholesale software suite: supplier catalogue analysis, purchase orders, profit analytics and repricing.",
   url: SITE_URL,
-  offers: PLANS.map((plan) => ({
+  // PLANS_SHOWN, not PLANS: the structured data must offer exactly what the
+  // cards below it offer, or a crawler and a customer are quoted different
+  // catalogues — which is the failure this config was written to prevent.
+  offers: PLANS_SHOWN.map((plan) => ({
     "@type": "Offer",
     name: `${plan.name} Plan`,
     price: plan.monthly.toFixed(2),
