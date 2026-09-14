@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   CheckCircle2,
   User,
-  CreditCard,
+  GraduationCap,
+  ArrowRight,
   Loader2,
   Eye,
   EyeOff,
@@ -158,6 +159,26 @@ async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
   }
 }
 
+// Where a signed-in user gets handed off to. The app sends people here with a
+// redirect_uri when it needs a session, and someone who is already signed in
+// must be handed straight back, otherwise they sit on this form staring at a
+// login box while the app keeps bouncing them here — an endless loop.
+function forwardToApp(
+  auth: NonNullable<Window["ApexAuth"]>,
+  fallbackPath = "/dashboard",
+) {
+  const redirect = new URL(window.location.href).searchParams.get(
+    "redirect_uri",
+  );
+  if (redirect && auth.redirectBackToApp) {
+    auth
+      .redirectBackToApp(redirect)
+      .catch(() => auth.redirectToApp(fallbackPath));
+    return;
+  }
+  auth.redirectToApp(fallbackPath);
+}
+
 function waitForApexAuth(
   timeoutMs = 8000,
 ): Promise<NonNullable<Window["ApexAuth"]>> {
@@ -172,6 +193,14 @@ function waitForApexAuth(
     tick();
   });
 }
+
+// What a plan-less account can actually use. Kept in words rather than feature
+// flags because this is the one place a customer reads it.
+const FREE_TIER = [
+  "Apex University — the full Zero to Amazon Hero course",
+  "Review Booster on eligible Amazon orders",
+  "3 UPC scans to try the scanner on a real supplier list",
+];
 
 const PLAN_TIERS = ["starter", "plus", "pro", "enterprise"] as const;
 const PERIODS = ["monthly", "yearly"] as const;
@@ -240,9 +269,13 @@ export default function Auth() {
     email?: string;
     password?: string;
   }>({});
-  // Set when a signed-in user has no active Stripe subscription — blocks the
-  // dashboard redirect below and shows a payment-required notice instead.
-  const [needsPayment, setNeedsPayment] = useState(false);
+  // Set when a signed-in user has no active Stripe subscription. That is a real
+  // account on the free tier — Apex University, the Review Booster and three UPC
+  // scans — not a broken signup, so instead of forwarding silently to a dashboard
+  // full of locks, the card below says what they have and offers both doors:
+  // into the course, or on to a plan.
+  const [onFreePlan, setOnFreePlan] = useState(false);
+  const [continuing, setContinuing] = useState(false);
 
   // The auth-state effect below runs once (deps: []), so it can't close over
   // isFreeSignup directly — a ref keeps the current value available to it.
@@ -323,24 +356,8 @@ export default function Auth() {
             // Arrived here specifically to change accounts: never auto-forward
             // on the session we are in the middle of clearing.
             if (suppressForwardRef.current) return;
-            const redirect = new URL(window.location.href).searchParams.get(
-              "redirect_uri",
-            );
-
             const userEmail = getAuthUserEmail(user);
-            // The app sends users here with a redirect_uri when it needs a
-            // session. Someone who is already signed in must be handed straight
-            // back, otherwise they sit on this form staring at a login box
-            // while the app keeps bouncing them here — an endless loop.
-            const sendToApp = () => {
-              if (redirect && auth.redirectBackToApp) {
-                auth.redirectBackToApp(redirect).catch(() => {
-                  auth.redirectToApp("/dashboard");
-                });
-              } else {
-                auth.redirectToApp("/dashboard");
-              }
-            };
+            const sendToApp = () => forwardToApp(auth);
 
             if (!userEmail) {
               // Can't verify subscription status without an email to look up
@@ -355,7 +372,7 @@ export default function Auth() {
             // unfinished payment and dead-end the free-course funnel. Only
             // ?plan=free takes this path, so paid signups are unaffected.
             if (freeSignupRef.current) {
-              setNeedsPayment(false);
+              setOnFreePlan(false);
               sendToApp();
               return;
             }
@@ -363,10 +380,10 @@ export default function Auth() {
             hasActiveSubscription(userEmail).then((subscribed) => {
               if (cancelled) return;
               if (subscribed) {
-                setNeedsPayment(false);
+                setOnFreePlan(false);
                 sendToApp();
               } else {
-                setNeedsPayment(true);
+                setOnFreePlan(true);
               }
             });
           }),
@@ -619,34 +636,80 @@ export default function Auth() {
               transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
               className="bg-white rounded-[28px] border border-slate-200 p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full"
             >
-              {needsPayment ? (
-                <div className="text-center py-4">
-                  <div className="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-5">
-                    <CreditCard
-                      className="w-6 h-6 text-amber-600"
+              {onFreePlan ? (
+                <div className="py-2">
+                  <div className="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-5">
+                    <GraduationCap
+                      className="w-6 h-6 text-brand"
                       strokeWidth={2}
                     />
                   </div>
-                  <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-2">
-                    One Step Left
+                  <h2 className="text-2xl font-black tracking-tight text-slate-900">
+                    You're on the free plan
                   </h2>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-6">
-                    Your account is created, but your subscription hasn't been
-                    activated yet because a payment method wasn't added. Reach
-                    out to our team and we'll get you set up right away.
+                  <p className="text-sm text-slate-500 leading-relaxed mt-2">
+                    No subscription is attached to this account, so the free
+                    tier is what's open:
                   </p>
-                  <Link
-                    href="/contact-us"
-                    className="inline-flex items-center justify-center w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all"
+                  <ul className="mt-5 space-y-3">
+                    {FREE_TIER.map((item) => (
+                      <li key={item} className="flex gap-3 items-start">
+                        <CheckCircle2
+                          className="w-4 h-4 text-brand flex-shrink-0 mt-0.5"
+                          strokeWidth={2.5}
+                        />
+                        <span className="text-sm text-slate-600 leading-snug">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    disabled={continuing}
+                    onClick={async () => {
+                      setContinuing(true);
+                      const auth = await waitForApexAuth().catch(() => null);
+                      if (!auth) {
+                        setContinuing(false);
+                        setError("Auth service unavailable. Please refresh.");
+                        return;
+                      }
+                      forwardToApp(auth, "/university");
+                    }}
+                    className="mt-7 inline-flex items-center justify-center gap-2 w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-60"
                   >
-                    Contact Us
+                    {continuing ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        Continue to Apex University
+                        <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
+                      </>
+                    )}
+                  </button>
+                  <Link
+                    href="/pricing"
+                    className="mt-3 inline-flex items-center justify-center w-full border border-slate-200 text-slate-700 font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-50 transition-all"
+                  >
+                    See plans &amp; unlock everything
                   </Link>
+                  <p className="mt-5 text-xs text-slate-400 leading-relaxed">
+                    Expected a paid plan to be active?{" "}
+                    <Link
+                      href="/contact-us"
+                      className="font-bold text-slate-500 hover:text-slate-700"
+                    >
+                      Contact us
+                    </Link>{" "}
+                    and we'll sort it out.
+                  </p>
                   <button
                     type="button"
                     onClick={async () => {
                       const auth = await waitForApexAuth().catch(() => null);
                       await auth?.signOut();
-                      setNeedsPayment(false);
+                      setOnFreePlan(false);
                       setMode("login");
                     }}
                     className="mt-4 text-xs font-bold text-slate-400 hover:text-slate-600"
