@@ -26,6 +26,65 @@ const ENROL_HREF = "/auth?mode=signup&plan=free";
 // valid free account instead of an unfinished checkout.
 const LOGIN_HREF = "/auth?mode=login&plan=free";
 
+/**
+ * The paid Keepa Playbook offer that follows the free course.
+ *
+ * Price and destination are one constant each because they have to agree: a
+ * button that advertises one number and charges another is the fastest way to
+ * lose someone who already trusted us enough to click.
+ */
+const PLAYBOOK_PRICE = "$27";
+const PLAYBOOK_HREF = "/fba-starter-bundle";
+
+/**
+ * The worksheets the playbook is made of. The figures are the ones printed on
+ * the pages and they reconcile — 24 x $8.50 = $204, and $29.99 less $10.25 of
+ * fees and $8.50 landed is $11.24, a 37% margin — because a worksheet that
+ * teaches arithmetic cannot get its own arithmetic wrong.
+ */
+const worksheets = [
+  {
+    title: "The Wholesale Roadmap",
+    blurb: "A simple 3-step path from finding products to getting them into Amazon's warehouses.",
+    steps: [
+      ["Find Products", "Identify in-demand brands and profitable opportunities."],
+      ["Source from Suppliers", "Get approved and negotiate terms."],
+      ["Send to Amazon", "Create a purchase order and ship to fulfilment centres."],
+    ],
+  },
+  {
+    title: "Your First Product Analysis",
+    blurb: "Use a simple framework to evaluate if a product is worth buying.",
+    rows: [
+      ["Selling Price", "$29.99"],
+      ["Total Fees", "$10.25"],
+      ["Landed Cost", "$8.50"],
+      ["Estimated Profit", "$11.24"],
+      ["Profit Margin", "37%"],
+    ],
+    highlightRow: 3,
+  },
+  {
+    title: "Find Real Suppliers",
+    blurb: "How to get approved with legitimate distributors and start building relationships.",
+    steps: [
+      ["Identify Distributors", "Brand websites, trade shows and distributor directories."],
+      ["Reach Out", "Send a professional inquiry and request an account."],
+      ["Get Approved", "Provide your business information and start ordering."],
+    ],
+  },
+  {
+    title: "Build Your First Purchase Order",
+    blurb: "Turn your research into a real order with a professional purchase order.",
+    po: [
+      ["Product A", "SKU-001", "24", "$8.50", "$204.00"],
+      ["Product B", "SKU-002", "12", "$12.00", "$144.00"],
+      ["Product C", "SKU-003", "24", "$6.75", "$162.00"],
+    ],
+    poTotal: "$510.00",
+  },
+];
+
 const stepIcons = [Compass, Building2, Search, ShoppingCart];
 
 const STEP_HEIGHT = 300;
@@ -126,12 +185,12 @@ export default function ZeroToHero() {
         <section className="hero">
           <p className="eyebrow">APEX UNIVERSITY — FREE COURSE</p>
           <h1>
-            From zero to
+            From zero to{" "}
             <br />
             <mark>Amazon hero.</mark>
           </h1>
           <p className="hero-sub">
-            The wholesale business, taught in nine videos.
+            The wholesale business, taught in nine videos.{" "}
             <br />
             Free inside Apex University. No card, no plan.
           </p>
@@ -394,6 +453,107 @@ export default function ZeroToHero() {
                 <p>{a}</p>
               </details>
             ))}
+          </div>
+        </section>
+
+        <section className="playbook section">
+          <div className="section-heading">
+            <p className="eyebrow">WHEN THE FREE COURSE RUNS OUT</p>
+            <h2>
+              The Keepa Playbook,
+              <br />
+              on paper.
+            </h2>
+            <p>
+              The course teaches you to read a listing. The playbook is the worksheets you fill in
+              while you do it — the roadmap, the profit maths, the supplier script and the purchase
+              order, printed and worked through.
+            </p>
+          </div>
+
+          <div className="playbook-stage">
+            {worksheets.map((sheet, i) => (
+              <article className={`worksheet worksheet-${i + 1}`} key={sheet.title}>
+                <p className="worksheet-eyebrow">APEX UNIVERSITY</p>
+                <h3>{sheet.title}</h3>
+                <p className="worksheet-blurb">{sheet.blurb}</p>
+
+                {sheet.steps && (
+                  <ol className="worksheet-steps">
+                    {sheet.steps.map(([name, detail], n) => (
+                      <li key={name}>
+                        <span className="worksheet-step-n">{n + 1}</span>
+                        <span>
+                          <strong>{name}</strong>
+                          <small>{detail}</small>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+
+                {sheet.rows && (
+                  <table className="worksheet-table">
+                    <tbody>
+                      {sheet.rows.map(([label, value], n) => (
+                        <tr key={label} className={n === sheet.highlightRow ? "is-result" : undefined}>
+                          <th scope="row">{label}</th>
+                          <td>{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                {sheet.po && (
+                  <table className="worksheet-table worksheet-po">
+                    <thead>
+                      <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">SKU</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sheet.po.map((row) => (
+                        <tr key={row[1]}>
+                          {row.map((cell, n) => (
+                            <td key={n}>{cell}</td>
+                          ))}
+                        </tr>
+                      ))}
+                      <tr className="is-result">
+                        <td colSpan={4}>Total</td>
+                        <td>{sheet.poTotal}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+              </article>
+            ))}
+
+            <figure className="playbook-book">
+              <img
+                src="/images/zero-to-hero/keepa-playbook-book.webp"
+                alt="The Apex Keepa Playbook, a bound workbook from Apex Applications"
+                width={620}
+                height={888}
+                loading="lazy"
+              />
+              <figcaption>
+                <span className="playbook-price">{PLAYBOOK_PRICE}</span>
+                <span>one-time</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div className="playbook-cta-wrap">
+            <a className="playbook-cta" href={PLAYBOOK_HREF}>
+              Get the {PLAYBOOK_PRICE} Playbook <span aria-hidden="true">&rarr;</span>
+            </a>
+            <p className="form-helper">Instant access. Work through it at your own pace.</p>
           </div>
         </section>
       </main>

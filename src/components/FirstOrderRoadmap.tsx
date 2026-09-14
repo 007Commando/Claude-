@@ -73,8 +73,8 @@ export default function FirstOrderRoadmap() {
  <main>
  <section className="hero">
  <p className="eyebrow">FOR YOUR FIRST AMAZON WHOLESALE ORDER</p>
- <h1>Before your first Amazon order,<br/><mark>get a plan.</mark></h1>
- <p className="hero-sub">Find suppliers. Understand approvals. Check the numbers.<br/>Put the pieces together with Apex software and coaching.</p>
+ <h1>Before your first Amazon order,{" "}<br/><mark>get a plan.</mark></h1>
+ <p className="hero-sub">Find suppliers. Understand approvals. Check the numbers.{" "}<br/>Put the pieces together with Apex software and coaching.</p>
  <a className="hero-cta" href="#your-plan">Help Me Plan My First Order <span aria-hidden="true">→</span><small>Book a free strategy call</small></a>
  <figure className="hero-art"><img src="/assets/roadmap.webp" alt="Apex First Order Roadmap book illustration beside a laptop and shipping boxes" width="1536" height="1024" fetchPriority="high"/><figcaption>Illustration of the digital roadmap. No physical book or equipment included.</figcaption></figure>
  </section>
