@@ -13,6 +13,15 @@ export default function Footer() {
     pathname === "/proposal" ||
     pathname === "/checkout";
 
+  /**
+   * Pages that ship a complete footer of their own, including the Meta and
+   * Amazon disclaimers a paid landing page has to carry. Rendering the site
+   * footer under one of those gives the page two footers and two copyright
+   * lines.
+   */
+  const hasOwnFooter = pathname === "/first-order-roadmap";
+  if (hasOwnFooter) return null;
+
   if (isMinimalFooterPage) {
     return (
       <footer className="bg-white text-slate-900 py-12">
