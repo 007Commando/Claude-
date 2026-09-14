@@ -127,7 +127,7 @@ export default function ApexBlack() {
             eyebrow="Review Booster"
             icon={Star}
             title="Engagement Engine"
-            description="Your seller feedback score is your most valuable asset. Apex Black automates review requests from satisfied buyers while mitigating negative feedback in real time."
+            description="Your seller feedback score is your most valuable asset. Apex Black sends Amazon's own review request on every eligible order, on a schedule, and keeps a log of what was sent — it never selects buyers by sentiment, and it cannot suppress negative feedback."
             bullets={[
               "Intelligent post-delivery review sequencing",
               "Custom messaging tailored to your brand voice",

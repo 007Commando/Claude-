@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useScroll } from "motion/react";
 import {
+  Tag,
   BookOpen,
   Building2,
   Barcode,
@@ -29,15 +30,15 @@ const steps = [
     icon: Building2,
     title: "Open Wholesale Accounts",
     body: "Reach out to vetted, authorized distributors and brands, open your wholesale accounts, and start pulling their full product catalogs.",
-    highlights: ["3 Free Suppliers in the US", "Review Booster Automation to Hyper-Scale New Stores"],
+    highlights: ["3 Authorized US Distributors on Day One", "Review Requests on Every Eligible Order"],
     linkLabel: "Browse Vetted Vendors",
     linkHref: "/features/black#resource-library",
   },
   {
     icon: Barcode,
     title: "Scan & Catalog Everything",
-    body: "Run every account's catalog through our UPC Scanner and store the profitable winners in your Master Catalog inside Apex Blue.",
-    highlights: ["Scan Up to 100,000 UPCs/Hour", "Auto-Match UPC to ASIN", "Cross-Vendor Price Comparison"],
+    body: "Run every supplier's catalog through the UPC Scanner in Apex Green and keep the profitable matches in your Master Catalog, ready to price and order.",
+    highlights: ["Whole-Catalog Scanning in the Background", "UPC and EAN Matched to ASIN", "Cross-Vendor Price Comparison"],
     linkLabel: "View UPC Scanner",
     linkHref: "/features/green#upc-scanner",
   },
@@ -50,10 +51,18 @@ const steps = [
     linkHref: "/features/blue#purchase-orders",
   },
   {
+    icon: Tag,
+    title: "Price It With a Floor Underneath",
+    body: "Apex Gold works out each listing's break-even from the costs you just recorded and shows you the price your strategy implies — previewed before anything moves. Gold is in beta; keep an eye on Seller Central while you get started.",
+    highlights: ["Break-Even Floors from Your Own Costs", "Dry-Run Preview of Every Move", "Beta"],
+    linkLabel: "View the Repricer",
+    linkHref: "/features/gold",
+  },
+  {
     icon: RotateCw,
     title: "Restock & Scale at Your Pace",
     body: "Once inventory starts moving, use the Restock Purchase Order Builder to rinse and repeat. Scale slow and steady, or aggressive and fast — it's entirely up to you.",
-    highlights: ["Sales Velocity Restock Alerts", "Dead Inventory Warnings", "One-Click PO Creation"],
+    highlights: ["Restock Suggestions from Target Cover and Lead Time", "Purchase Orders Built from the Restock View", "Receiving Discrepancies Tracked Line by Line"],
     linkLabel: "View Analytics & Restocking",
     linkHref: "/features/blue#analytics",
   },
@@ -107,7 +116,7 @@ export default function HowItWorks() {
             How Amazon Wholesale <span className="text-brand">Works</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The easiest path to growing a real Amazon FBA wholesale business — five steps, start
+            The easiest path to growing a real Amazon FBA wholesale business — six steps, start
             to scale. Scroll down to follow the route.
           </p>
         </motion.section>

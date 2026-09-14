@@ -55,8 +55,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     publisher: { "@type": "Organization", name: "Apex Applications" },
   };
 
+  // Breadcrumbs tell Google where a post sits; without them a blog URL is an
+  // orphan in the result page.
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.apexapplications.io/" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.apexapplications.io/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
