@@ -118,3 +118,59 @@ export const trialCta = `Start my ${TRIAL_DAYS}-day trial`;
  */
 export const entryPrice = (): string =>
   `${formatPrice(planById("starter").monthly)}/mo`;
+
+/**
+ * PUBLISHED — the limits the billing system actually enforces.
+ *
+ * Transcribed on September 14, 2026 from `subscriptionLimits` in the backend
+ * (`services/stripe/check.ts`), which is the code that runs when somebody picks
+ * a plan. It is the source because it is the thing that decides.
+ *
+ * The matrix on the pricing page had been showing the next tier up in every
+ * row: Starter advertised Pro's ASIN allowance and Pro's seat count, Pro
+ * advertised Enterprise's. Monthly sales was worse than shifted — $50K against
+ * an enforced $10K, and crossing the enforced figure does not warn, it moves
+ * the customer onto Plus.
+ *
+ * Two things are deliberately not here. `plus` and `enterprise` exist in
+ * billing but the site does not sell them, for the reason given above PLANS.
+ * And no marketplace limit appears anywhere in the billing code, so the
+ * "2 / 3 marketplaces" row on the pricing page is unverified — it needs a
+ * product answer, not a guess.
+ */
+export interface PlanLimits {
+  /** Trailing monthly sales, in USD. `null` means no enforced ceiling. */
+  monthlySales: number | null;
+  /** ASINs the account may hold in its database. */
+  housedAsins: number;
+  /** Prep centre / warehouse connections. */
+  prepCenterConnections: number;
+  /** Seats included before the per-seat charge applies. */
+  authorizedUsers: number;
+}
+
+export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
+  starter: {
+    monthlySales: 10_000,
+    housedAsins: 1_000,
+    prepCenterConnections: 1,
+    authorizedUsers: 1,
+  },
+  pro: {
+    monthlySales: null,
+    housedAsins: 4_000,
+    prepCenterConnections: 3,
+    authorizedUsers: 5,
+  },
+};
+
+/** `$10K`, `Unlimited` — the sales ceiling as a pricing table should say it. */
+export const salesCeilingLabel = (planId: Plan["id"]): string => {
+  const ceiling = PLAN_LIMITS[planId].monthlySales;
+  if (ceiling === null) return "Unlimited";
+  return `Up to $${(ceiling / 1000).toFixed(0)}K/mo in revenue`;
+};
+
+/** `1,000 ASINs` — thousands separated, because these are counted figures. */
+export const countLabel = (value: number, noun: string): string =>
+  `${value.toLocaleString("en-US")} ${noun}`;

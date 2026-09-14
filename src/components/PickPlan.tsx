@@ -28,8 +28,11 @@ import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
 import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
 import {
   ANNUAL_DISCOUNT_PERCENT,
+  countLabel,
   formatPrice,
+  PLAN_LIMITS,
   planById,
+  salesCeilingLabel,
   TRIAL_DAYS,
 } from "../config/offer";
 
@@ -52,7 +55,13 @@ const sections: Section[] = [
   {
     title: "Overview",
     rows: [
-      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: "Up to $50K/mo in revenue", unlimited: "Unlimited" },
+      /**
+       * These read from PLAN_LIMITS, which transcribes what billing enforces.
+       * Every row here used to show the next tier up: Starter advertised $50K
+       * of monthly sales against an enforced $10K, and crossing the real figure
+       * moves the account onto Plus rather than warning about it.
+       */
+      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: salesCeilingLabel("starter"), unlimited: salesCeilingLabel("pro") },
       { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: "2", unlimited: "3" },
       { label: "Listings", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
     ],
@@ -79,7 +88,8 @@ const sections: Section[] = [
       { label: "Restock Management", limited: yes, unlimited: yes },
       { label: "Vendors", icon: <Globe className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Database", icon: <Database className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Listings Being Monitored", limited: "4,000 Listings", unlimited: "Unlimited" },
+      { label: "ASINs in Your Database", limited: countLabel(PLAN_LIMITS.starter.housedAsins, "ASINs"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "ASINs") },
+      { label: "Prep Centre Connections", limited: String(PLAN_LIMITS.starter.prepCenterConnections), unlimited: String(PLAN_LIMITS.pro.prepCenterConnections) },
       { label: "Purchase Orders", icon: <FileText className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Purchase Order Discrepancy", limited: yes, unlimited: yes },
       { label: "Opex", icon: <Wallet className="w-4 h-4" />, limited: yes, unlimited: yes },
@@ -115,7 +125,7 @@ const sections: Section[] = [
   {
     title: "Essentials",
     rows: [
-      { label: "Authorized Users", icon: <UserCheck className="w-4 h-4" />, limited: "5", unlimited: "10" },
+      { label: "Authorized Users Included", icon: <UserCheck className="w-4 h-4" />, limited: String(PLAN_LIMITS.starter.authorizedUsers), unlimited: String(PLAN_LIMITS.pro.authorizedUsers) },
       { label: "Additional Seat $8.99 / Month", limited: yes, unlimited: yes },
       { label: "Email Support", icon: <Mail className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Priority Onboarding", icon: <Rocket className="w-4 h-4" />, limited: no, unlimited: yes },
@@ -147,8 +157,11 @@ const faqs = [
   },
   {
     question: "What's the difference between the Starter and Pro plans?",
+    // Serialized into the FAQPage schema below, so a wrong figure here is a
+    // wrong figure in Google's answer too. Derived from PLAN_LIMITS for that
+    // reason: this answer previously named the next tier up on both counts.
     answer:
-      "Starter includes 5 authorized users and email support. Pro includes 10 authorized users, priority onboarding, and everything in Starter, along with higher usage limits across the suite.",
+      `Starter covers up to $${(PLAN_LIMITS.starter.monthlySales! / 1000).toFixed(0)}K a month in sales, ${PLAN_LIMITS.starter.housedAsins.toLocaleString("en-US")} ASINs in your database and ${PLAN_LIMITS.starter.authorizedUsers} authorized user, with email support. Pro removes the sales ceiling and raises the database to ${PLAN_LIMITS.pro.housedAsins.toLocaleString("en-US")} ASINs and ${PLAN_LIMITS.pro.authorizedUsers} authorized users, adding priority onboarding. Extra seats can be added to either plan for $8.99 a month, and the repricer is included in both.`,
   },
   {
     question: "Can I cancel anytime?",
