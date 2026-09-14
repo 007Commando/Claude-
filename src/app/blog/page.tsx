@@ -3,7 +3,7 @@ import BlogIndex from "../../components/BlogIndex";
 import { getSortedPosts } from "../../lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog — Amazon Wholesale Guides | Apex Applications",
+  title: "Amazon Wholesale Guides & Seller Resources",
   description:
     "Practical, step-by-step guides on Amazon wholesale sourcing, ungating, purchase orders, reviews, and logistics from the Apex Applications team.",
   alternates: { canonical: "https://www.apexapplications.io/blog" },

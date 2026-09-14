@@ -20,7 +20,7 @@ import inventoryRestocking from "../../assets/inventory-restocking.png.asset.jso
 import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
 
 export const metadata: Metadata = {
-  title: "Apex Virtual Assistants — trained Amazon staff, not freelancers",
+  title: "Apex Virtual Assistants — Trained Amazon Staff",
   description:
     "Professional Amazon-trained assistants, part time or full time, who install SOPs into your business. First 7 days free.",
   robots: { index: false, follow: false },

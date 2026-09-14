@@ -3,7 +3,7 @@ import ContentPage from "../../components/ContentPage";
 import { absoluteUrl } from "../../config/site";
 
 export const metadata: Metadata = {
-  title: "Amazon Wholesale Suppliers: How to Vet Them | Apex Applications",
+  title: "Amazon Wholesale Suppliers: How to Vet Them",
   description:
     "A repeatable process for vetting Amazon wholesale suppliers — identity, brand authorization, invoice requirements, channel terms and product eligibility — before you place an order.",
   alternates: { canonical: absoluteUrl("/amazon-wholesale-suppliers") },

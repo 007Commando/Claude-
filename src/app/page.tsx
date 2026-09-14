@@ -9,7 +9,7 @@ import { absoluteUrl } from "../config/site";
  * applied to all of them.
  */
 export const metadata: Metadata = {
-  title: "Amazon Wholesale Seller Software | Apex Applications",
+  title: "Amazon Wholesale Seller Software | Apex",
   description:
     "Research supplier catalogues, manage purchasing, understand profit and reprice your listings with Apex Applications. Start with the job you need today.",
   alternates: { canonical: absoluteUrl("/") },

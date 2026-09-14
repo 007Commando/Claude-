@@ -3,7 +3,7 @@ import ContentPage from "../../components/ContentPage";
 import { absoluteUrl } from "../../config/site";
 
 export const metadata: Metadata = {
-  title: "Amazon Inventory Management & Restock Planning | Apex Applications",
+  title: "Amazon Inventory Management & Restock Planning | Apex",
   description:
     "Review stock needs, organize suppliers and prepare purchase orders with the context of your Amazon business beside you. What Apex actually does, and what it does not.",
   alternates: { canonical: absoluteUrl("/amazon-inventory-management-software") },
