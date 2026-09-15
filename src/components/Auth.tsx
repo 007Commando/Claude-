@@ -450,32 +450,6 @@ export default function Auth() {
           }),
           keepalive: true,
         }).catch(() => {});
-        /*
-         * Meta needs an event here or a conversion campaign has nothing to
-         * optimise toward: the pixel only tracked PageView, the bundle
-         * purchase and the proposal booking, so every trial signup was
-         * invisible to it.
-         *
-         * CompleteRegistration is fired for what actually happened, an account
-         * being created. InitiateCheckout follows only on the paid path,
-         * because ApexAuth is about to hand the browser to Stripe. Neither is
-         * called StartTrial: the trial does not begin until a card is added on
-         * Stripe's own domain, and naming an event for something that has not
-         * happened yet teaches the algorithm to find people who never finish.
-         */
-        window.fbq?.("track", "CompleteRegistration", {
-          content_name: isFreeSignup ? "free_account" : `${planTier}_${period}`,
-          content_category: isFreeSignup ? "free" : "trial",
-          status: true,
-        });
-        if (!isFreeSignup) {
-          window.fbq?.("track", "InitiateCheckout", {
-            content_name: `${planTier}_${period}`,
-            content_category: "trial",
-            currency: "USD",
-            value: 0,
-          });
-        }
         window.oaiq?.("measure", "trial_started", { type: "plan_enrollment" });
         fetch("/api/oaiq-conversion", {
           method: "POST",
@@ -532,28 +506,6 @@ export default function Auth() {
       await withAuthRetry(() =>
         auth.signInWithGoogle!(isFreeSignup ? {} : { plan: planTier, period }),
       );
-      /*
-       * Reported only from the signup tab. Google sign-in cannot tell us here
-       * whether the account is new, so a returning user who lands on Sign Up
-       * and uses Google is counted too. That overcounts slightly; leaving the
-       * whole Google path unreported would hide most of the signups instead,
-       * which costs the campaign far more.
-       */
-      if (mode === "signup") {
-        window.fbq?.("track", "CompleteRegistration", {
-          content_name: isFreeSignup ? "free_account_google" : `${planTier}_${period}_google`,
-          content_category: isFreeSignup ? "free" : "trial",
-          status: true,
-        });
-        if (!isFreeSignup) {
-          window.fbq?.("track", "InitiateCheckout", {
-            content_name: `${planTier}_${period}_google`,
-            content_category: "trial",
-            currency: "USD",
-            value: 0,
-          });
-        }
-      }
       // Auto-redirects: to Stripe checkout for a brand-new account with a
       // plan, or straight into the app for a returning Google user.
     } catch (err: unknown) {
