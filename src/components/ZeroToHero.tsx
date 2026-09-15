@@ -625,7 +625,7 @@ export default function ZeroToHero() {
                 Apex University
               </span>
               <h2 className="mt-6 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-                Ready to start selling to catch last quarter sales?
+                Start now &amp; sell by Christmas.
                 <span className="mt-2 block text-2xl italic text-muted-foreground/60 sm:text-3xl">
                   Take the course and follow the roadmap!
                 </span>
