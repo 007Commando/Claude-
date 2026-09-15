@@ -11,7 +11,13 @@ export default function Footer() {
     pathname === "/apex-elite" ||
     pathname === "/premium-membership" ||
     pathname === "/proposal" ||
-    pathname === "/checkout";
+    pathname === "/checkout" ||
+    /**
+     * The sign-up form had the whole site footer under it — four columns of
+     * links, on a phone, below a form. Terms and privacy still belong there,
+     * and nothing else does.
+     */
+    pathname === "/auth";
 
   /**
    * Pages that ship a complete footer of their own, including the Meta and

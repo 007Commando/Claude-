@@ -604,9 +604,16 @@ export default function Auth() {
     <section className="apex-surface relative min-h-screen overflow-hidden bg-background">
       <div className="mesh-bg pointer-events-none absolute inset-0 -z-0" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-28 pb-20 lg:px-10">
+      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-10 lg:pb-20 lg:pt-28">
         <div className="grid items-start gap-16 lg:grid-cols-2 lg:gap-24">
-          <div className="pt-4">
+          {/*
+            Hidden on a phone, where it was a headline, a timeline, four
+            benefits and a testimonial stacked above the form — so signing up
+            began with a long scroll past things that had already done their
+            job before the tap that got here. The pitch still runs alongside
+            the form on a laptop, where it costs nothing.
+          */}
+          <div className="hidden pt-4 lg:block">
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
               {mode === "signup" ? "Apex Applications" : "Welcome back"}
             </p>
@@ -681,7 +688,7 @@ export default function Auth() {
                 ],
               }}
               transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
-              className="glow-edge w-full max-w-md mx-auto rounded-[28px] border bg-card p-8 sm:p-10 lg:ml-auto lg:mr-0"
+              className="glow-edge mx-auto w-full max-w-md rounded-3xl border bg-card p-6 sm:rounded-[28px] sm:p-10 lg:ml-auto lg:mr-0"
             >
               {onFreePlan ? (
                 <div className="py-2">

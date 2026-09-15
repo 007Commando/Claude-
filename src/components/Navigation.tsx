@@ -67,7 +67,14 @@ export default function Navigation() {
     pathname === "/first-order-roadmap" ||
     pathname === "/zero-to-hero" ||
     pathname === "/free-course" ||
-    pathname === "/wholesale-course";
+    pathname === "/wholesale-course" ||
+    /**
+     * Someone on the sign-up form has already chosen. A full menu there is a
+     * row of exits from the one thing the page is for, and on a phone it is
+     * a hamburger sitting above a form that has not even come into view yet.
+     * The centred logo still gets them home.
+     */
+    pathname === "/auth";
   // apex-elite renders its own countdown bar fixed above this nav, so the nav
   // itself has to sit lower to avoid overlapping it.
   const isApexElitePage = pathname === "/apex-elite";
