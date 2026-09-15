@@ -1,0 +1,34 @@
+/*
+ * Page-scoped variables for /zero-to-hero.
+ *
+ * The design is built on shadcn's hsl-triplet variables, and several of its
+ * shadows and gradients reference them directly (`hsl(var(--primary) / .45)`).
+ * They are declared on the page wrapper rather than :root on purpose: route
+ * CSS stays loaded after a client-side navigation in the App Router, so a
+ * :root block here would follow the visitor onto the pricing page and the
+ * dashboard. Scoped to .zth they cannot.
+ */
+.zth {
+  --background: 0 0% 100%;
+  --foreground: 220 15% 15%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 15% 15%;
+  --muted: 220 13% 96%;
+  --muted-foreground: 220 9% 46%;
+  --border: 220 13% 91%;
+  --accent: 28 100% 55%;
+
+  --gradient-mesh: radial-gradient(at 40% 20%, hsl(221 83% 53% / 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsl(250 83% 58% / 0.06) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsl(28 100% 55% / 0.04) 0px, transparent 50%);
+  --shadow-card: 0 1px 3px hsl(220 15% 15% / 0.04), 0 6px 16px hsl(220 15% 15% / 0.06);
+
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.zth .mesh-bg {
+  background-image: var(--gradient-mesh);
+}

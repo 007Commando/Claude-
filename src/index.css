@@ -6,6 +6,25 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --color-brand: #2563eb;
   --color-brand-dark: #1d4ed8;
+
+  /*
+   * Landing-page palette, in the shadcn naming the Lovable designs are built
+   * in. Kept here so a design can be pasted in with its classes intact rather
+   * than hand-translated into ours — the translation is where a design loses
+   * its proportions. Purely additive: nothing existing resolves to these
+   * names.
+   */
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(220 15% 15%);
+  --color-primary: hsl(221 83% 53%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(220 15% 15%);
+  --color-muted: hsl(220 13% 96%);
+  --color-muted-foreground: hsl(220 9% 46%);
+  --color-border: hsl(220 13% 91%);
+  --color-accent: hsl(28 100% 55%);
+  --color-accent-foreground: hsl(0 0% 100%);
 }
 
 @layer base {

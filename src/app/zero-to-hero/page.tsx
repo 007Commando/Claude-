@@ -3,17 +3,15 @@ import type { Metadata } from "next";
 import ZeroToHero from "../../components/ZeroToHero";
 
 /**
- * Indexed, unlike /first-order-roadmap.
+ * Indexed. It answers "how do I start Amazon wholesale", which the site has
+ * nothing else for, and it sells the trial rather than a call.
  *
- * That page sells a call and competes with the supplier and comparison pages
- * for the same queries. This one gives a course away, which is the kind of
- * page worth finding in search — and it answers a query the site has nothing
- * else for.
+ * The free course that used to live here is at /free-course.
  */
 export const metadata: Metadata = {
-  title: "Free Amazon Wholesale Course — Zero to Hero | Apex University",
+  title: "Amazon Wholesale Course — Zero to Hero | Apex Applications",
   description:
-    "Nine free videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order. Free with an Apex account — no card.",
+    "Nine videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order — with the software it is taught in, free for 7 days.",
   alternates: { canonical: "https://www.apexapplications.io/zero-to-hero" },
 };
 

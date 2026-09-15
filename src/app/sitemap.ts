@@ -50,6 +50,9 @@ const ENTRIES: Entry[] = [
   { path: "/prep-center-network", changeFrequency: "monthly", priority: 0.6 },
   { path: "/distributor-vault", changeFrequency: "monthly", priority: 0.6 },
   { path: "/review-booster", changeFrequency: "monthly", priority: 0.6 },
+  // Both indexed: one sells the trial, the other gives the course away.
+  { path: "/zero-to-hero", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/free-course", changeFrequency: "monthly", priority: 0.6 },
   /**
    * `/auth` sat here at priority 0.5, inviting Google to index a sign-in form
    * and rank it for the brand. It is a conversion surface, not a page anyone
