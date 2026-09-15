@@ -1,0 +1,606 @@
+/*
+ * Apex POP — Purchase Order Program landing page.
+ *
+ * Built in the same design language as /zero-to-hero, and deliberately so:
+ * the two pages sell adjacent things to the same audience, and a visitor who
+ * has seen one should recognise the other. This file therefore layers on top
+ * of apex-surface.css rather than restating it — the wrapper carries both
+ * .apex-surface and .pop-page, so the mesh background, the CTA sheen and the
+ * blue edge glow all come from the shared surface. What lives here is only
+ * what this page adds: the six-step flow, the product frames, and the
+ * comparison blocks.
+ *
+ * Scoped with :has(.pop-page) for the reason apex-surface.css documents:
+ * route CSS stays loaded after a client navigation, so anything left on :root
+ * or bare body would follow the visitor onto the rest of the site.
+ */
+
+:root:has(.pop-page) { color-scheme: light; }
+html:has(.pop-page) { scroll-behavior: smooth; scroll-padding-top: 96px; }
+body:has(.pop-page) { margin: 0; background: #fff; }
+
+.pop-page {
+  /* Same values apex-surface.css resolves, as flat hex for the properties
+     that do not need the hsl triplet form. */
+  --ink: #21252e;
+  --ink-strong: #12151c;
+  --body: #6b7280;
+  --faint: #9199a8;
+  --line: #e5e7eb;
+  --line-2: #eef0f4;
+  --surface: #f7f8fb;
+  --blue: #2563eb;
+  --blue-deep: #1d4ed8;
+  --blue-soft: #eff4ff;
+  --amber: #ff8b1a;
+
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pop-page *,
+.pop-page *::before,
+.pop-page *::after { box-sizing: border-box; }
+
+.pop-page h1,
+.pop-page h2,
+.pop-page h3,
+.pop-page h4,
+.pop-page p,
+.pop-page figure,
+.pop-page ul,
+.pop-page ol { margin: 0; padding: 0; }
+
+.pop-page ul, .pop-page ol { list-style: none; }
+.pop-page a { color: inherit; text-decoration: none; }
+.pop-page img { display: block; max-width: 100%; }
+.pop-page button { font: inherit; cursor: pointer; }
+.pop-page summary { cursor: pointer; }
+
+.pop-page a:focus-visible,
+.pop-page button:focus-visible,
+.pop-page summary:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* Zero-to-hero sets its headlines heavy and tight. Matching that is most of
+   what makes the two pages read as siblings. */
+.pop-page h1,
+.pop-page h2,
+.pop-page h3 {
+  color: var(--ink-strong);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+}
+
+.pop-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.pop-shell { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+.pop-section { padding: 96px 0; }
+.pop-section-tight { padding: 76px 0; }
+
+.pop-section h2 {
+  font-size: clamp(32px, 3.8vw, 48px);
+  line-height: 1.08;
+}
+.pop-section h2 .pop-blue { color: var(--blue); }
+
+.pop-lede {
+  font-size: 18px;
+  line-height: 1.62;
+  color: var(--body);
+  max-width: 62ch;
+}
+
+/* The solid blue block behind a key phrase, lifted from the zero-to-hero
+   hero. Rotated a degree so it reads as a marker stroke rather than a button,
+   with box-decoration-break so it survives wrapping. */
+.pop-page mark {
+  background: var(--blue);
+  color: #fff;
+  padding: .06em .28em .12em;
+  border-radius: 3px;
+  display: inline-block;
+  transform: rotate(-1.1deg);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.pop-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.pop-header-in {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pop-brand { display: flex; align-items: center; gap: 10px; }
+.pop-brand img { height: 42px; width: 54px; object-fit: contain; }
+.pop-brand-name {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -.03em;
+  color: var(--ink-strong);
+  line-height: 1;
+}
+.pop-brand-name small {
+  display: block;
+  font-weight: 800;
+  font-size: 8px;
+  letter-spacing: .16em;
+  color: var(--blue);
+  margin-top: 4px;
+}
+
+.pop-header-right { display: flex; align-items: center; gap: 22px; }
+.pop-header-note { font-size: 13px; font-weight: 500; color: var(--body); }
+
+/* ------------------------------------------------------------- buttons */
+
+/* Written as `.pop-page a.x`: the reset sets `.pop-page a { color: inherit }`
+   at 0,1,1, which outranks a bare class and would render button labels in
+   body grey on blue. */
+.pop-page a.pop-cta { color: #fff; }
+.pop-page a.pop-cta-ghost { color: var(--ink-strong); }
+
+.pop-cta {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: var(--blue);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -.01em;
+  padding: 15px 28px;
+  border-radius: 10px;
+  box-shadow: 0 10px 26px -10px hsl(221 83% 53% / .6), 0 2px 5px rgba(18, 21, 28, .1);
+  transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.pop-cta:hover {
+  background: var(--blue-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px -12px hsl(221 83% 53% / .68), 0 3px 8px rgba(18, 21, 28, .12);
+}
+.pop-cta:active { transform: translateY(0); }
+.pop-cta-row { display: inline-flex; align-items: center; gap: 11px; }
+.pop-cta small {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #dbe6ff;
+}
+.pop-cta-lg { font-size: 19px; padding: 18px 40px; border-radius: 12px; }
+.pop-cta-sm { font-size: 14px; padding: 11px 18px; border-radius: 9px; }
+
+.pop-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 26px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+.pop-cta-ghost:hover { border-color: hsl(221 83% 53% / .4); background: var(--blue-soft); transform: translateY(-2px); }
+
+/* ---------------------------------------------------------------- hero */
+
+.pop-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 76px 0 84px;
+}
+/* .mesh-bg comes from apex-surface.css; this only adds the vertical fade so
+   the mesh resolves into white before the next section starts. */
+.pop-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 140px;
+  background: linear-gradient(180deg, transparent, #fff);
+  pointer-events: none;
+}
+
+.pop-hero-in { position: relative; z-index: 1; text-align: center; }
+
+.pop-eyebrow { display: block; }
+
+.pop-hero h1 {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1.03;
+  letter-spacing: -.038em;
+  margin: 20px auto 0;
+  max-width: 19ch;
+}
+.pop-hero h1 mark { margin-top: .12em; }
+
+.pop-hero-sub {
+  font-size: 20px;
+  line-height: 1.58;
+  color: var(--body);
+  max-width: 56ch;
+  margin: 34px auto 0;
+}
+
+.pop-hero-actions {
+  margin-top: 34px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.pop-hero-fine {
+  margin-top: 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+/* Product screenshots sit in a light browser frame with the surface's blue
+   edge glow, which is what carries the "premium software" read. */
+.pop-frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+}
+.pop-frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 17px;
+  border-bottom: 1px solid var(--line-2);
+  background: linear-gradient(180deg, #fdfdff, #f6f8fc);
+}
+.pop-dots { display: flex; gap: 6px; }
+.pop-dots i { width: 9px; height: 9px; border-radius: 50%; background: #dde3ee; display: block; }
+.pop-frame-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.pop-frame img { width: 100%; height: auto; }
+
+.pop-hero-art { position: relative; margin: 54px auto 0; max-width: 1000px; }
+.pop-hero-art .pop-frame img {
+  /* The screenshot is tall; its top two-thirds hold the projection figures,
+     which are the part worth showing. */
+  max-height: 520px;
+  object-fit: cover;
+  object-position: top center;
+}
+.pop-hero-caption { margin-top: 16px; font-size: 12.5px; color: var(--faint); text-align: center; }
+
+/* --------------------------------------------------------- denial strip */
+
+.pop-denial { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+.pop-denial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pop-denial-cell {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 26px 26px 28px;
+  box-shadow: 0 1px 3px hsl(220 15% 15% / .04), 0 6px 16px hsl(220 15% 15% / .06);
+}
+.pop-denial-x {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: #f1f3f7;
+  color: var(--faint);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+.pop-denial-cell h3 { font-size: 18px; font-weight: 800; letter-spacing: -.022em; }
+.pop-denial-cell p { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--body); }
+
+/* -------------------------------------------------------------- problem */
+
+.pop-problem-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 72px; align-items: start; }
+.pop-problem h2 { margin-top: 18px; }
+.pop-problem-copy > p { margin-top: 20px; }
+.pop-problem-copy strong { color: var(--ink-strong); font-weight: 700; }
+
+.pop-loop {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  padding: 26px 28px 28px;
+  box-shadow: 0 1px 3px hsl(220 15% 15% / .04), 0 6px 16px hsl(220 15% 15% / .06);
+}
+.pop-loop-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+  padding-bottom: 15px; border-bottom: 1px solid var(--line-2);
+}
+.pop-loop-head strong { font-size: 16px; font-weight: 800; letter-spacing: -.02em; color: var(--ink-strong); }
+.pop-loop-head .pop-label { font-size: 10.5px; color: var(--faint); }
+.pop-loop li {
+  display: flex; align-items: center; gap: 15px;
+  padding: 14px 0; border-bottom: 1px dashed var(--line);
+  font-size: 15px; color: var(--body);
+}
+.pop-loop li b { font-size: 11px; font-weight: 700; color: var(--faint); width: 20px; flex-shrink: 0; letter-spacing: .06em; }
+.pop-loop-end {
+  margin-top: 20px;
+  display: flex; align-items: center; gap: 11px;
+  background: var(--blue-soft);
+  border: 1px solid hsl(221 83% 53% / .22);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 15px; font-weight: 700; color: var(--ink-strong);
+}
+.pop-loop-end span { color: var(--blue); font-size: 16px; line-height: 1; }
+
+/* ----------------------------------------------------------------- flow */
+
+.pop-flow { position: relative; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.pop-flow-head { text-align: center; max-width: 740px; margin: 0 auto; position: relative; z-index: 1; }
+.pop-flow-head h2 { margin-top: 18px; }
+.pop-flow-head > p { margin: 20px auto 0; }
+
+/* At-a-glance rail: the whole arc on one line before the detail below it. */
+.pop-rail { display: grid; grid-template-columns: repeat(6, 1fr); margin-top: 66px; position: relative; z-index: 1; }
+.pop-rail::before {
+  content: "";
+  position: absolute;
+  top: 19px; left: 8.33%; right: 8.33%; height: 2px;
+  background: linear-gradient(90deg, #d7deeb 0%, hsl(221 83% 53% / .55) 45%, var(--blue) 100%);
+  border-radius: 2px;
+}
+.pop-rail-node { position: relative; text-align: center; padding: 0 6px; }
+.pop-rail-node i {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; margin: 0 auto;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #d7deeb;
+  font-style: normal; font-size: 13px; font-weight: 700;
+  color: var(--faint);
+  box-shadow: 0 0 0 6px #fff;
+}
+.pop-rail-node.is-key i { border-color: var(--blue); color: var(--blue); }
+.pop-rail-node.is-last i {
+  background: var(--blue); border-color: var(--blue); color: #fff;
+  box-shadow: 0 0 0 6px #fff, 0 10px 22px -8px hsl(221 83% 53% / .7);
+}
+.pop-rail-node span { display: block; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: var(--ink); letter-spacing: -.012em; }
+
+.pop-steps { margin-top: 58px; display: grid; gap: 16px; position: relative; z-index: 1; }
+.pop-step {
+  display: grid;
+  grid-template-columns: 52px 1fr 250px;
+  gap: 26px;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 30px;
+  box-shadow: 0 1px 3px hsl(220 15% 15% / .04), 0 6px 16px hsl(220 15% 15% / .06);
+}
+/* The two steps that carry the positioning get the surface's edge glow and a
+   blue rule down the left, so they read as the hinge of the process. */
+.pop-step.is-key { position: relative; }
+.pop-step.is-key::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 18px; bottom: 18px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--blue);
+}
+.pop-step-ico {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  background: var(--blue);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 18px -8px hsl(221 83% 53% / .7);
+}
+.pop-step.is-key .pop-step-ico { background: linear-gradient(140deg, var(--blue), #4f7dfb); }
+.pop-step-body .pop-label { font-size: 10.5px; }
+.pop-step-body h3 { margin-top: 10px; font-size: 22px; font-weight: 800; letter-spacing: -.026em; line-height: 1.22; }
+.pop-step-body > p { margin-top: 11px; font-size: 15.5px; line-height: 1.6; }
+.pop-step-aside { border-left: 1px solid var(--line-2); padding-left: 24px; height: 100%; }
+.pop-step-aside .pop-label { font-size: 9.5px; color: var(--faint); }
+.pop-step-aside p { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-strong); font-weight: 600; }
+.pop-step-tool {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 15px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  color: var(--blue);
+  background: var(--blue-soft);
+  border: 1px solid hsl(221 83% 53% / .18);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+/* ------------------------------------------------------------- software */
+
+.pop-soft-head { max-width: 780px; }
+.pop-soft-head h2 { margin-top: 18px; }
+.pop-soft-head > p { margin-top: 20px; }
+
+.pop-shots { margin-top: 56px; display: grid; gap: 26px; }
+.pop-shot { display: grid; grid-template-columns: 330px 1fr; gap: 48px; align-items: center; }
+.pop-shot:nth-child(even) { grid-template-columns: 1fr 330px; }
+.pop-shot:nth-child(even) .pop-shot-copy { order: 2; }
+.pop-shot-copy .pop-label { font-size: 10.5px; }
+.pop-shot-copy h3 { margin-top: 14px; font-size: 26px; font-weight: 800; letter-spacing: -.028em; line-height: 1.18; }
+.pop-shot-copy > p { margin-top: 13px; font-size: 15.5px; line-height: 1.62; }
+.pop-shot-list { margin-top: 18px; display: grid; gap: 9px; }
+.pop-shot-list li { display: flex; gap: 11px; font-size: 14.5px; color: var(--body); }
+.pop-shot-list li span { color: var(--blue); flex-shrink: 0; font-weight: 700; }
+.pop-shot .pop-frame img { max-height: 340px; object-fit: cover; object-position: top left; }
+
+/* -------------------------------------------------------------- outcome */
+
+.pop-outcome { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.pop-outcome-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 72px; align-items: start; }
+.pop-outcome h2 { margin-top: 18px; }
+.pop-outcome-grid > div > p { margin-top: 20px; }
+.pop-deliver { display: grid; gap: 14px; }
+.pop-deliver li {
+  display: grid; grid-template-columns: 42px 1fr; gap: 18px; align-items: start;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 3px hsl(220 15% 15% / .04), 0 6px 16px hsl(220 15% 15% / .06);
+}
+.pop-deliver-ico {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  background: var(--blue);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 18px -8px hsl(221 83% 53% / .7);
+}
+.pop-deliver strong { display: block; font-size: 16px; font-weight: 800; color: var(--ink-strong); letter-spacing: -.02em; }
+.pop-deliver small { display: block; margin-top: 6px; font-size: 14.5px; line-height: 1.55; color: var(--body); }
+
+/* --------------------------------------------------------------- fit/faq */
+
+.pop-fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 46px; }
+.pop-fit { border: 1px solid var(--line); border-radius: 14px; padding: 30px 32px; background: #fff; }
+.pop-fit.is-no { background: var(--surface); box-shadow: none; }
+.pop-fit h3 { font-size: 19px; font-weight: 800; letter-spacing: -.022em; }
+.pop-fit ul { margin-top: 20px; display: grid; gap: 12px; }
+.pop-fit li { display: flex; gap: 12px; font-size: 15px; line-height: 1.55; }
+.pop-fit li span { flex-shrink: 0; font-size: 15px; line-height: 1.5; font-weight: 700; }
+.pop-fit.is-yes li span { color: var(--blue); }
+.pop-fit.is-no li span { color: var(--faint); }
+
+.pop-faq-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 64px; align-items: start; }
+.pop-faq-grid h2 { margin-top: 16px; font-size: clamp(29px, 3vw, 38px); }
+.pop-faq details { border-bottom: 1px solid var(--line); padding: 21px 0; }
+.pop-faq details:first-child { padding-top: 0; }
+.pop-faq summary {
+  display: flex; justify-content: space-between; gap: 24px;
+  font-size: 16.5px; font-weight: 700; color: var(--ink-strong);
+  letter-spacing: -.015em; list-style: none;
+}
+.pop-faq summary::-webkit-details-marker { display: none; }
+.pop-faq summary i { font-style: normal; color: var(--blue); font-size: 22px; line-height: 1; flex-shrink: 0; transition: transform .2s ease; }
+.pop-faq details[open] summary i { transform: rotate(45deg); }
+.pop-faq details p { margin-top: 14px; font-size: 15px; line-height: 1.62; }
+
+/* ---------------------------------------------------------------- close */
+
+.pop-close { position: relative; overflow: hidden; border-top: 1px solid var(--line); text-align: center; }
+.pop-close-in { position: relative; z-index: 1; }
+.pop-close h2 { margin-top: 20px; }
+.pop-close-in > p { margin: 22px auto 0; }
+.pop-close .pop-hero-actions { margin-top: 34px; }
+.pop-close-fine { margin-top: 22px; font-size: 13.5px; color: var(--faint); }
+
+/* --------------------------------------------------------------- footer */
+
+.pop-footer { border-top: 1px solid var(--line); padding: 42px 0 48px; background: #fff; }
+.pop-footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; flex-wrap: wrap; }
+.pop-footer-links { display: flex; gap: 26px; font-size: 14px; font-weight: 500; color: var(--body); }
+.pop-footer-links a:hover { color: var(--ink-strong); }
+.pop-footer-legal {
+  margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line-2);
+  display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--faint);
+}
+.pop-fineprint { margin-top: 18px; max-width: 780px; font-size: 11.5px; line-height: 1.65; color: var(--faint); }
+
+/* ----------------------------------------------------------- responsive */
+
+@media (max-width: 1040px) {
+  .pop-step { grid-template-columns: 52px 1fr; }
+  .pop-step-aside {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--line-2);
+    padding-left: 0;
+    padding-top: 18px;
+    margin-top: 4px;
+  }
+  .pop-problem-grid,
+  .pop-outcome-grid { grid-template-columns: 1fr; gap: 42px; }
+  .pop-faq-grid { grid-template-columns: 1fr; gap: 34px; }
+}
+
+@media (max-width: 860px) {
+  .pop-shot,
+  .pop-shot:nth-child(even) { grid-template-columns: 1fr; gap: 26px; }
+  .pop-shot:nth-child(even) .pop-shot-copy { order: 0; }
+  .pop-denial-grid { grid-template-columns: 1fr; gap: 14px; }
+  .pop-fit-grid { grid-template-columns: 1fr; }
+  .pop-rail { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
+  .pop-rail::before { display: none; }
+}
+
+@media (max-width: 680px) {
+  .pop-page { font-size: 16px; }
+  .pop-shell { padding: 0 20px; }
+  .pop-section { padding: 66px 0; }
+  .pop-section-tight { padding: 54px 0; }
+  .pop-header-in { height: 68px; }
+  .pop-brand img { height: 34px; width: 44px; }
+  .pop-brand-name { font-size: 17px; }
+  .pop-header-note { display: none; }
+  .pop-hero { padding: 46px 0 62px; }
+  .pop-hero h1 { font-size: clamp(33px, 9.4vw, 44px); letter-spacing: -.032em; }
+  .pop-hero-sub { font-size: 17px; }
+  .pop-hero-actions { flex-direction: column; align-items: stretch; }
+  .pop-hero-actions .pop-cta,
+  .pop-hero-actions .pop-cta-ghost { justify-content: center; }
+  .pop-cta-lg { font-size: 17px; padding: 16px 24px; }
+  .pop-hero-art { margin-top: 40px; }
+  .pop-hero-art .pop-frame img { max-height: 300px; }
+  .pop-shot .pop-frame img { max-height: 240px; }
+  .pop-rail { grid-template-columns: repeat(2, 1fr); }
+  .pop-step { padding: 24px 20px; gap: 18px; grid-template-columns: 44px 1fr; }
+  .pop-step-ico { width: 38px; height: 38px; border-radius: 10px; }
+  .pop-step-body h3 { font-size: 20px; }
+  .pop-loop { padding: 22px 20px 24px; }
+  .pop-fit { padding: 26px 22px; }
+  .pop-footer-legal { flex-direction: column; gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.pop-page) { scroll-behavior: auto; }
+  .pop-page *,
+  .pop-page *::before,
+  .pop-page *::after { transition: none !important; animation: none !important; }
+}

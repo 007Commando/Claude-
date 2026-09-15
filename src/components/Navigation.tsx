@@ -49,6 +49,14 @@ export default function Navigation() {
   const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
+  /**
+   * Pages that ship a complete header of their own.
+   *
+   * isDistractionFreePage below still renders a bar — a centred logo — so a
+   * page with its own header needs this branch instead, or it gets two.
+   */
+  const hasOwnHeader = pathname === "/apex-pop";
+
   const isDistractionFreePage =
     pathname === "/fba-starter-bundle" ||
     pathname === "/apex-elite" ||
@@ -79,6 +87,8 @@ export default function Navigation() {
     setIsFeaturesOpen(false);
     setIsMenuOpen(false);
   };
+
+  if (hasOwnHeader) return null;
 
   if (isDistractionFreePage) {
     return (
