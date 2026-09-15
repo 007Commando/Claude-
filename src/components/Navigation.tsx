@@ -55,7 +55,8 @@ export default function Navigation() {
    * isDistractionFreePage below still renders a bar — a centred logo — so a
    * page with its own header needs this branch instead, or it gets two.
    */
-  const hasOwnHeader = pathname === "/apex-pop";
+  const hasOwnHeader =
+    pathname === "/apex-pop" || pathname === "/how-apex-works";
 
   const isDistractionFreePage =
     pathname === "/fba-starter-bundle" ||

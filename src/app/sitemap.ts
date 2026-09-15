@@ -45,6 +45,7 @@ const ENTRIES: Entry[] = [
   { path: "/tools/amazon-profit-calculator", changeFrequency: "monthly", priority: 0.7 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/how-apex-works", changeFrequency: "monthly", priority: 0.8 },
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },
   { path: "/rewards-benefits", changeFrequency: "monthly", priority: 0.7 },
   { path: "/prep-center-network", changeFrequency: "monthly", priority: 0.6 },
