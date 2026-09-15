@@ -122,6 +122,69 @@ function CurriculumTrail({ target }: { target: React.RefObject<HTMLDivElement | 
 const TRAIL =
   "M62 40 C62 170, 38 170, 38 280 C38 400, 62 400, 62 520 C62 640, 38 640, 38 760 C38 880, 62 880, 62 960";
 
+/**
+ * When the free course stops being free.
+ *
+ * Eastern time, written as a fixed offset rather than a local date string so
+ * the deadline is the same instant for every visitor — a countdown built from
+ * the browser's own midnight ends at a different moment in every timezone.
+ * October 1 2026 falls inside daylight saving, so Eastern is -04:00.
+ */
+const FREE_OFFER_ENDS = Date.parse("2026-10-01T00:00:00-04:00");
+
+function Countdown() {
+  // null until the effect runs: the server and the browser would otherwise
+  // render different seconds and React would throw a hydration mismatch.
+  const [remaining, setRemaining] = useState<number | null>(null);
+
+  useEffect(() => {
+    const tick = () => setRemaining(FREE_OFFER_ENDS - Date.now());
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Past the deadline the block disappears rather than sitting at zero or
+  // counting backwards. A countdown that has obviously expired is worse than
+  // no countdown.
+  if (remaining === null || remaining <= 0) return null;
+
+  const total = Math.floor(remaining / 1000);
+  const parts = [
+    [Math.floor(total / 86400), "days"],
+    [Math.floor(total / 3600) % 24, "hrs"],
+    [Math.floor(total / 60) % 60, "min"],
+    [total % 60, "sec"],
+  ] as const;
+
+  return (
+    <div className="mb-8 md:absolute md:right-10 md:top-10 md:mb-0 lg:right-14 lg:top-14">
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        Free course ends in
+      </p>
+      <div className="mt-2 flex items-start gap-1.5">
+        {parts.map(([value, label], i) => (
+          <div key={label} className="flex items-start gap-1.5">
+            <div className="flex w-11 flex-col items-center rounded-lg border border-primary/15 bg-primary/5 px-1 py-1.5">
+              <span className="text-lg font-extrabold leading-none tabular-nums text-primary">
+                {String(value).padStart(2, "0")}
+              </span>
+              <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {label}
+              </span>
+            </div>
+            {i < parts.length - 1 && (
+              <span aria-hidden="true" className="pt-1 text-lg font-bold leading-none text-primary/25">
+                :
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const highlights = [
   ["9 videos", "Four focused modules you can follow in order"],
   ["Zero to first order", "Learn suppliers, research and purchasing"],
@@ -542,6 +605,7 @@ export default function ZeroToHero() {
           {...reveal}
           className="glow-edge-strong relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border bg-card p-10 sm:p-14"
         >
+          <Countdown />
           <div className="relative z-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
             <div className="max-w-xl">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
