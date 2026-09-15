@@ -204,6 +204,39 @@ const FREE_TIER = [
   "3 UPC scans to try the scanner on a real supplier list",
 ];
 
+/**
+ * Tell Meta a free account was created.
+ *
+ * Reported as Lead rather than CompleteRegistration on purpose. Stripe's
+ * integration already sends CompleteRegistration through the Conversions API,
+ * and it means something else there: a Stripe customer exists, which happens
+ * at checkout. A free signup never reaches Stripe, so firing the same event
+ * would merge two different things under one name and teach a campaign
+ * optimising for paid trials to go looking for people who never pay.
+ *
+ * Without this the free arm of the course test reports nothing at all, while
+ * the $29 arm reports a Purchase, and Ads Manager would show the paid page
+ * winning by an infinite margin whatever actually happened.
+ *
+ * The eventID is carried so a server-side twin can be deduplicated against
+ * this one later. There is no twin yet; adding the id now costs nothing and
+ * means the browser event does not have to be found and changed when there is.
+ */
+function reportFreeSignup() {
+  const eventId = `free-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  window.fbq?.(
+    "track",
+    "Lead",
+    {
+      content_name: "free_course_account",
+      content_category: "free_account",
+      currency: "USD",
+      value: 0,
+    },
+    { eventID: eventId },
+  );
+}
+
 const PLAN_TIERS = ["starter", "plus", "pro", "enterprise"] as const;
 const PERIODS = ["monthly", "yearly"] as const;
 const PLAN_TIER_LABELS: Record<(typeof PLAN_TIERS)[number], string> = {
@@ -452,6 +485,7 @@ export default function Auth() {
           }),
           keepalive: true,
         }).catch(() => {});
+        if (isFreeSignup) reportFreeSignup();
         window.oaiq?.("measure", "trial_started", { type: "plan_enrollment" });
         fetch("/api/oaiq-conversion", {
           method: "POST",
@@ -508,6 +542,14 @@ export default function Auth() {
       await withAuthRetry(() =>
         auth.signInWithGoogle!(isFreeSignup ? {} : { plan: planTier, period }),
       );
+      /*
+       * Only from the Sign Up tab. Google sign-in cannot tell us here whether
+       * the account is new, so a returning free user who lands on Sign Up and
+       * uses Google is counted again. That overcounts a little; reporting
+       * nothing from the Google path would hide most free signups instead,
+       * which costs the test far more than the noise does.
+       */
+      if (isFreeSignup && mode === "signup") reportFreeSignup();
       // Auto-redirects: to Stripe checkout for a brand-new account with a
       // plan, or straight into the app for a returning Google user.
     } catch (err: unknown) {
