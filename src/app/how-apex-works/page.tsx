@@ -3,11 +3,18 @@ import type { Metadata } from "next";
 import HowApexWorks from "../../components/HowApexWorks";
 
 /**
- * Indexed, unlike the paid-traffic landing pages.
+ * Unlisted: reachable by anyone with the link, absent from search.
  *
- * This one is written for someone searching for how the software works, which
- * is the query it should win, and it says more about the product than any
- * other page on the site.
+ * The guide names all 25 application routes and lays out the module structure,
+ * which is more of the product's shape than needs to be sitting in a public
+ * index. It is meant to be handed out — in a support reply, in onboarding, from
+ * inside the app — not found cold.
+ *
+ * Deliberately noindex rather than a robots.txt Disallow. Disallow stops the
+ * crawl, and a crawler that never fetches the page never sees a noindex, so the
+ * URL can still surface as a bare link with no description. Letting crawlers in
+ * and telling them not to index is what actually keeps it out. It is also left
+ * out of the sitemap, since a sitemap is a request to index.
  */
 export const metadata: Metadata = {
   title: "How Apex Works — The Full Product Guide | Apex Applications",
@@ -16,6 +23,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.apexapplications.io/how-apex-works",
   },
+  robots: { index: false, follow: false },
 };
 
 export default function Page() {
