@@ -15,11 +15,13 @@ import {
   User,
   GraduationCap,
   ArrowRight,
+  Star,
   Loader2,
   Eye,
   EyeOff,
 } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
+import "./apex-surface.css";
 import { readStoredAttribution } from "./LeadAttribution";
 import {
   getAuthUserEmail,
@@ -197,7 +199,7 @@ function waitForApexAuth(
 // What a plan-less account can actually use. Kept in words rather than feature
 // flags because this is the one place a customer reads it.
 const FREE_TIER = [
-  "Apex University — the full Zero to Amazon Hero course",
+  "Apex University, the full Zero to Amazon Hero course",
   "Review Booster on eligible Amazon orders",
   "3 UPC scans to try the scanner on a real supplier list",
 ];
@@ -520,20 +522,20 @@ export default function Auth() {
 
   const benefits = [
     {
-      title: "3 free authorized suppliers",
-      desc: "Vetted, authorized US wholesale distributors handed to you when your trial starts — skip months of cold outreach.",
+      title: "3 vetted suppliers to start with",
+      desc: "Authorized US wholesale distributors handed to you when your trial starts, so you skip months of cold outreach.",
     },
     {
       title: "White-glove onboarding",
-      desc: "Included with your account: 160 minutes of Amazon education plus full software installation and setup.",
+      desc: "160 minutes of Amazon education with full software installation and setup, included with your account.",
     },
     {
-      title: "Dedicated account manager",
-      desc: "Get direct access to a real person who understands your workflow and answers fast.",
+      title: "A real account manager",
+      desc: "Direct access to a person who knows your workflow and answers fast.",
     },
     {
-      title: "ROI results in 30 Days",
-      desc: "Our average operator sees measurable returns in the first month of use.",
+      title: "Built to pay for itself",
+      desc: "Sourcing, purchase orders and profit tracking in one place, so the hours you spend reconciling go back into buying.",
     },
   ];
 
@@ -557,23 +559,24 @@ export default function Auth() {
         : "Log in";
 
   return (
-    <section className="relative min-h-screen bg-white overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-0">
-        <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full bg-brand/5 blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-slate-200/40 blur-3xl" />
-      </div>
+    <section className="apex-surface relative min-h-screen overflow-hidden bg-background">
+      <div className="mesh-bg pointer-events-none absolute inset-0 -z-0" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="relative mx-auto max-w-7xl px-6 pt-28 pb-20 lg:px-10">
+        <div className="grid items-start gap-16 lg:grid-cols-2 lg:gap-24">
           <div className="pt-4">
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 leading-[1.05]">
-              The #1 Amazon Wholesale Software{" "}
-              <span className="text-brand">All-In-One Suite</span>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+              {mode === "signup" ? "Apex Applications" : "Welcome back"}
+            </p>
+            <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+              The whole wholesale{" "}
+              <span className="mt-3 inline-block -rotate-[1.5deg] bg-primary px-4 py-1.5 text-primary-foreground">
+                business, in one place.
+              </span>
             </h1>
-            <p className="mt-6 text-lg text-slate-500 max-w-xl leading-relaxed">
-              Apex Black, Blue & Green connect sourcing, purchasing, and profit
-              tracking into one streamlined platform — so you can scale with
-              clarity and speed.
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Apex Black, Blue and Green connect sourcing, purchasing and profit tracking into one
+              workspace, so a supplier list becomes a purchase order without leaving the tab.
             </p>
 
             {mode === "signup" && !isFreeSignup && (
@@ -582,45 +585,47 @@ export default function Auth() {
               </div>
             )}
 
-            <ul className="mt-10 space-y-6 max-w-lg">
+            <ul className="mt-10 max-w-lg space-y-5">
               {benefits.map((b) => (
                 <li key={b.title} className="flex gap-4">
-                  <CheckCircle2
-                    className="w-6 h-6 text-brand flex-shrink-0 mt-0.5"
-                    strokeWidth={2.5}
-                  />
+                  <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                    <CheckCircle2 className="h-4 w-4 text-primary" strokeWidth={2.5} />
+                  </span>
                   <div>
-                    <div className="text-base font-bold text-slate-900">
-                      {b.title}
+                    <div className="text-base font-bold text-foreground">{b.title}</div>
+                    <div className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {b.desc}
                     </div>
-                    <div className="text-sm text-slate-500 mt-1">{b.desc}</div>
                   </div>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-12 max-w-lg bg-white border border-slate-200 rounded-2xl p-5 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)]">
-              <div className="flex items-center gap-3">
+            <figure
+              className="mt-12 max-w-lg rounded-2xl border border-border bg-card p-6"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            >
+              <div className="flex gap-0.5 text-accent">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-current" />
+                ))}
+              </div>
+              <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground">
+                "Apex replaced the scattered tools we were juggling and gave us one source of
+                truth. The time savings alone paid for the subscription within the first month."
+              </blockquote>
+              <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
                 <img
                   src={michaelRAsset.url}
-                  alt="Michael R."
-                  className="w-11 h-11 rounded-full object-cover border border-slate-200"
+                  alt=""
+                  className="h-10 w-10 rounded-full border border-border object-cover"
                 />
                 <div>
-                  <div className="text-sm font-bold text-slate-900">
-                    Michael R.
-                  </div>
-                  <div className="text-xs text-slate-500">
-                    New Seller • 3 Months In
-                  </div>
+                  <div className="text-sm font-bold text-foreground">Michael R.</div>
+                  <div className="text-xs text-muted-foreground">New seller, 3 months in</div>
                 </div>
-              </div>
-              <p className="mt-4 text-sm italic text-slate-600 leading-relaxed">
-                "Apex replaced the scattered tools we were juggling and gave us
-                one source of truth. The time savings alone paid for the
-                subscription within the first month."
-              </p>
-            </div>
+              </figcaption>
+            </figure>
           </div>
 
           <div className="lg:pt-4">
@@ -634,7 +639,7 @@ export default function Auth() {
                 ],
               }}
               transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
-              className="bg-white rounded-[28px] border border-slate-200 p-8 sm:p-10 max-w-md mx-auto lg:ml-auto lg:mr-0 w-full"
+              className="glow-edge w-full max-w-md mx-auto rounded-[28px] border bg-card p-8 sm:p-10 lg:ml-auto lg:mr-0"
             >
               {onFreePlan ? (
                 <div className="py-2">
@@ -757,8 +762,8 @@ export default function Auth() {
                         <>Free account — no card, no plan. Apex University and Review Booster included.</>
                       ) : (
                         <>
-                          Signing up for the {PLAN_TIER_LABELS[planTier]} plan —{" "}
-                          {period === "yearly" ? "Annual" : "Monthly"} billing
+                          Signing up for the {PLAN_TIER_LABELS[planTier]} plan,{" "}
+                          {period === "yearly" ? "annual" : "monthly"} billing
                         </>
                       )}
                     </div>
@@ -1002,7 +1007,8 @@ export default function Auth() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full bg-slate-900 text-white font-bold tracking-wide text-sm py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 disabled:opacity-60 inline-flex items-center justify-center gap-2"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 text-sm font-bold tracking-wide text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
+                      style={{ boxShadow: "0 6px 0 0 hsl(var(--primary) / 0.45)" }}
                     >
                       {loading ? (
                         <Loader2 className="w-4 h-4 animate-spin" />

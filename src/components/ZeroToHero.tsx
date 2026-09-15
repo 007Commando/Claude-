@@ -32,7 +32,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { readStoredAttribution } from "./LeadAttribution";
 import { TRIAL_DAYS, planById, trialTerms } from "../config/offer";
-import "./zero-to-hero.css";
+import "./apex-surface.css";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -323,7 +323,7 @@ export default function ZeroToHero() {
   const closingSheen = useSheen<HTMLAnchorElement>();
 
   return (
-    <div className="zth min-h-screen overflow-x-hidden bg-background">
+    <div className="apex-surface min-h-screen overflow-x-hidden bg-background">
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="mesh-bg absolute inset-0" />

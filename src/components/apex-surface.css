@@ -1,14 +1,15 @@
 /*
- * Page-scoped variables for /zero-to-hero.
+ * The shared surface for the marketing pages built in the Lovable design
+ * language: /zero-to-hero and /auth.
  *
  * The design is built on shadcn's hsl-triplet variables, and several of its
  * shadows and gradients reference them directly (`hsl(var(--primary) / .45)`).
  * They are declared on the page wrapper rather than :root on purpose: route
  * CSS stays loaded after a client-side navigation in the App Router, so a
  * :root block here would follow the visitor onto the pricing page and the
- * dashboard. Scoped to .zth they cannot.
+ * dashboard. Scoped to .apex-surface they cannot.
  */
-.zth {
+.apex-surface {
   --background: 0 0% 100%;
   --foreground: 220 15% 15%;
   --primary: 221 83% 53%;
@@ -29,7 +30,7 @@
   color: hsl(var(--foreground));
 }
 
-.zth .mesh-bg {
+.apex-surface .mesh-bg {
   background-image: var(--gradient-mesh);
 }
 
@@ -41,13 +42,13 @@
  * reach it reads as the page responding to you. The element is inert to the
  * pointer so it never eats a click.
  */
-.zth .cta-shine {
+.apex-surface .cta-shine {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
 
-.zth .cta-shine::after {
+.apex-surface .cta-shine::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -64,12 +65,12 @@
   );
 }
 
-.zth .cta-shine.is-lit::after {
+.apex-surface .cta-shine.is-lit::after {
   animation: zth-sheen 1.15s cubic-bezier(0.32, 0, 0.3, 1) 1 both;
 }
 
 /* The inverse button on the blue band: a blue glint reads on white. */
-.zth .cta-shine-invert::after {
+.apex-surface .cta-shine-invert::after {
   background: linear-gradient(
     100deg,
     transparent 0%,
@@ -90,7 +91,7 @@
  * The blue edge glow. Two layers: a tinted hairline that reads at any size,
  * and a soft bloom outside it that only registers against white.
  */
-.zth .glow-edge {
+.apex-surface .glow-edge {
   border-color: hsl(var(--primary) / 0.22);
   box-shadow:
     0 0 0 1px hsl(var(--primary) / 0.06),
@@ -98,7 +99,7 @@
     var(--shadow-card);
 }
 
-.zth .glow-edge-strong {
+.apex-surface .glow-edge-strong {
   border-color: hsl(var(--primary) / 0.3);
   box-shadow:
     0 0 0 1px hsl(var(--primary) / 0.08),
@@ -106,7 +107,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .zth .cta-shine::after {
+  .apex-surface .cta-shine::after {
     display: none;
   }
 }

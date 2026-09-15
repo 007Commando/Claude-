@@ -1,14 +1,27 @@
 import { Lock, RotateCcw, ShieldCheck } from "lucide-react";
 
-const PLAN_PRICES: Record<string, { monthly: string; yearly: string }> = {
-  starter: {
-    monthly: "$149.99/month",
-    yearly: "$149.99/month billed yearly (20% off)",
-  },
-  plus: { monthly: "your plan price", yearly: "your plan price" },
-  pro: { monthly: "$299/month", yearly: "$299/month billed yearly (20% off)" },
-  enterprise: { monthly: "your plan price", yearly: "your plan price" },
-};
+import {
+  ANNUAL_DISCOUNT_PERCENT,
+  TRIAL_DAYS,
+  formatPrice,
+  planById,
+  type Plan,
+} from "../config/offer";
+
+/**
+ * The plan's price, in words, for the sentence that says what happens on day 8.
+ *
+ * Read from offer.ts rather than kept here. This file used to hold its own copy
+ * of every plan price, which is the single thing that config exists to prevent:
+ * a number quoted on the page where the card is entered, drifting away from the
+ * number Stripe will charge.
+ */
+function priceSentence(planId: Plan["id"], period: string) {
+  const monthly = formatPrice(planById(planId).monthly);
+  return period === "yearly"
+    ? `${monthly} a month billed yearly, ${ANNUAL_DISCOUNT_PERCENT}% off`
+    : `${monthly} a month`;
+}
 
 function formatDate(date: Date) {
   return date.toLocaleDateString("en-US", {
@@ -22,11 +35,11 @@ function formatDate(date: Date) {
  * What actually happens over the next seven days, on the page where the
  * decision is made.
  *
- * A free trial that asks for a card raises exactly three questions — am I
- * charged now, when does it start, and can I get out — and a buyer who
- * can't answer them closes the tab. Stripe hosts the card form itself, so
- * this is the last surface we control before it; the same promises are
- * repeated there through Checkout's custom text.
+ * A free trial that asks for a card raises exactly three questions: am I
+ * charged now, when does it start, and can I get out. A buyer who cannot answer
+ * them closes the tab. Stripe hosts the card form itself, so this is the last
+ * surface we control before it, and the same promises are repeated there
+ * through Checkout's custom text.
  */
 export default function TrialTimeline({
   plan = "starter",
@@ -36,91 +49,95 @@ export default function TrialTimeline({
   period?: string;
 }) {
   const trialEnd = new Date();
-  trialEnd.setDate(trialEnd.getDate() + 7);
+  trialEnd.setDate(trialEnd.getDate() + TRIAL_DAYS);
 
-  const price =
-    PLAN_PRICES[plan]?.[period === "yearly" ? "yearly" : "monthly"] ||
-    PLAN_PRICES.starter.monthly;
+  const planId = (["starter", "plus", "pro", "enterprise"] as const).includes(
+    plan as Plan["id"],
+  )
+    ? (plan as Plan["id"])
+    : "starter";
 
   const steps = [
     {
-      title: "Today — full access, $0 charged",
-      body: "Your card is saved but not charged. Every tool opens the moment you finish: catalog scans, the product database, Review Booster.",
-      active: true,
+      label: "Today",
+      title: "Full access, $0 charged",
+      body: "Your card is saved but not charged. Every tool opens the moment you finish: catalogue scans, the product database, Review Booster.",
     },
     {
-      title: "Days 1–7 — put it to work",
+      label: `Days 1 to ${TRIAL_DAYS}`,
+      title: "Put it to work",
       body: "Connect your Amazon store and your own numbers fill the dashboard. This is the week to run a real supplier list through it.",
-      active: false,
     },
     {
-      title: `${formatDate(trialEnd)} — trial ends`,
-      body: `Your subscription starts at ${price}. Cancel any time before this date and you pay nothing.`,
-      active: false,
+      label: formatDate(trialEnd),
+      title: "Trial ends",
+      body: `Your subscription starts at ${priceSentence(planId, period)}. Cancel any time before this date and you pay nothing.`,
     },
   ];
 
+  const assurances = [
+    [RotateCcw, "Cancel anytime", "One click in your dashboard"],
+    [Lock, "Secured by Stripe", "We never see your card"],
+    [ShieldCheck, "No charge today", "$0.00 due now"],
+  ] as const;
+
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)]">
-      <h2 className="text-lg font-black tracking-tight text-slate-900">
-        How your 7-day free trial works
+    <div
+      className="glow-edge rounded-2xl border bg-card p-6 sm:p-7"
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
+      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
+        Your {TRIAL_DAYS} free days
+      </p>
+      <h2 className="mt-2 text-xl font-extrabold tracking-tight text-foreground">
+        Nothing is charged today.
       </h2>
 
-      <ol className="mt-5 space-y-0">
-        {steps.map((step, index) => (
-          <li key={step.title} className="flex gap-4">
-            <div className="flex flex-col items-center">
-              <span
-                className={`mt-1 block h-3 w-3 shrink-0 rounded-full ${
-                  step.active ? "bg-brand" : "bg-slate-300"
-                }`}
-              />
-              {index < steps.length - 1 && (
+      <ol className="mt-6">
+        {steps.map((step, index) => {
+          const last = index === steps.length - 1;
+          return (
+            <li key={step.title} className="flex gap-4">
+              <div className="flex flex-col items-center">
                 <span
-                  className={`w-0.5 flex-1 ${
-                    step.active ? "bg-brand" : "bg-slate-200"
+                  className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                    index === 0
+                      ? "bg-primary text-primary-foreground"
+                      : "border border-border bg-card text-muted-foreground"
                   }`}
-                />
-              )}
-            </div>
-            <div className={index < steps.length - 1 ? "pb-6" : ""}>
-              <p className="text-sm font-bold text-slate-900">{step.title}</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-500">
-                {step.body}
-              </p>
-            </div>
-          </li>
-        ))}
+                >
+                  {index + 1}
+                </span>
+                {!last && (
+                  <span
+                    className={`w-px flex-1 ${index === 0 ? "bg-primary/35" : "bg-border"}`}
+                  />
+                )}
+              </div>
+              <div className={last ? "" : "pb-6"}>
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {step.label}
+                </p>
+                <p className="mt-1 text-base font-bold text-foreground">{step.title}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                  {step.body}
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
 
-      <div className="mt-5 grid gap-3 border-t border-slate-200 pt-5 sm:grid-cols-3">
-        <div className="flex items-start gap-2">
-          <RotateCcw className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-          <p className="text-xs font-semibold text-slate-700">
-            Cancel anytime
-            <span className="block font-normal text-slate-500">
-              One click in your dashboard
-            </span>
-          </p>
-        </div>
-        <div className="flex items-start gap-2">
-          <Lock className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-          <p className="text-xs font-semibold text-slate-700">
-            Secured by Stripe
-            <span className="block font-normal text-slate-500">
-              We never see your card
-            </span>
-          </p>
-        </div>
-        <div className="flex items-start gap-2">
-          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-          <p className="text-xs font-semibold text-slate-700">
-            No charge today
-            <span className="block font-normal text-slate-500">
-              $0.00 due now
-            </span>
-          </p>
-        </div>
+      <div className="mt-6 grid gap-3 border-t border-border pt-5 sm:grid-cols-3">
+        {assurances.map(([Icon, title, detail]) => (
+          <div key={title} className="flex items-start gap-2">
+            <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <p className="text-xs font-bold text-foreground">
+              {title}
+              <span className="mt-0.5 block font-normal text-muted-foreground">{detail}</span>
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
