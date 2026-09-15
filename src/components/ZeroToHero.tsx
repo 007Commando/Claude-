@@ -14,16 +14,21 @@
  * The free course did not go away — it moved to /free-course, and is still the
  * only page pointing at the plan-less signup path in Auth.tsx.
  */
-import { motion } from "motion/react";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
 import {
   ArrowRight,
   BookOpen,
   CirclePlay,
   GraduationCap,
   ScanLine,
+  ShieldCheck,
   Star,
   Truck,
+  X,
+  Zap,
 } from "lucide-react";
+
+import { useEffect, useRef, useState } from "react";
 
 import { readStoredAttribution } from "./LeadAttribution";
 import { TRIAL_DAYS, planById, trialTerms } from "../config/offer";
@@ -45,6 +50,77 @@ const STARTER = planById("starter");
 const TERMS = trialTerms("starter");
 
 const priceLabel = `$${STARTER.monthly % 1 === 0 ? STARTER.monthly : STARTER.monthly.toFixed(2)}`;
+
+/**
+ * The people in the avatar row.
+ *
+ * Real photographs, supplied by Apex. The stock faces the mockup shipped with
+ * were dropped rather than captioned as customers.
+ */
+const customers = [1, 2, 3, 4, 5].map((n) => ({
+  src: `/images/zero-to-hero/avatars/customer-${n}.webp`,
+  alt: `Apex customer ${n}`,
+}));
+
+/**
+ * Lights the sheen once, the moment the element is properly on screen.
+ *
+ * Returns the class rather than animating directly so the animation stays in
+ * CSS, where `prefers-reduced-motion` can switch it off in one rule.
+ */
+function useSheen<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const inView = useInView(ref, { once: true, margin: "-25% 0px -25% 0px" });
+  const [lit, setLit] = useState(false);
+  useEffect(() => {
+    if (!inView) return;
+    const t = setTimeout(() => setLit(true), 120);
+    return () => clearTimeout(t);
+  }, [inView]);
+  return { ref, className: lit ? "cta-shine is-lit" : "cta-shine" };
+}
+
+/**
+ * The line that threads the four modules together, drawn as you scroll.
+ *
+ * Same idea as the How It Works page: the path's `pathLength` is tied to the
+ * section's progress through the viewport, so the route appears to be drawn
+ * ahead of the reader rather than animating on a timer of its own.
+ */
+function CurriculumTrail({ target }: { target: React.RefObject<HTMLDivElement | null> }) {
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target,
+    offset: ["start 78%", "end 62%"],
+  });
+  const length = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
+      <svg className="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none">
+        <path
+          d={TRAIL}
+          fill="none"
+          stroke="hsl(var(--border))"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
+        <motion.path
+          d={TRAIL}
+          fill="none"
+          stroke="hsl(var(--primary))"
+          strokeWidth="3"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          style={{ pathLength: reduced ? 1 : length }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+const TRAIL =
+  "M62 40 C62 170, 38 170, 38 280 C38 400, 62 400, 62 520 C62 640, 38 640, 38 760 C38 880, 62 880, 62 960";
 
 const highlights = [
   ["9 videos", "Four focused modules you can follow in order"],
@@ -148,11 +224,13 @@ function StartButton({
   className?: string;
   terms?: boolean;
 }) {
+  const sheen = useSheen<HTMLAnchorElement>();
   return (
     <a
+      ref={sheen.ref}
       href={START_HREF}
       onClick={trackStart}
-      className={`group inline-block rounded-md bg-primary px-10 py-4 text-center text-primary-foreground transition-transform hover:-translate-y-0.5 ${className}`}
+      className={`group inline-block rounded-md bg-primary px-10 py-4 text-center text-primary-foreground transition-transform hover:-translate-y-0.5 ${sheen.className} ${className}`}
       style={{ boxShadow: "0 6px 0 0 hsl(var(--primary) / 0.45)" }}
     >
       <span className="flex items-center justify-center gap-4 text-lg font-bold">
@@ -165,6 +243,10 @@ function StartButton({
 }
 
 export default function ZeroToHero() {
+  const curriculum = useRef<HTMLDivElement>(null);
+  const playbookSheen = useSheen<HTMLAnchorElement>();
+  const closingSheen = useSheen<HTMLAnchorElement>();
+
   return (
     <div className="zth min-h-screen overflow-x-hidden bg-background">
       {/* Hero */}
@@ -192,7 +274,20 @@ export default function ZeroToHero() {
             </div>
 
             <div className="mx-auto mt-6 flex max-w-md flex-col items-center gap-2.5 text-center">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2.5">
+                  {customers.map((c) => (
+                    <img
+                      key={c.src}
+                      src={c.src}
+                      alt={c.alt}
+                      width={36}
+                      height={36}
+                      loading="lazy"
+                      className="h-9 w-9 rounded-full border-2 border-background object-cover shadow-sm"
+                    />
+                  ))}
+                </div>
                 <div className="flex gap-0.5 text-accent">
                   {[0, 1, 2, 3, 4].map((i) => (
                     <Star key={i} className="h-3 w-3 fill-current" />
@@ -213,8 +308,7 @@ export default function ZeroToHero() {
                   key={title}
                   {...reveal}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="group relative overflow-hidden rounded-lg border border-primary/20 bg-card p-5 text-left"
-                  style={{ boxShadow: "var(--shadow-card)" }}
+                  className="glow-edge group relative overflow-hidden rounded-lg border bg-card p-5 text-left"
                 >
                   <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
                   <span className="text-xs font-black uppercase tracking-[0.2em] text-primary">
@@ -249,7 +343,8 @@ export default function ZeroToHero() {
             <p className="mt-4 text-muted-foreground">In the order you need them.</p>
           </div>
 
-          <div className="relative mx-auto mt-16 max-w-5xl">
+          <div className="relative mx-auto mt-16 max-w-5xl" ref={curriculum}>
+            <CurriculumTrail target={curriculum} />
             <div className="relative space-y-10 md:space-y-16">
               {modules.map((m, i) => {
                 const Icon = m.icon;
@@ -329,8 +424,7 @@ export default function ZeroToHero() {
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                 >
                   <div
-                    className="group h-full overflow-hidden rounded-lg border border-border bg-card text-card-foreground transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
-                    style={{ boxShadow: "var(--shadow-card)" }}
+                    className="glow-edge group h-full overflow-hidden rounded-lg border bg-card text-card-foreground transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
                   >
                     <div className="relative aspect-video overflow-hidden bg-muted">
                       <img
@@ -366,49 +460,6 @@ export default function ZeroToHero() {
         </div>
       </section>
 
-      {/* The playbook */}
-      <section className="py-20">
-        <div className="container mx-auto max-w-5xl px-4">
-          <motion.div {...reveal} className="text-center">
-            <div className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-              The Apex Keepa Playbook
-            </div>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
-              Everything you need to start, in one bundle.
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5 }}
-            className="mx-auto mt-10 w-full max-w-4xl"
-          >
-            <img
-              src="/images/zero-to-hero/keepa-playbook-bundle.webp"
-              alt="The Apex Keepa Playbook beside its data, supplier and wholesale roadmap worksheets"
-              className="mx-auto block w-full rounded-xl border border-border"
-              style={{ boxShadow: "var(--shadow-card)" }}
-            />
-          </motion.div>
-
-          <motion.div {...reveal} className="mx-auto mt-8 w-full max-w-4xl">
-            <a
-              href={START_HREF}
-              onClick={trackStart}
-              className="group block w-full rounded-xl bg-primary px-6 py-6 text-center text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110"
-              style={{ boxShadow: "0 10px 30px -8px hsl(var(--primary) / 0.55)" }}
-            >
-              <span className="block text-2xl font-extrabold uppercase tracking-tight md:text-3xl">
-                Start my {TRIAL_DAYS}-day trial
-              </span>
-            </a>
-            <p className="mt-3 text-center text-sm text-muted-foreground">{TERMS}</p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* After the course */}
       <section className="py-20">
         <div className="container mx-auto max-w-5xl px-4">
@@ -441,12 +492,55 @@ export default function ZeroToHero() {
         </div>
       </section>
 
+      {/* The playbook */}
+      <section className="py-20">
+        <div className="container mx-auto max-w-5xl px-4">
+          <motion.div {...reveal} className="text-center">
+            <div className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+              The Apex Keepa Playbook
+            </div>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight md:text-4xl">
+              Everything you need to start, in one bundle.
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto mt-10 w-full max-w-4xl"
+          >
+            <img
+              src="/images/zero-to-hero/keepa-playbook-bundle.webp"
+              alt="The Apex Keepa Playbook beside its data, supplier and wholesale roadmap worksheets"
+              className="mx-auto block w-full rounded-xl border border-border"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            />
+          </motion.div>
+
+          <motion.div {...reveal} className="mx-auto mt-8 w-full max-w-4xl">
+            <a
+              ref={playbookSheen.ref}
+              href={START_HREF}
+              onClick={trackStart}
+              className={`group block w-full rounded-xl bg-primary px-6 py-6 text-center text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 ${playbookSheen.className}`}
+              style={{ boxShadow: "0 10px 30px -8px hsl(var(--primary) / 0.55)" }}
+            >
+              <span className="block text-2xl font-extrabold uppercase tracking-tight md:text-3xl">
+                Start my {TRIAL_DAYS}-day trial
+              </span>
+            </a>
+            <p className="mt-3 text-center text-sm text-muted-foreground">{TERMS}</p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Free course escape hatch */}
       <section className="px-4 pb-20 pt-4 sm:px-6 lg:px-8">
         <motion.div
           {...reveal}
-          className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-card p-10 sm:p-14"
-          style={{ boxShadow: "0 30px 80px -30px hsl(var(--primary) / 0.15)" }}
+          className="glow-edge-strong relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border bg-card p-10 sm:p-14"
         >
           <div className="relative z-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
             <div className="max-w-xl">
@@ -488,16 +582,27 @@ export default function ZeroToHero() {
             month if you keep it.
           </p>
           <a
+            ref={closingSheen.ref}
             href={START_HREF}
             onClick={trackStart}
-            className="mt-9 inline-block rounded-2xl bg-background px-10 py-4 text-base font-bold text-primary shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-0.5"
+            className={`mt-9 inline-block rounded-2xl bg-background px-10 py-4 text-base font-bold text-primary shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-0.5 cta-shine-invert ${closingSheen.className}`}
           >
             Start my {TRIAL_DAYS}-day trial
           </a>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-primary-foreground/80">
-            <span>Instant access</span>
-            <span>Secure checkout</span>
-            <span>Cancel any time</span>
+            {[
+              [Zap, "Instant access"],
+              [ShieldCheck, "Secure checkout"],
+              [X, "Cancel any time"],
+            ].map(([Icon, label]) => {
+              const Badge = Icon as typeof Zap;
+              return (
+                <span key={label as string} className="inline-flex items-center gap-1.5">
+                  <Badge className="h-4 w-4 text-primary-foreground" strokeWidth={2.5} />
+                  {label as string}
+                </span>
+              );
+            })}
           </div>
         </motion.div>
       </section>
