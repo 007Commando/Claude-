@@ -11,9 +11,9 @@ import FreeCourse from "../../components/FreeCourse";
  * else for.
  */
 export const metadata: Metadata = {
-  title: "Free Amazon Wholesale Course — Zero to Hero | Apex University",
+  title: "Zero to Hero: Free Amazon Wholesale Course | Apex University",
   description:
-    "Nine free videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order. Free with an Apex account — no card.",
+    "Nine free videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order. Free with an Apex account, no card needed.",
   alternates: { canonical: "https://www.apexapplications.io/free-course" },
 };
 

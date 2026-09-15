@@ -151,7 +151,7 @@ const modules: [string, string, string, string][] = [
 const faqs: [string, string][] = [
   [
     "Is the course really free?",
-    "Yes. Create an account and Apex University opens — no card, no plan, nothing to cancel. The Review Booster and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.",
+    "Yes. Create an account and Apex University opens. No card, no plan, nothing to cancel. The Review Booster and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.",
   ],
   [
     "Do I need to be selling already?",
@@ -167,7 +167,7 @@ const faqs: [string, string][] = [
   ],
   [
     "What happens after I watch it?",
-    "You keep the account. If you want the software the course demonstrates — the scanner, purchase orders, analytics — that is a paid plan, and you can start one whenever it makes sense. Nothing expires if you don't.",
+    "You keep the account. If you want the software the course demonstrates, the scanner, purchase orders and analytics, that is a paid plan, and you can start one whenever it makes sense. Nothing expires if you don't.",
   ],
 ];
 
@@ -197,7 +197,7 @@ export default function FreeCourse() {
 
       <main>
         <section className="hero">
-          <p className="eyebrow">APEX UNIVERSITY — FREE COURSE</p>
+          <p className="eyebrow">APEX UNIVERSITY · FREE COURSE</p>
           <h1>
             From zero to{" "}
             <br />
@@ -210,7 +210,7 @@ export default function FreeCourse() {
           </p>
           <a className="hero-cta" href={ENROL_HREF}>
             Start the Free Course <span aria-hidden="true">→</span>
-            <small>Create a free account — no card required</small>
+            <small>Create a free account, no card required</small>
           </a>
           {/* No hero illustration yet. The only one available is the book
               whose cover reads "First Order Roadmap" — a different offer by
@@ -247,7 +247,7 @@ export default function FreeCourse() {
             </h2>
             <p>
               Wholesale is not complicated, but it is specific. There is an order to it, and most
-              people meet the steps out of order — hunting products before they can open an
+              people meet the steps out of order, hunting products before they can open an
               account, or planning an order before they know whether they are allowed to sell it.
             </p>
             <div className="questions">
@@ -480,7 +480,7 @@ export default function FreeCourse() {
             </h2>
             <p>
               The course teaches you to read a listing. The playbook is the worksheets you fill in
-              while you do it — the roadmap, the profit maths, the supplier script and the purchase
+              while you do it: the roadmap, the profit maths, the supplier script and the purchase
               order. It comes in the {BUNDLE_PRICE} Starter Bundle, alongside the software and the
               suppliers to use it on.
             </p>
@@ -574,7 +574,7 @@ export default function FreeCourse() {
               ))}
             </ul>
             <a className="playbook-cta" href={BUNDLE_HREF}>
-              Get the Starter Bundle — {BUNDLE_PRICE} <span aria-hidden="true">&rarr;</span>
+              Get the Starter Bundle for {BUNDLE_PRICE} <span aria-hidden="true">&rarr;</span>
             </a>
             <p className="form-helper">
               Instant access, one-time payment. The free course stays free either way.

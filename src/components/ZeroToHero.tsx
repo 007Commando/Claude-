@@ -151,35 +151,47 @@ function Countdown() {
 
   const total = Math.floor(remaining / 1000);
   const parts = [
-    [Math.floor(total / 86400), "days"],
-    [Math.floor(total / 3600) % 24, "hrs"],
-    [Math.floor(total / 60) % 60, "min"],
-    [total % 60, "sec"],
+    [Math.floor(total / 86400), "Days"],
+    [Math.floor(total / 3600) % 24, "Hours"],
+    [Math.floor(total / 60) % 60, "Mins"],
+    [total % 60, "Secs"],
   ] as const;
 
   return (
     <div className="mb-8 md:absolute md:right-10 md:top-10 md:mb-0 lg:right-14 lg:top-14">
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        Free course ends in
-      </p>
-      <div className="mt-2 flex items-start gap-1.5">
-        {parts.map(([value, label], i) => (
-          <div key={label} className="flex items-start gap-1.5">
-            <div className="flex w-11 flex-col items-center rounded-lg border border-primary/15 bg-primary/5 px-1 py-1.5">
-              <span className="text-lg font-extrabold leading-none tabular-nums text-primary">
+      <div className="inline-block rounded-xl border border-border bg-background/70 px-4 py-3 shadow-[0_1px_2px_hsl(220_15%_15%_/_0.05)] backdrop-blur-sm">
+        <div className="flex items-center gap-2">
+          {/* A live pulse, because the number beside it is moving. */}
+          <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50 motion-reduce:hidden" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Enrollment ends in
+          </p>
+        </div>
+
+        {/*
+          Hairline dividers instead of colons, and one shared baseline: four
+          separate tiles read as four numbers, one ruled strip reads as a clock.
+        */}
+        <div className="mt-3 flex items-stretch">
+          {parts.map(([value, label], i) => (
+            <div
+              key={label}
+              className={`flex w-[54px] flex-col items-center ${
+                i > 0 ? "border-l border-border" : ""
+              }`}
+            >
+              <span className="text-[22px] font-bold leading-none tracking-tight text-foreground tabular-nums">
                 {String(value).padStart(2, "0")}
               </span>
-              <span className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                 {label}
               </span>
             </div>
-            {i < parts.length - 1 && (
-              <span aria-hidden="true" className="pt-1 text-lg font-bold leading-none text-primary/25">
-                :
-              </span>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -239,7 +251,7 @@ const included = [
     icon: ScanLine,
     eyebrow: "The Software",
     title: "The whole Apex suite, free for your trial",
-    body: "Sourcing, analytics, purchase orders and logistics in one connected workspace — Apex Black, Blue and Green, open for the length of your trial.",
+    body: "Sourcing, analytics, purchase orders and logistics in one connected workspace. Apex Black, Blue and Green, open for the length of your trial.",
     img: "/images/zero-to-hero/software-suite.webp",
     alt: "The Apex dashboard showing analytics and the tools menu",
   },
@@ -613,14 +625,15 @@ export default function ZeroToHero() {
                 Apex University
               </span>
               <h2 className="mt-6 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-                Not ready for the software?
-                <span className="mt-1 block italic text-muted-foreground/50">
-                  Take the course free.
+                Ready to start selling to catch last quarter sales?
+                <span className="mt-2 block text-2xl italic text-muted-foreground/60 sm:text-3xl">
+                  Take the course and follow the roadmap!
                 </span>
               </h2>
               <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-                The same nine videos are free inside Apex University with a free account — no card,
-                no plan, nothing to cancel. The trial is for the software the course is taught in.
+                The same nine videos are free inside Apex University with a free account. No
+                card, no plan, nothing to cancel. The trial is for the software the course is
+                taught in.
               </p>
             </div>
             <a
