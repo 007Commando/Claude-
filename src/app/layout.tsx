@@ -58,6 +58,19 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Whether this render is the real site, rather than a laptop or a preview URL.
+ *
+ * The Meta dataset had 433 events from localhost and 90 from 127.0.0.1 over 28
+ * days, about 11% of everything it received, plus a stray vercel.app preview.
+ * Those are developers reloading pages: they inflate PageView, land in every
+ * "all website visitors" audience, and quietly bias what the algorithm thinks a
+ * visitor looks like. Vercel sets VERCEL_ENV to "production" only for the real
+ * deployment, so it is the one flag that is false on a laptop, false in a
+ * preview build, and true on www.apexapplications.io.
+ */
+const IS_PRODUCTION = process.env.VERCEL_ENV === "production";
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -142,21 +155,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           data-tracking-id="tk_38b71d0c9c964a29938c819ffce85afa"
           strategy="afterInteractive"
         />
-        <Script id="oaiq-pixel" strategy="afterInteractive">
-          {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:true});`}
-        </Script>
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2587560145358706');fbq('track','PageView');`}
-        </Script>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=2587560145358706&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+        {IS_PRODUCTION && (
+          <>
+            <Script id="oaiq-pixel" strategy="afterInteractive">
+              {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:true});`}
+            </Script>
+            <Script id="meta-pixel" strategy="afterInteractive">
+              {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2587560145358706');fbq('track','PageView');`}
+            </Script>
+            <noscript>
+              <img
+                height="1"
+                width="1"
+                style={{ display: "none" }}
+                src="https://www.facebook.com/tr?id=2587560145358706&ev=PageView&noscript=1"
+                alt=""
+              />
+            </noscript>
+          </>
+        )}
         <div className="min-h-screen bg-white">
           <Navigation />
           <HashScrollHandler />
