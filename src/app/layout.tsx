@@ -21,7 +21,7 @@ export const metadata: Metadata = {
    * that redirects.
    */
   metadataBase: new URL(SITE_URL),
-  title: "Apex Applications — Amazon Wholesale Software Suite",
+  title: "Apex Applications | Amazon Wholesale Software Suite",
   description:
     "Apex Applications is the all-in-one Amazon wholesale suite: sourcing, vendor management, P&L analytics, purchase orders, and review automation. Built for serious sellers.",
   keywords: [
@@ -43,17 +43,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Apex Applications",
-    title: "Apex Applications — Amazon Wholesale Software Suite",
+    title: "Apex Applications | Amazon Wholesale Software Suite",
     description:
-      "Sourcing, vendors, P&L, purchase orders, and review automation — all in one Amazon wholesale suite.",
+      "Sourcing, vendors, P&L, purchase orders, and review automation, all in one Amazon wholesale suite.",
     url: "https://www.apexapplications.io/",
     images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apex Applications — Amazon Wholesale Software Suite",
+    title: "Apex Applications | Amazon Wholesale Software Suite",
     description:
-      "Sourcing, vendors, P&L, purchase orders, and review automation — all in one Amazon wholesale suite.",
+      "Sourcing, vendors, P&L, purchase orders, and review automation, all in one Amazon wholesale suite.",
     images: [OG_IMAGE],
   },
 };

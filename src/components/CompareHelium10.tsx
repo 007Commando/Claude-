@@ -14,11 +14,11 @@ export default function CompareHelium10() {
             Apex Applications vs Helium 10
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            Helium 10 is the giant of <strong>private label</strong> — launching your own product
+            Helium 10 is the giant of <strong>private label</strong>. Launching your own product
             and winning search: keyword research, listing optimization, PPC. Apex is built for the
             other Amazon business: <strong>third-party resellers</strong> moving other brands at
             wholesale, where the game is purchase orders, Buy Box dynamics against other sellers,
-            break-even repricing and inventory turns. Most sellers do not need both — they need to
+            break-even repricing and inventory turns. Most sellers do not need both. They need to
             know which business they are in.
           </p>
         </motion.header>
@@ -45,7 +45,7 @@ export default function CompareHelium10() {
             { label: "Wholesale brand & seller research", apex: "122M+ product catalog, brand intel", rival: "Private-label product discovery" },
             { label: "Repricer with break-even floors from live fees", apex: true, rival: "Rule-based repricing, floors set manually" },
             { label: "Purchase orders & restock math", apex: true, rival: false },
-            { label: "Prep center & logistics coordination", apex: "Apex Red — beta", rival: false },
+            { label: "Prep center & logistics coordination", apex: "Apex Red (beta)", rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: "Profits dashboard" },
             { label: "Chrome extension", apex: false, rival: true },
           ]}
@@ -54,28 +54,28 @@ export default function CompareHelium10() {
         <PriceBars
           items={[
             { label: "Helium 10 Platinum", price: 129, caption: "Keywords, listings, launch tooling" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Wholesale research + POs + repricer + P&L", apex: true },
+            { label: "Apex Starter, whole suite", price: 149.99, caption: "Wholesale research + POs + repricer + P&L", apex: true },
             { label: "Helium 10 Diamond", price: 359, caption: "Higher limits, AI ad tools" },
           ]}
         />
 
-        <SuiteShot caption="Built around a wholesale reseller's week — not a launch calendar." />
+        <SuiteShot caption="Built around a wholesale reseller's week, not a launch calendar." />
 
         <HonestVerdict
           rivalName="Helium 10"
           chooseRival={[
-            "You are launching your own product and living in keywords, listings, and PPC — that is exactly what its 30+ tools are for.",
+            "You are launching your own product and living in keywords, listings, and PPC. That is exactly what its 30+ tools are for.",
             "You want the deepest search-ranking dataset on Amazon (Cerebro is the reference tool for a reason).",
             "TikTok Shop and ad automation matter to your brand playbook.",
           ]}
           chooseApex={[
-            "You resell other brands at wholesale — your questions are which brand, what break-even, which supplier, and when to reorder, none of which are keyword problems.",
+            "You resell other brands at wholesale. Your questions are which brand, what break-even, which supplier, and when to reorder, none of which are keyword problems.",
             "You compete for the Buy Box against other sellers on shared listings, and need repricing anchored to true fees, not manual floors.",
             "You want the purchase order, the repricer, and the P&L in one platform instead of a launch suite plus spreadsheets.",
           ]}
         />
 
-        <CompareCta line="If your business is other people's brands at wholesale, you're Helium 10's edge case — and our entire roadmap." />
+        <CompareCta line="If your business is other people's brands at wholesale, you're Helium 10's edge case, and our entire roadmap." />
 
         <FactsFootnote
           rivalName="Helium 10"

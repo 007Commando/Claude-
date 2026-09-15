@@ -79,9 +79,9 @@ export default function ApexBlue() {
                   <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
                     <TrendingUp size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">01 — Core Features</div>
+                  <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">01 · Core Features</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Blue — Core Features</h2>
+                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Blue: Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                   Experience integration across your suppliers, build purchase orders, keep stock on your inventory and analyze profit and loss all in one system.
                 </p>
@@ -127,7 +127,7 @@ export default function ApexBlue() {
                 <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
                   <BarChart size={18} className="text-white" strokeWidth={1.75} />
                 </div>
-                <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">02 — Analytics</div>
+                <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">02 · Analytics</div>
               </div>
               <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight">Elite <span className="italic text-slate-300">Analytics.</span></h2>
 
@@ -160,7 +160,7 @@ export default function ApexBlue() {
                     <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4">Profit & Loss</div>
                     <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Margin Clarity, Minutes Behind Amazon</h3>
                     <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                      Connect your Amazon account once and stop rebuilding the same spreadsheet. Apex pulls your sales and Amazon's fees automatically, and your own costs — landed cost, prep, shipping, advertising and overhead — go in as operating expenses, so the margin you read is the one you actually made.
+                      Connect your Amazon account once and stop rebuilding the same spreadsheet. Apex pulls your sales and Amazon's fees automatically, and your own costs (landed cost, prep, shipping, advertising and overhead) go in as operating expenses, so the margin you read is the one you actually made.
                     </p>
                     <div className="space-y-4 mb-8">
                       {[
@@ -260,7 +260,7 @@ export default function ApexBlue() {
             eyebrow="Database"
             icon={Database}
             title="Market Intelligence"
-            description="Apex's Database is the market intelligence behind your buying — what is profitable across every supplier you hold, with Buy Box pricing, fees, ROI and margins on thousands of ASINs, refreshed on a few-minute cycle rather than on request."
+            description="Apex's Database is the market intelligence behind your buying: what is profitable across every supplier you hold, with Buy Box pricing, fees, ROI and margins on thousands of ASINs, refreshed on a few-minute cycle rather than on request."
             bullets={[
               "Buy Box price and 30, 60 and 90-day sold averages, refreshed every few minutes",
               "Know what's profitable across every supplier at a glance",
@@ -281,9 +281,9 @@ export default function ApexBlue() {
             eyebrow="Purchase Orders"
             icon={FileText}
             title="Purchase Order Builder"
-            description="Apex's Purchase Order Builder turns sourcing into a true profit engine — build POs, run projections, and see exact revenue, expenses, and profit before you ever spend a dollar with a supplier."
+            description="Apex's Purchase Order Builder turns sourcing into a true profit engine: build POs, run projections, and see exact revenue, expenses, and profit before you ever spend a dollar with a supplier."
             bullets={[
-              "Live profit projections — total revenue, expenses & profit at a glance",
+              "Live profit projections: total revenue, expenses & profit at a glance",
               "Per-supplier breakdowns with Margin, ROI & GPPA built in",
               "Average sale price, units, COGs, Amazon fees & shipping all tracked",
               "Switch between Buy Box and other profit data settings instantly"
@@ -302,7 +302,7 @@ export default function ApexBlue() {
             eyebrow="Opex"
             icon={CreditCard}
             title="Operating Expenses"
-            description="Apex's Opex tracker gives you total clarity on what it actually costs to run your business — track every recurring subscription, software, and team expense in one place so your real profit is never a mystery."
+            description="Apex's Opex tracker gives you total clarity on what it actually costs to run your business. Track every recurring subscription, software, and team expense in one place so your real profit is never a mystery."
             bullets={[
               "Expense-by-category breakdown with a clear visual donut chart",
               "Recurring monthly expenses tracked by day, service & amount",

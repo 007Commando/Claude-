@@ -118,7 +118,7 @@ const totalValue = valueStack.reduce((sum, item) => sum + (item.value ?? 0), 0);
 const faqs = [
   {
     q: "How does the billing work?",
-    a: "You pay $297 today, which covers Apex Elite and your first 90 days of the full software suite. After those 90 days, your access simply continues at $149.99/month — the same standard Starter rate you would otherwise be paying from day one. Cancel anytime before or after; the suppliers, playbooks, Review Booster and community access are yours to keep either way.",
+    a: "You pay $297 today, which covers Apex Elite and your first 90 days of the full software suite. After those 90 days, your access simply continues at $149.99/month. The same standard Starter rate you would otherwise be paying from day one. Cancel anytime before or after; the suppliers, playbooks, Review Booster and community access are yours to keep either way.",
   },
   {
     q: "I already have an Apex account. Can I still get this?",
@@ -388,7 +388,7 @@ export default function ApexElite() {
             {/* Elite */}
             <div className="relative rounded-[28px] border-2 border-brand bg-white p-8 flex flex-col shadow-[0_24px_48px_-24px_rgba(249,115,22,0.35)]">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand text-white text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap">
-                {`Save $${ELITE_SAVINGS.toFixed(2)} — and keep more`}
+                {`Save $${ELITE_SAVINGS.toFixed(2)}, and keep more`}
               </span>
               <div className="text-xs font-black uppercase tracking-[0.15em] text-brand mb-3">
                 Apex Elite
@@ -427,7 +427,7 @@ export default function ApexElite() {
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  {`Continues at the same $${PRICE_LIMITED_M}/mo — everything above stays yours`}
+                  {`Continues at the same $${PRICE_LIMITED_M}/mo, everything above stays yours`}
                 </li>
               </ul>
               <BuyButton className="mt-6 w-full bg-brand text-white px-8 py-3.5 rounded-[18px] font-black hover:scale-[1.02] shadow-lg uppercase tracking-wide">
@@ -436,7 +436,7 @@ export default function ApexElite() {
             </div>
           </div>
           <p className="text-center text-xs text-slate-400 mt-6 max-w-xl mx-auto">
-            {`After your 90 days, your software simply continues at $${PRICE_LIMITED_M}/month — the same
+            {`After your 90 days, your software simply continues at $${PRICE_LIMITED_M}/month. The same
             Starter rate you would be paying anyway. Cancel anytime; the suppliers, playbooks, Review
             Booster and community stay yours even if you do.`}
           </p>
@@ -625,7 +625,7 @@ export default function ApexElite() {
               Get Everything for Just $297
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              {`$297 today gets you the complete system and your first 90 days — then it simply
+              {`$297 today gets you the complete system and your first 90 days. Then it simply
               continues at the Starter rate, $${PRICE_LIMITED_M}/month. No experience required, real
               support every step of the way.`}
             </p>

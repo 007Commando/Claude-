@@ -74,7 +74,7 @@ export default function ApexGold() {
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <Zap size={14} className="stroke-[3]" />
-              Repricing engine — beta
+              Repricing engine (beta)
             </div>
           </div>
           <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
@@ -82,7 +82,7 @@ export default function ApexGold() {
             <span className="text-amber-500 italic">REFLEXES.</span>
           </h1>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Gold works out what every listing should sell for — anchored to true break-evens
+            Apex Gold works out what every listing should sell for, anchored to true break-evens
             computed from your real Amazon fees, never a guess. Preview each move before it
             goes anywhere near your storefront.
           </p>
@@ -101,7 +101,7 @@ export default function ApexGold() {
             Set a floor on every listing before switching repricing on, keep an eye on your
             listings while you get started, and check your prices in Seller Central until you are
             confident in the results. Pricing is one of several factors in Amazon&apos;s offer
-            selection — no repricer can promise you the Buy Box, and this one does not.
+            selection. No repricer can promise you the Buy Box, and this one does not.
           </p>
         </motion.div>
 
@@ -120,7 +120,7 @@ export default function ApexGold() {
                   <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
                     <Zap size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">01 — The Repricer</div>
+                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">01 · The Repricer</div>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
                   A floor under every listing, before anything moves
@@ -128,7 +128,7 @@ export default function ApexGold() {
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                   Assign a strategy across the whole catalog or tune it per SKU. Gold reads the Buy Box,
                   the featured offer and every competing seller, then works the price your rules
-                  and your costs imply — and shows you the result before you act on it.
+                  and your costs imply, and shows you the result before you act on it.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[
@@ -189,21 +189,21 @@ export default function ApexGold() {
                   <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
                     <Gauge size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">02 — Break-Even Floors</div>
+                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">02 · Break-Even Floors</div>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
                   Floors built from your real fees
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                   Most repricers ask you to type a minimum price and hope you did the math. Gold
-                  computes the true break-even for every listing — referral fee, fulfillment fee,
-                  your cost — then sets the floor from the goal you actually run your business on:
+                  computes the true break-even for every listing: referral fee, fulfillment fee,
+                  your cost, then sets the floor from the goal you actually run your business on:
                   a minimum ROI, a minimum margin, or a minimum dollar profit. In bulk.
                 </p>
                 <div className="space-y-4">
                   {[
                     "True break-even per SKU from live Amazon fee data",
-                    "Floors by goal: ROI %, margin %, or $ profit — bulk applied",
+                    "Floors by goal: ROI %, margin %, or $ profit; bulk applied",
                     "Refuses to guess: no floor without real fee data behind it",
                   ].map((item, i) => (
                     <div key={i} className="flex gap-3 items-start">
@@ -224,20 +224,20 @@ export default function ApexGold() {
                   <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
                     <Sliders size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">03 — Strategies & Safety</div>
+                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">03 · Strategies & Safety</div>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
                   Aggressive where you win, disciplined where you don&apos;t
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                   Build strategies once, assign them in bulk, and let every listing play its own
-                  game — chase the Buy Box on your winners, hold margin on the long tail, and never
+                  game. Chase the Buy Box on your winners, hold margin on the long tail, and never
                   cross a floor anywhere.
                 </p>
                 <div className="space-y-4">
                   {[
                     "Custom strategy builder with per-listing assignment",
-                    "Floors enforced on every move — no strategy can undercut them",
+                    "Floors enforced on every move; no strategy can undercut them",
                     "Full activity log: every reprice, when, and why",
                   ].map((item, i) => (
                     <div key={i} className="flex gap-3 items-start">
@@ -255,8 +255,8 @@ export default function ApexGold() {
                     <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Live activity</span>
                   </div>
                   {[
-                    { t: "2m ago", line: "Raised B006IF to $26.15 — competitor left the Buy Box" },
-                    { t: "9m ago", line: "Held B018D3 at floor $19.75 — undercut would break 10% ROI" },
+                    { t: "2m ago", line: "Raised B006IF to $26.15; competitor left the Buy Box" },
+                    { t: "9m ago", line: "Held B018D3 at floor $19.75; undercut would break 10% ROI" },
                     { t: "14m ago", line: "Matched B0CRSN featured offer at $21.40" },
                     { t: "31m ago", line: "Dry-run: 214 moves previewed, 0 floors crossed" },
                   ].map((row) => (
@@ -278,13 +278,13 @@ export default function ApexGold() {
                   <ShieldCheck size={18} className="text-white" strokeWidth={1.75} />
                 </div>
               </div>
-              <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em] mb-4">04 — Part of the Suite</div>
+              <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em] mb-4">04 · Part of the Suite</div>
               <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
                 A repricer that knows your whole business
               </h2>
               <p className="text-lg text-slate-600 mb-10 leading-relaxed">
                 Standalone repricers see a price. Gold sees the purchase order the unit came in on,
-                the P&amp;L it lands in, and the restock decision it feeds — because it shares one
+                the P&amp;L it lands in, and the restock decision it feeds, because it shares one
                 platform with Apex Blue, Green, and Red. Included in every Apex plan, not sold as a
                 separate subscription.
               </p>

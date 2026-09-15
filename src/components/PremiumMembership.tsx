@@ -31,7 +31,7 @@ const coreIncludes = [
     image: {
       src: opexDashboardImage.url,
       alt: "Apex Opex dashboard showing operating expenses and recurring monthly costs",
-      caption: "Apex Opex — financial tracking",
+      caption: "Apex Opex, financial tracking",
     },
   },
   {

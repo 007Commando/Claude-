@@ -65,11 +65,11 @@ export default function ApexBlack() {
                   <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center shrink-0">
                     <Activity size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">01 — Core Features</div>
+                  <div className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">01 · Core Features</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Black — Core Features</h2>
+                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Black: Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  The command center for your entire wholesale operation. Monitor performance, level up your skills, and access the tools you need to scale — all in one place.
+                  The command center for your entire wholesale operation. Monitor performance, level up your skills, and access the tools you need to scale, all in one place.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[
@@ -106,7 +106,7 @@ export default function ApexBlack() {
             eyebrow="Dashboard"
             icon={LayoutGrid}
             title="Omnispective Command"
-            description="Stop toggling between tabs. Our dashboard aggregates your entire business state into a single, beautiful interface — total inventory value, pending shipments, and daily sales velocity at a glance."
+            description="Stop toggling between tabs. Our dashboard aggregates your entire business state into a single, beautiful interface: total inventory value, pending shipments, and daily sales velocity at a glance."
             bullets={[
               "Global business health metrics in one view",
               "Inventory aging alerts before storage fees hit",
@@ -115,7 +115,7 @@ export default function ApexBlack() {
             ]}
             accentText="text-slate-900"
             accentBg="bg-slate-900"
-            image={{ url: dashboardImage.url, alt: "Apex Applications Dashboard — Omnispective Command overview" }}
+            image={{ url: dashboardImage.url, alt: "Apex Applications Dashboard, Omnispective Command overview" }}
             imageSide="right"
             cta={<ViewAppButton data-feature-cta className="bg-slate-900 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all">View Dashboard <ExternalLink size={18} /></ViewAppButton>}
           />
@@ -127,7 +127,7 @@ export default function ApexBlack() {
             eyebrow="Review Booster"
             icon={Star}
             title="Engagement Engine"
-            description="Your seller feedback score is your most valuable asset. Apex Black sends Amazon's own review request on every eligible order, on a schedule, and keeps a log of what was sent — it never selects buyers by sentiment, and it cannot suppress negative feedback."
+            description="Your seller feedback score is your most valuable asset. Apex Black sends Amazon's own review request on every eligible order, on a schedule, and keeps a log of what was sent. It never selects buyers by sentiment, and it cannot suppress negative feedback."
             bullets={[
               "Intelligent post-delivery review sequencing",
               "Custom messaging tailored to your brand voice",
@@ -136,7 +136,7 @@ export default function ApexBlack() {
             ]}
             accentText="text-slate-900"
             accentBg="bg-slate-900"
-            image={{ url: reviewBoosterImage.url, alt: "Review Booster — Amazon Review Automation" }}
+            image={{ url: reviewBoosterImage.url, alt: "Review Booster, Amazon Review Automation" }}
             imageSide="left"
             cta={<ViewAppButton data-feature-cta className="bg-slate-900 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all">View Review Booster <ExternalLink size={18} /></ViewAppButton>}
           />
@@ -155,7 +155,7 @@ export default function ApexBlack() {
                 <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center shrink-0">
                   <School size={18} className="text-white" strokeWidth={1.75} />
                 </div>
-                <div className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">04 — Apex University</div>
+                <div className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">04 · Apex University</div>
               </div>
               <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Wholesale Blueprint</h2>
               <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">
@@ -164,7 +164,7 @@ export default function ApexBlack() {
             </div>
 
             <div data-feature-image className="rounded-[32px] overflow-hidden border border-slate-200 shadow-sm bg-white">
-              <img src={apexUniversityImage.url} alt="Apex University — Wholesale Blueprint curriculum" className="w-full h-auto block rounded-[32px]" />
+              <img src={apexUniversityImage.url} alt="Apex University, Wholesale Blueprint curriculum" className="w-full h-auto block rounded-[32px]" />
             </div>
 
             <div className="mt-8 flex justify-center">
@@ -181,7 +181,7 @@ export default function ApexBlack() {
             eyebrow="Resource Library"
             icon={BookOpen}
             title="Vendor Ecosystem"
-            description="Don't waste months on unvetted partners. Our Resource Library is the “Yellow Pages” for high-volume Amazon sellers — featuring only the vendors we actually use and trust."
+            description="Don't waste months on unvetted partners. Our Resource Library is the “Yellow Pages” for high-volume Amazon sellers, featuring only the vendors we actually use and trust."
             bullets={[
               "Vetted 3PL & prep center directory",
               "IP-specialist legal representation",
@@ -190,7 +190,7 @@ export default function ApexBlack() {
             ]}
             accentText="text-slate-900"
             accentBg="bg-slate-900"
-            image={{ url: resourceLibraryImage.url, alt: "Resource Library — Books & Resources" }}
+            image={{ url: resourceLibraryImage.url, alt: "Resource Library, Books & Resources" }}
             imageSide="right"
             cta={<ViewAppButton data-feature-cta className="bg-slate-900 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all">View Resource Library <ExternalLink size={18} /></ViewAppButton>}
           />

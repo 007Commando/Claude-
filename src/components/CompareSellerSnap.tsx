@@ -16,7 +16,7 @@ export default function CompareSellerSnap() {
           <p className="text-lg text-slate-500 leading-relaxed">
             Seller Snap is a dedicated AI repricer with a genuinely respected game-theory engine.{" "}
             <Link href="/features/gold" className="text-blue-600 underline hover:text-blue-700">Apex Gold</Link>{" "}
-            is a repricer that lives inside a full wholesale suite — floors computed from your real
+            is a repricer that lives inside a full wholesale suite. Floors computed from your real
             fees, connected to the P&amp;L and purchase orders the prices feed. The honest question
             is whether you want the deepest standalone repricer, or repricing as part of one
             operating platform.
@@ -38,8 +38,8 @@ export default function CompareSellerSnap() {
           rivalName="Seller Snap"
           rows={[
             { label: "What it is", apex: "Full suite incl. repricer (Apex Gold)", rival: "Dedicated AI repricer" },
-            { label: "Entry price", apex: "$149.99/mo — whole suite", rival: "$100/mo (1,000 SKUs, $15k/mo revenue cap, annual commitment); Standard $500/mo" },
-            { label: "Free trial", apex: "7 days, card required", rival: "Demo or trial by arrangement — ask them directly" },
+            { label: "Entry price", apex: "$149.99/mo, whole suite", rival: "$100/mo (1,000 SKUs, $15k/mo revenue cap, annual commitment); Standard $500/mo" },
+            { label: "Free trial", apex: "7 days, card required", rival: "Demo or trial by arrangement, ask them directly" },
             { label: "Game-theory AI repricing", apex: false, rival: true },
             { label: "Break-even floors from live FBA fees", apex: true, rival: "Not verified" },
             { label: "Automatic price calculation", apex: true, rival: true },
@@ -49,20 +49,20 @@ export default function CompareSellerSnap() {
             { label: "Purchase orders & restock", apex: true, rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: false },
             { label: "Product & brand research", apex: true, rival: false },
-            { label: "Plan limits", apex: "Starter and Pro differ — see pricing", rival: "Tiered by trailing revenue" },
+            { label: "Plan limits", apex: "Starter and Pro differ, see pricing", rival: "Tiered by trailing revenue" },
           ]}
         />
 
         <PriceBars
           items={[
             { label: "Seller Snap Starter", price: 100, caption: "1,000 SKUs, $15k/mo revenue cap, annual commitment" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Repricer with break-even floors, plus the rest of the suite", apex: true },
+            { label: "Apex Starter, whole suite", price: 149.99, caption: "Repricer with break-even floors, plus the rest of the suite", apex: true },
             { label: "Seller Snap Accelerator", price: 250, caption: "Repricing only, higher caps" },
             { label: "Seller Snap Standard", price: 500, caption: "Repricing only" },
           ]}
         />
 
-        <SuiteShot caption="The repricer is one tab of this — the POs it protects and the P&L it feeds are the tabs next to it." />
+        <SuiteShot caption="The repricer is one tab of this. The POs it protects and the P&L it feeds are the tabs next to it." />
 
         <HonestVerdict
           rivalName="Seller Snap"
@@ -72,9 +72,9 @@ export default function CompareSellerSnap() {
             "You need B2B quantity-discount repricing today.",
           ]}
           chooseApex={[
-            "You want repricing anchored to true break-evens computed from your real fees — not min/max fields you have to calculate yourself.",
+            "You want repricing anchored to true break-evens computed from your real fees. Not min/max fields you have to calculate yourself.",
             "The repricer should share a platform with your POs, restock math, and P&L, so a price floor and a reorder decision use the same numbers.",
-            "You'd rather pay $149.99 for a whole suite than a comparable amount for repricing alone — check both plans' limits against your own volume before choosing.",
+            "You'd rather pay $149.99 for a whole suite than a comparable amount for repricing alone. Check both plans' limits against your own volume before choosing.",
           ]}
         />
 

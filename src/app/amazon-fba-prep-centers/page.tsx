@@ -5,7 +5,7 @@ import { absoluteUrl } from "../../config/site";
 export const metadata: Metadata = {
   title: "How to Choose an FBA Prep Center | Apex Applications",
   description:
-    "Compare service scope, location, intake rules and the full cost structure before choosing an FBA prep center. A per-unit rate is not a quote — here is what else to price.",
+    "Compare service scope, location, intake rules and the full cost structure before choosing an FBA prep center. A per-unit rate is not a quote, here is what else to price.",
   alternates: { canonical: absoluteUrl("/amazon-fba-prep-centers") },
 };
 
@@ -44,7 +44,7 @@ export default function Page() {
         {
           heading: "Prepare for the handoff",
           body:
-            "Most first-shipment problems are paperwork, not capability. Agree what a clean delivery looks like before the supplier ships anything, and make sure your purchase order and their intake expect the same thing — the discrepancy you find at receiving is much cheaper than the one you find at Amazon.",
+            "Most first-shipment problems are paperwork, not capability. Agree what a clean delivery looks like before the supplier ships anything, and make sure your purchase order and their intake expect the same thing. The discrepancy you find at receiving is much cheaper than the one you find at Amazon.",
           points: [
             "Send the purchase order ahead so they can reconcile what arrives against it",
             "Agree how case quantities, bundles and multipacks are counted",
@@ -72,7 +72,7 @@ export default function Page() {
         {
           question: "How do prep costs reach my profit numbers?",
           answer:
-            "You set your prep cost per unit in Apex, and it becomes part of the landed cost behind every profit, ROI and margin figure — including the floor the repricer will not sell below.",
+            "You set your prep cost per unit in Apex, and it becomes part of the landed cost behind every profit, ROI and margin figure. Including the floor the repricer will not sell below.",
         },
       ]}
       ctaHeading="Keep prep costs in the numbers that decide the buy"
@@ -80,7 +80,7 @@ export default function Page() {
       ctaLabel="Compare prep requirements"
       related={[
         { label: "Inventory and restock planning", href: "/amazon-inventory-management-software" },
-        { label: "Apex Red — shipments (beta)", href: "/features/red" },
+        { label: "Apex Red, shipments (beta)", href: "/features/red" },
         { label: "Prep center network", href: "/prep-center-network" },
         { label: "Profit and ROI calculator", href: "/tools/amazon-profit-calculator" },
       ]}

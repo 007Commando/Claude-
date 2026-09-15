@@ -102,7 +102,7 @@ export default function Checkout() {
                   <p className="max-w-sm text-sm text-slate-500">
                     Checkout sessions are single use and don&apos;t survive a
                     refresh. Pick your plan again and we&apos;ll take you
-                    straight back here — your account is already created, so
+                    straight back here. Your account is already created, so
                     you can also just log in.
                   </p>
                   <div className="mt-2 flex flex-wrap justify-center gap-3">

@@ -71,7 +71,7 @@ export default function PrivacyPolicy() {
 
           <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">Customer Data.</h3>
           <p>
-            To provide our Services—and only with your permission when you link any of your Third Party Platforms to your account—we may collect and process data regarding your customers and their use of your services (“Customer Data”). How we handle Customer Data is described in the “Customer Data” section of our Terms & Conditions. You represent and warrant that any Customer Data you provide was collected in accordance with your own privacy policy and all applicable laws, and that you have the right to share such data with us for the purposes outlined in our Terms & Conditions.
+            To provide our Services and only with your permission when you link any of your Third Party Platforms to your account we may collect and process data regarding your customers and their use of your services (“Customer Data”). How we handle Customer Data is described in the “Customer Data” section of our Terms & Conditions. You represent and warrant that any Customer Data you provide was collected in accordance with your own privacy policy and all applicable laws, and that you have the right to share such data with us for the purposes outlined in our Terms & Conditions.
           </p>
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">HOW AND WHEN WE COLLECT INFORMATION</h2>
@@ -123,7 +123,7 @@ export default function PrivacyPolicy() {
 
           <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">Successors.</h3>
           <p>
-            If we sell or transfer all or part of our business or assets—such as in an acquisition, merger, bankruptcy, or liquidation—we may transfer your Personal Information and Usage Data to the acquiring organization.
+            If we sell or transfer all or part of our business or assets such as in an acquisition, merger, bankruptcy, or liquidation we may transfer your Personal Information and Usage Data to the acquiring organization.
           </p>
 
           <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">Legal Process, Enforcement, and Security.</h3>
@@ -165,7 +165,7 @@ export default function PrivacyPolicy() {
           </p>
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">CHANGING AND DELETING PERSONAL INFORMATION</h2>
-          <p>Depending on applicable law—including the GDPR and CCPA—you may have the right to:</p>
+          <p>Depending on applicable law including the GDPR and CCPA you may have the right to:</p>
           <ul className="list-disc pl-6 space-y-1">
             <li>Obtain confirmation that we hold your Personal Information,</li>
             <li>Request access to and receive details about the Personal Information we maintain,</li>
@@ -189,7 +189,7 @@ export default function PrivacyPolicy() {
 
           <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">International Data Transfers</h3>
           <p>
-            If you reside outside of the United States—including in the EEA—please be aware that any Personal Information you provide may be transferred to and processed in the United States or other countries where Apex Applications or our affiliates operate. By using our Services, you consent to this transfer.
+            If you reside outside of the United States including in the EEA please be aware that any Personal Information you provide may be transferred to and processed in the United States or other countries where Apex Applications or our affiliates operate. By using our Services, you consent to this transfer.
           </p>
 
           <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">California Consumers</h3>

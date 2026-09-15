@@ -119,7 +119,7 @@ export function FactsFootnote({ rivalName, sources }: { rivalName: string; sourc
           {i > 0 && ", "}
           <a href={source.href} target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-600">{source.label}</a>
         </span>
-      ))}). Their features and prices change on their schedule, not ours — check their site for
+      ))}). Their features and prices change on their schedule, not ours, check their site for
       current terms. {rivalName} is a trademark of its owner; no affiliation.
     </p>
   );
@@ -138,7 +138,7 @@ const STAGES = ["Research", "Buy & PO", "Price", "Fulfill", "Books"];
 function CoverageCell({ cell, tone }: { cell: Coverage; tone: "apex" | "rival" }) {
   const base = "h-14 rounded-lg border flex items-center justify-center px-2 text-center";
   if (cell.state === "none") {
-    return <div className={`${base} border-dashed border-slate-200 bg-slate-50/40`}><span className="text-[10px] font-bold text-slate-300">—</span></div>;
+    return <div className={`${base} border-dashed border-slate-200 bg-slate-50/40`}><span className="text-[10px] font-bold text-slate-300"> </span></div>;
   }
   const full = cell.state === "full";
   const palette = tone === "apex"
@@ -174,7 +174,7 @@ export function WorkflowCoverage({ rivalName, rival }: { rivalName: string; riva
     { state: "full", note: "POs + restock" },
     { state: "full", note: "break-even floors" },
     isBeta("red")
-      ? { state: "partial", note: "Red — beta" }
+      ? { state: "partial", note: "Red (beta)" }
       : { state: "full", note: "prep network" },
     { state: "full", note: "P&L + cashflow" },
   ];

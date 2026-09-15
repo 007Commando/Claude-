@@ -20,7 +20,7 @@ import inventoryRestocking from "../../assets/inventory-restocking.png.asset.jso
 import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
 
 export const metadata: Metadata = {
-  title: "Apex Virtual Assistants — Trained Amazon Staff",
+  title: "Apex Virtual Assistants, Trained Amazon Staff",
   description:
     "Professional Amazon-trained assistants, part time or full time, who install SOPs into your business. First 7 days free.",
   robots: { index: false, follow: false },
@@ -46,11 +46,11 @@ export default function VirtualAssistantsPage() {
     <>
       <OfferHero
         eyebrow={
-          <Eyebrow icon={<Users size={14} />}>New — Apex Virtual Assistants</Eyebrow>
+          <Eyebrow icon={<Users size={14} />}>New. Apex Virtual Assistants</Eyebrow>
         }
         titleTop="Stop Gambling On Freelancers."
         titleAccent="Hire Amazon Professionals."
-        lede="Upwork and Fiverr sell you hours. We place trained Amazon wholesale staff who install the SOPs your business runs on — so the process survives whoever is doing it."
+        lede="Upwork and Fiverr sell you hours. We place trained Amazon wholesale staff who install the SOPs your business runs on, so the process survives whoever is doing it."
         actions={
           <>
             <Link href={CONTACT} className={ctaPrimary}>
@@ -61,7 +61,7 @@ export default function VirtualAssistantsPage() {
             </Link>
           </>
         }
-        note="First 7 days free · Part time or full time · $5.00 – $6.50 an hour, fixed"
+        note="First 7 days free · Part time or full time · $5.00 to $6.50 an hour, fixed"
         art={<ProductFrame src={purchaseOrders.url} alt="Work an Apex assistant takes off your desk" />}
       />
 
@@ -74,9 +74,9 @@ export default function VirtualAssistantsPage() {
           </Eyebrow>
         }
         title="A freelancer does tasks. A trained assistant builds a process."
-        body="The problem with hourly marketplaces is not the price — it is that nothing accumulates. Every hire starts from zero, and when they leave the knowledge leaves with them. Ours arrive knowing Amazon wholesale and write down how your business runs as they work."
+        body="The problem with hourly marketplaces is not the price; it is that nothing accumulates. Every hire starts from zero, and when they leave the knowledge leaves with them. Ours arrive knowing Amazon wholesale and write down how your business runs as they work."
         items={[
-          ["Trained before day one", "Sourcing, ungating, purchase orders and prep — not general admin."],
+          ["Trained before day one", "Sourcing, ungating, purchase orders and prep, not general admin."],
           ["SOPs installed as they go", "Your process gets documented, so it outlasts any one person."],
           ["Works inside your Apex account", "Same catalogue, same numbers, with the permissions you set."],
         ]}
@@ -131,7 +131,7 @@ export default function VirtualAssistantsPage() {
           </div>
 
           <p className="text-center text-sm text-slate-500 mt-10 max-w-xl mx-auto">
-            Both are billed at the same fixed $5.00 – $6.50 an hour. No platform
+            Both are billed at the same fixed $5.00 to $6.50 an hour. No platform
             fee, no agency retainer, no charge for the first seven days.
           </p>
         </Rail>

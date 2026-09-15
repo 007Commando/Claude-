@@ -99,7 +99,7 @@ function VaCard({ va }: { va: VaProfile }) {
   };
 
   const questionsHref = useMemo(() => {
-    const subject = `Apex VA question — ${va.name}`;
+    const subject = `Apex VA question, ${va.name}`;
     return `mailto:support@apexapplications.io?subject=${encodeURIComponent(subject)}`;
   }, [va.name]);
 
@@ -139,7 +139,7 @@ function VaCard({ va }: { va: VaProfile }) {
 
         <div className="mt-8 flex items-center gap-2 text-sm text-slate-500">
           <Clock3 className="w-4 h-4 text-slate-400 shrink-0" />
-          Works {hourLabel(va.windowStart)} – {hourLabel(va.windowEnd)}, Monday to Friday
+          Works {hourLabel(va.windowStart)} to {hourLabel(va.windowEnd)}, Monday to Friday
         </div>
       </div>
 
@@ -243,7 +243,7 @@ function VaCard({ va }: { va: VaProfile }) {
           disabled={checkingOut}
           className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-wait transition-colors text-white font-bold px-6 py-4"
         >
-          {checkingOut ? "Opening secure checkout…" : <>Hire {va.name} — checkout <ArrowRight className="w-4 h-4" /></>}
+          {checkingOut ? "Opening secure checkout…" : <>Hire {va.name} · checkout <ArrowRight className="w-4 h-4" /></>}
         </button>
         {checkoutError && (
           <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3 mt-3">
@@ -251,7 +251,7 @@ function VaCard({ va }: { va: VaProfile }) {
           </p>
         )}
         <p className="text-xs text-slate-400 text-center mt-3">
-          Secure payment by Stripe. {va.name} starts within one business day of your first invoice —{" "}
+          Secure payment by Stripe. {va.name} starts within one business day of your first invoice,{" "}
           <a href={questionsHref} className="underline hover:text-slate-600">questions first?</a>
         </p>
       </div>
@@ -281,8 +281,8 @@ export default function ApexVas() {
             }`}
           >
             {checkoutResult === "success"
-              ? "You're in — payment received. We'll email you within one business day to kick off your VA's first week."
-              : "Checkout was cancelled — your schedule is still configured below whenever you're ready."}
+              ? "You're in, payment received. We'll email you within one business day to kick off your VA's first week."
+              : "Checkout was cancelled. Your schedule is still configured below whenever you're ready."}
           </p>
         </div>
       )}
@@ -295,8 +295,8 @@ export default function ApexVas() {
           A trained Amazon VA, working inside your Apex account
         </motion.h1>
         <motion.p {...fadeIn} className="text-lg text-slate-500 max-w-2xl mx-auto">
-          Our VAs are trained on the full Apex suite — repricing, catalog management, product research and
-          account health — so they're productive on day one, in the same software you already run.
+          Our VAs are trained on the full Apex suite: repricing, catalog management, product research and
+          account health, so they're productive on day one, in the same software you already run.
         </motion.p>
       </section>
 
@@ -334,7 +334,7 @@ export default function ApexVas() {
               </p>
               {tier.savings && (
                 <p className="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-bold text-emerald-700">
-                  {money(PART_TIME_RATE - FULL_TIME_RATE)}/hour less than part-time — going full-time keeps{" "}
+                  {money(PART_TIME_RATE - FULL_TIME_RATE)}/hour less than part-time. Going full-time keeps{" "}
                   {money(tier.savings)} in your pocket every month
                 </p>
               )}
@@ -345,7 +345,7 @@ export default function ApexVas() {
           <ShieldCheck className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
           <p>
             Two scheduling rules keep it simple: at least {MIN_WEEKLY_HOURS}{" "}hours a week, and each day&apos;s
-            hours are one consecutive block — no split shifts.
+            hours are one consecutive block, no split shifts.
           </p>
         </div>
       </section>
@@ -356,7 +356,7 @@ export default function ApexVas() {
           Available now
         </motion.h2>
         <motion.p {...fadeIn} className="text-slate-500 mb-8">
-          Every VA lists real, tested skill scores — pick the profile that matches the work you need done.
+          Every VA lists real, tested skill scores. Pick the profile that matches the work you need done.
         </motion.p>
         <div className="space-y-8">
           {VAS.map((va) => (

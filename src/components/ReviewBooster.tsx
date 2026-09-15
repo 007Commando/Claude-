@@ -52,7 +52,7 @@ export default function ReviewBooster() {
               Boost Your Amazon Sales with Automated Review Requests
             </h1>
             <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-              Winning the Buy Box is critical for increasing sales on Amazon—and a strong feedback score is one of the key factors that help you secure it. Our Free Review Automation Tool helps you effortlessly collect more positive reviews, building trust and boosting your chances of standing out.
+              Winning the Buy Box is critical for increasing sales on Amazon and a strong feedback score is one of the key factors that help you secure it. Our Free Review Automation Tool helps you effortlessly collect more positive reviews, building trust and boosting your chances of standing out.
             </p>
             <ViewAppButton className="bg-slate-900 text-white px-8 py-4 rounded-full font-bold inline-flex items-center gap-2 hover:bg-slate-800 transition-all">
               Join Now <ExternalLink size={18} />
@@ -61,7 +61,7 @@ export default function ReviewBooster() {
           <div className="rounded-[32px] overflow-hidden">
             <img
               src={reviewBoosterImage.url}
-              alt="Review Booster — Amazon Review Automation dashboard"
+              alt="Review Booster, Amazon Review Automation dashboard"
               className="w-full h-auto block"
             />
           </div>
@@ -120,7 +120,7 @@ export default function ReviewBooster() {
               Set it and forget it.
             </h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Once activated, Review Automation runs quietly in the background — sending review requests at the optimal time so you can stay focused on sourcing, negotiating, and scaling your wholesale business.
+              Once activated, Review Automation runs quietly in the background. Sending review requests at the optimal time so you can stay focused on sourcing, negotiating, and scaling your wholesale business.
             </p>
           </div>
           <div className="order-1 lg:order-2 rounded-[32px] overflow-hidden border border-slate-200 bg-white">

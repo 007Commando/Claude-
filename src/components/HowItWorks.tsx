@@ -45,7 +45,7 @@ const steps = [
   {
     icon: SlidersHorizontal,
     title: "Filter & Build Purchase Orders",
-    body: "Set your profitability filters and turn your best finds into real purchase orders — ready to send with confidence.",
+    body: "Set your profitability filters and turn your best finds into real purchase orders, ready to send with confidence.",
     highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown", "Buy Box Profit Tracking"],
     linkLabel: "View Purchase Orders",
     linkHref: "/features/blue#purchase-orders",
@@ -53,7 +53,7 @@ const steps = [
   {
     icon: Tag,
     title: "Price It With a Floor Underneath",
-    body: "Apex Gold works out each listing's break-even from the costs you just recorded and shows you the price your strategy implies — previewed before anything moves. Gold is in beta; keep an eye on Seller Central while you get started.",
+    body: "Apex Gold works out each listing's break-even from the costs you just recorded and shows you the price your strategy implies, previewed before anything moves. Gold is in beta; keep an eye on Seller Central while you get started.",
     highlights: ["Break-Even Floors from Your Own Costs", "Dry-Run Preview of Every Move", "Beta"],
     linkLabel: "View the Repricer",
     linkHref: "/features/gold",
@@ -61,7 +61,7 @@ const steps = [
   {
     icon: RotateCw,
     title: "Restock & Scale at Your Pace",
-    body: "Once inventory starts moving, use the Restock Purchase Order Builder to rinse and repeat. Scale slow and steady, or aggressive and fast — it's entirely up to you.",
+    body: "Once inventory starts moving, use the Restock Purchase Order Builder to rinse and repeat. Scale slow and steady, or aggressive and fast; it's entirely up to you.",
     highlights: ["Restock Suggestions from Target Cover and Lead Time", "Purchase Orders Built from the Restock View", "Receiving Discrepancies Tracked Line by Line"],
     linkLabel: "View Analytics & Restocking",
     linkHref: "/features/blue#analytics",
@@ -116,7 +116,7 @@ export default function HowItWorks() {
             How Amazon Wholesale <span className="text-brand">Works</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The easiest path to growing a real Amazon FBA wholesale business — six steps, start
+            The easiest path to growing a real Amazon FBA wholesale business, six steps, start
             to scale. Scroll down to follow the route.
           </p>
         </motion.section>
@@ -227,7 +227,7 @@ export default function HowItWorks() {
               Ready to Get Started?
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              Everything you just saw is already built into Apex — jump in and start your first
+              Everything you just saw is already built into Apex. Jump in and start your first
               deal today.
             </p>
             <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">

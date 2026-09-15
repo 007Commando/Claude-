@@ -75,7 +75,7 @@ export default function DistributorStrip() {
       </div>
 
       <p className="mt-4 text-xs text-slate-400">
-        389 vetted distributors in total. Three unlock the day you start —
+        389 vetted distributors in total. Three unlock the day you start,
         which three depends on your categories.
       </p>
     </div>

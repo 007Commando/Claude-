@@ -35,8 +35,8 @@ const invoiceRequirements = [
   "Dated within the last 180 days",
   "Your business name and address",
   "The distributor's name and address",
-  "The unit quantity your application asks for — Amazon has commonly required at least 10 units, but confirm it in your own application",
-  "Pricing on the invoice is optional — you can leave it off",
+  "The unit quantity your application asks for. Amazon has commonly required at least 10 units, but confirm it in your own application",
+  "Pricing on the invoice is optional; you can leave it off",
 ];
 
 const gatedCategories = [
@@ -61,7 +61,7 @@ const generalSteps = [
   {
     icon: Building2,
     title: "Buy From an Authorized Distributor",
-    body: "Not retail arbitrage — a real wholesale or authorized-dealer account. This is the account type our Distributor Vault and the wholesale accounts you open in Step 2 of the roadmap are built for.",
+    body: "Not retail arbitrage, a real wholesale or authorized-dealer account. This is the account type our Distributor Vault and the wholesale accounts you open in Step 2 of the roadmap are built for.",
   },
   {
     icon: Receipt,
@@ -79,7 +79,7 @@ const quickWinSteps = [
   {
     icon: ShoppingCart,
     title: "Create a Frontier Co-op Account",
-    body: "Sign up at frontiercoop.com. Make sure the business name and shipping address exactly match what's on file with your Amazon seller account — this is what Amazon checks the invoice against.",
+    body: "Sign up at frontiercoop.com. Make sure the business name and shipping address exactly match what's on file with your Amazon seller account. This is what Amazon checks the invoice against.",
     image: {
       src: "/images/ungating-guide/frontier-coop-homepage.png",
       alt: "Frontier Co-op homepage",
@@ -89,12 +89,12 @@ const quickWinSteps = [
   {
     icon: PackagePlus,
     title: "Order 10 Units of Pumpkin Pie Spice",
-    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items — a low-cost way to get a real, verifiable invoice for a Grocery ASIN. Ten units is a low-cost way to reach the usual threshold; confirm the current price and the quantity your own application asks for before ordering.",
+    body: "Frontier Co-op Pumpkin Pie Spice (1.72 oz) is one of their more affordable items, and a cheap way to get a real, verifiable invoice for a Grocery ASIN. Ten units is a low-cost way to reach the usual threshold; confirm the current price and the quantity your own application asks for before ordering.",
     product: {
       name: "Frontier Co-op Pumpkin Pie Spice",
       size: "1.72 oz bottle",
       price: "$6.19",
-      note: "price as of 2026 — always confirm current pricing",
+      note: "price as of 2026, always confirm current pricing",
       photo: "/images/ungating-guide/pumpkin-pie-spice-product.png",
     },
     link: {
@@ -105,7 +105,7 @@ const quickWinSteps = [
   {
     icon: Truck,
     title: "Choose Fast Shipping",
-    body: "Ship it to your home or business address — whichever matches your Amazon seller account. You need the physical product in hand for the photos in the next step.",
+    body: "Ship it to your home or business address, whichever matches your Amazon seller account. You need the physical product in hand for the photos in the next step.",
   },
   {
     icon: Upload,
@@ -120,7 +120,7 @@ const quickWinSteps = [
   {
     icon: RotateCw,
     title: "If It Is Rejected, Read the Reason",
-    body: "A rejection names what Amazon could not verify — a missing address, an unreadable invoice, a quantity below the threshold. Fix that specific thing and submit again. Sending identical documents a second time does not change the answer, and repeated identical submissions can count against the account.",
+    body: "A rejection names what Amazon could not verify. A missing address, an unreadable invoice, a quantity below the threshold. Fix that specific thing and submit again. Sending identical documents a second time does not change the answer, and repeated identical submissions can count against the account.",
   },
   {
     icon: PartyPopper,
@@ -157,7 +157,7 @@ const nextSteps = [
   {
     icon: SlidersHorizontal,
     title: "Build Purchase Order",
-    body: "Set your profitability filters and turn your best finds into real purchase orders — ready to send with confidence.",
+    body: "Set your profitability filters and turn your best finds into real purchase orders, ready to send with confidence.",
     highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown"],
     linkLabel: "View Purchase Orders",
     linkHref: "/features/blue#purchase-orders",
@@ -209,7 +209,7 @@ export default function UngatingGuide() {
             How <span className="text-brand">Ungating</span> Works on Amazon
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            A quick primer on category and brand restrictions — and a real, step-by-step way to
+            A quick primer on category and brand restrictions, and a real, step-by-step way to
             unlock your first category today.
           </p>
         </motion.section>
@@ -227,7 +227,7 @@ export default function UngatingGuide() {
           </h2>
           <p className="text-slate-500 leading-relaxed text-center max-w-2xl mx-auto mb-10">
             Amazon restricts certain categories and brands to protect buyers from counterfeit or
-            unsafe products. Getting approved — "ungated" — just means proving you're a
+            unsafe products. Getting approved, or "ungated", just means proving you're a
             legitimate, authorized source.
           </p>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -238,7 +238,7 @@ export default function UngatingGuide() {
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Category Gating</h3>
               <p className="text-sm text-slate-500 leading-relaxed mb-5">
-                Entire categories require approval before you can list anything in them — regardless
+                Entire categories require approval before you can list anything in them, regardless
                 of brand. Commonly gated categories include:
               </p>
               <div className="flex flex-wrap gap-2">
@@ -261,7 +261,7 @@ export default function UngatingGuide() {
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight">Brand Gating</h3>
               <p className="text-sm text-slate-500 leading-relaxed mb-5">
-                Even inside an open category, specific brands can still need their own approval —
+                Even inside an open category, specific brands can still need their own approval,
                 usually to protect against counterfeits. A few well-known examples:
               </p>
               <div className="space-y-2.5">
@@ -609,7 +609,7 @@ export default function UngatingGuide() {
         >
           <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
           <p className="text-sm text-slate-600 leading-relaxed">
-            <span className="font-bold text-slate-900">Not official Amazon guidance — </span>
+            <span className="font-bold text-slate-900">Not official Amazon guidance: </span>
             approval isn't guaranteed and Amazon's requirements can change without notice.
             Product pricing and availability shown here are also subject to change. Always confirm
             current terms directly with Amazon and the distributor before purchasing.
@@ -632,7 +632,7 @@ export default function UngatingGuide() {
               Let's Embark on Winning on Amazon
             </h2>
             <p className="text-lg text-blue-100 mb-8">
-              3 authorized suppliers the day your trial starts — everything else you just saw is
+              3 authorized suppliers the day your trial starts. Everything else you just saw is
               already built into Apex.
             </p>
             <button

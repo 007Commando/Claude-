@@ -32,7 +32,7 @@ export default function Page() {
           body:
             "Restock planning in Apex is assumption-based rather than predictive, and the assumptions are fields you set rather than a model you cannot inspect. You choose the target days of inventory to hold, whether to use each vendor's own lead time, and how many days to allow for prep. Those three numbers drive the suggestion. There is no black-box demand forecast here, and this page is not going to describe one.",
           points: [
-            "Target days of inventory — how deep you want to be covered",
+            "Target days of inventory, how deep you want to be covered",
             "Vendor lead time, taken per supplier, or a single figure across all of them",
             "Prep days, added on top of the supplier's lead time",
           ],
@@ -40,7 +40,7 @@ export default function Page() {
         {
           heading: "Prepare a supplier order",
           body:
-            "From the restock view, the products you select become a purchase order grouped by vendor, carrying the unit cost, case pack and bundle quantity already on record. The order tracks through submission to the warehouse or prep center, and when the receiving counts come back you can see them against what you ordered — including the lines that arrived short, damaged, or that arrived without being ordered at all.",
+            "From the restock view, the products you select become a purchase order grouped by vendor, carrying the unit cost, case pack and bundle quantity already on record. The order tracks through submission to the warehouse or prep center, and when the receiving counts come back you can see them against what you ordered. Including the lines that arrived short, damaged, or that arrived without being ordered at all.",
           points: [
             "Purchase orders grouped by vendor, seeded with your recorded costs and case packs",
             "The current selling price carried across from your database, not re-entered",
@@ -51,7 +51,7 @@ export default function Page() {
       caveat={{
         heading: "What this page does not claim",
         body:
-          "Apex Red, the module that builds and sends FBA shipments, is in beta — this page describes inventory planning and purchasing, which are not. Restock suggestions are arithmetic on the assumptions you enter, not a statistical forecast with a service level. And a purchase order is an accounting document, not a cash-flow plan: the profit a product shows is not the cash you will have when the invoice falls due.",
+          "Apex Red, the module that builds and sends FBA shipments, is in beta. This page describes inventory planning and purchasing, which are not. Restock suggestions are arithmetic on the assumptions you enter, not a statistical forecast with a service level, and a purchase order is an accounting document, not a cash-flow plan: the profit a product shows is not the cash you will have when the invoice falls due.",
       }}
       faqs={[
         {
@@ -74,7 +74,7 @@ export default function Page() {
       ctaBody="Connect your store and the stock, costs and margins land on one screen, with the purchase order one step away."
       ctaLabel="Plan my next order"
       related={[
-        { label: "Apex Blue — profit and analytics", href: "/features/blue" },
+        { label: "Apex Blue, profit and analytics", href: "/features/blue" },
         { label: "Apex vs InventoryLab / Seller 365", href: "/compare/inventorylab" },
         { label: "Profit and ROI calculator", href: "/tools/amazon-profit-calculator" },
         { label: "What a plan costs", href: "/pricing" },

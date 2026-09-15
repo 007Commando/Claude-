@@ -236,7 +236,7 @@ export default function SuiteMap() {
                     className={imageLeft ? "lg:order-2" : "lg:order-1"}
                   >
                     <div className={`text-xs font-black uppercase tracking-[0.2em] mb-4 ${s.accent}`}>
-                      {s.number} — {s.label} {s.labelAccent}
+                      {s.number}. {s.label} {s.labelAccent}
                     </div>
                     <div className="space-y-5 mb-8">
                       {s.items.map((item, idx) => {

@@ -3,9 +3,9 @@ import Proposal from "../../components/Proposal";
 import { resolveAngle } from "../../lib/proposalAngles";
 
 export const metadata: Metadata = {
-  title: "Book a Call — Apex Applications",
+  title: "Book a Call, Apex Applications",
   description:
-    "See how Apex software and coaching help Amazon sellers find suppliers, get approved, and check the numbers — then book a free strategy call.",
+    "See how Apex software and coaching help Amazon sellers find suppliers, get approved, and check the numbers, then book a free strategy call.",
   // Paid-traffic bridge page: keep it out of the organic index so it never
   // competes with the pages built to rank.
   robots: { index: false, follow: false },

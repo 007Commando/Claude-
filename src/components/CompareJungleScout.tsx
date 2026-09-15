@@ -14,10 +14,10 @@ export default function CompareJungleScout() {
             Apex Applications vs Jungle Scout
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            Jungle Scout practically invented private-label product research — finding a niche,
+            Jungle Scout practically invented private-label product research. Finding a niche,
             validating demand, sourcing a supplier to make <em>your</em> product. Apex is for the
             seller whose product already exists on the shelf: <strong>third-party resellers</strong>{" "}
-            buying real brands at wholesale and winning on execution — restock timing, break-even
+            buying real brands at wholesale and winning on execution. Restock timing, break-even
             repricing, and cashflow. Both are research tools at heart; they research different
             businesses.
           </p>
@@ -45,7 +45,7 @@ export default function CompareJungleScout() {
             { label: "Wholesale brand & seller intelligence", apex: "122M+ products, per-brand seller maps", rival: "Top tier only (Competitive Intelligence)" },
             { label: "Automated repricer", apex: "Included, break-even floors", rival: false },
             { label: "Purchase orders & restock math", apex: true, rival: false },
-            { label: "Prep center & logistics coordination", apex: "Apex Red — beta", rival: false },
+            { label: "Prep center & logistics coordination", apex: "Apex Red (beta)", rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: "Sales analytics" },
             { label: "Browser extension", apex: false, rival: true },
           ]}
@@ -56,22 +56,22 @@ export default function CompareJungleScout() {
             { label: "Jungle Scout Starter", price: 49, caption: "Product research, browser extension" },
             { label: "Jungle Scout Growth", price: 79, caption: "Adds listing & keyword tooling" },
             { label: "Jungle Scout Brand Owner + CI", price: 149, caption: "Competitive Intelligence, top tier only" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
+            { label: "Apex Starter, whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
           ]}
         />
 
-        <SuiteShot caption="For sellers whose products already exist — bought, priced, restocked, and banked in one place." />
+        <SuiteShot caption="For sellers whose products already exist. Bought, priced, restocked, and banked in one place." />
 
         <HonestVerdict
           rivalName="Jungle Scout"
           chooseRival={[
-            "You are hunting for a product to create — niche validation and demand data are the whole game, and nobody does it longer.",
+            "You are hunting for a product to create. Niche validation and demand data are the whole game, and nobody does it longer.",
             "You need manufacturer sourcing to have your own product made.",
             "You want the cheapest respected entry into Amazon research at $49/mo.",
           ]}
           chooseApex={[
-            "Your products already exist — you buy Skittles and Tide at wholesale, and your questions are break-even, restock, and Buy Box.",
-            "You need the tools after research: purchase orders, repricing with fee-derived floors, and P&L in one place — with shipment handling arriving via the Apex Red beta.",
+            "Your products already exist. You buy Skittles and Tide at wholesale, and your questions are break-even, restock, and Buy Box.",
+            "You need the tools after research: purchase orders, repricing with fee-derived floors, and P&L in one place. With shipment handling arriving via the Apex Red beta.",
             "Seller-level competition data matters on every listing you run, not as a top-tier add-on.",
           ]}
         />

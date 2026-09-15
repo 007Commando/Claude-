@@ -257,7 +257,7 @@ export default function LandingPage() {
               <div className="bg-white p-8 rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-slate-100 relative group overflow-hidden">
                 {/* Gross Sales Counter */}
                 <div className="absolute top-8 left-8 z-10">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Sales — illustration, not customer data</div>
+                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Sales. Illustration, not customer data</div>
                   <div className="text-2xl font-black text-slate-900 font-mono tracking-tighter">
                     <SalesCounter />
                   </div>
@@ -305,7 +305,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight">Clarity over <span className="text-slate-300 italic">Guesswork.</span></h3>
               <p className="text-xl text-slate-600 mb-10 leading-relaxed font-medium">
-                Most sellers fly blind between monthly statements. Apex syncs with Amazon every few minutes and maps your net profit with Amazon's fees deducted automatically — and your own costs where you enter them.
+                Most sellers fly blind between monthly statements. Apex syncs with Amazon every few minutes and maps your net profit with Amazon's fees deducted automatically, and your own costs where you enter them.
               </p>
               <div className="space-y-6">
                 {[

@@ -13,7 +13,7 @@ export default function CompareSmartScout() {
             Apex Applications vs SmartScout
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The short version: SmartScout is a research and analytics tool — and a good one.
+            The short version: SmartScout is a research and analytics tool, and a good one.
             Apex covers research <em>and then runs the business you find</em>: purchase orders,
             repricing and P&amp;L in the same platform, with shipment handling (Apex Red) still in
             beta. Which one you need depends on
@@ -44,7 +44,7 @@ export default function CompareSmartScout() {
             { label: "Automated repricer", apex: "Included, with break-even floors", rival: false },
             { label: "Purchase orders & restock", apex: true, rival: false },
             { label: "P&L / cashflow from your store", apex: true, rival: false },
-            { label: "Prep & logistics coordination", apex: "Apex Red — beta", rival: false },
+            { label: "Prep & logistics coordination", apex: "Apex Red (beta)", rival: false },
             { label: "Review automation", apex: "Included", rival: true },
             { label: "Chrome extension", apex: false, rival: true },
           ]}
@@ -52,9 +52,9 @@ export default function CompareSmartScout() {
 
         <PriceBars
           items={[
-            { label: "SmartScout Basic", price: 49, caption: "Research only — 25 keyword searches/mo" },
+            { label: "SmartScout Basic", price: 49, caption: "Research only, 25 keyword searches/mo" },
             { label: "SmartScout Essentials", price: 119, caption: "Full brand & keyword data" },
-            { label: "Apex Starter — whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
+            { label: "Apex Starter, whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
             { label: "SmartScout Business", price: 299, caption: "Adds exports and automation" },
           ]}
         />
@@ -75,7 +75,7 @@ export default function CompareSmartScout() {
           ]}
         />
 
-        <CompareCta line="Research a brand, cut the PO, and let the repricer defend the margin — in one login. That's the part no research tool does." />
+        <CompareCta line="Research a brand, cut the PO, and let the repricer defend the margin, in one login. That's the part no research tool does." />
 
         <FactsFootnote
           rivalName="SmartScout"

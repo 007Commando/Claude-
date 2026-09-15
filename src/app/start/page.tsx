@@ -19,7 +19,7 @@ import DistributorStrip from "../../components/landing/DistributorStrip";
 import sourcingSpeed from "../../assets/sourcing-speed.mp4.asset.json";
 
 export const metadata: Metadata = {
-  title: "Start your Amazon wholesale business free for 7 days — Apex Applications",
+  title: "Start your Amazon wholesale business free for 7 days, Apex Applications",
   description:
     "Three authorized supplier accounts, the full Apex software suite, and an AI mentor that builds your first purchase order. Free for your first 7 days.",
   robots: { index: false, follow: false },
@@ -82,7 +82,7 @@ export default function StartPage() {
         flip
         eyebrow={<Eyebrow icon={<Bot size={14} />}>The AI mentor</Eyebrow>}
         title="It doesn't just answer questions. It writes the order."
-        body="The mentor reads your own catalogue, costs and stock, then hands you the next move with the numbers behind it — which products clear margin, how many units, and which supplier to send it to."
+        body="The mentor reads your own catalogue, costs and stock, then hands you the next move with the numbers behind it: which products clear margin, how many units, and which supplier to send it to."
         items={[
           ["Reads your real data", "Your catalogue and your costs, not generic advice."],
           ["Shows the working", "Every step carries the profit and ROI that justified it."],

@@ -63,7 +63,7 @@ export default function DistributorVault() {
             The Distributor <span className="text-brand">Vault</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-            {distributors.length}+ vetted wholesale distributors across {categories.length} categories —
+            {distributors.length}+ vetted wholesale distributors across {categories.length} categories,
             names, websites, and direct contact emails, ready to reach out to today.
           </p>
         </motion.section>

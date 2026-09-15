@@ -14,17 +14,17 @@ export default function Page() {
     <ContentPage
       eyebrow="Reviews and feedback"
       h1="Make eligible review requests part of your routine."
-      intro="Amazon already has a Request a Review button. The problem is that nobody clicks it on every order, every day, forever. Apex ReviewBooster carries out exactly that request, on the orders that are eligible, on a schedule — and keeps a record of which orders it sent and when."
+      intro="Amazon already has a Request a Review button. The problem is that nobody clicks it on every order, every day, forever. Apex ReviewBooster carries out exactly that request, on the orders that are eligible, on a schedule, and keeps a record of which orders it sent and when."
       sections={[
         {
           heading: "It sends Amazon's request, not ours",
           body:
-            "ReviewBooster calls Amazon's Solicitations API — the same standardized product review and seller feedback request behind the button in Seller Central. That means the buyer receives Amazon's own message, in Amazon's wording. There is no custom copy, no template to edit and no branded email, because that mechanism does not offer one. Anyone advertising customised messages is describing a different mechanism, and you should ask which.",
+            "ReviewBooster calls Amazon's Solicitations API. The same standardized product review and seller feedback request behind the button in Seller Central. That means the buyer receives Amazon's own message, in Amazon's wording. There is no custom copy, no template to edit and no branded email, because that mechanism does not offer one. Anyone advertising customised messages is describing a different mechanism, and you should ask which.",
         },
         {
           heading: "Every eligible order, treated the same way",
           body:
-            "The queue is built from orders that have shipped and reached the waiting period you set after their delivery date. It never looks at how a customer felt, because that information is not part of the decision and could not be even if we wanted it to be. What you can exclude is a listing — if a particular SKU should not be soliciting feedback, you exclude that SKU and every order containing it is skipped, for every buyer alike.",
+            "The queue is built from orders that have shipped and reached the waiting period you set after their delivery date. It never looks at how a customer felt, because that information is not part of the decision and could not be even if we wanted it to be. What you can exclude is a listing. If a particular SKU should not be soliciting feedback, you exclude that SKU and every order containing it is skipped, for every buyer alike.",
           points: [
             "Orders must be shipped and past your chosen wait after the delivery date",
             "Exclusions are per listing, never per customer or per sentiment",
@@ -35,7 +35,7 @@ export default function Page() {
         {
           heading: "Know what was sent and when",
           body:
-            "Each request is recorded against its Amazon order id, with the result Amazon returned. Amazon's reply that a review has already been requested for an order is treated as a success, because it means the buyer has been asked — by you, earlier, or by this. Failures are recorded as failures rather than silently retried forever, so the log is a record of what actually happened rather than what was attempted.",
+            "Each request is recorded against its Amazon order id, with the result Amazon returned. Amazon's reply that a review has already been requested for an order is treated as a success, because it means the buyer has been asked, by you, earlier, or by this. Failures are recorded as failures rather than silently retried forever, so the log is a record of what actually happened rather than what was attempted.",
         },
       ]}
       caveat={{
@@ -69,7 +69,7 @@ export default function Page() {
       ctaBody="ReviewBooster runs on a schedule against the orders that qualify, and keeps the record of what it sent."
       ctaLabel="Explore review automation"
       related={[
-        { label: "Apex Black — the daily dashboard", href: "/features/black" },
+        { label: "Apex Black, the daily dashboard", href: "/features/black" },
         { label: "ReviewBooster", href: "/review-booster" },
         { label: "What a plan costs", href: "/pricing" },
       ]}

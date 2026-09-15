@@ -24,13 +24,13 @@ type Cell = { state: "yes" | "varies"; text: string };
 const ROWS: { label: string; apex: Cell; fiverr: Cell; upwork: Cell }[] = [
   {
     label: "Hourly rate",
-    apex: { state: "yes", text: "$5.00 – $6.50, fixed" },
-    fiverr: { state: "varies", text: "$6 – $15 typical" },
-    upwork: { state: "varies", text: "$6 – $15 typical" },
+    apex: { state: "yes", text: "$5.00 to $6.50, fixed" },
+    fiverr: { state: "varies", text: "$6 to $15 typical" },
+    upwork: { state: "varies", text: "$6 to $15 typical" },
   },
   {
     label: "Amazon wholesale experience",
-    apex: { state: "yes", text: "High — trained on the model before placement" },
+    apex: { state: "yes", text: "High, trained on the model before placement" },
     fiverr: { state: "varies", text: "A gamble. Often low or unrelated" },
     upwork: { state: "varies", text: "A gamble. Often low or unrelated" },
   },
@@ -416,7 +416,7 @@ export function SatisfactionGuarantee() {
                 ],
                 [
                   "A fixed rate after that",
-                  "$5.00 – $6.50 an hour, with no platform fee on top.",
+                  "$5.00 to $6.50 an hour, with no platform fee on top.",
                 ],
               ].map(([title, sub]) => (
                 <li key={title} className="flex items-start gap-3">

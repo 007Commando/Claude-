@@ -52,7 +52,7 @@ export default function FeatureSection({
             <Icon size={18} className="text-white" strokeWidth={1.75} />
           </div>
           <div className={`text-xs font-black uppercase tracking-[0.2em] ${accentText}`}>
-            {number} — {eyebrow}
+            {number}. {eyebrow}
           </div>
         </div>
         <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">

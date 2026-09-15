@@ -572,7 +572,7 @@ export default function Proposal({ angle = DEFAULT_ANGLE }: { angle?: Angle }) {
                   onClick={trackSchedule}
                   className="inline-block w-full sm:w-auto bg-brand text-white text-lg sm:text-xl font-black uppercase tracking-wide px-12 py-5 rounded-md shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
                 >
-                  Continue — Book Your Call
+                  Continue. Book Your Call
                 </a>
               )}
             </div>

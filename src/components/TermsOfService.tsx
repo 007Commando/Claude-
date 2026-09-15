@@ -21,7 +21,7 @@ export default function TermsOfService() {
           <ul className="list-disc pl-6 space-y-1">
             <li>All terms and conditions set forth herein;</li>
             <li>Our Privacy Policy; and</li>
-            <li>Any other standard policies or community guidelines posted on our Services—which together form the “Agreement.”</li>
+            <li>Any other standard policies or community guidelines posted on our Services which together form the “Agreement.”</li>
           </ul>
 
           <p>
@@ -170,7 +170,7 @@ export default function TermsOfService() {
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">8. LIMITATIONS OF LIABILITY</h2>
           <p>
-            In no event shall Apex Applications or its affiliates be liable for any indirect, incidental, consequential, or special damages, or for loss of profits arising out of or in connection with this Agreement or your use (or inability to use) the Services—even if advised of the possibility of such damages.
+            In no event shall Apex Applications or its affiliates be liable for any indirect, incidental, consequential, or special damages, or for loss of profits arising out of or in connection with this Agreement or your use (or inability to use) the Services even if advised of the possibility of such damages.
           </p>
           <p>
             The total aggregate liability of Apex Applications to you for any claims related to this Agreement or the Services shall not exceed the total fees paid by you to us during the six (6) months preceding the claim (or $10 if the Services were free). This limitation of liability is an essential term of this Agreement.
@@ -225,7 +225,7 @@ export default function TermsOfService() {
             <strong>Small Claims Alternative:</strong> Alternatively, you may bring your claim in small claims court, subject to the rules of that court. You may only assert claims on your own behalf.
           </p>
           <p>
-            <strong>Opting Out:</strong> You may opt out of this arbitration agreement by notifying us in writing within 30 days of your first registration or acceptance of these Terms. To opt out, send your written notice—including your account name, physical address, email address, and a statement clearly indicating your intent to opt out of the arbitration agreement—to:
+            <strong>Opting Out:</strong> You may opt out of this arbitration agreement by notifying us in writing within 30 days of your first registration or acceptance of these Terms. To opt out, send your written notice including your account name, physical address, email address, and a statement clearly indicating your intent to opt out of the arbitration agreement to:
           </p>
           <div className="pl-6 border-l-4 border-slate-200 my-4">
             <p>Apex Applications</p>

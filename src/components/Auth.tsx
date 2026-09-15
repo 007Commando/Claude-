@@ -107,7 +107,7 @@ function getFriendlyAuthError(message: string): string {
   }
 
   if (/an unknown error occurred/i.test(message)) {
-    return "Something went wrong on our side. Please try again — if it keeps happening, email info@apexapplications.io and we'll set you up directly.";
+    return "Something went wrong on our side. Please try again. If it keeps happening, email info@apexapplications.io and we'll set you up directly.";
   }
 
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
@@ -136,7 +136,7 @@ function getFriendlyAuthError(message: string): string {
     case "operation-not-allowed":
     case "unauthorized-domain":
     case "internal-error":
-      return "Google sign-in isn't available right now. Please sign up with your email instead — it takes the same 30 seconds.";
+      return "Google sign-in isn't available right now. Please sign up with your email instead, it takes the same 30 seconds.";
     case "weak-password":
       return "Choose a stronger password (at least 6 characters).";
     case "network-request-failed":
@@ -759,7 +759,7 @@ export default function Auth() {
                   {mode === "signup" && (
                     <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
                       {isFreeSignup ? (
-                        <>Free account — no card, no plan. Apex University and Review Booster included.</>
+                        <>Free account, no card, no plan. Apex University and Review Booster included.</>
                       ) : (
                         <>
                           Signing up for the {PLAN_TIER_LABELS[planTier]} plan,{" "}

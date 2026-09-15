@@ -32,7 +32,7 @@ const IN_BETA: string[] = [
 
 /** What it does not do. Stated so nobody buys a subscription expecting it. */
 const NOT_IN_BETA: string[] = [
-  "Discounted carrier rates — Apex does not resell freight and has no carrier agreement",
+  "Discounted carrier rates. Apex does not resell freight and has no carrier agreement",
   "Automated 2D barcode or label printing workflows",
   "Marketplaces beyond Amazon US",
   "A guaranteed turnaround, SLA or support commitment while the module is in beta",
@@ -46,7 +46,7 @@ export default function ApexRed() {
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 border border-red-100 text-red-600 text-[11px] font-bold rounded-full uppercase tracking-[0.1em] shadow-sm">
               <Container size={14} className="stroke-[3]" />
-              Beta — not a finished product
+              Beta. Not a finished product
             </div>
           </div>
 
@@ -124,7 +124,7 @@ export default function ApexRed() {
           </Link>
           <p className="mt-4 text-xs text-slate-500">
             This opens our contact form. It does not start a subscription, take a card, or begin a
-            trial — it sends us a message and we reply.
+            trial, it sends us a message and we reply.
           </p>
         </motion.div>
 
@@ -139,9 +139,9 @@ export default function ApexRed() {
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             {[
-              { label: "Apex Green — catalog scanning", href: "/features/green" },
-              { label: "Apex Gold — repricing", href: "/features/gold" },
-              { label: "Apex Blue — profit and purchasing", href: "/features/blue" },
+              { label: "Apex Green, catalog scanning", href: "/features/green" },
+              { label: "Apex Gold, repricing", href: "/features/gold" },
+              { label: "Apex Blue, profit and purchasing", href: "/features/blue" },
               { label: "What a plan costs", href: "/pricing" },
             ].map((link) => (
               <Link
@@ -164,7 +164,7 @@ export default function ApexRed() {
             },
             {
               q: "Does requesting beta access start a paid subscription?",
-              a: "No. The button opens our contact form. No card, no trial, no subscription — it sends a message and we reply. Paid plans are a separate decision on the pricing page.",
+              a: "No. The button opens our contact form. No card, no trial, no subscription, it sends a message and we reply. Paid plans are a separate decision on the pricing page.",
             },
             {
               q: "Do I need a paid plan to be in the beta?",

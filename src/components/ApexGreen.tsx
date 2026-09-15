@@ -64,11 +64,11 @@ export default function ApexGreen() {
                   <div className="w-9 h-9 rounded-lg bg-green-600 flex items-center justify-center shrink-0">
                     <TrendingUp size={18} className="text-white" strokeWidth={1.75} />
                   </div>
-                  <div className="text-xs font-black text-green-600 uppercase tracking-[0.2em]">01 — Core Features</div>
+                  <div className="text-xs font-black text-green-600 uppercase tracking-[0.2em]">01 · Core Features</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Green — Core Features</h2>
+                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Green. Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Sourcing intelligence built for volume. Scan whole supplier lists, unify them into one catalogue, and get back the products worth buying — with the ones that did not match shown rather than quietly dropped.
+                  Sourcing intelligence built for volume. Scan whole supplier lists, unify them into one catalogue, and get back the products worth buying. With the ones that did not match shown rather than quietly dropped.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[

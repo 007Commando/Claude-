@@ -90,7 +90,7 @@ const money = (value: number) =>
   `${value < 0 ? "−" : ""}$${Math.abs(value).toFixed(2)}`;
 
 const percent = (value: number | null) =>
-  value === null ? "—" : `${value < 0 ? "−" : ""}${Math.abs(value).toFixed(2)}%`;
+  value === null ? " " : `${value < 0 ? "−" : ""}${Math.abs(value).toFixed(2)}%`;
 
 function Figure({
   label,
@@ -134,7 +134,7 @@ export default function ProfitCalculator() {
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
             Enter your price, product cost and fee assumptions to estimate contribution profit,
-            margin, ROI and the price you break even at. Every number below is one you control —
+            margin, ROI and the price you break even at. Every number below is one you control,
             this does not look up Amazon&apos;s live fees, and it never asks who you are.
           </p>
         </motion.header>
@@ -205,7 +205,7 @@ export default function ProfitCalculator() {
                   />
                   <Figure
                     label="Break-even price"
-                    value={result.breakEven === null ? "—" : money(result.breakEven)}
+                    value={result.breakEven === null ? " " : money(result.breakEven)}
                     note="The selling price at which contribution profit reaches zero."
                   />
                 </div>
@@ -236,7 +236,7 @@ export default function ProfitCalculator() {
                 What this leaves out
               </p>
               <p className="text-xs leading-relaxed text-slate-500">
-                These are not live Amazon fees — the model uses the assumptions you typed, and a
+                These are not live Amazon fees. The model uses the assumptions you typed, and a
                 proportional referral fee. It omits category minimum fees, non-linear fees,
                 returns, storage, advertising, taxes and business overhead unless you fold them
                 into &ldquo;other per-unit costs&rdquo;. A positive contribution profit does not
@@ -254,8 +254,8 @@ export default function ProfitCalculator() {
             Stop typing the assumptions in
           </h2>
           <p className="text-slate-500 max-w-xl mx-auto mb-8">
-            Inside Apex these numbers come from your own account — your landed costs, your prep and
-            shipping, the fees on your real listings — and they run across a whole supplier catalog
+            Inside Apex these numbers come from your own account. Your landed costs, your prep and
+            shipping, the fees on your real listings, and they run across a whole supplier catalog
             instead of one product at a time.
           </p>
           <Link

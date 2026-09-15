@@ -29,7 +29,7 @@ const HAND_BUILT: Card[] = [
     category: "Private-label suite",
     module: "/features/green",
     frame:
-      "The giant of private label: keywords, listings, PPC. Apex plays the other game — third-party wholesale. The comparison is really a fork: which business are you in?",
+      "The giant of private label: keywords, listings, PPC. Apex plays the other game, third-party wholesale. The comparison is really a fork: which business are you in?",
   },
   {
     href: "/compare/junglescout",
@@ -37,7 +37,7 @@ const HAND_BUILT: Card[] = [
     category: "Product research",
     module: "/features/green",
     frame:
-      "The original niche-validation tool, for inventing your own product. Apex runs products that already exist — bought at wholesale, repriced to break-even, restocked on math.",
+      "The original niche-validation tool, for inventing your own product. Apex runs products that already exist. Bought at wholesale, repriced to break-even, restocked on math.",
   },
   {
     href: "/compare/smartscout",
@@ -45,7 +45,7 @@ const HAND_BUILT: Card[] = [
     category: "Wholesale research",
     module: "/features/green",
     frame:
-      "Closest to our lane: excellent brand and market analytics. The difference is what happens after research — Apex adds the purchase orders, repricer, and P&L.",
+      "Closest to our lane: excellent brand and market analytics. The difference is what happens after research. Apex adds the purchase orders, repricer, and P&L.",
   },
   {
     href: "/compare/sellersnap",
@@ -53,7 +53,7 @@ const HAND_BUILT: Card[] = [
     category: "AI repricer",
     module: "/features/gold",
     frame:
-      "A respected game-theory repricer, and only a repricer. Apex Gold reprices with break-even floors from live fees — inside the suite the rest of your operation runs on.",
+      "A respected game-theory repricer, and only a repricer. Apex Gold reprices with break-even floors from live fees. Inside the suite the rest of your operation runs on.",
   },
 ];
 
@@ -99,7 +99,7 @@ const SECTIONS: { module: string; title: string; blurb: string }[] = [
     module: "/features/red",
     title: "Shipping and prep",
     blurb:
-      "Tools for getting boxes to Amazon. The Apex module here, Apex Red, is in beta — every page in this group says so.",
+      "Tools for getting boxes to Amazon. The Apex module here, Apex Red, is in beta, every page in this group says so.",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function CompareIndex() {
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
             Every page here names what the other tool does best, with current pricing and sources
-            at the bottom. Where a rival is the right choice for your business, the page says so —
+            at the bottom. Where a rival is the right choice for your business, the page says so,
             because the sellers these comparisons are wrong for were never our customers, and the
             ones they are right for deserve a straight answer.
           </p>

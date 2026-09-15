@@ -172,7 +172,7 @@ const onboardingSteps = [
   {
     step: "5",
     title: "Ship Inventory",
-    body: "Once accounts are approved, direct your suppliers to ship directly to the prep center — they'll receive, inspect, prep, and forward to Amazon FBA.",
+    body: "Once accounts are approved, direct your suppliers to ship directly to the prep center. They'll receive, inspect, prep, and forward to Amazon FBA.",
   },
 ];
 
@@ -181,16 +181,16 @@ const whyReasons = [
     n: "01",
     title: "Distributors Need a Commercial Address",
     summary:
-      "Many high-quality distributors and manufacturers won't ship to residential addresses. They require a warehouse with a business address on file — preventing many hopeful sellers from even placing their first orders.",
+      "Many high-quality distributors and manufacturers won't ship to residential addresses. They require a warehouse with a business address on file, which stops many hopeful sellers from even placing their first orders.",
     eyebrow: "The Receiving Problem",
     headline: "Freight trucks can't deliver to your house",
-    body: "Most distributors ship via LTL freight. Those loads need a loading dock and forklift to offload — something a residential address simply doesn't have. Without a commercial receiving address, you won't even open an account with them.",
+    body: "Most distributors ship via LTL freight. Those loads need a loading dock and forklift to offload, which a residential address simply doesn't have. Without a commercial receiving address, you won't even open an account with them.",
   },
   {
     n: "02",
     title: "Focus on What Grows Revenue",
     summary:
-      "To scale, you have to stop doing everything yourself. A prep center handles receiving, inspecting, labeling, prepping, and shipping — so you're free to spend your time on the parts of the business that actually move revenue: sourcing, listings, and building relationships.",
+      "To scale, you have to stop doing everything yourself. A prep center handles receiving, inspecting, labeling, prepping, and shipping, so you're free to spend your time on the parts of the business that actually move revenue: sourcing, listings, and building relationships.",
     eyebrow: "Reclaim Your Time",
     headline: "Spend your hours on deals, not boxes",
     body: "Every hour spent scanning, labeling, and packing is an hour you aren't sourcing inventory or closing supplier deals. Handing fulfillment to a prep center flips your time toward the work that actually compounds your revenue.",
@@ -270,7 +270,7 @@ export default function PrepCenterNetwork() {
           <div className="mt-6 inline-flex items-start sm:items-center gap-3 text-left sm:text-center bg-brand/5 border border-brand/10 rounded-2xl px-5 py-4 max-w-xl mx-auto">
             <Zap size={16} className="text-brand shrink-0 mt-0.5 sm:mt-0" />
             <p className="text-sm text-slate-600 leading-relaxed">
-              Apex members unlock instant discounts across our network — exclusive pricing sourced
+              Apex members unlock instant discounts across our network: exclusive pricing sourced
               through our direct partnerships, passed straight to you.
             </p>
           </div>
@@ -371,7 +371,7 @@ export default function PrepCenterNetwork() {
                     }`}
                   >
                     {g.city}, {g.state}
-                    {g.centers.length > 1 ? ` — ${g.centers.length} partners` : ""}
+                    {g.centers.length > 1 ? `, ${g.centers.length} partners` : ""}
                   </span>
                 </button>
               );
@@ -502,21 +502,21 @@ export default function PrepCenterNetwork() {
               <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                 Average Market Rate
               </div>
-              <div className="text-2xl font-black text-slate-900">$1.00–1.20</div>
+              <div className="text-2xl font-black text-slate-900">$1.00 to $1.20</div>
               <div className="text-xs text-slate-400 mt-1">or higher at boutique centers</div>
             </div>
             <div className="rounded-2xl border-2 border-brand bg-brand/5 p-6 text-center">
               <div className="text-xs font-bold text-brand uppercase tracking-widest mb-2">
                 Apex Member Price
               </div>
-              <div className="text-2xl font-black text-brand">$0.60–0.70</div>
+              <div className="text-2xl font-black text-brand">$0.60 to $0.70</div>
               <div className="text-xs text-slate-500 mt-1">per unit for member accounts</div>
             </div>
             <div className="rounded-2xl border border-slate-200 p-6 text-center">
               <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                 Your Savings
               </div>
-              <div className="text-2xl font-black text-emerald-600">$0.30–0.60</div>
+              <div className="text-2xl font-black text-emerald-600">$0.30 to $0.60</div>
               <div className="text-xs text-slate-400 mt-1">per unit on average</div>
             </div>
           </div>
@@ -527,7 +527,7 @@ export default function PrepCenterNetwork() {
                 <DollarSign size={18} className="text-white" />
               </div>
               <div>
-                <div className="text-lg font-black text-slate-900">$400–500 saved</div>
+                <div className="text-lg font-black text-slate-900">$400 to $500 saved</div>
                 <div className="text-xs text-slate-500">Per 1,000 units shipped</div>
               </div>
             </div>
@@ -536,7 +536,7 @@ export default function PrepCenterNetwork() {
                 <Clock size={18} className="text-white" />
               </div>
               <div>
-                <div className="text-lg font-black text-slate-900">$4,800–6,000+ saved</div>
+                <div className="text-lg font-black text-slate-900">$4,800 to $6,000+ saved</div>
                 <div className="text-xs text-slate-500">Over 12 months</div>
               </div>
             </div>
@@ -545,9 +545,9 @@ export default function PrepCenterNetwork() {
           <div className="rounded-2xl bg-slate-50 border border-slate-100 p-6 flex items-start gap-3">
             <ShieldCheck size={18} className="text-brand shrink-0 mt-0.5" />
             <p className="text-sm text-slate-500 leading-relaxed">
-              <span className="font-bold text-slate-900">Lifetime Discount, No Catch — </span>
+              <span className="font-bold text-slate-900">Lifetime Discount, No Catch: </span>
               These rates are set by individual prep centers. Once you're in the Apex network, your
-              discounted rate stays locked in for as long as you work with that partner — no
+              discounted rate stays locked in for as long as you work with that partner, with no
               expiration, no renegotiation needed.
             </p>
           </div>
@@ -569,7 +569,7 @@ export default function PrepCenterNetwork() {
               Stop Doing Everything Yourself
             </h2>
             <p className="text-lg text-slate-500 leading-relaxed">
-              Working with a prep center isn't just convenient — it's a strategic move that removes
+              Working with a prep center isn't just convenient. It's a strategic move that removes
               bottlenecks and protects your margins.
             </p>
           </motion.div>
@@ -708,7 +708,7 @@ export default function PrepCenterNetwork() {
                 </div>
                 <div className="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600 leading-relaxed">
                   You could be paying <span className="font-black text-slate-900">$8,400 every month</span>{" "}
-                  ($100,800/yr) running your own warehouse — versus a flat, pay-per-unit rate with a
+                  ($100,800/yr) running your own warehouse, against a flat, pay-per-unit rate with a
                   prep center.
                 </div>
               </div>
@@ -724,7 +724,7 @@ export default function PrepCenterNetwork() {
               <BreakEvenChart />
               <p className="text-sm text-slate-500 leading-relaxed mt-4">
                 A prep center costs per unit, while a warehouse is a fixed cost regardless of volume.
-                The two lines only cross once you're shipping enough volume — that's your break-even
+                The two lines only cross once you're shipping enough volume. That's your break-even
                 point.
               </p>
             </div>
@@ -802,7 +802,7 @@ export default function PrepCenterNetwork() {
               <p>Confirm receiving requirements directly with each prep center before shipping.</p>
               <p>
                 Wholesale accounts opened using a prep center's address are subject to that account's
-                own approval — not guaranteed by Apex.
+                own approval, not guaranteed by Apex.
               </p>
             </div>
           </div>
