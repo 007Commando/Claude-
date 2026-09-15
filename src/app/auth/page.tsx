@@ -5,7 +5,7 @@ import { TRIAL_DAYS } from "../../config/offer";
 import { absoluteUrl } from "../../config/site";
 
 export const metadata: Metadata = {
-  title: "Log In or Sign Up — Apex Applications",
+  title: "Log In or Sign Up | Apex Applications",
   description: `Log in to your Apex Applications dashboard, or start your ${TRIAL_DAYS}-day trial of the Amazon wholesale software suite.`,
   alternates: { canonical: absoluteUrl("/auth") },
   /**
