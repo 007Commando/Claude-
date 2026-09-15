@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import FreeCourse from "../../components/FreeCourse";
+import CourseLanding from "../../components/CourseLanding";
 
 /**
  * Indexed, unlike /first-order-roadmap.
@@ -18,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <FreeCourse />;
+  return <CourseLanding variant="free" />;
 }

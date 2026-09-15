@@ -20,6 +20,7 @@ import { motion, useReducedMotion, useScroll } from "motion/react";
 import { Compass, Building2, Search, ShoppingCart } from "lucide-react";
 import { useRef } from "react";
 
+import { BUNDLE_CHECKOUT_URL, BUNDLE_PRICE, formatPrice } from "../config/offer";
 import "./apex-landing.css";
 
 const origin = "https://www.apexapplications.io";
@@ -31,6 +32,113 @@ const ENROL_HREF = "/auth?mode=signup&plan=free";
 const LOGIN_HREF = "/auth?mode=login&plan=free";
 
 /**
+ * The two ways this page has been offered, as one component.
+ *
+ * Same curriculum, same layout, same proof: the only variable under test is
+ * the price of entry. Forking the file would have made that impossible to
+ * trust, because the pages would have drifted apart within a week and the
+ * result would be measuring the drift rather than the price.
+ */
+export type CourseVariant = "free" | "paid";
+
+const PRICE = formatPrice(BUNDLE_PRICE);
+
+const VARIANTS = {
+  free: {
+    eyebrow: "APEX UNIVERSITY · FREE COURSE",
+    navCta: "Start Free",
+    heroSub: (
+      <>
+        The wholesale business, taught in nine videos.{" "}
+        <br />
+        Free inside Apex University. No card, no plan.
+      </>
+    ),
+    heroCta: "Start the Free Course",
+    heroNote: "Create a free account, no card required",
+    href: ENROL_HREF,
+    textCta: "Start the Free Course",
+    enrolEyebrow: "YOUR NEXT STEP",
+    enrolHead: (
+      <>
+        Start the course.
+        <br />
+        <span className="blue">It costs nothing.</span>
+      </>
+    ),
+    enrolLead: "Create a free Apex account and Apex University opens straight away. The Review Booster and three UPC scans come with it.",
+    enrolNote: "No card is taken. There is no trial to run out, and nothing to cancel.",
+    includesLead: "Your free account includes",
+    includes: [
+      ["Apex University", "Nine videos, four modules, from zero to your first order."],
+      ["Review Booster", "Automated Amazon review requests on eligible orders."],
+      ["3 UPC scans", "Run a supplier list through the scanner and see it work."],
+    ],
+    enrolCta: "Create My Free Account",
+    helper: "Takes about a minute. No card required.",
+    proof: ["Free account", "No card. Nothing to cancel."],
+    letterClose: (
+      <>
+        <strong>It costs nothing to watch.</strong>
+      </>
+    ),
+    letterTail:
+      "Watch it, and you will know what the business asks of you before you spend anything on it. That seemed like the right thing to give away.",
+    footerLine: "The wholesale business, taught for free.",
+    showPlaybook: true,
+    fineprint: "The course and these tools are free. The rest of the Apex software is on a paid plan.",
+  },
+  paid: {
+    eyebrow: `APEX UNIVERSITY · ${PRICE} COURSE`,
+    navCta: `Get it for ${PRICE}`,
+    heroSub: (
+      <>
+        The wholesale business, taught in nine videos.{" "}
+        <br />
+        {PRICE} once. No subscription, nothing to cancel.
+      </>
+    ),
+    heroCta: `Get the Course for ${PRICE}`,
+    heroNote: "One payment. Instant access.",
+    href: BUNDLE_CHECKOUT_URL,
+    textCta: `Get the Course for ${PRICE}`,
+    enrolEyebrow: "YOUR NEXT STEP",
+    enrolHead: (
+      <>
+        Start the course.
+        <br />
+        <span className="blue">{PRICE}, paid once.</span>
+      </>
+    ),
+    enrolLead: `The nine videos, the software they are taught in, and three suppliers to use it on, for a single ${PRICE} payment.`,
+    enrolNote: "No subscription is started and there is nothing to cancel.",
+    includesLead: `Your ${PRICE} includes`,
+    includes: [
+      ["Apex University", "Nine videos, four modules, from zero to your first order."],
+      ["Extended suite trial", "Apex Black, Blue and Green, opened for longer than the standard trial."],
+      ["3 vetted suppliers", "Authorized US wholesale distributors, handed over on registration."],
+      ["Review Booster for life", "Automated Amazon review requests on eligible orders."],
+      ["Keepa Playbook and Ungating SOP", "The frameworks for reading a chart and getting approved."],
+    ],
+    enrolCta: `Get Instant Access for ${PRICE}`,
+    helper: "Secure checkout by Stripe. Access lands in your inbox straight away.",
+    proof: [`${PRICE} once`, "No subscription. Nothing to cancel."],
+    letterClose: (
+      <>
+        <strong>It costs {PRICE} to watch, once.</strong>
+      </>
+    ),
+    letterTail:
+      "Watch it, and you will know what the business asks of you before you spend anything on it. That seemed worth more than what we charge for it.",
+    footerLine: "The wholesale business, taught properly.",
+    // The playbook section sells this same bundle. On the paid page the reader
+    // has just been asked to buy it, so selling it again below is noise.
+    showPlaybook: false,
+    fineprint: `One payment of ${PRICE}, not a subscription. The rest of the Apex software is on a paid plan.`,
+  },
+} as const;
+
+/**
  * The paid offer that follows the free course: the FBA Starter Bundle.
  *
  * The Keepa Playbook is the part of it this section shows, but the bundle is
@@ -39,7 +147,6 @@ const LOGIN_HREF = "/auth?mode=login&plan=free";
  * button that advertises one number and charges another is the fastest way to
  * lose someone who already trusted us enough to click.
  */
-const BUNDLE_PRICE = "$29";
 const BUNDLE_HREF = "/fba-starter-bundle";
 
 /** The rest of what the bundle carries, read off /fba-starter-bundle. */
@@ -148,11 +255,7 @@ const modules: [string, string, string, string][] = [
   ],
 ];
 
-const faqs: [string, string][] = [
-  [
-    "Is the course really free?",
-    "Yes. Create an account and Apex University opens. No card, no plan, nothing to cancel. The Review Booster and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.",
-  ],
+const sharedFaqs: [string, string][] = [
   [
     "Do I need to be selling already?",
     "No. The first module starts before your first order: what the business is, what suppliers expect, and what to have ready. If you are already selling, start at Suppliers or Product Research instead.",
@@ -165,13 +268,40 @@ const faqs: [string, string][] = [
     "Will this guarantee I get approved or make money?",
     "No, and nothing that says otherwise is telling you the truth. Each supplier sets its own account requirements, Amazon decides selling approvals, and what you earn depends on what you buy. The course teaches the process, not an outcome.",
   ],
-  [
-    "What happens after I watch it?",
-    "You keep the account. If you want the software the course demonstrates, the scanner, purchase orders and analytics, that is a paid plan, and you can start one whenever it makes sense. Nothing expires if you don't.",
-  ],
 ];
 
-export default function FreeCourse() {
+const faqsByVariant: Record<CourseVariant, [string, string][]> = {
+  free: [
+    [
+      "Is the course really free?",
+      "Yes. Create an account and Apex University opens. No card, no plan, nothing to cancel. The Review Booster and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.",
+    ],
+    ...sharedFaqs,
+    [
+      "What happens after I watch it?",
+      "You keep the account. If you want the software the course demonstrates, the scanner, purchase orders and analytics, that is a paid plan, and you can start one whenever it makes sense. Nothing expires if you don't.",
+    ],
+  ],
+  paid: [
+    [
+      `What exactly does the ${PRICE} buy?`,
+      `The nine videos, an extended trial of the Apex suite, three vetted wholesale suppliers, the Review Booster for life, and the Keepa Playbook with the Ungating SOP. One payment of ${PRICE}. It does not start a subscription.`,
+    ],
+    ...sharedFaqs,
+    [
+      "What happens after I watch it?",
+      "You keep the account and everything that came with it. If you want to keep using the software beyond the extended trial, that is a paid plan, and you can start one whenever it makes sense.",
+    ],
+    [
+      "Can I get a refund?",
+      "Email us and we will sort it out. The course is nine videos and you will know inside an evening whether it was worth it.",
+    ],
+  ],
+};
+
+export default function CourseLanding({ variant = "free" }: { variant?: CourseVariant }) {
+  const copy = VARIANTS[variant];
+  const paid = variant === "paid";
   const roadmapRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -190,27 +320,23 @@ export default function FreeCourse() {
             APEX<small>APPLICATIONS</small>
           </span>
         </a>
-        <a className="nav-cta" href={ENROL_HREF}>
+        <a className="nav-cta" href={copy.href}>
           Start free <span aria-hidden="true">↗</span>
         </a>
       </header>
 
       <main>
         <section className="hero">
-          <p className="eyebrow">APEX UNIVERSITY · FREE COURSE</p>
+          <p className="eyebrow">{copy.eyebrow}</p>
           <h1>
             From zero to{" "}
             <br />
             <mark>Amazon hero.</mark>
           </h1>
-          <p className="hero-sub">
-            The wholesale business, taught in nine videos.{" "}
-            <br />
-            Free inside Apex University. No card, no plan.
-          </p>
-          <a className="hero-cta" href={ENROL_HREF}>
-            Start the Free Course <span aria-hidden="true">→</span>
-            <small>Create a free account, no card required</small>
+          <p className="hero-sub">{copy.heroSub}</p>
+          <a className="hero-cta" href={copy.href}>
+            {copy.heroCta} <span aria-hidden="true">→</span>
+            <small>{copy.heroNote}</small>
           </a>
           {/* No hero illustration yet. The only one available is the book
               whose cover reads "First Order Roadmap" — a different offer by
@@ -229,8 +355,8 @@ export default function FreeCourse() {
             <span>Suppliers, research, purchasing</span>
           </div>
           <div>
-            <strong>Free account</strong>
-            <span>No card. Nothing to cancel.</span>
+            <strong>{copy.proof[0]}</strong>
+            <span>{copy.proof[1]}</span>
           </div>
         </section>
 
@@ -258,12 +384,9 @@ export default function FreeCourse() {
             <p>
               So we filmed the answers in the order you actually need them, and put them inside
               Apex where the tools they describe already live.{" "}
-              <strong>It costs nothing to watch.</strong>
+              {copy.letterClose}
             </p>
-            <p>
-              Watch it, and you will know what the business asks of you before you spend anything
-              on it. That seemed like the right thing to give away.
-            </p>
+            <p>{copy.letterTail}</p>
             <div className="signature">
               Stefano<span>Founder, Apex Applications</span>
             </div>
@@ -354,8 +477,8 @@ export default function FreeCourse() {
               The scanner, the purchase order builder and the analytics in these videos are the
               ones in your account. Watch a module, then open the screen it just showed you.
             </p>
-            <a href={ENROL_HREF} className="text-cta">
-              Start the Free Course <span aria-hidden="true">↗</span>
+            <a href={copy.href} className="text-cta">
+              {copy.textCta} <span aria-hidden="true">↗</span>
             </a>
           </div>
           <div className="video-frame">
@@ -406,29 +529,16 @@ export default function FreeCourse() {
 
         <section className="booking section" id="enrol">
           <div className="booking-intro">
-            <p className="eyebrow">YOUR NEXT STEP</p>
-            <h2>
-              Start the course.
-              <br />
-              <span className="blue">It costs nothing.</span>
-            </h2>
-            <p>
-              Create a free Apex account and Apex University opens straight away. The Review
-              Booster and three UPC scans come with it.
-            </p>
-            <p className="booking-note">
-              No card is taken. There is no trial to run out, and nothing to cancel.
-            </p>
+            <p className="eyebrow">{copy.enrolEyebrow}</p>
+            <h2>{copy.enrolHead}</h2>
+            <p>{copy.enrolLead}</p>
+            <p className="booking-note">{copy.enrolNote}</p>
           </div>
 
           <div className="booking-form">
-            <p className="enrol-lead">Your free account includes</p>
+            <p className="enrol-lead">{copy.includesLead}</p>
             <ul className="enrol-list">
-              {[
-                ["Apex University", "Nine videos, four modules, from zero to your first order."],
-                ["Review Booster", "Automated Amazon review requests on eligible orders."],
-                ["3 UPC scans", "Run a supplier list through the scanner and see it work."],
-              ].map(([name, detail]) => (
+              {copy.includes.map(([name, detail]) => (
                 <li key={name}>
                   <span aria-hidden="true">✓</span>
                   <span>
@@ -438,16 +548,22 @@ export default function FreeCourse() {
                 </li>
               ))}
             </ul>
-            <a className="booking-submit" href={ENROL_HREF}>
-              Create My Free Account <span aria-hidden="true">→</span>
+            <a className="booking-submit" href={copy.href}>
+              {copy.enrolCta} <span aria-hidden="true">→</span>
             </a>
             <p className="form-helper">
-              Takes about a minute. No card required. Already enrolled?{" "}
-              <a href={LOGIN_HREF}>Log in</a>.
+              {copy.helper}{" "}
+              {paid ? (
+                <>
+                  Already bought it? <a href={LOGIN_HREF}>Log in</a>.
+                </>
+              ) : (
+                <>
+                  Already enrolled? <a href={LOGIN_HREF}>Log in</a>.
+                </>
+              )}
             </p>
-            <p className="fineprint">
-              The course and these tools are free. The rest of the Apex software is on a paid plan.
-            </p>
+            <p className="fineprint">{copy.fineprint}</p>
           </div>
         </section>
 
@@ -458,7 +574,7 @@ export default function FreeCourse() {
             you might be wondering.
           </h2>
           <div>
-            {faqs.map(([q, a]) => (
+            {faqsByVariant[variant].map(([q, a]) => (
               <details key={q}>
                 <summary>
                   {q}
@@ -470,6 +586,7 @@ export default function FreeCourse() {
           </div>
         </section>
 
+        {copy.showPlaybook && (
         <section className="playbook section">
           <div className="section-heading">
             <p className="eyebrow">AFTER THE FREE COURSE</p>
@@ -481,7 +598,7 @@ export default function FreeCourse() {
             <p>
               The course teaches you to read a listing. The playbook is the worksheets you fill in
               while you do it: the roadmap, the profit maths, the supplier script and the purchase
-              order. It comes in the {BUNDLE_PRICE} Starter Bundle, alongside the software and the
+              order. It comes in the {PRICE} Starter Bundle, alongside the software and the
               suppliers to use it on.
             </p>
           </div>
@@ -558,7 +675,7 @@ export default function FreeCourse() {
                 loading="lazy"
               />
               <figcaption>
-                <span className="playbook-price">{BUNDLE_PRICE}</span>
+                <span className="playbook-price">{PRICE}</span>
                 <span>one-time</span>
               </figcaption>
             </figure>
@@ -574,13 +691,14 @@ export default function FreeCourse() {
               ))}
             </ul>
             <a className="playbook-cta" href={BUNDLE_HREF}>
-              Get the Starter Bundle for {BUNDLE_PRICE} <span aria-hidden="true">&rarr;</span>
+              Get the Starter Bundle for {PRICE} <span aria-hidden="true">&rarr;</span>
             </a>
             <p className="form-helper">
               Instant access, one-time payment. The free course stays free either way.
             </p>
           </div>
         </section>
+        )}
       </main>
 
       <footer className="footer">
@@ -590,7 +708,7 @@ export default function FreeCourse() {
             APEX<small>APPLICATIONS</small>
           </span>
         </a>
-        <p>The wholesale business, taught for free.</p>
+        <p>{copy.footerLine}</p>
         <div className="footer-bottom">
           <span>© 2026 Apex Applications</span>
           <div>

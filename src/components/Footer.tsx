@@ -22,7 +22,8 @@ export default function Footer() {
   const hasOwnFooter =
     pathname === "/first-order-roadmap" ||
     pathname === "/zero-to-hero" ||
-    pathname === "/free-course";
+    pathname === "/free-course" ||
+    pathname === "/wholesale-course";
   if (hasOwnFooter) return null;
 
   if (isMinimalFooterPage) {

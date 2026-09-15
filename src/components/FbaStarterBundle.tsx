@@ -27,7 +27,7 @@ const amazonSellerSalesImage = "/images/fba-starter-bundle/amazon-seller-app-sal
 
 const COUNTDOWN_SECONDS = 9 * 60;
 
-const CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
+import { BUNDLE_CHECKOUT_URL as CHECKOUT_URL } from "../config/offer";
 
 const includes = [
   {

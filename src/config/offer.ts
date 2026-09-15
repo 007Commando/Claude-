@@ -29,6 +29,16 @@
 export const TRIAL_DAYS = 7;
 
 /**
+ * PUBLISHED — the FBA Starter Bundle: one payment, no subscription.
+ *
+ * The price and the Stripe link live together because they have to agree, and
+ * two pages now sell it: /fba-starter-bundle and the paid variant of the
+ * course landing page.
+ */
+export const BUNDLE_PRICE = 29;
+export const BUNDLE_CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
+
+/**
  * PUBLISHED — a paid first phase, charged once, in place of free days.
  *
  * Starter opens at $1 for 5 days and then bills monthly. Stripe has no "trial
