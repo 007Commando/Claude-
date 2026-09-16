@@ -38,7 +38,7 @@ export default function CompareHelium10() {
           rivalName="Helium 10"
           rows={[
             { label: "Built for", apex: "Wholesale & third-party reselling", rival: "Private label & brand launch" },
-            { label: "Entry price", apex: "$149.99/mo (Starter)", rival: "$129/mo Platinum · $359/mo Diamond ($99/$279 annual)" },
+            { label: "Entry price", apex: "$149/mo (Starter)", rival: "$129/mo Platinum · $359/mo Diamond ($99/$279 annual)" },
             { label: "Free trial", apex: "7 days, every plan", rival: "Limited free plan" },
             { label: "Keyword research & listing optimization", apex: false, rival: "Best in class (Cerebro, 30+ tools)" },
             { label: "PPC / AI advertising tools", apex: false, rival: true },
@@ -54,7 +54,7 @@ export default function CompareHelium10() {
         <PriceBars
           items={[
             { label: "Helium 10 Platinum", price: 129, caption: "Keywords, listings, launch tooling" },
-            { label: "Apex Starter, whole suite", price: 149.99, caption: "Wholesale research + POs + repricer + P&L", apex: true },
+            { label: "Apex Starter, whole suite", price: 149, caption: "Wholesale research + POs + repricer + P&L", apex: true },
             { label: "Helium 10 Diamond", price: 359, caption: "Higher limits, AI ad tools" },
           ]}
         />

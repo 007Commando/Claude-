@@ -116,12 +116,20 @@ export interface Plan {
  * on it; Stripe does not reprice an existing subscription when the Price
  * changes, and no migration was asked for. So this figure is what a new
  * customer pays, which is what a pricing page is for.
+ *
+ * The pre-repricing figure is $149, not $149.99. Reconciled against the live
+ * Price `price_1SxxtV09vRtiSO1RFrsNK8Cd` on September 16, 2026, which is
+ * `unit_amount: 14900` and is the Price both our own checkout and the
+ * zero-to-hero payment link charge. The site had been quoting 99 cents that
+ * nobody was ever billed -- harmless to the customer, but it is exactly the
+ * kind of drift this file exists to catch, and a page that overstates its own
+ * price is a page that cannot be trusted on the ones that matter.
  */
 export const PLANS: Plan[] = [
   {
     id: "starter",
     name: "Starter",
-    monthly: NEW_PRICING_LIVE ? 69 : 149.99,
+    monthly: NEW_PRICING_LIVE ? 69 : 149,
     fitsWho: "Sellers building their first supplier catalogue and purchase orders.",
     href: "/pricing",
   },
@@ -164,6 +172,15 @@ export const formatPrice = (amount: number): string =>
   `$${amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2)}`;
 
 /**
+ * Stripe Tax is enabled on checkout, so the total a buyer sees can exceed the
+ * figure beside the button depending on where they are. Saying so costs four
+ * words and removes the only surprise left in the flow -- an unannounced line
+ * item at the moment someone is deciding to trust you is worth more in
+ * abandoned checkouts than it saves in copy.
+ */
+export const TAX_SUFFIX = ", plus tax where applicable";
+
+/**
  * The sentence that appears under a trial button.
  *
  * One string, so the terms beside every CTA on the site say the same thing. It
@@ -177,10 +194,10 @@ export const trialTerms = (planId: Plan["id"] = "starter"): string => {
   if (paid) {
     return `${formatPrice(paid.price)} for your first ${paid.days} days, then ${formatPrice(
       plan.monthly,
-    )} a month. Cancel any time before day ${paid.days + 1}.`;
+    )} a month${TAX_SUFFIX}. Cancel any time before day ${paid.days + 1}.`;
   }
 
-  return `${TRIAL_DAYS} days free, then ${formatPrice(plan.monthly)} a month. Card required, nothing charged until day ${TRIAL_DAYS + 1}. Cancel any time before then.`;
+  return `${TRIAL_DAYS} days free, then ${formatPrice(plan.monthly)} a month${TAX_SUFFIX}. Card required, nothing charged until day ${TRIAL_DAYS + 1}. Cancel any time before then.`;
 };
 
 /** Short form, for places with no room for the full terms. */

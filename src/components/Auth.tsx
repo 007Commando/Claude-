@@ -48,6 +48,21 @@ declare global {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
       }) => Promise<unknown>;
+      /**
+       * Present only on builds that know about the card-first funnel. This
+       * file is served from app.apexapplications.io and cached hard, so an
+       * older copy has to keep working -- hence optional, and hence the
+       * script reads the session id from the URL itself rather than waiting
+       * to be handed one.
+       */
+      getPrepaidCheckout?: () => Promise<{
+        email: string | null;
+        hasSubscription: boolean;
+        complete: boolean;
+      } | null>;
+      adoptPrepaidCheckout?: () => Promise<
+        "adopted" | "duplicate" | "ignored" | null
+      >;
       sendPasswordResetEmail: (email: string) => Promise<unknown>;
       signOut: (opts?: { clearApp?: boolean }) => Promise<unknown> | void;
       getIdToken?: () => Promise<string | null>;
@@ -281,6 +296,22 @@ export default function Auth() {
   const periodParam = params.get("period");
   const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
 
+  /**
+   * The card-first arrival.
+   *
+   * The zero-to-hero CTA goes to Stripe first, so people reach this form with
+   * a card already on file and `?session_id=cs_...` in the URL. Two things
+   * change when that is true: the page stops promising a checkout that has
+   * already happened, and the email field is filled from the session and
+   * locked. That last part is not cosmetic -- the server only adopts a paid
+   * session onto an account registering the same address, so a buyer who
+   * typed a different one here would sign up with no subscription behind
+   * their card and be asked to pay twice.
+   */
+  const sessionIdParam = params.get("session_id");
+  const [prepaidEmail, setPrepaidEmail] = useState<string | null>(null);
+  const isPrepaid = !!sessionIdParam && /^cs_(test|live)_/.test(sessionIdParam);
+
   const formCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     formCardRef.current?.scrollIntoView({
@@ -311,6 +342,32 @@ export default function Auth() {
   // into the course, or on to a plan.
   const [onFreePlan, setOnFreePlan] = useState(false);
   const [continuing, setContinuing] = useState(false);
+
+  /**
+   * Fill the email from the paid session as soon as the script can tell us.
+   *
+   * Failure here is deliberately quiet: an unreadable session leaves an
+   * ordinary editable field rather than an error on a page someone has just
+   * paid to reach. The server still refuses to adopt a mismatched address, so
+   * the guarantee does not rest on this working.
+   */
+  useEffect(() => {
+    if (!isPrepaid) return;
+    let cancelled = false;
+
+    waitForApexAuth()
+      .then((auth) => auth.getPrepaidCheckout?.() ?? null)
+      .then((prepaid) => {
+        if (cancelled || !prepaid?.email) return;
+        setPrepaidEmail(prepaid.email);
+        setEmail(prepaid.email);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isPrepaid]);
 
   // The auth-state effect below runs once (deps: []), so it can't close over
   // isFreeSignup directly — a ref keeps the current value available to it.
@@ -514,14 +571,50 @@ export default function Auth() {
       } else {
         const parsed = loginSchema.safeParse({ email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
+        /**
+         * Someone who paid and turned out to already have an account signs in
+         * here. Hold the redirect until the payment has been attached: once
+         * the app has them, the session id is gone from the URL and the
+         * charge has nowhere to land.
+         */
         await withAuthRetry(() =>
-          auth.signIn(parsed.data.email, parsed.data.password),
+          auth.signIn(parsed.data.email, parsed.data.password, {
+            redirect: !isPrepaid,
+          }),
         );
+        if (isPrepaid) {
+          const status = (await auth.adoptPrepaidCheckout?.()) ?? null;
+          if (status === "duplicate") {
+            setLoading(false);
+            setInfo(
+              "You already had a subscription, so we have not charged you twice — " +
+                "the second payment is flagged for refund and support will confirm by email.",
+            );
+            return;
+          }
+          forwardToApp(auth);
+        }
         // Auto-redirects on success
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
-      setError(getFriendlyAuthError(msg));
+      /**
+       * Paid, then found out they already have an account. Being told to try
+       * logging in is not enough here -- they have just been charged, so put
+       * them on the login tab with their email still in the field and say
+       * what happens next, rather than leaving them to work it out.
+       */
+      if (isPrepaid && /already (exists|in use)/i.test(msg)) {
+        setModeOverride("login");
+        setPassword("");
+        setError(null);
+        setInfo(
+          "You already have an Apex account with this email. Log in and we'll " +
+            "put the plan you just paid for onto it.",
+        );
+      } else {
+        setError(getFriendlyAuthError(msg));
+      }
     } finally {
       setLoading(false);
     }
@@ -581,21 +674,32 @@ export default function Auth() {
     },
   ];
 
+  /**
+   * Someone arriving from Stripe has already done the part this page used to
+   * ask for, so promising them a free trial they have started reads as though
+   * the payment did not register.
+   */
   const heading =
     mode === "signup"
-      ? "Create your account"
+      ? isPrepaid
+        ? "Finish setting up"
+        : "Create your account"
       : mode === "forgot"
         ? "Reset your password"
         : "Welcome back";
   const sub =
     mode === "signup"
-      ? "Start your free trial today"
+      ? isPrepaid
+        ? "Your trial has started — this is the last step"
+        : "Start your free trial today"
       : mode === "forgot"
         ? "We'll email you a reset link"
         : "Log in to your Apex dashboard";
   const cta =
     mode === "signup"
-      ? "Start free trial"
+      ? isPrepaid
+        ? "Create account"
+        : "Start free trial"
       : mode === "forgot"
         ? "Send reset link"
         : "Log in";
@@ -807,7 +911,12 @@ export default function Auth() {
 
                   {mode === "signup" && (
                     <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
-                      {isFreeSignup ? (
+                      {isPrepaid ? (
+                        <span className="inline-flex items-center justify-center gap-1.5">
+                          <CheckCircle2 className="h-3.5 w-3.5" strokeWidth={2.5} />
+                          Card saved. Nothing else to pay — pick a password and you&apos;re in.
+                        </span>
+                      ) : isFreeSignup ? (
                         <>Free account, no card, no plan. Apex University and Review Booster included.</>
                       ) : (
                         <>
@@ -940,15 +1049,36 @@ export default function Auth() {
                             handleFieldBlur("email", e.target.value)
                           }
                           aria-invalid={!!fieldErrors.email}
-                          className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white focus:ring-2 outline-none text-slate-900 ${
-                            fieldErrors.email
-                              ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                              : "border-slate-200 focus:border-brand focus:ring-brand/20"
+                          /**
+                           * Locked to the address the card was paid with. The
+                           * account only inherits that subscription when the
+                           * two match, so an editable field here is a way to
+                           * be charged and still land without a plan.
+                           */
+                          readOnly={mode === "signup" && !!prepaidEmail}
+                          className={`w-full pl-11 pr-4 py-3 rounded-xl border focus:ring-2 outline-none text-slate-900 ${
+                            mode === "signup" && prepaidEmail
+                              ? "bg-slate-50 border-slate-200 cursor-not-allowed"
+                              : fieldErrors.email
+                                ? "bg-white border-red-300 focus:border-red-400 focus:ring-red-100"
+                                : "bg-white border-slate-200 focus:border-brand focus:ring-brand/20"
                           }`}
                           placeholder="your.email@example.com"
                           required
                         />
                       </div>
+                      {mode === "signup" && prepaidEmail && (
+                        <p className="mt-1.5 text-xs font-medium text-slate-500">
+                          The email you paid with. Need a different one?{" "}
+                          <a
+                            href="mailto:support@apexapplications.io"
+                            className="font-bold text-brand hover:underline"
+                          >
+                            Tell us
+                          </a>{" "}
+                          and we&apos;ll move it across.
+                        </p>
+                      )}
                       {fieldErrors.email && (
                         <p className="mt-1.5 text-xs font-medium text-red-600">
                           {fieldErrors.email}

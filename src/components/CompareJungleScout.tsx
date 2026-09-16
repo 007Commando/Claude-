@@ -38,7 +38,7 @@ export default function CompareJungleScout() {
           rivalName="Jungle Scout"
           rows={[
             { label: "Built for", apex: "Wholesale & third-party reselling", rival: "Private label research & launch" },
-            { label: "Entry price", apex: "$149.99/mo (Starter)", rival: "$49/mo Starter · $79 Growth · $149 Brand Owner + CI" },
+            { label: "Entry price", apex: "$149/mo (Starter)", rival: "$49/mo Starter · $79 Growth · $149 Brand Owner + CI" },
             { label: "Free trial", apex: "7 days, every plan", rival: "None; 7-day money-back" },
             { label: "Niche & demand validation", apex: false, rival: "Best in class (Opportunity Finder)" },
             { label: "Manufacturer sourcing (make your product)", apex: false, rival: "Supplier Database" },
@@ -56,7 +56,7 @@ export default function CompareJungleScout() {
             { label: "Jungle Scout Starter", price: 49, caption: "Product research, browser extension" },
             { label: "Jungle Scout Growth", price: 79, caption: "Adds listing & keyword tooling" },
             { label: "Jungle Scout Brand Owner + CI", price: 149, caption: "Competitive Intelligence, top tier only" },
-            { label: "Apex Starter, whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
+            { label: "Apex Starter, whole suite", price: 149, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
           ]}
         />
 

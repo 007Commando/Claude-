@@ -47,7 +47,7 @@ export type Comparison = {
 /** Apex's own entry price, repeated in the bars. Kept in one place here. */
 const APEX_BAR = {
   label: "Apex Starter (whole suite)",
-  price: 149.99,
+  price: 149,
   caption: "Every module, no listing or revenue caps",
   apex: true,
 };
@@ -76,7 +76,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Dedicated repricing platform" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$47/mo, rising to $97 / $197 / $297" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$47/mo, rising to $97 / $197 / $297" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Repricing automation", apex: true, rival: true },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
@@ -115,7 +115,7 @@ export const COMPARISONS: Comparison[] = [
       "Tiered repricing with both AI and rule-based capacity, starting well below a suite subscription. If repricing is the only gap, the entry tier is worth pricing out.",
     title: "Apex vs BQool (2026): Cheaper Repricing, or Fewer Tools | Apex Applications",
     description:
-      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite at $149.99. Current pricing, checked September 2026.",
+      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite at $149. Current pricing, checked September 2026.",
     h1: "Apex Applications vs BQool",
     intro:
       "BQool offers tiered repricing with both AI and rule-based capacity, and its lower entry price may suit a seller who needs exactly that function and nothing else. Apex Gold is a repricer inside a wholesale suite, priced as part of it. Read the entry tiers carefully: BQool's lowest tier distinguishes how many listings it will reprice with AI from how many it will reprice by rule.",
@@ -130,7 +130,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Tiered repricing tool" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$25/mo, rising to $50 / $100 / $200 / $300" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$25/mo, rising to $50 / $100 / $200 / $300" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "AI repricing", apex: false, rival: true },
       { label: "Rule-based repricing", apex: true, rival: true },
@@ -170,7 +170,7 @@ export const COMPARISONS: Comparison[] = [
       "Automated repricing on one flat monthly price, with no user or listing limits published. A clean offer if repricing is the whole job.",
     title: "Apex vs Informed Repricer (2026): Flat-Rate Repricing Compared | Apex Applications",
     description:
-      "Informed Repricer is $199/month flat with a 14-day no-card trial and no published listing limits. Apex Gold reprices from break-even floors inside a $149.99 suite. Checked September 2026.",
+      "Informed Repricer is $199/month flat with a 14-day no-card trial and no published listing limits. Apex Gold reprices from break-even floors inside a $149 suite. Checked September 2026.",
     h1: "Apex Applications vs Informed Repricer",
     intro:
       "Informed emphasises automated repricing on a flat monthly offer, and its pricing page lists no user or listing limits, a genuinely simple proposition if repricing is what you are buying. Validate the supported marketplaces and features against your own operation. Apex Gold prices from break-even floors computed inside the suite that holds your costs.",
@@ -185,7 +185,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Automated repricing, flat rate" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$199/mo flat" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$199/mo flat" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Published listing limits", apex: "None", rival: "None listed on their pricing page" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
@@ -210,8 +210,8 @@ export const COMPARISONS: Comparison[] = [
       "Your pricing, buying and profit reporting should share one set of numbers.",
     ],
     ctaLine:
-      "Their repricer is $199. The entire Apex suite, repricer included, is $149.99.",
-    shotCaption: "Everything in this window is in the $149.99 plan, not just the repricing tab.",
+      "Their repricer is $199. The entire Apex suite, repricer included, is $149.",
+    shotCaption: "Everything in this window is in the $149 plan, not just the repricing tab.",
     sources: [
       { label: "Informed Repricer pricing", href: "https://www.informedrepricer.com/pricing" },
     ],
@@ -240,7 +240,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Amazon wholesale suite incl. repricer", rival: "Multichannel repricing" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$99/mo, rising to $299 / $499" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$99/mo, rising to $299 / $499" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Channels beyond Amazon", apex: false, rival: true },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Net-margin features vary by tier" },
@@ -294,7 +294,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale catalog scanning and buying", rival: "Single-product research across formats" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$19.95/mo, rising to $29.95 / $49.95" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$19.95/mo, rising to $29.95 / $49.95" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "Mobile scanning app", apex: false, rival: true },
       { label: "Browser extension", apex: false, rival: true },
@@ -347,7 +347,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Amazon wholesale suite", rival: "Sourcing, price lists, purchasing, repricing" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "Pro $29.99, Business $79.99, Business Plus $189.99" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Pro $29.99, Business $79.99, Business Plus $189.99" },
       { label: "Free trial", apex: "7 days, card required", rival: "Varies by plan and billing interval" },
       { label: "Price-list analysis", apex: true, rival: true },
       { label: "Browser extension", apex: false, rival: true },
@@ -404,7 +404,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite incl. bulk scanning", rival: "Bulk catalog analysis" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "Free tier; Unlimited $70/mo, or $60/mo billed annually" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Free tier; Unlimited $70/mo, or $60/mo billed annually" },
       { label: "Free tier", apex: "7-day trial of everything", rival: "One file a month, up to 10,000 products" },
       { label: "Bulk catalog scanning", apex: true, rival: true },
       { label: "Repricing", apex: "Included (Apex Gold)", rival: false },
@@ -457,7 +457,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite incl. bulk scanning", rival: "Catalog scanning and identifier tools" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "Free weekly scan; Growth $49, Scale $69" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Free weekly scan; Growth $49, Scale $69" },
       { label: "Free tier", apex: "7-day trial of everything", rival: "One weekly scan, up to 50,000 products" },
       { label: "Bulk catalog scanning", apex: true, rival: true },
       { label: "Identifier lookup tools", apex: "Not published", rival: true },
@@ -510,7 +510,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite incl. profit reporting", rival: "Profit analytics, expanding into operations" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "Standard $179/year, presented as about $15/month" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Standard $179/year, presented as about $15/month" },
       { label: "Billing interval", apex: "Monthly or annual", rival: "The $15 figure is an annual equivalent, not a verified monthly price" },
       { label: "Free trial", apex: "7 days, card required", rival: "One month, no card" },
       { label: "Profit and loss reporting", apex: true, rival: true },
@@ -558,7 +558,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite; shipment module in beta", rival: "Part of the Threecolts Seller 365 bundle" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "Seller 365 Standard $69/mo" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Seller 365 Standard $69/mo" },
       { label: "Free trial", apex: "7 days, card required", rival: "7 days, plus 7 more after an eligible seller-account connection; their help material says a card is required" },
       { label: "Listing and shipment preparation", apex: "Apex Red (beta)", rival: true },
       { label: "Accounting workflow", apex: true, rival: true },
@@ -615,7 +615,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite; shipment module in beta", rival: "Listing and shipment preparation" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$49.99/mo" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$49.99/mo" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "Listing and shipment preparation", apex: "Apex Red (beta)", rival: true },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
@@ -666,7 +666,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Wholesale suite; shipment module in beta", rival: "Operational workflow, labels, shipping economics" },
-      { label: "Entry price", apex: "$149.99/mo for the whole suite", rival: "$97/mo displayed" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$97/mo displayed" },
       { label: "Free trial", apex: "7 days, card required", rival: "Their copy conflicted when checked; confirm on their site" },
       { label: "2D barcode support", apex: "Verify against your own requirement", rival: "Verify against your own requirement" },
       { label: "Carrier discounts", apex: false, rival: "Verify the current terms directly" },

@@ -38,7 +38,7 @@ export default function CompareSellerSnap() {
           rivalName="Seller Snap"
           rows={[
             { label: "What it is", apex: "Full suite incl. repricer (Apex Gold)", rival: "Dedicated AI repricer" },
-            { label: "Entry price", apex: "$149.99/mo, whole suite", rival: "$100/mo (1,000 SKUs, $15k/mo revenue cap, annual commitment); Standard $500/mo" },
+            { label: "Entry price", apex: "$149/mo, whole suite", rival: "$100/mo (1,000 SKUs, $15k/mo revenue cap, annual commitment); Standard $500/mo" },
             { label: "Free trial", apex: "7 days, card required", rival: "Demo or trial by arrangement, ask them directly" },
             { label: "Game-theory AI repricing", apex: false, rival: true },
             { label: "Break-even floors from live FBA fees", apex: true, rival: "Not verified" },
@@ -56,7 +56,7 @@ export default function CompareSellerSnap() {
         <PriceBars
           items={[
             { label: "Seller Snap Starter", price: 100, caption: "1,000 SKUs, $15k/mo revenue cap, annual commitment" },
-            { label: "Apex Starter, whole suite", price: 149.99, caption: "Repricer with break-even floors, plus the rest of the suite", apex: true },
+            { label: "Apex Starter, whole suite", price: 149, caption: "Repricer with break-even floors, plus the rest of the suite", apex: true },
             { label: "Seller Snap Accelerator", price: 250, caption: "Repricing only, higher caps" },
             { label: "Seller Snap Standard", price: 500, caption: "Repricing only" },
           ]}
@@ -74,7 +74,7 @@ export default function CompareSellerSnap() {
           chooseApex={[
             "You want repricing anchored to true break-evens computed from your real fees. Not min/max fields you have to calculate yourself.",
             "The repricer should share a platform with your POs, restock math, and P&L, so a price floor and a reorder decision use the same numbers.",
-            "You'd rather pay $149.99 for a whole suite than a comparable amount for repricing alone. Check both plans' limits against your own volume before choosing.",
+            "You'd rather pay $149 for a whole suite than a comparable amount for repricing alone. Check both plans' limits against your own volume before choosing.",
           ]}
         />
 

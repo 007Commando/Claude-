@@ -105,7 +105,7 @@ export function CompareCta({ line }: { line: string }) {
       >
         Start the 7-day free trial <ArrowRight size={18} />
       </Link>
-      <p className="text-xs text-slate-400 mt-4">Starter $149.99/mo · Pro $299/mo · repricer included in both</p>
+      <p className="text-xs text-slate-400 mt-4">Starter $149/mo · Pro $299/mo · repricer included in both</p>
     </motion.div>
   );
 }

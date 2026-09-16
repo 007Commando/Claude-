@@ -114,7 +114,7 @@ export default function StartPage() {
               </Link>
             </div>
             <p className="mt-6 text-sm text-slate-400">
-              $149.99 a month after the trial. Cancel any time before it ends.
+              $149 a month after the trial. Cancel any time before it ends.
             </p>
           </div>
         </Rail>

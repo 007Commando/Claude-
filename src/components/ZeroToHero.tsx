@@ -37,13 +37,24 @@ import "./apex-surface.css";
 const ORIGIN = "https://www.apexapplications.io";
 
 /**
- * Every CTA lands here.
+ * Every CTA lands on Stripe, and the account form comes after it.
  *
- * Starter monthly, because that is the plan whose price on this site has been
- * reconciled with the live Stripe price. `period=monthly` is explicit: the
- * terms quoted beside the button are the monthly ones.
+ * This is the inversion of how the page used to work, and it is deliberate.
+ * The old order — signup form, then checkout — was producing accounts and no
+ * cards: eight signups in a day and not one payment method, because the form
+ * is the tedious part and people did it, arrived inside the app, and never
+ * came back for the step that mattered. Asking for the card while the page
+ * that convinced them is still on screen puts the decision and the commitment
+ * in the same moment.
+ *
+ * The link is Starter monthly with a 7-day trial (`plink_1UGPEG09vRtiSO1R…`,
+ * price `price_1SxxtV09vRtiSO1RFrsNK8Cd`), and it redirects back to
+ * `/auth?mode=signup&plan=starter&period=monthly&session_id={CHECKOUT_SESSION_ID}`.
+ * That session id is what the signup form reads to fill in the buyer's email
+ * and what the server reads to attach the subscription they already hold, so
+ * the redirect and this constant have to change together or not at all.
  */
-const START_HREF = "/auth?mode=signup&plan=starter&period=monthly";
+const START_HREF = "https://buy.stripe.com/cNi00bcro9in6GS1Yvdwc0i";
 const STARTER = planById("starter");
 
 /** Written once; the sentence under every button is the same sentence. */

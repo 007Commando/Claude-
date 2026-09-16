@@ -36,7 +36,7 @@ export default function CompareSmartScout() {
           rivalName="SmartScout"
           rows={[
             { label: "What it is", apex: "Full wholesale operating suite", rival: "Research & market analytics" },
-            { label: "Entry price", apex: "$149.99/mo (Starter)", rival: "$49/mo (Basic, $29 on annual)" },
+            { label: "Entry price", apex: "$149/mo (Starter)", rival: "$49/mo (Basic, $29 on annual)" },
             { label: "Free trial", apex: "7 days, every plan", rival: "No trial; 7-day money-back" },
             { label: "Brand & product research", apex: true, rival: true },
             { label: "Supplier price-list scanning", apex: true, rival: true },
@@ -54,12 +54,12 @@ export default function CompareSmartScout() {
           items={[
             { label: "SmartScout Basic", price: 49, caption: "Research only, 25 keyword searches/mo" },
             { label: "SmartScout Essentials", price: 119, caption: "Full brand & keyword data" },
-            { label: "Apex Starter, whole suite", price: 149.99, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
+            { label: "Apex Starter, whole suite", price: 149, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
             { label: "SmartScout Business", price: 299, caption: "Adds exports and automation" },
           ]}
         />
 
-        <SuiteShot caption="What the $149.99 actually opens: the whole operating suite, not a research tab." />
+        <SuiteShot caption="What the $149 actually opens: the whole operating suite, not a research tab." />
 
         <HonestVerdict
           rivalName="SmartScout"
