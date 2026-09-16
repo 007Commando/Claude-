@@ -36,6 +36,7 @@ const apexBlackLogo = "/images/nav-logos/apex-black-logo.png";
 const apexBlueLogo = "/images/nav-logos/apex-blue-logo.png";
 const apexGreenLogo = "/images/nav-logos/apex-green-logo.png";
 const apexRedLogo = "/images/nav-logos/apex-red-logo.png";
+const apexGoldLogo = "/images/nav-logos/apex-gold-logo.png";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -308,17 +309,20 @@ export default function Navigation() {
                             onClick={() => handleFeatureClick('/features/gold')}
                             className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 hover:shadow-[0_0_28px_-2px_rgba(245,158,11,0.5)]"
                           >
-                            {/* Text mark until a gold logo PNG lands in /images/nav-logos */}
-                            <span className="h-11 flex items-center text-xl font-black tracking-tight text-slate-900">
-                              APEX <span className="text-amber-500 ml-1.5">GOLD</span>
-                            </span>
+                            <img src={apexGoldLogo} alt="Apex Gold" className="h-11 w-auto object-contain" />
                           </button>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
-                              { title: "Repricer", desc: "Automated Repricing Across Your Whole Catalog", icon: Zap, hash: "repricer" },
-                              { title: "Break-Even Floors", desc: "Floors From Real Fees: ROI, Margin or $ Profit Goals", icon: Gauge, hash: "floor-goals" },
-                              { title: "Strategies", desc: "Build Once, Assign in Bulk, Preview With Dry-Run", icon: Sliders, hash: "strategies" },
+                              /*
+                                Named as the app names them. These read
+                                Repricer / Break-Even Floors / Strategies,
+                                which are things the repricer does rather than
+                                screens anyone can go and open.
+                              */
+                              { title: "Listings", desc: "Set Repricing Rules On Your Live Listings", icon: Zap, hash: "repricer" },
+                              { title: "Strategy", desc: "Manage & Create New Repricing Strategies", icon: Sliders, hash: "strategies" },
+                              { title: "Price Activity", desc: "Every Price Decision The Repricer Has Made", icon: Gauge, hash: "floor-goals" },
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
@@ -438,13 +442,11 @@ export default function Navigation() {
                       {/*
                         Gold was in the desktop mega-menu and missing here, so
                         the repricer — the thing the paid search plan is built
-                        around — was unreachable from the menu on a phone. Text
-                        mark, matching desktop, until a gold logo PNG lands in
-                        /images/nav-logos.
+                        around — was unreachable from the menu on a phone.
                       */}
                       <button onClick={() => handleFeatureClick('/features/gold')} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left">
-                        <span className="h-7 flex items-center font-black tracking-tight text-amber-500">APEX GOLD</span>
-                        <span className="font-medium text-slate-700">Repricer</span>
+                        <img src={apexGoldLogo} alt="Apex Gold" className="h-7 w-auto object-contain" />
+                        <span className="font-medium text-slate-700">Apex Gold</span>
                       </button>
                  </div>
               </div>

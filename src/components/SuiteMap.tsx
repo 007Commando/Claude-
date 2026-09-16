@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import {
   Tag,
   SlidersHorizontal,
-  Eye,
   ScrollText,
   LayoutGrid,
   Star,
@@ -32,7 +31,7 @@ import bullBlack from "../assets/bull-black.png.asset.json";
 import bullBlue from "../assets/bull-blue.png.asset.json";
 import bullGreen from "../assets/bull-green.png.asset.json";
 import bullRed from "../assets/bull-red.png.asset.json";
-import bullGold from "../assets/apex-bull-logo.png.asset.json";
+import bullGold from "../assets/bull-gold.png.asset.json";
 
 type Suite = {
   key: "core" | "blue" | "green" | "gold" | "red";
@@ -122,11 +121,15 @@ const suites: Suite[] = [
     ring: "group-hover:ring-amber-500/20",
     iconText: "text-amber-500",
     beta: true,
+    /*
+      The three screens Apex Gold actually has, named as the app names them.
+      This listed four — Repricer, Strategies, Dry-Run Preview, Activity Log —
+      none of which is a heading anyone finds after signing up.
+    */
     items: [
-      { icon: Tag, title: "Repricer", desc: "Break-even floors computed from your own costs and fees" },
-      { icon: SlidersHorizontal, title: "Strategies", desc: "Assign a strategy across the catalog or tune it per SKU" },
-      { icon: Eye, title: "Dry-Run Preview", desc: "See every proposed move before it goes anywhere" },
-      { icon: ScrollText, title: "Activity Log", desc: "What was proposed, when, and why" },
+      { icon: Tag, title: "Listings", desc: "Set repricing rules on your live listings, with floors from your own costs and fees" },
+      { icon: SlidersHorizontal, title: "Strategy", desc: "Build a strategy once, assign it in bulk, preview it before it moves a price" },
+      { icon: ScrollText, title: "Price Activity", desc: "Every price decision the repricer has made, and why" },
     ],
   },
   {
