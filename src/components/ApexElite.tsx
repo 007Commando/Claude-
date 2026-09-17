@@ -318,6 +318,21 @@ export default function ApexElite() {
           </p>
 
           <div className="flex flex-col items-center gap-4">
+            {/*
+              Above the price, because the first question is not "how much"
+              but "will someone actually show me this". Light blue against the
+              brand orange below it: unmistakably a second door rather than a
+              competing one, so the page still has a single loudest action.
+            */}
+            <a
+              href={ONBOARDING_CALL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-blue-50 text-blue-700 ring-2 ring-inset ring-blue-200 px-10 py-4 rounded-[20px] font-black text-lg uppercase tracking-wide transition-all hover:bg-blue-100 hover:ring-blue-300 hover:scale-[1.02]"
+            >
+              <CalendarCheck size={18} strokeWidth={2.25} />
+              Schedule a 1 on 1 Demo
+            </a>
             <BuyButton className="bg-brand text-white px-10 py-4 rounded-[20px] font-black hover:scale-105 text-lg shadow-[0_20px_40px_rgba(249,115,22,0.3)] uppercase tracking-wide">
               Get Apex Elite for $297 <ArrowRight size={18} />
             </BuyButton>
