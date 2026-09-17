@@ -18,11 +18,13 @@ import {
   ChevronDown,
   Award,
   Headphones,
+  CalendarCheck,
 } from "lucide-react";
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
 import { PRICE_LIMITED_M } from "../data/planPricing";
+import { TRIAL_CHECKOUT_URL } from "../config/offer";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
@@ -37,12 +39,30 @@ const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-c
 const CHECKOUT_URL = "/api/elite-checkout";
 
 const ELITE_PRICE = 297;
+
+/**
+ * Where "teach me Amazon" goes.
+ *
+ * A real calendar rather than a contact form: the objection this answers is
+ * that nobody will be there afterwards, and a booked time on a named person's
+ * calendar answers it in a way a promise on a page cannot.
+ */
+const ONBOARDING_CALL_URL = "https://calendly.com/apexapplications-info/new-meeting";
 /**
  * The comparison that sells this page honestly: Elite's 90 days of the full
  * suite, priced against simply paying the Starter plan monthly for the same
  * 90 days -- software alone, none of the suppliers, playbooks, booster or
  * community. Computed from the live plan price so it can never go stale.
  */
+/**
+ * "150", not "150.00".
+ *
+ * A trailing .00 on a headline number reads like a form field rather than a
+ * saving, but a real fraction still has to survive if pricing ever lands on
+ * one -- so it is dropped only when there is nothing to drop.
+ */
+const dollars = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2));
+
 const THREE_MONTHS_STARTER = PRICE_LIMITED_M * 3;
 const ELITE_SAVINGS = THREE_MONTHS_STARTER - ELITE_PRICE;
 
@@ -383,6 +403,22 @@ export default function ApexElite() {
                   {`Continues at $${PRICE_LIMITED_M}/mo after day 90`}
                 </li>
               </ul>
+
+              {/*
+                Both routes now end in a way out, because a column of things
+                you do not get with no button under it is a dead end rather
+                than a choice. Outlined and grey against Elite's filled brand
+                button: this is a real option, and it is not the one the page
+                is arguing for.
+              */}
+              <a
+                href={TRIAL_CHECKOUT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-[20px] border-2 border-slate-200 text-slate-600 font-black text-sm uppercase tracking-wide transition-all hover:border-slate-300 hover:bg-slate-50"
+              >
+                {`Continue for $${dollars(PRICE_LIMITED_M)} per month`}
+              </a>
             </div>
 
             {/* Elite */}
@@ -431,7 +467,7 @@ export default function ApexElite() {
                 </li>
               </ul>
               <BuyButton className="mt-6 w-full bg-brand text-white px-8 py-3.5 rounded-[18px] font-black hover:scale-[1.02] shadow-lg uppercase tracking-wide">
-                Get Apex Elite <ArrowRight size={16} />
+                {`Save $${dollars(ELITE_SAVINGS)} Now!`} <ArrowRight size={16} />
               </BuyButton>
             </div>
           </div>
@@ -631,6 +667,26 @@ export default function ApexElite() {
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
+              {/*
+                The way in for someone who does not want to buy software, they
+                want to be taught. It sits above the price because that is the
+                question they have first -- "will anyone actually show me how
+                this works" -- and no number answers it.
+
+                Deliberately quieter than the buy button below: outlined rather
+                than filled, so the card still has one obvious primary action
+                and this reads as the alternative rather than a rival to it.
+              */}
+              <a
+                href={ONBOARDING_CALL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full mb-6 px-6 py-3.5 rounded-[20px] border-2 border-slate-200 text-slate-700 font-bold text-sm transition-all hover:border-brand hover:text-brand hover:bg-brand/5"
+              >
+                <CalendarCheck size={18} strokeWidth={2.25} />
+                Book a 1-on-1 onboarding call
+              </a>
+
               <div className="flex items-baseline justify-center gap-2 mb-1">
                 <span className="text-2xl font-bold text-slate-300 line-through">${totalValue}+</span>
                 <span className="text-5xl font-black text-slate-900">$297</span>
