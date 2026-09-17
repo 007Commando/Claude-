@@ -35,6 +35,22 @@ export const TRIAL_DAYS = 7;
  * two pages now sell it: /fba-starter-bundle and the paid variant of the
  * course landing page.
  */
+/**
+ * The paid trial's Stripe payment link — where a signup for a paid plan begins.
+ *
+ * Card first, account second. Kept here rather than in the one page that
+ * happened to be rebuilt that way, because every CTA on the site sells the
+ * same trial and they were not all pointing at it: the header's own Sign Up
+ * link, every blog CTA and every comparison page still sent people to the form
+ * first, which produced accounts with no card on them.
+ *
+ * `plink_1UGPEG09vRtiSO1Rkarn5mhs`, Starter monthly with 7 free days. Its
+ * redirect returns to /auth with `session_id`, which is what the signup form
+ * reads to attach the subscription — so this and that redirect change together
+ * or not at all.
+ */
+export const TRIAL_CHECKOUT_URL = "https://buy.stripe.com/cNi00bcro9in6GS1Yvdwc0i";
+
 export const BUNDLE_PRICE = 29;
 export const BUNDLE_CHECKOUT_URL = "https://buy.stripe.com/7sY9ALcrobqvc1c6eLdwc0a";
 

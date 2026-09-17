@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import "./apex-surface.css";
+import { TRIAL_CHECKOUT_URL } from "../config/offer";
 import { readStoredAttribution } from "./LeadAttribution";
 import {
   getAuthUserEmail,
@@ -308,9 +309,45 @@ export default function Auth() {
    * typed a different one here would sign up with no subscription behind
    * their card and be asked to pay twice.
    */
+  /** null until the auth listener has answered; nobody is redirected before. */
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+
   const sessionIdParam = params.get("session_id");
   const [prepaidEmail, setPrepaidEmail] = useState<string | null>(null);
   const isPrepaid = !!sessionIdParam && /^cs_(test|live)_/.test(sessionIdParam);
+
+  /**
+   * A paid signup starts at the card, wherever it was started from.
+   *
+   * /zero-to-hero was rebuilt to send people to Stripe first, and it does —
+   * but it is one page, and the site has a dozen other doors into this form:
+   * the header's own Sign Up link, which renders on every page including that
+   * one, every blog CTA, every comparison page, the landing page. All of them
+   * carried `plan=starter` straight here, so people read the pitch, clicked
+   * the nearest button, filled in the form and arrived inside the app with no
+   * card on file — which is exactly what the change was meant to stop.
+   *
+   * Enforcing it here rather than link by link means a new CTA added next
+   * month cannot reopen the hole by forgetting.
+   *
+   * Three exemptions, all deliberate. `plan=free` is the free course and has
+   * never wanted a card. Someone returning from Stripe carries a session id
+   * and must be allowed through, or this is a loop. And logging in is
+   * untouched — this only ever fires on the signup tab.
+   */
+  const needsCardFirst =
+    mode === "signup" &&
+    !isFreeSignup &&
+    !isPrepaid &&
+    // Resolved, and nobody home. `null` means we have not heard yet, and a
+    // redirect on a guess would pull a signed-in customer out to Stripe.
+    signedIn === false &&
+    params.get("switch") !== "1";
+
+  useEffect(() => {
+    if (!needsCardFirst) return;
+    window.location.assign(TRIAL_CHECKOUT_URL);
+  }, [needsCardFirst]);
 
   const formCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -444,6 +481,13 @@ export default function Auth() {
         if (cancelled) return;
         const fn = await Promise.resolve(
           auth.onAuthStateChanged((user) => {
+            /**
+             * Recorded before the early returns below, because the card-first
+             * redirect waits on this: it must not fire while the answer is
+             * still unknown, or it would send an existing customer who is
+             * merely signed in out to Stripe.
+             */
+            if (!cancelled) setSignedIn(!!user);
             if (!user || signupInFlightRef.current) return;
             // Arrived here specifically to change accounts: never auto-forward
             // on the session we are in the middle of clearing.

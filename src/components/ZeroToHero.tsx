@@ -31,7 +31,12 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import { readStoredAttribution } from "./LeadAttribution";
-import { TRIAL_DAYS, planById, trialTerms } from "../config/offer";
+import {
+  TRIAL_CHECKOUT_URL,
+  TRIAL_DAYS,
+  planById,
+  trialTerms,
+} from "../config/offer";
 import "./apex-surface.css";
 
 const ORIGIN = "https://www.apexapplications.io";
@@ -54,7 +59,7 @@ const ORIGIN = "https://www.apexapplications.io";
  * and what the server reads to attach the subscription they already hold, so
  * the redirect and this constant have to change together or not at all.
  */
-const START_HREF = "https://buy.stripe.com/cNi00bcro9in6GS1Yvdwc0i";
+const START_HREF = TRIAL_CHECKOUT_URL;
 const STARTER = planById("starter");
 
 /** Written once; the sentence under every button is the same sentence. */
