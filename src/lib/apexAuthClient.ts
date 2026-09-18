@@ -49,9 +49,25 @@ let cachedUser: { email: string | null } | null | undefined;
 if (typeof window !== "undefined") {
   const started = Date.now();
   const prime = () => {
-    if (window.ApexAuth?.getCurrentUser) {
-      getSignedInUser().then((user) => {
-        cachedUser = user;
+    const auth = window.ApexAuth;
+    /**
+     * Subscribed, not sampled.
+     *
+     * Asking getCurrentUser() once on load looks equivalent and is not: it
+     * answers before Firebase has restored the session from storage, so a
+     * signed-in customer is recorded as a visitor and stays recorded that way
+     * for the life of the page. Tested against a real signed-in session, that
+     * is exactly what happened. The listener gives the settled answer, and
+     * keeps giving it if they sign in or out while reading.
+     */
+    if (auth?.onAuthStateChanged) {
+      Promise.resolve(
+        auth.onAuthStateChanged((user) => {
+          const account = user as { email?: string | null } | null;
+          cachedUser = account ? { email: account.email ?? null } : null;
+        }),
+      ).catch(() => {
+        cachedUser = null;
       });
       return;
     }
