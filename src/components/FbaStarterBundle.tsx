@@ -28,6 +28,7 @@ const amazonSellerSalesImage = "/images/fba-starter-bundle/amazon-seller-app-sal
 const COUNTDOWN_SECONDS = 9 * 60;
 
 import { BUNDLE_CHECKOUT_URL as CHECKOUT_URL } from "../config/offer";
+import CheckoutLink from "./CheckoutLink";
 
 const includes = [
   {
@@ -86,14 +87,14 @@ const trustPoints = [
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
-    <a
+    <CheckoutLink
       href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      newTab
+      mode="prefill"
       className={`inline-flex items-center justify-center gap-2 transition-all ${className}`}
     >
       {children}
-    </a>
+    </CheckoutLink>
   );
 }
 

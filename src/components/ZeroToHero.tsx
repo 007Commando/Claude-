@@ -28,7 +28,9 @@ import {
   Zap,
 } from "lucide-react";
 
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
+
+import { interceptForSignedIn } from "../lib/apexAuthClient";
 
 import { readStoredAttribution } from "./LeadAttribution";
 import {
@@ -289,7 +291,11 @@ const reveal = {
   transition: { duration: 0.5 },
 };
 
-function trackStart() {
+function trackStart(event?: MouseEvent<HTMLAnchorElement>) {
+  // An existing customer buying again from here is how the double-charge
+  // happened; send them to the app, where their Stripe customer is known.
+  if (event) interceptForSignedIn(event, START_HREF);
+
   const attribution = readStoredAttribution();
   fetch("/api/track", {
     method: "POST",

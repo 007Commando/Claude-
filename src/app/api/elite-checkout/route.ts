@@ -31,9 +31,32 @@ export async function GET(req: NextRequest) {
     : "https://www.apexapplications.io";
   const stripe = new Stripe(key, { maxNetworkRetries: 2 });
 
+  /**
+   * The buyer's existing account address, when the page knew it.
+   *
+   * Without this, checkout builds a customer out of whatever gets typed into
+   * it -- and a seller mid-trial who mistypes their own address by one
+   * character ends up with two customers, two subscriptions and two bills that
+   * nothing joins together. That happened. Reusing the customer that address
+   * already belongs to is what stops it happening again.
+   */
+  const email = req.nextUrl.searchParams.get("email")?.trim() || null;
+  const existingCustomer = email
+    ? await stripe.customers
+        .list({email, limit: 1})
+        .then((r) => r.data[0]?.id ?? null)
+        // Never fail the sale over this: worst case it behaves as it did.
+        .catch(() => null)
+    : null;
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
+      ...(existingCustomer
+        ? {customer: existingCustomer}
+        : email
+          ? {customer_email: email}
+          : {}),
       line_items: [
         { price: ELITE_ONE_TIME_PRICE, quantity: 1 },
         { price: ELITE_MONTHLY_PRICE, quantity: 1 }

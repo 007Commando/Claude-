@@ -25,6 +25,7 @@ import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
 import { PRICE_LIMITED_M } from "../data/planPricing";
 import { TRIAL_CHECKOUT_URL } from "../config/offer";
+import CheckoutLink from "./CheckoutLink";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
 const keepaPlaybookBookImage = "/images/fba-starter-bundle/keepa-playbook-book.png";
@@ -156,14 +157,17 @@ const faqs = [
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
-    <a
+    <CheckoutLink
       href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      newTab
+      mode="prefill"
+      // Our own route, which resolves the customer from this rather than
+      // letting Stripe build a new one from a retyped address.
+      emailParam="email"
       className={`inline-flex items-center justify-center gap-2 transition-all ${className}`}
     >
       {children}
-    </a>
+    </CheckoutLink>
   );
 }
 
@@ -426,14 +430,13 @@ export default function ApexElite() {
                 button: this is a real option, and it is not the one the page
                 is arguing for.
               */}
-              <a
+              <CheckoutLink
                 href={TRIAL_CHECKOUT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                newTab
                 className="mt-6 flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-[20px] border-2 border-slate-200 text-slate-600 font-black text-sm uppercase tracking-wide transition-all hover:border-slate-300 hover:bg-slate-50"
               >
                 {`Continue for $${dollars(PRICE_LIMITED_M)} per month`}
-              </a>
+              </CheckoutLink>
             </div>
 
             {/* Elite */}

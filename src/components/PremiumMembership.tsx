@@ -20,6 +20,7 @@ import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import opexDashboardImage from "../assets/opex-dashboard.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
 import { distributors, categories } from "../data/distributors";
+import CheckoutLink from "./CheckoutLink";
 
 const CHECKOUT_URL = "https://buy.stripe.com/aFa3cn4YW9in5CO6eLdwc0c";
 
@@ -88,14 +89,14 @@ const faqs = [
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
-    <a
+    <CheckoutLink
       href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      newTab
+      mode="prefill"
       className={`inline-flex items-center justify-center gap-2 transition-all ${className}`}
     >
       {children}
-    </a>
+    </CheckoutLink>
   );
 }
 
