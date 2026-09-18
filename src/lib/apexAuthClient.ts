@@ -32,11 +32,48 @@ export async function getSignedInUser(): Promise<{ email: string | null } | null
   }
 }
 
+/**
+ * The answer, worked out once on load rather than once per click.
+ *
+ * Without this a signed-out visitor -- which is most of them -- still had
+ * their click swallowed and replayed from script, which quietly turned these
+ * CTAs from "open Stripe in a new tab" into "leave this page". The check was
+ * only ever meant to change what happens to people who already have an
+ * account; everyone else should get the link exactly as it was written.
+ *
+ * `undefined` means the answer has not arrived, and only then does a click
+ * pay the cost of waiting.
+ */
+let cachedUser: { email: string | null } | null | undefined;
+
+if (typeof window !== "undefined") {
+  const started = Date.now();
+  const prime = () => {
+    if (window.ApexAuth?.getCurrentUser) {
+      getSignedInUser().then((user) => {
+        cachedUser = user;
+      });
+      return;
+    }
+    // No script after the same grace period a click would allow: treat the
+    // reader as a visitor, which is what they almost certainly are.
+    if (Date.now() - started > 8000) {
+      cachedUser = null;
+      return;
+    }
+    setTimeout(prime, 100);
+  };
+  prime();
+}
+
 const goToApp = (path: string) => {
   const auth = window.ApexAuth;
   if (auth?.redirectToApp) auth.redirectToApp(path);
   else window.location.assign(`${APP_ORIGIN}${path}`);
 };
+
+const withEmail = (href: string, param: string, email: string) =>
+  `${href}${href.includes("?") ? "&" : "?"}${param}=${encodeURIComponent(email)}`;
 
 /** A modified click is the reader opening a tab themselves; leave it alone. */
 const isPlainClick = (event: MouseEvent<HTMLAnchorElement>) =>
@@ -57,8 +94,15 @@ export function interceptForSignedIn(
 ) {
   if (!isPlainClick(event)) return;
   if (!window.ApexAuth?.getCurrentUser) return;
+  // Known to be a visitor: leave the link completely alone, target and all.
+  if (cachedUser === null) return;
 
   event.preventDefault();
+
+  if (cachedUser) {
+    goToApp(path);
+    return;
+  }
 
   let settled = false;
   const fallback = () => {
@@ -99,8 +143,14 @@ export function interceptWithEmail(
 ) {
   if (!isPlainClick(event)) return;
   if (!window.ApexAuth?.getCurrentUser) return;
+  if (cachedUser === null) return;
 
   event.preventDefault();
+
+  if (cachedUser?.email) {
+    window.location.assign(withEmail(href, param, cachedUser.email));
+    return;
+  }
 
   let settled = false;
   const go = (url: string) => {
@@ -112,10 +162,6 @@ export function interceptWithEmail(
 
   getSignedInUser().then((user) => {
     clearTimeout(timer);
-    go(
-      user?.email
-        ? `${href}${href.includes("?") ? "&" : "?"}${param}=${encodeURIComponent(user.email)}`
-        : href,
-    );
+    go(user?.email ? withEmail(href, param, user.email) : href);
   });
 }
