@@ -27,6 +27,15 @@ import {
   getAuthUserEmail,
   hasActiveSubscription,
 } from "../lib/subscriptionGate";
+import VerifyCode from "./VerifyCode";
+
+/** What sign-up returns when it is told not to redirect. */
+interface SignupResult {
+  checkout?: { clientSecret: string; publishableKey: string };
+  checkoutUrl?: string;
+  redirectUrl?: string;
+  verification?: { ticket: string; cooldownMs: number } | null;
+}
 
 // Global ApexAuth from https://app.apexapplications.io/apex-auth.js
 declare global {
@@ -43,7 +52,24 @@ declare global {
         password: string;
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
-      }) => Promise<unknown>;
+        /** Hold the redirect so the code screen can run first. */
+        deferRedirect?: boolean;
+      }) => Promise<SignupResult>;
+      /** Replays the redirect signUp held back, once the code is accepted. */
+      completeSignup?: (data: SignupResult) => boolean;
+      sendVerificationCode?: (body: {
+        email?: string;
+        ticket?: string | null;
+      }) => Promise<{ ticket?: string; cooldownMs?: number }>;
+      verifyCode?: (body: {
+        email?: string;
+        ticket?: string | null;
+        code: string;
+      }) => Promise<{ verified: boolean }>;
+      changeVerificationEmail?: (body: {
+        ticket: string;
+        newEmail: string;
+      }) => Promise<{ email: string; ticket: string; cooldownMs: number }>;
       signInWithGoogle?: (opts?: {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
@@ -341,6 +367,17 @@ export default function Auth() {
     });
   }, []);
 
+  /**
+   * Set once the account exists and the code has been sent. While it is set,
+   * this page is the code screen and nothing else.
+   */
+  const [pending, setPending] = useState<{
+    email: string;
+    ticket: string | null;
+    cooldownMs: number;
+    signup: SignupResult | null;
+  } | null>(null);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -547,12 +584,15 @@ export default function Auth() {
         const parsed = signupSchema.safeParse({ name, email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
         signupInFlightRef.current = true;
-        await withAuthRetry(() =>
+        const signup = await withAuthRetry(() =>
           auth.signUp({
             name: parsed.data.name,
             email: parsed.data.email,
             password: parsed.data.password,
-            ...(isFreeSignup ? {} : {plan: planTier, period}),
+            ...(isFreeSignup ? {} : { plan: planTier, period }),
+            // Held so the code screen runs between making the account and
+            // entering it. Where the signup was going travels back untouched.
+            deferRedirect: true,
           }),
         );
         const attribution = readStoredAttribution();
@@ -571,6 +611,32 @@ export default function Auth() {
           keepalive: true,
         }).catch(() => {});
         if (isFreeSignup) reportFreeSignup();
+
+        /**
+         * Hand over to the code screen.
+         *
+         * The account exists by now and the tracking above has already fired,
+         * because both are true whether or not the address is ever confirmed
+         * -- and a signup that stalls here is exactly the one worth being able
+         * to see afterwards.
+         *
+         * An older cached apex-auth.js has no deferRedirect and will already
+         * have navigated; a backend that failed to issue a code sends no
+         * verification block. Both leave `verification` empty, and both should
+         * fall through to the old behaviour rather than trapping somebody on a
+         * screen with no code coming.
+         */
+        if (signup?.verification?.ticket) {
+          setPending({
+            email: parsed.data.email,
+            ticket: signup.verification.ticket,
+            cooldownMs: signup.verification.cooldownMs,
+            signup,
+          });
+          setLoading(false);
+          return;
+        }
+        auth.completeSignup?.(signup);
         window.oaiq?.("measure", "trial_started", { type: "plan_enrollment" });
         fetch("/api/oaiq-conversion", {
           method: "POST",
@@ -822,7 +888,54 @@ export default function Auth() {
               transition={{ duration: 1.6, repeat: 1, ease: "easeInOut" }}
               className="glow-edge mx-auto w-full max-w-md rounded-3xl border bg-card p-6 sm:rounded-[28px] sm:p-10 lg:ml-auto lg:mr-0"
             >
-              {onFreePlan ? (
+              {pending ? (
+                <VerifyCode
+                  email={pending.email}
+                  ticket={pending.ticket}
+                  initialCooldownMs={pending.cooldownMs}
+                  onVerified={() => {}}
+                  onBack={() => {
+                    // The account exists either way; going back is for
+                    // somebody who wants the form, not an undo.
+                    setPending(null);
+                    signupInFlightRef.current = false;
+                  }}
+                  onSubmit={async (code) => {
+                    const apex = await waitForApexAuth();
+                    await apex.verifyCode?.({
+                      ticket: pending.ticket,
+                      email: pending.email,
+                      code,
+                    });
+                    // Verified: go wherever this signup was always going.
+                    if (!apex.completeSignup?.(pending.signup as SignupResult)) {
+                      forwardToApp(apex);
+                    }
+                  }}
+                  onResend={async () => {
+                    const apex = await waitForApexAuth();
+                    const res = await apex.sendVerificationCode?.({
+                      ticket: pending.ticket,
+                      email: pending.email,
+                    });
+                    return res?.cooldownMs ?? pending.cooldownMs;
+                  }}
+                  onChangeEmail={async (next) => {
+                    const apex = await waitForApexAuth();
+                    if (!pending.ticket) throw new Error("Start again to change the address");
+                    const res = await apex.changeVerificationEmail?.({
+                      ticket: pending.ticket,
+                      newEmail: next,
+                    });
+                    setPending({
+                      ...pending,
+                      email: res?.email ?? next,
+                      ticket: res?.ticket ?? pending.ticket,
+                      cooldownMs: res?.cooldownMs ?? pending.cooldownMs,
+                    });
+                  }}
+                />
+              ) : onFreePlan ? (
                 <div className="py-2">
                   <div className="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center mb-5">
                     <GraduationCap
