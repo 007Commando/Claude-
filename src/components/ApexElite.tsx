@@ -24,7 +24,6 @@ import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import reviewBoosterImage from "../assets/review-booster.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
 import { PRICE_LIMITED_M } from "../data/planPricing";
-import { TRIAL_CHECKOUT_URL } from "../config/offer";
 import CheckoutLink from "./CheckoutLink";
 
 const apexSuiteOverviewImage = "/images/fba-starter-bundle/apex-suite-overview.png";
@@ -431,8 +430,7 @@ export default function ApexElite() {
                 is arguing for.
               */}
               <CheckoutLink
-                href={TRIAL_CHECKOUT_URL}
-                newTab
+                href="/auth?mode=signup&plan=starter&period=monthly"
                 className="mt-6 flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-[20px] border-2 border-slate-200 text-slate-600 font-black text-sm uppercase tracking-wide transition-all hover:border-slate-300 hover:bg-slate-50"
               >
                 {`Continue for $${dollars(PRICE_LIMITED_M)} per month`}

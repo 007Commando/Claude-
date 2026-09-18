@@ -34,7 +34,6 @@ import { interceptForSignedIn } from "../lib/apexAuthClient";
 
 import { readStoredAttribution } from "./LeadAttribution";
 import {
-  TRIAL_CHECKOUT_URL,
   TRIAL_DAYS,
   planById,
   trialTerms,
@@ -61,7 +60,14 @@ const ORIGIN = "https://www.apexapplications.io";
  * and what the server reads to attach the subscription they already hold, so
  * the redirect and this constant have to change together or not at all.
  */
-const START_HREF = TRIAL_CHECKOUT_URL;
+/**
+ * The signup form, not the payment link.
+ *
+ * This pointed at Stripe for two days, so the card came before the software.
+ * An account costs nothing to make and the app has a state a plan-less one can
+ * use, so the order is back to: make the account, see the thing, then decide.
+ */
+const START_HREF = "/auth?mode=signup&plan=starter&period=monthly";
 const STARTER = planById("starter");
 
 /** Written once; the sentence under every button is the same sentence. */

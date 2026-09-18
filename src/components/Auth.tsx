@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import "./apex-surface.css";
-import { TRIAL_CHECKOUT_URL } from "../config/offer";
 import { readStoredAttribution } from "./LeadAttribution";
 import {
   getAuthUserEmail,
@@ -317,37 +316,22 @@ export default function Auth() {
   const isPrepaid = !!sessionIdParam && /^cs_(test|live)_/.test(sessionIdParam);
 
   /**
-   * A paid signup starts at the card, wherever it was started from.
+   * Nobody is sent to Stripe before they have an account.
    *
-   * /zero-to-hero was rebuilt to send people to Stripe first, and it does —
-   * but it is one page, and the site has a dozen other doors into this form:
-   * the header's own Sign Up link, which renders on every page including that
-   * one, every blog CTA, every comparison page, the landing page. All of them
-   * carried `plan=starter` straight here, so people read the pitch, clicked
-   * the nearest button, filled in the form and arrived inside the app with no
-   * card on file — which is exactly what the change was meant to stop.
+   * This form used to bounce every paid signup to the payment link first, so
+   * the card was collected before the software was ever seen. That is gone by
+   * decision: an account is free to make, the app has always had a state a
+   * plan-less account can use, and somebody who has not seen the product yet
+   * is being asked to trust a price they cannot check.
    *
-   * Enforcing it here rather than link by link means a new CTA added next
-   * month cannot reopen the hole by forgetting.
+   * Arriving from Stripe still works and must keep working -- links and ads
+   * pointing at the payment link are already out in the world, and a buyer
+   * coming back with a session id has paid and needs that payment attached to
+   * whatever account they make here. That is `isPrepaid`, handled below.
    *
-   * Three exemptions, all deliberate. `plan=free` is the free course and has
-   * never wanted a card. Someone returning from Stripe carries a session id
-   * and must be allowed through, or this is a loop. And logging in is
-   * untouched — this only ever fires on the signup tab.
+   * What replaces the gate is the banner in the app: an account with no card
+   * is told so, every session, until there is one.
    */
-  const needsCardFirst =
-    mode === "signup" &&
-    !isFreeSignup &&
-    !isPrepaid &&
-    // Resolved, and nobody home. `null` means we have not heard yet, and a
-    // redirect on a guess would pull a signed-in customer out to Stripe.
-    signedIn === false &&
-    params.get("switch") !== "1";
-
-  useEffect(() => {
-    if (!needsCardFirst) return;
-    window.location.assign(TRIAL_CHECKOUT_URL);
-  }, [needsCardFirst]);
 
   const formCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
