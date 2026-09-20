@@ -26,7 +26,6 @@ export default function Footer() {
    * lines.
    */
   const hasOwnFooter =
-    pathname === "/apex-pop" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works" ||
     pathname === "/first-order-roadmap" ||

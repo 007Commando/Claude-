@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import PurchaseOrderProgram from "../../components/PurchaseOrderProgram";
 
 /**
- * Kept out of the index, like /apex-pop and /first-order-roadmap.
+ * Kept out of the index, like /first-order-roadmap. It replaced /apex-pop,
+ * which now redirects here.
  *
  * This is a paid-traffic landing page for one action. Indexed, it would
  * compete with /amazon-wholesale-suppliers and the feature pages for the same

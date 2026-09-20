@@ -8,11 +8,11 @@
  * offered is four things, in the order they are needed: the first suppliers,
  * the selling approvals, the research, and the first order itself.
  *
- * It is a sibling of /apex-pop and borrows that page's surface wholesale —
+ * It replaced /apex-pop (now a redirect here) and keeps that page's surface —
  * same stylesheet, same classes, same mesh background and CTA sheen — so the
- * two read as one company. Where /apex-pop is written for someone who has
- * done the research and stalled, this page is written for someone who has
- * none of the four things yet and wants them done with, not taught.
+ * site still reads as one company. The old page was written for someone who
+ * had done the research and stalled; this one is for someone who has none of
+ * the four things yet and wants them done with, not taught.
  *
  * Two constraints carry over and are load-bearing. It must not read as a
  * course: the denial is made near the top. It must not promise outcomes:

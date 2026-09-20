@@ -17,11 +17,23 @@ const nextConfig = {
       "real-cost-of-stacking-amazon-seller-software": "cost-of-seller-software",
       "why-we-built-apex-applications": "why-apex-applications",
     };
-    return Object.entries(oldToNewBlogSlugs).map(([oldSlug, newSlug]) => ({
-      source: `/blog/${oldSlug}`,
-      destination: `/blog/${newSlug}`,
-      permanent: true,
-    }));
+    return [
+      /**
+       * The Purchase Order Program page replaced the earlier Apex POP page
+       * on 2026-09-20. Permanent, so any ad or email still carrying the old
+       * link lands on the current offer instead of a 404.
+       */
+      {
+        source: "/apex-pop",
+        destination: "/purchase-order-program",
+        permanent: true,
+      },
+      ...Object.entries(oldToNewBlogSlugs).map(([oldSlug, newSlug]) => ({
+        source: `/blog/${oldSlug}`,
+        destination: `/blog/${newSlug}`,
+        permanent: true,
+      })),
+    ];
   },
 };
 
