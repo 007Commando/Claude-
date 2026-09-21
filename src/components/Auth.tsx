@@ -23,6 +23,25 @@ import {
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import "./apex-surface.css";
 import { readStoredAttribution } from "./LeadAttribution";
+
+/**
+ * Where this signup came from, for the account record. The app reads
+ * acquisition.source off the account to run a source-specific walkthrough
+ * (PrimeWell applicants get theirs), so both the email and the Google path
+ * have to send it. "direct" says nothing and is left out.
+ */
+function acquisitionFromLanding() {
+  const landed = readStoredAttribution();
+  return landed && landed.source && landed.source !== "direct"
+    ? {
+        acquisition: {
+          source: landed.source,
+          medium: landed.utmMedium,
+          campaign: landed.utmCampaign,
+        },
+      }
+    : {};
+}
 import {
   getAuthUserEmail,
   hasActiveSubscription,
@@ -75,6 +94,7 @@ declare global {
       signInWithGoogle?: (opts?: {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
+        acquisition?: { source: string; medium?: string; campaign?: string };
       }) => Promise<unknown>;
       /**
        * Present only on builds that know about the card-first funnel. This
@@ -591,22 +611,13 @@ export default function Auth() {
          * lands with utm_source=primewell, and the app reads it off the
          * account to run their walkthrough instead of the general one.
          */
-        const landed = readStoredAttribution();
         const signup = await withAuthRetry(() =>
           auth.signUp({
             name: parsed.data.name,
             email: parsed.data.email,
             password: parsed.data.password,
             ...(isFreeSignup ? {} : { plan: planTier, period }),
-            ...(landed && landed.source && landed.source !== "direct"
-              ? {
-                  acquisition: {
-                    source: landed.source,
-                    medium: landed.utmMedium,
-                    campaign: landed.utmCampaign,
-                  },
-                }
-              : {}),
+            ...acquisitionFromLanding(),
             // Held so the code screen runs between making the account and
             // entering it. Where the signup was going travels back untouched.
             deferRedirect: true,
@@ -744,7 +755,10 @@ export default function Auth() {
       }
       signupInFlightRef.current = true;
       await withAuthRetry(() =>
-        auth.signInWithGoogle!(isFreeSignup ? {} : { plan: planTier, period }),
+        auth.signInWithGoogle!({
+          ...(isFreeSignup ? {} : { plan: planTier, period }),
+          ...acquisitionFromLanding(),
+        }),
       );
       /*
        * Only from the Sign Up tab. Google sign-in cannot tell us here whether
@@ -839,8 +853,9 @@ export default function Auth() {
               </span>
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Apex Black, Blue and Green connect sourcing, purchasing and profit tracking into one
-              workspace, so a supplier list becomes a purchase order without leaving the tab.
+              Apex Black, Blue and Green connect sourcing, purchasing and profit
+              tracking into one workspace, so a supplier list becomes a purchase
+              order without leaving the tab.
             </p>
 
             {mode === "signup" && !isFreeSignup && (
@@ -853,10 +868,15 @@ export default function Auth() {
               {benefits.map((b) => (
                 <li key={b.title} className="flex gap-4">
                   <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <CheckCircle2 className="h-4 w-4 text-primary" strokeWidth={2.5} />
+                    <CheckCircle2
+                      className="h-4 w-4 text-primary"
+                      strokeWidth={2.5}
+                    />
                   </span>
                   <div>
-                    <div className="text-base font-bold text-foreground">{b.title}</div>
+                    <div className="text-base font-bold text-foreground">
+                      {b.title}
+                    </div>
                     <div className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {b.desc}
                     </div>
@@ -875,8 +895,9 @@ export default function Auth() {
                 ))}
               </div>
               <blockquote className="mt-4 text-[15px] leading-relaxed text-foreground">
-                "Apex replaced the scattered tools we were juggling and gave us one source of
-                truth. The time savings alone paid for the subscription within the first month."
+                "Apex replaced the scattered tools we were juggling and gave us
+                one source of truth. The time savings alone paid for the
+                subscription within the first month."
               </blockquote>
               <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
                 <img
@@ -885,8 +906,12 @@ export default function Auth() {
                   className="h-10 w-10 rounded-full border border-border object-cover"
                 />
                 <div>
-                  <div className="text-sm font-bold text-foreground">Michael R.</div>
-                  <div className="text-xs text-muted-foreground">New seller, 3 months in</div>
+                  <div className="text-sm font-bold text-foreground">
+                    Michael R.
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    New seller, 3 months in
+                  </div>
                 </div>
               </figcaption>
             </figure>
@@ -925,7 +950,9 @@ export default function Auth() {
                       code,
                     });
                     // Verified: go wherever this signup was always going.
-                    if (!apex.completeSignup?.(pending.signup as SignupResult)) {
+                    if (
+                      !apex.completeSignup?.(pending.signup as SignupResult)
+                    ) {
                       forwardToApp(apex);
                     }
                   }}
@@ -939,7 +966,8 @@ export default function Auth() {
                   }}
                   onChangeEmail={async (next) => {
                     const apex = await waitForApexAuth();
-                    if (!pending.ticket) throw new Error("Start again to change the address");
+                    if (!pending.ticket)
+                      throw new Error("Start again to change the address");
                     const res = await apex.changeVerificationEmail?.({
                       ticket: pending.ticket,
                       newEmail: next,
@@ -1071,11 +1099,18 @@ export default function Auth() {
                     <div className="mb-6 text-center text-xs font-bold text-brand bg-brand/5 border border-brand/10 rounded-xl px-4 py-2.5">
                       {isPrepaid ? (
                         <span className="inline-flex items-center justify-center gap-1.5">
-                          <CheckCircle2 className="h-3.5 w-3.5" strokeWidth={2.5} />
-                          Card saved. Nothing else to pay — pick a password and you&apos;re in.
+                          <CheckCircle2
+                            className="h-3.5 w-3.5"
+                            strokeWidth={2.5}
+                          />
+                          Card saved. Nothing else to pay — pick a password and
+                          you&apos;re in.
                         </span>
                       ) : isFreeSignup ? (
-                        <>Free account, no card, no plan. Apex University and Review Booster included.</>
+                        <>
+                          Free account, no card, no plan. Apex University and
+                          Review Booster included.
+                        </>
                       ) : (
                         <>
                           Signing up for the {PLAN_TIER_LABELS[planTier]} plan,{" "}
@@ -1345,7 +1380,9 @@ export default function Auth() {
                       type="submit"
                       disabled={loading}
                       className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 text-sm font-bold tracking-wide text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
-                      style={{ boxShadow: "0 6px 0 0 hsl(var(--primary) / 0.45)" }}
+                      style={{
+                        boxShadow: "0 6px 0 0 hsl(var(--primary) / 0.45)",
+                      }}
                     >
                       {loading ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
