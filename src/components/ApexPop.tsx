@@ -247,7 +247,8 @@ export type PopSection =
   | "fit"
   | "faq"
   | "close"
-  | "disclaimer";
+  | "disclaimer"
+  | "heroFine";
 
 export default function ApexPop({
   chrome = "own",
@@ -373,9 +374,11 @@ export default function ApexPop({
 
             {trustpilot && <TrustpilotBadge {...trustpilot} />}
 
-            <p className="pop-hero-fine">
-              Not a course. Not a get-rich-quick program. One purchase order.
-            </p>
+            {!hidden.has("heroFine") && (
+              <p className="pop-hero-fine">
+                Not a course. Not a get-rich-quick program. One purchase order.
+              </p>
+            )}
 
             <motion.div
               className="pop-hero-art"
