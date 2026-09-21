@@ -237,11 +237,23 @@ const FAQS: readonly (readonly [string, string])[] = [
  * not from an ad. Each frame books with its own utm_term so the calendar
  * says which one the caller came through.
  */
+/** Sections a page can leave out with the `hide` prop. */
+export type PopSection =
+  | "denial"
+  | "problem"
+  | "flow"
+  | "software"
+  | "outcome"
+  | "fit"
+  | "faq"
+  | "close";
+
 export default function ApexPop({
   chrome = "own",
   utmTerm = "apex-pop",
   cta,
   trustpilot,
+  hide = [],
 }: {
   chrome?: "own" | "site";
   utmTerm?: string;
@@ -257,7 +269,13 @@ export default function ApexPop({
    * count, linking to the profile. Off unless a page passes it.
    */
   trustpilot?: TrustpilotFigures;
+  /**
+   * Sections a page leaves out. The PrimeWell version trims the page down
+   * to what an applicant needs; the ad pages show everything.
+   */
+  hide?: PopSection[];
 }) {
+  const hidden = new Set(hide);
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
   const primary = cta ?? {
     label: "Build my first or next PO",
@@ -378,430 +396,446 @@ export default function ApexPop({
         </section>
 
         {/* ---------------------------------------------------------- denial */}
-        <section className="pop-denial pop-section-tight" aria-label="What Apex POP is not">
-          <div className="pop-shell">
-            <div className="pop-denial-grid">
-              {DENIALS.map(([title, body]) => (
-                <div className="pop-denial-cell" key={title}>
-                  <span className="pop-denial-x" aria-hidden="true">
-                    ✕
-                  </span>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* --------------------------------------------------------- problem */}
-        <section className="pop-section pop-problem">
-          <div className="pop-shell pop-problem-grid">
-            <div className="pop-problem-copy">
-              <p className="pop-label">The actual problem</p>
-              <h2>
-                Too many courses.
-                <br />
-                <span className="pop-blue">Not enough purchase orders.</span>
-              </h2>
-              <p className="pop-lede">
-                You have watched the modules. You have saved the threads, joined the
-                group, and bookmarked the supplier list. On paper you understand
-                Amazon wholesale better than plenty of people who are currently
-                selling on it.
-              </p>
-              <p className="pop-lede">
-                <strong>What you do not have is an order.</strong> Not because the
-                information was wrong, but because none of it ever made you sit down
-                with one supplier catalog, one number you are willing to commit, and
-                build the thing that turns money into inventory.
-              </p>
-              <p className="pop-lede">
-                Research has no finish line, so it is easy to stay in. A purchase
-                order has one. POP exists to get you to it.
-              </p>
-            </div>
-
-            <aside className="pop-loop" aria-label="The research loop">
-              <div className="pop-loop-head">
-                <strong>The loop</strong>
-                <span className="pop-label">Month 7</span>
-              </div>
-              <ol>
-                <li>
-                  <b>01</b> Watch another module on sourcing
-                </li>
-                <li>
-                  <b>02</b> Add three suppliers to a spreadsheet
-                </li>
-                <li>
-                  <b>03</b> Scroll a catalog, check a few ASINs by hand
-                </li>
-                <li>
-                  <b>04</b> Decide you need to learn more first
-                </li>
-                <li>
-                  <b>05</b> Buy a course about the part you skipped
-                </li>
-              </ol>
-              <p className="pop-loop-end">
-                <span aria-hidden="true">→</span> Orders placed: zero
-              </p>
-            </aside>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------ flow */}
-        <section className="pop-section pop-flow mesh-bg" id="how-it-works">
-          <div className="pop-shell">
-            <div className="pop-flow-head">
-              <p className="pop-label">How POP works</p>
-              <h2>
-                Six steps, in order,
-                <br />
-                ending in a <mark>purchase order.</mark>
-              </h2>
-              <p className="pop-lede">
-                Each one produces something the next one needs. You are never
-                researching in general; you are always working on this order.
-              </p>
-            </div>
-
-            <ol className="pop-rail" aria-hidden="true">
-              {STEPS.map((step, i) => (
-                <li
-                  key={step.rail}
-                  className={
-                    "pop-rail-node" +
-                    (i === STEPS.length - 1
-                      ? " is-last"
-                      : "key" in step && step.key
-                        ? " is-key"
-                        : "")
-                  }
-                >
-                  <i>{i + 1}</i>
-                  <span>{step.rail}</span>
-                </li>
-              ))}
-            </ol>
-
-            <ol className="pop-steps">
-              {STEPS.map(({ n, Icon, title, body, outcome, tool, ...rest }) => (
-                <motion.li
-                  key={n}
-                  className={"pop-step" + ("key" in rest && rest.key ? " is-key glow-edge" : "")}
-                  initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <span className="pop-step-ico" aria-hidden="true">
-                    <Icon size={21} strokeWidth={2} />
-                  </span>
-                  <div className="pop-step-body">
-                    <p className="pop-label">{n}</p>
+        {!hidden.has("denial") && (
+          <section className="pop-denial pop-section-tight" aria-label="What Apex POP is not">
+            <div className="pop-shell">
+              <div className="pop-denial-grid">
+                {DENIALS.map(([title, body]) => (
+                  <div className="pop-denial-cell" key={title}>
+                    <span className="pop-denial-x" aria-hidden="true">
+                      ✕
+                    </span>
                     <h3>{title}</h3>
                     <p>{body}</p>
                   </div>
-                  <div className="pop-step-aside">
-                    <p className="pop-label">You end up with</p>
-                    <p>{outcome}</p>
-                    <span className="pop-step-tool">{tool}</span>
-                  </div>
-                </motion.li>
-              ))}
-            </ol>
-          </div>
-        </section>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* --------------------------------------------------------- problem */}
+        {!hidden.has("problem") && (
+          <section className="pop-section pop-problem">
+            <div className="pop-shell pop-problem-grid">
+              <div className="pop-problem-copy">
+                <p className="pop-label">The actual problem</p>
+                <h2>
+                  Too many courses.
+                  <br />
+                  <span className="pop-blue">Not enough purchase orders.</span>
+                </h2>
+                <p className="pop-lede">
+                  You have watched the modules. You have saved the threads, joined the
+                  group, and bookmarked the supplier list. On paper you understand
+                  Amazon wholesale better than plenty of people who are currently
+                  selling on it.
+                </p>
+                <p className="pop-lede">
+                  <strong>What you do not have is an order.</strong> Not because the
+                  information was wrong, but because none of it ever made you sit down
+                  with one supplier catalog, one number you are willing to commit, and
+                  build the thing that turns money into inventory.
+                </p>
+                <p className="pop-lede">
+                  Research has no finish line, so it is easy to stay in. A purchase
+                  order has one. POP exists to get you to it.
+                </p>
+              </div>
+
+              <aside className="pop-loop" aria-label="The research loop">
+                <div className="pop-loop-head">
+                  <strong>The loop</strong>
+                  <span className="pop-label">Month 7</span>
+                </div>
+                <ol>
+                  <li>
+                    <b>01</b> Watch another module on sourcing
+                  </li>
+                  <li>
+                    <b>02</b> Add three suppliers to a spreadsheet
+                  </li>
+                  <li>
+                    <b>03</b> Scroll a catalog, check a few ASINs by hand
+                  </li>
+                  <li>
+                    <b>04</b> Decide you need to learn more first
+                  </li>
+                  <li>
+                    <b>05</b> Buy a course about the part you skipped
+                  </li>
+                </ol>
+                <p className="pop-loop-end">
+                  <span aria-hidden="true">→</span> Orders placed: zero
+                </p>
+              </aside>
+            </div>
+          </section>
+        )}
+
+        {/* ------------------------------------------------------------ flow */}
+        {!hidden.has("flow") && (
+          <section className="pop-section pop-flow mesh-bg" id="how-it-works">
+            <div className="pop-shell">
+              <div className="pop-flow-head">
+                <p className="pop-label">How POP works</p>
+                <h2>
+                  Six steps, in order,
+                  <br />
+                  ending in a <mark>purchase order.</mark>
+                </h2>
+                <p className="pop-lede">
+                  Each one produces something the next one needs. You are never
+                  researching in general; you are always working on this order.
+                </p>
+              </div>
+
+              <ol className="pop-rail" aria-hidden="true">
+                {STEPS.map((step, i) => (
+                  <li
+                    key={step.rail}
+                    className={
+                      "pop-rail-node" +
+                      (i === STEPS.length - 1
+                        ? " is-last"
+                        : "key" in step && step.key
+                          ? " is-key"
+                          : "")
+                    }
+                  >
+                    <i>{i + 1}</i>
+                    <span>{step.rail}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <ol className="pop-steps">
+                {STEPS.map(({ n, Icon, title, body, outcome, tool, ...rest }) => (
+                  <motion.li
+                    key={n}
+                    className={"pop-step" + ("key" in rest && rest.key ? " is-key glow-edge" : "")}
+                    initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
+                    whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <span className="pop-step-ico" aria-hidden="true">
+                      <Icon size={21} strokeWidth={2} />
+                    </span>
+                    <div className="pop-step-body">
+                      <p className="pop-label">{n}</p>
+                      <h3>{title}</h3>
+                      <p>{body}</p>
+                    </div>
+                    <div className="pop-step-aside">
+                      <p className="pop-label">You end up with</p>
+                      <p>{outcome}</p>
+                      <span className="pop-step-tool">{tool}</span>
+                    </div>
+                  </motion.li>
+                ))}
+              </ol>
+            </div>
+          </section>
+        )}
 
         {/* -------------------------------------------------------- software */}
-        <section className="pop-section">
-          <div className="pop-shell">
-            <div className="pop-soft-head">
-              <p className="pop-label">The software you do it in</p>
-              <h2>
-                The work happens in the product,
-                <br />
-                <span className="pop-blue">not in a workbook.</span>
-              </h2>
-              <p className="pop-lede">
-                These are the screens the six steps are worked in. Same tools we use,
-                same ones you keep after the order is built.
+        {!hidden.has("software") && (
+          <section className="pop-section">
+            <div className="pop-shell">
+              <div className="pop-soft-head">
+                <p className="pop-label">The software you do it in</p>
+                <h2>
+                  The work happens in the product,
+                  <br />
+                  <span className="pop-blue">not in a workbook.</span>
+                </h2>
+                <p className="pop-lede">
+                  These are the screens the six steps are worked in. Same tools we use,
+                  same ones you keep after the order is built.
+                </p>
+              </div>
+
+              <div className="pop-shots">
+                <article className="pop-shot">
+                  <div className="pop-shot-copy">
+                    <p className="pop-label">Step 01 · Vendors</p>
+                    <h3>Your suppliers in one table.</h3>
+                    <p>
+                      Accounts, contacts, lead times, payment method and catalog status
+                      for every supplier you deal with, instead of a spreadsheet that
+                      stopped being accurate in March.
+                    </p>
+                    <ul className="pop-shot-list">
+                      <li>
+                        <span aria-hidden="true">→</span> Account numbers, logins and
+                        contacts held per supplier
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> Lead times and terms recorded
+                        as you learn them
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> Spend by vendor once orders
+                        start landing
+                      </li>
+                    </ul>
+                  </div>
+                  <figure className="pop-frame glow-edge">
+                    <div className="pop-frame-bar">
+                      <span className="pop-dots" aria-hidden="true">
+                        <i />
+                        <i />
+                        <i />
+                      </span>
+                      <span className="pop-frame-title">Apex · Vendors</span>
+                    </div>
+                    <img
+                      src={SHOT.vendors}
+                      alt="The Apex Vendors screen listing suppliers with their websites, account details, lead times and payment methods, alongside a vendor spend breakdown."
+                      loading="lazy"
+                    />
+                  </figure>
+                </article>
+
+                <article className="pop-shot">
+                  <div className="pop-shot-copy">
+                    <p className="pop-label">Step 02 · UPC Scanner</p>
+                    <h3>A whole price list, costed line by line.</h3>
+                    <p>
+                      Load the catalog and read landed cost against sold price with
+                      Amazon&rsquo;s fees already taken out, so the products that do not
+                      work rule themselves out before you spend an evening on them.
+                    </p>
+                    <ul className="pop-shot-list">
+                      <li>
+                        <span aria-hidden="true">→</span> Landed cost, current and
+                        average sold price
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> FBA, referral, shipping and
+                        inbound fees per line
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> Profit, ROI and margin
+                        calculated on each row
+                      </li>
+                    </ul>
+                  </div>
+                  <figure className="pop-frame glow-edge">
+                    <div className="pop-frame-bar">
+                      <span className="pop-dots" aria-hidden="true">
+                        <i />
+                        <i />
+                        <i />
+                      </span>
+                      <span className="pop-frame-title">Apex · UPC Scanner</span>
+                    </div>
+                    <img
+                      src={SHOT.upcScanner}
+                      alt="The Apex UPC Scanner showing a supplier catalog as rows of products with landed cost, sold price, profit, ROI, margin and Amazon fees on each line."
+                      loading="lazy"
+                    />
+                  </figure>
+                </article>
+
+                <article className="pop-shot">
+                  <div className="pop-shot-copy">
+                    <p className="pop-label">Step 06 · Purchase Order Builder</p>
+                    <h3>The order, projected before it is placed.</h3>
+                    <p>
+                      Put the units and costs in and the builder returns the order&rsquo;s
+                      arithmetic: revenue, expenses, profit, margin and ROI at the
+                      quantities you chose, while you can still change them.
+                    </p>
+                    <ul className="pop-shot-list">
+                      <li>
+                        <span aria-hidden="true">→</span> Units purchased and cost of
+                        goods per supplier
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> Amazon fees, shipping and prep
+                        carried into the total
+                      </li>
+                      <li>
+                        <span aria-hidden="true">→</span> One projection for the order as
+                        a whole
+                      </li>
+                    </ul>
+                  </div>
+                  <figure className="pop-frame glow-edge">
+                    <div className="pop-frame-bar">
+                      <span className="pop-dots" aria-hidden="true">
+                        <i />
+                        <i />
+                        <i />
+                      </span>
+                      <span className="pop-frame-title">Apex · Purchase Orders</span>
+                    </div>
+                    <img
+                      src={SHOT.purchaseOrders}
+                      alt="The Apex Purchase Orders screen with a projection panel showing total revenue, expenses and profit for the orders below it."
+                      loading="lazy"
+                    />
+                  </figure>
+                </article>
+              </div>
+
+              <p className="pop-fineprint">
+                Screenshots show the Apex application with example data. Figures are
+                calculated from the costs and prices entered and are projections, not
+                statements of results.
               </p>
             </div>
-
-            <div className="pop-shots">
-              <article className="pop-shot">
-                <div className="pop-shot-copy">
-                  <p className="pop-label">Step 01 · Vendors</p>
-                  <h3>Your suppliers in one table.</h3>
-                  <p>
-                    Accounts, contacts, lead times, payment method and catalog status
-                    for every supplier you deal with, instead of a spreadsheet that
-                    stopped being accurate in March.
-                  </p>
-                  <ul className="pop-shot-list">
-                    <li>
-                      <span aria-hidden="true">→</span> Account numbers, logins and
-                      contacts held per supplier
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Lead times and terms recorded
-                      as you learn them
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Spend by vendor once orders
-                      start landing
-                    </li>
-                  </ul>
-                </div>
-                <figure className="pop-frame glow-edge">
-                  <div className="pop-frame-bar">
-                    <span className="pop-dots" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span className="pop-frame-title">Apex · Vendors</span>
-                  </div>
-                  <img
-                    src={SHOT.vendors}
-                    alt="The Apex Vendors screen listing suppliers with their websites, account details, lead times and payment methods, alongside a vendor spend breakdown."
-                    loading="lazy"
-                  />
-                </figure>
-              </article>
-
-              <article className="pop-shot">
-                <div className="pop-shot-copy">
-                  <p className="pop-label">Step 02 · UPC Scanner</p>
-                  <h3>A whole price list, costed line by line.</h3>
-                  <p>
-                    Load the catalog and read landed cost against sold price with
-                    Amazon&rsquo;s fees already taken out, so the products that do not
-                    work rule themselves out before you spend an evening on them.
-                  </p>
-                  <ul className="pop-shot-list">
-                    <li>
-                      <span aria-hidden="true">→</span> Landed cost, current and
-                      average sold price
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> FBA, referral, shipping and
-                      inbound fees per line
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Profit, ROI and margin
-                      calculated on each row
-                    </li>
-                  </ul>
-                </div>
-                <figure className="pop-frame glow-edge">
-                  <div className="pop-frame-bar">
-                    <span className="pop-dots" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span className="pop-frame-title">Apex · UPC Scanner</span>
-                  </div>
-                  <img
-                    src={SHOT.upcScanner}
-                    alt="The Apex UPC Scanner showing a supplier catalog as rows of products with landed cost, sold price, profit, ROI, margin and Amazon fees on each line."
-                    loading="lazy"
-                  />
-                </figure>
-              </article>
-
-              <article className="pop-shot">
-                <div className="pop-shot-copy">
-                  <p className="pop-label">Step 06 · Purchase Order Builder</p>
-                  <h3>The order, projected before it is placed.</h3>
-                  <p>
-                    Put the units and costs in and the builder returns the order&rsquo;s
-                    arithmetic: revenue, expenses, profit, margin and ROI at the
-                    quantities you chose, while you can still change them.
-                  </p>
-                  <ul className="pop-shot-list">
-                    <li>
-                      <span aria-hidden="true">→</span> Units purchased and cost of
-                      goods per supplier
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Amazon fees, shipping and prep
-                      carried into the total
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> One projection for the order as
-                      a whole
-                    </li>
-                  </ul>
-                </div>
-                <figure className="pop-frame glow-edge">
-                  <div className="pop-frame-bar">
-                    <span className="pop-dots" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span className="pop-frame-title">Apex · Purchase Orders</span>
-                  </div>
-                  <img
-                    src={SHOT.purchaseOrders}
-                    alt="The Apex Purchase Orders screen with a projection panel showing total revenue, expenses and profit for the orders below it."
-                    loading="lazy"
-                  />
-                </figure>
-              </article>
-            </div>
-
-            <p className="pop-fineprint">
-              Screenshots show the Apex application with example data. Figures are
-              calculated from the costs and prices entered and are projections, not
-              statements of results.
-            </p>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* --------------------------------------------------------- outcome */}
-        <section className="pop-section pop-outcome">
-          <div className="pop-shell pop-outcome-grid">
-            <div>
-              <p className="pop-label">What you leave with</p>
-              <h2>
-                Four things you did not
-                <br />
-                have <span className="pop-blue">last month.</span>
-              </h2>
-              <p className="pop-lede">
-                Not notes. Not a framework. The four artefacts that stand between
-                researching wholesale and buying inventory.
-              </p>
+        {!hidden.has("outcome") && (
+          <section className="pop-section pop-outcome">
+            <div className="pop-shell pop-outcome-grid">
+              <div>
+                <p className="pop-label">What you leave with</p>
+                <h2>
+                  Four things you did not
+                  <br />
+                  have <span className="pop-blue">last month.</span>
+                </h2>
+                <p className="pop-lede">
+                  Not notes. Not a framework. The four artefacts that stand between
+                  researching wholesale and buying inventory.
+                </p>
+              </div>
+              <ul className="pop-deliver">
+                {DELIVERABLES.map(({ Icon, title, body }) => (
+                  <li key={title}>
+                    <span className="pop-deliver-ico" aria-hidden="true">
+                      <Icon size={19} strokeWidth={2} />
+                    </span>
+                    <span>
+                      <strong>{title}</strong>
+                      <small>{body}</small>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="pop-deliver">
-              {DELIVERABLES.map(({ Icon, title, body }) => (
-                <li key={title}>
-                  <span className="pop-deliver-ico" aria-hidden="true">
-                    <Icon size={19} strokeWidth={2} />
-                  </span>
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{body}</small>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ------------------------------------------------------------- fit */}
-        <section className="pop-section pop-section-tight">
-          <div className="pop-shell">
-            <p className="pop-label">Fit</p>
-            <h2>Worth being honest about.</h2>
-            <div className="pop-fit-grid">
-              <div className="pop-fit is-yes glow-edge">
-                <h3>POP is for you if</h3>
-                <ul>
-                  <li>
-                    <span aria-hidden="true">✓</span> You have done the learning and
-                    still have not placed an order.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✓</span> You are selling already and your
-                    next order is guesswork rather than process.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✓</span> You have capital you are ready to
-                    deploy deliberately.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✓</span> You want someone to check your
-                    numbers before the money moves.
-                  </li>
-                </ul>
-              </div>
-              <div className="pop-fit is-no">
-                <h3>POP is not for you if</h3>
-                <ul>
-                  <li>
-                    <span aria-hidden="true">✕</span> You are looking for a course to
-                    work through at your own pace.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✕</span> You want passive income without
-                    buying inventory.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✕</span> You want a promise about what an
-                    order will return.
-                  </li>
-                  <li>
-                    <span aria-hidden="true">✕</span> You are not in a position to
-                    spend money on stock yet.
-                  </li>
-                </ul>
+        {!hidden.has("fit") && (
+          <section className="pop-section pop-section-tight">
+            <div className="pop-shell">
+              <p className="pop-label">Fit</p>
+              <h2>Worth being honest about.</h2>
+              <div className="pop-fit-grid">
+                <div className="pop-fit is-yes glow-edge">
+                  <h3>POP is for you if</h3>
+                  <ul>
+                    <li>
+                      <span aria-hidden="true">✓</span> You have done the learning and
+                      still have not placed an order.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✓</span> You are selling already and your
+                      next order is guesswork rather than process.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✓</span> You have capital you are ready to
+                      deploy deliberately.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✓</span> You want someone to check your
+                      numbers before the money moves.
+                    </li>
+                  </ul>
+                </div>
+                <div className="pop-fit is-no">
+                  <h3>POP is not for you if</h3>
+                  <ul>
+                    <li>
+                      <span aria-hidden="true">✕</span> You are looking for a course to
+                      work through at your own pace.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✕</span> You want passive income without
+                      buying inventory.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✕</span> You want a promise about what an
+                      order will return.
+                    </li>
+                    <li>
+                      <span aria-hidden="true">✕</span> You are not in a position to
+                      spend money on stock yet.
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ------------------------------------------------------------- faq */}
-        <section className="pop-section pop-section-tight pop-faq">
-          <div className="pop-shell pop-faq-grid">
-            <div>
-              <p className="pop-label">Questions</p>
-              <h2>Before you book.</h2>
+        {!hidden.has("faq") && (
+          <section className="pop-section pop-section-tight pop-faq">
+            <div className="pop-shell pop-faq-grid">
+              <div>
+                <p className="pop-label">Questions</p>
+                <h2>Before you book.</h2>
+              </div>
+              <div>
+                {FAQS.map(([q, a]) => (
+                  <details key={q}>
+                    <summary>
+                      {q}
+                      <i aria-hidden="true">+</i>
+                    </summary>
+                    <p>{a}</p>
+                  </details>
+                ))}
+              </div>
             </div>
-            <div>
-              {FAQS.map(([q, a]) => (
-                <details key={q}>
-                  <summary>
-                    {q}
-                    <i aria-hidden="true">+</i>
-                  </summary>
-                  <p>{a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ----------------------------------------------------------- close */}
-        <section className="pop-section pop-close mesh-bg">
-          <div className="pop-shell pop-close-in">
-            <p className="pop-label">Your next step</p>
-            <h2>
-              Stop researching.
-              <br />
-              Start <mark>building the order.</mark>
-            </h2>
-            <p className="pop-lede" style={{ marginInline: "auto" }}>
-              {cta
-                ? "Open your free Apex account and build the order in the software. Bring what you have, even if that is nothing but the intention to buy, and start at step one."
-                : "Book a working session with the Apex team. Bring what you have, even if that is nothing but the intention to buy, and we will start at step one."}
-            </p>
-            <div className="pop-hero-actions">
-              <a
-                className={`pop-cta pop-cta-lg ${closeSheen.className}`}
-                href={primary.href}
-                ref={closeSheen.ref}
-              >
-                <span className="pop-cta-row">
-                  {primary.label}
-                  <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
-                </span>
-                <small>{primary.sub}</small>
-              </a>
+        {!hidden.has("close") && (
+          <section className="pop-section pop-close mesh-bg">
+            <div className="pop-shell pop-close-in">
+              <p className="pop-label">Your next step</p>
+              <h2>
+                Stop researching.
+                <br />
+                Start <mark>building the order.</mark>
+              </h2>
+              <p className="pop-lede" style={{ marginInline: "auto" }}>
+                {cta
+                  ? "Open your free Apex account and build the order in the software. Bring what you have, even if that is nothing but the intention to buy, and start at step one."
+                  : "Book a working session with the Apex team. Bring what you have, even if that is nothing but the intention to buy, and we will start at step one."}
+              </p>
+              <div className="pop-hero-actions">
+                <a
+                  className={`pop-cta pop-cta-lg ${closeSheen.className}`}
+                  href={primary.href}
+                  ref={closeSheen.ref}
+                >
+                  <span className="pop-cta-row">
+                    {primary.label}
+                    <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
+                  </span>
+                  <small>{primary.sub}</small>
+                </a>
+              </div>
+              <p className="pop-close-fine">
+                {cta
+                  ? "Free account. Nothing to buy to get started."
+                  : "A conversation about your order. No obligation to buy anything on the call."}
+              </p>
             </div>
-            <p className="pop-close-fine">
-              {cta
-                ? "Free account. Nothing to buy to get started."
-                : "A conversation about your order. No obligation to buy anything on the call."}
-            </p>
-          </div>
-        </section>
+          </section>
+        )}
         {sited && (
           <section className="pop-section-tight" aria-label="Disclaimer">
             <div className="pop-shell">

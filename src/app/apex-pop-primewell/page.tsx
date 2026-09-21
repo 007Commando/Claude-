@@ -47,6 +47,7 @@ export default function Page() {
         href: TRY_URL,
       }}
       trustpilot={TRUSTPILOT}
+      hide={["denial", "problem"]}
     />
   );
 }
