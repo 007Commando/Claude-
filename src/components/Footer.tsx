@@ -13,6 +13,11 @@ export default function Footer() {
     pathname === "/proposal" ||
     pathname === "/checkout" ||
     /**
+     * The PrimeWell applicant page: logo, the Amazon Software Partner badge,
+     * terms and privacy. No columns of links to wander off into.
+     */
+    pathname === "/apex-pop-primewell" ||
+    /**
      * The sign-up form had the whole site footer under it — four columns of
      * links, on a phone, below a form. Terms and privacy still belong there,
      * and nothing else does.
@@ -23,12 +28,10 @@ export default function Footer() {
    * Pages that ship a complete footer of their own, including the Meta and
    * Amazon disclaimers a paid landing page has to carry. Rendering the site
    * footer under one of those gives the page two footers and two copyright
-   * lines. /apex-pop-primewell has no footer at all: a PrimeWell applicant
-   * is meant to go into the software, not wander the site.
+   * lines.
    */
   const hasOwnFooter =
     pathname === "/apex-pop" ||
-    pathname === "/apex-pop-primewell" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works" ||
     pathname === "/first-order-roadmap" ||

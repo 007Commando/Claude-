@@ -61,6 +61,13 @@ export default function Navigation() {
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works";
 
+  /**
+   * The PrimeWell applicant page: no menu at all, only the logo and the way
+   * into the free account. Home, Features, Pricing and Rewards are exits
+   * from the one thing the page asks for.
+   */
+  const isLeanHeaderPage = pathname === "/apex-pop-primewell";
+
   const isDistractionFreePage =
     pathname === "/fba-starter-bundle" ||
     pathname === "/apex-elite" ||
@@ -100,6 +107,37 @@ export default function Navigation() {
   };
 
   if (hasOwnHeader) return null;
+
+  if (isLeanHeaderPage) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <Link href="/" className="flex items-center gap-2">
+              <img src={apexBullLogo.url} alt="Apex Applications" className="h-18 w-auto object-contain" />
+              <span className="text-xl font-bold tracking-tight text-slate-900">
+                APEX{" "}
+                <span className="text-brand text-[10px] align-top ml-0.5 font-black uppercase tracking-tighter">
+                  Applications
+                </span>
+              </span>
+            </Link>
+            <div className="flex items-center gap-4 sm:gap-6 uppercase tracking-wider text-[13px]">
+              <Link href="/auth" className="text-slate-900 hover:text-brand transition-colors font-bold">
+                LOG IN
+              </Link>
+              <Link
+                href="/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell"
+                className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
+              >
+                SIGN UP FREE
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   if (isDistractionFreePage) {
     return (
