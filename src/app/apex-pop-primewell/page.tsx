@@ -56,6 +56,7 @@ export default function Page() {
         "fit",
         "faq",
         "disclaimer",
+        "heroFine",
       ]}
       software={{
         label: "Suppliers included",
