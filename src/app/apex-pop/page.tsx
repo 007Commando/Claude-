@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import ApexPop from "../../components/ApexPop";
+import { TRUSTPILOT } from "../../components/TrustpilotBadge";
 
 /**
  * Kept out of the index, like /first-order-roadmap.
@@ -27,5 +28,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ApexPop />;
+  return <ApexPop trustpilot={TRUSTPILOT} />;
 }

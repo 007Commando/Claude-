@@ -47,6 +47,7 @@ import {
 
 import "./apex-surface.css";
 import "./apex-pop.css";
+import TrustpilotBadge, { type TrustpilotFigures } from "./TrustpilotBadge";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -236,56 +237,6 @@ const FAQS: readonly (readonly [string, string])[] = [
  * not from an ad. Each frame books with its own utm_term so the calendar
  * says which one the caller came through.
  */
-/**
- * The Trustpilot line under the hero button. Five green boxes, filled to the
- * score, then the score and the count. The numbers are passed in by the
- * page because Trustpilot blocks server-side fetches, so update them there
- * when the profile moves.
- */
-function TrustpilotBadge({ score, reviews, href }: { score: number; reviews: number; href: string }) {
-  const filled = Math.max(0, Math.min(5, score));
-  return (
-    <a
-      className="pop-trust"
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Rated ${score.toFixed(1)} out of 5 on Trustpilot from ${reviews} reviews`}
-    >
-      <span className="pop-trust-stars" aria-hidden="true">
-        {[0, 1, 2, 3, 4].map((i) => {
-          const fill = Math.max(0, Math.min(1, filled - i));
-          return (
-            <span key={i} className="pop-trust-star">
-              <span className="pop-trust-star-fill" style={{ width: `${fill * 100}%` }} />
-              <svg viewBox="0 0 24 24" width="13" height="13">
-                <path
-                  fill="#fff"
-                  d="M12 2.6l2.9 6.1 6.7.8-4.9 4.6 1.3 6.6L12 17.4l-6 3.3 1.3-6.6L2.4 9.5l6.7-.8z"
-                />
-              </svg>
-            </span>
-          );
-        })}
-      </span>
-      <span className="pop-trust-text">
-        <strong>{score.toFixed(1)}</strong> on Trustpilot
-        <span className="pop-trust-sep" aria-hidden="true">·</span>
-        {reviews} {reviews === 1 ? "review" : "reviews"}
-      </span>
-      <span className="pop-trust-logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="14" height="14">
-          <path
-            fill="#00b67a"
-            d="M12 2.6l2.9 6.1 6.7.8-4.9 4.6 1.3 6.6L12 17.4l-6 3.3 1.3-6.6L2.4 9.5l6.7-.8z"
-          />
-        </svg>
-        Trustpilot
-      </span>
-    </a>
-  );
-}
-
 export default function ApexPop({
   chrome = "own",
   utmTerm = "apex-pop",
@@ -305,7 +256,7 @@ export default function ApexPop({
    * Social proof under the hero button: the Trustpilot score and review
    * count, linking to the profile. Off unless a page passes it.
    */
-  trustpilot?: { score: number; reviews: number; href: string };
+  trustpilot?: TrustpilotFigures;
 }) {
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
   const primary = cta ?? {

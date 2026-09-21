@@ -44,6 +44,7 @@ import {
 
 import "./apex-surface.css";
 import "./apex-pop.css";
+import TrustpilotBadge, { TRUSTPILOT } from "./TrustpilotBadge";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -271,6 +272,8 @@ export default function PurchaseOrderProgram() {
                 See what is included
               </a>
             </div>
+
+            <TrustpilotBadge {...TRUSTPILOT} />
 
             <p className="pop-hero-fine">
               Not a course. Four things done with you, ending in one purchase order.
