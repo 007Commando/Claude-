@@ -49,13 +49,17 @@ export default function Page() {
       }}
       trustpilot={TRUSTPILOT}
       hide={["denial", "problem", "flow", "outcome", "fit", "faq"]}
-      softwareTitle={
-        <>
-          3 Wholesale Suppliers Sent Upon Sign up
-          <br />
-          <span className="pop-blue">+ Every month!</span>
-        </>
-      }
+      software={{
+        label: "Suppliers included",
+        title: (
+          <>
+            3 Wholesale Suppliers Sent Upon Sign up
+            <br />
+            <span className="pop-blue">+ Every month!</span>
+          </>
+        ),
+        lede: "Your free account comes with three vetted US wholesale distributors, each with the contact who approves resellers, and three more every month. These are the screens you scan their catalogs and build the order in.",
+      }}
     />
   );
 }

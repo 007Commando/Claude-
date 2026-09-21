@@ -254,7 +254,7 @@ export default function ApexPop({
   cta,
   trustpilot,
   hide = [],
-  softwareTitle,
+  software,
 }: {
   chrome?: "own" | "site";
   utmTerm?: string;
@@ -275,8 +275,8 @@ export default function ApexPop({
    * to what an applicant needs; the ad pages show everything.
    */
   hide?: PopSection[];
-  /** Replaces the heading of the software section when a page needs its own. */
-  softwareTitle?: ReactNode;
+  /** Replaces the label, heading and lede of the software section. */
+  software?: { label?: ReactNode; title?: ReactNode; lede?: ReactNode };
 }) {
   const hidden = new Set(hide);
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
@@ -569,9 +569,11 @@ export default function ApexPop({
           <section className="pop-section">
             <div className="pop-shell">
               <div className="pop-soft-head">
-                <p className="pop-label">The software you do it in</p>
+                <p className="pop-label">
+                  {software?.label ?? "The software you do it in"}
+                </p>
                 <h2>
-                  {softwareTitle ?? (
+                  {software?.title ?? (
                     <>
                       The work happens in the product,
                       <br />
@@ -580,8 +582,8 @@ export default function ApexPop({
                   )}
                 </h2>
                 <p className="pop-lede">
-                  These are the screens the six steps are worked in. Same tools
-                  we use, same ones you keep after the order is built.
+                  {software?.lede ??
+                    "These are the screens the six steps are worked in. Same tools we use, same ones you keep after the order is built."}
                 </p>
               </div>
 
