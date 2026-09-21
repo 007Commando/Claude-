@@ -5,6 +5,12 @@ import ApexPop from "../../components/ApexPop";
 /**
  * Kept out of the index, like /first-order-roadmap.
  *
+ * One of two landing pages for the same program, kept on purpose for an A/B
+ * test in paid traffic: this one is the six-step "stop researching" pitch,
+ * /purchase-order-program is the four-part "suppliers, ungating, research,
+ * first order" pitch. Each books the same Calendly with its own utm_term
+ * (apex-pop / purchase-order-program), which is how the two are compared.
+ *
  * This is a paid-traffic landing page for one action. Indexed, it would
  * compete with /amazon-wholesale-suppliers and the feature pages for the same
  * queries while saying less about the product, and the copy is written for
