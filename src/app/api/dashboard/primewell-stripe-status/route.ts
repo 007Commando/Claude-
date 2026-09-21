@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { lookupStripeCustomersByEmail } from "../../../../lib/dashboard/stripe";
-import { getApexSignupEntries } from "../../../../lib/dashboard/signups";
+import { getApexMembers } from "../../../../lib/dashboard/apex";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-// Caps how many emails one call can enrich — keeps a single request fast
-// (concurrency 5 in lookupStripeCustomersByEmail means ~100 emails is a few
-// seconds) and prevents an accidental huge batch from one client call.
-const MAX_EMAILS_PER_REQUEST = 100;
+// Kept for the table's per-page enrichment path, now answered by Apex itself
+// rather than a Stripe lookup per email. The summary already checks every
+// row, so this only runs when a row somehow arrives unchecked.
+const MAX_EMAILS_PER_REQUEST = 500;
 
 const bodySchema = z.object({
   emails: z.array(z.string().trim().email()).min(1).max(MAX_EMAILS_PER_REQUEST),
@@ -33,32 +32,23 @@ export async function POST(req: NextRequest) {
 
   const parsed = bodySchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Invalid payload" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Invalid payload" }, { status: 400 });
   }
 
   const { emails } = parsed.data;
-
-  const [signupEntries, stripeStatusByEmail] = await Promise.all([
-    getApexSignupEntries(),
-    lookupStripeCustomersByEmail(emails),
-  ]);
-
-  const apexSignupEmails = new Set(signupEntries.entries.map((e) => e.email));
+  const apex = await getApexMembers(emails);
 
   const result: Record<string, PrimewellStripeStatusRow> = {};
   for (const email of emails) {
-    const stripeStatus = stripeStatusByEmail.get(email);
+    const member = apex.members[email.toLowerCase()];
     result[email] = {
-      isApexSubscriber: apexSignupEmails.has(email),
-      isPayingCustomer: stripeStatus?.isCustomer ?? false,
-      customerSince: stripeStatus?.customerSince ?? null,
-      planName: stripeStatus?.planName ?? null,
-      ltv: stripeStatus?.ltv ?? 0,
+      isApexSubscriber: Boolean(member),
+      isPayingCustomer: Boolean(member?.hasAccess) && member?.subscription?.status !== "trialing",
+      customerSince: member?.subscription?.since ?? null,
+      planName: member?.subscription?.plan ?? null,
+      ltv: 0,
     };
   }
 
-  return NextResponse.json({ results: result, signupsConnected: signupEntries.connected });
+  return NextResponse.json({ results: result, signupsConnected: apex.connected });
 }

@@ -8,7 +8,8 @@ const GHL_VERSION = "2021-07-28";
 // Stripe lookup, which is enriched lazily per table page instead (see
 // /api/dashboard/primewell-stripe-status), so this cap just needs generous
 // headroom over current volume, not a tight bound on request time.
-const MAX_CONTACTS = 2000;
+// PrimeWell passed 2,000 contacts on 2026-09-21 and the newest sixty fell off the end.
+const MAX_CONTACTS = 6000;
 const PAGE_SIZE = 100;
 const PAGE_TIMEOUT_MS = 6000;
 

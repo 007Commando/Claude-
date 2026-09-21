@@ -10,12 +10,10 @@ import {
   Copy,
   Download,
   Facebook,
-  Inbox,
   Mail,
   Megaphone,
   RefreshCw,
   Rocket,
-  ShoppingBag,
   Target,
   UserX,
   Users,
@@ -31,7 +29,6 @@ import type {
   TrialRow,
 } from "../../lib/dashboard/types";
 import { downloadCsv } from "../../lib/dashboard/csv";
-import type { CrossFunnelSummary } from "../../lib/dashboard/crossFunnel";
 import type { BookedMeeting } from "../../lib/dashboard/calendly";
 
 const money = (n: number) =>
@@ -41,7 +38,6 @@ const SOURCE_LABELS: Record<string, string> = {
   primewell: "PrimeWell",
   apex: "Apex",
   facebook: "Facebook",
-  ash: "ASH",
   unknown: "Unknown",
   google: "Google",
   bing: "Bing",
@@ -52,105 +48,16 @@ const SOURCE_LABELS: Record<string, string> = {
 const SOURCE_TAG_TONE: Record<LeadSource, "purple" | "blue" | "amber" | "slate"> = {
   primewell: "purple",
   facebook: "blue",
-  ash: "amber",
   unknown: "slate",
 };
 
-
-function CrossFunnelCard({ summary }: { summary: CrossFunnelSummary | null }) {
-  const pct = (part: number, whole: number) => (whole ? `${((part / whole) * 100).toFixed(1)}%` : "—");
-  const rows = summary ? [...summary.cohorts, summary.total] : [];
-
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6">
-      <h2 className="text-lg font-black text-slate-900 tracking-tight mb-1">
-        PrimeWell → ASH Cross-Funnel
-      </h2>
-      <p className="text-xs text-slate-400 mb-5">
-        Same person in both locations, matched by email (phone as fallback). US requires a +1 phone
-        AND a US timezone — the CRM&apos;s country field is stamped &quot;US&quot; on every contact
-        and is ignored.
-      </p>
-
-      {!summary && <p className="text-sm text-slate-400">Crunching both locations…</p>}
-
-      {summary && !summary.connected && (
-        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-          {summary.error ?? "Cross-funnel tracking is not configured yet."}
-        </p>
-      )}
-
-      {summary?.connected && (
-        <>
-          <div className="flex flex-wrap items-center gap-4 mb-6">
-            <FunnelStep label="PW Leads (90d)" value={summary.total.pwLeads} />
-            <FunnelStep label="US Leads" value={summary.total.pwUs} />
-            <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-            <FunnelStep label="Moved to ASH" value={summary.total.moved} />
-            <FunnelStep label="US Movers" value={summary.total.movedUs} accent />
-            <FunnelStep
-              label="Median Time"
-              value={summary.medianDaysToMove}
-              suffix="d"
-              caption="PrimeWell entry → ASH entry"
-            />
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                  <th className="py-2 pr-4">Cohort</th>
-                  <th className="py-2 pr-4">Leads</th>
-                  <th className="py-2 pr-4">US</th>
-                  <th className="py-2 pr-4">→ ASH</th>
-                  <th className="py-2 pr-4">→ ASH US</th>
-                  <th className="py-2 pr-4">Conv (all)</th>
-                  <th className="py-2">Conv (US)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.label}
-                    className={`border-t border-slate-100 ${row.label === "total" ? "font-black text-slate-900" : "text-slate-600"}`}
-                  >
-                    <td className="py-2 pr-4">{row.label}</td>
-                    <td className="py-2 pr-4">{row.pwLeads}</td>
-                    <td className="py-2 pr-4">{row.pwUs}</td>
-                    <td className="py-2 pr-4">{row.moved}</td>
-                    <td className="py-2 pr-4">{row.movedUs}</td>
-                    <td className="py-2 pr-4">{pct(row.moved, row.pwLeads)}</td>
-                    <td className="py-2">{pct(row.movedUs, row.pwUs)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {summary.excludedAshFirst > 0 && (
-            <p className="text-xs text-slate-400 mt-3">
-              {summary.excludedAshFirst} contact{summary.excludedAshFirst === 1 ? "" : "s"} existed in
-              ASH before PrimeWell and are excluded — they moved the other way.
-            </p>
-          )}
-          {summary.truncated && (
-            <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-3">
-              One of the contact lists hit the fetch cap — numbers may undercount slightly.
-            </p>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
 
 function SourceBadge({ source }: { source: LeadSource }) {
   return <Badge tone={SOURCE_TAG_TONE[source]}>{SOURCE_LABELS[source]}</Badge>;
 }
 
 // A prior appearance in a different funnel (e.g. already a PrimeWell contact
-// before filling out ASH's form) is a stronger, more specific origin signal
+// before filling out the Apex form) is a stronger, more specific origin signal
 // than a guessed UTM tag, so it takes priority over the in-funnel sourceLabel.
 function LeadSourceTag({ row }: { row: GhlLeadRow }) {
   if (row.priorFunnel) {
@@ -921,16 +828,13 @@ function GhlLeadsTable({
   signupsConnected: boolean;
   sourceLabel: string;
   csvPrefix: string;
-  source: "primewell" | "ash" | "facebook";
+  source: "primewell" | "facebook";
   onTemperatureCounts?: (counts: TemperatureCounts) => void;
   /** ISO date (yyyy-mm-dd) lower bound on joinedAt, inclusive — "" means unbounded. */
   dateFrom: string;
   /** ISO date (yyyy-mm-dd) upper bound on joinedAt, inclusive — "" means unbounded. */
   dateTo: string;
 }) {
-  // ASH membership is only shown on the PrimeWell table — on ASH's own table
-  // it would be trivially true for every row, and it wasn't asked for on Facebook.
-  const showAshColumn = source === "primewell";
   const [search, setSearch] = useState("");
   const [payingFilter, setPayingFilter] = useState<TriState>("all");
   const [subscribedFilter, setSubscribedFilter] = useState<SubscribedFilter>("all");
@@ -1190,12 +1094,10 @@ function GhlLeadsTable({
           "Phone",
           `Joined ${sourceLabel}`,
           "Source",
-          ...(showAshColumn ? ["ASH Member"] : []),
           "Subscribed to Apex",
           "Paying Customer",
           "Customer Since",
           "Plan",
-          "LTV",
           "Temperature",
         ],
         finalRows.map((row) => [
@@ -1204,12 +1106,10 @@ function GhlLeadsTable({
           row.phone ?? "",
           row.joinedAt ? new Date(row.joinedAt).toLocaleDateString() : "",
           row.priorFunnel ? `From ${SOURCE_LABELS[row.priorFunnel]}` : row.sourceLabel,
-          ...(showAshColumn ? [row.alsoInAsh ? "Yes" : "No"] : []),
           !signupsConnected ? "Unknown" : row.isApexSubscriber ? "Yes" : "No",
           row.isPayingCustomer ? "Yes" : "No",
           row.customerSince ? new Date(row.customerSince).toLocaleDateString() : "",
           row.planName ?? "",
-          row.ltv.toFixed(2),
           row.isApexSubscriber || row.isPayingCustomer
             ? "Converted"
             : row.optedOut
@@ -1316,12 +1216,10 @@ function GhlLeadsTable({
                   <th className="px-2 py-2">Phone</th>
                   <th className="px-2 py-2">Source</th>
                   <th className="px-2 py-2">Meeting</th>
-                  {showAshColumn && <th className="px-2 py-2">ASH Member</th>}
                   <th className="px-2 py-2">Subscribed to Apex</th>
                   <th className="px-2 py-2">Paying Customer</th>
                   <th className="px-2 py-2">Customer Since</th>
                   <th className="px-2 py-2">Plan</th>
-                  <th className="px-2 py-2">LTV</th>
                   <th className="px-2 py-2">Temperature</th>
                 </tr>
               </thead>
@@ -1345,15 +1243,6 @@ function GhlLeadsTable({
                         configured={calendlyConfigured}
                       />
                     </td>
-                    {showAshColumn && (
-                      <td className="px-2 py-2.5">
-                        {row.alsoInAsh ? (
-                          <Badge tone="amber">ASH Member</Badge>
-                        ) : (
-                          <span className="text-slate-300">—</span>
-                        )}
-                      </td>
-                    )}
                     <td className="px-2 py-2.5">
                       {!row.stripeChecked ? (
                         <Badge tone="slate">…</Badge>
@@ -1378,7 +1267,6 @@ function GhlLeadsTable({
                       {row.customerSince ? new Date(row.customerSince).toLocaleDateString() : "—"}
                     </td>
                     <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">{row.planName ?? "—"}</td>
-                    <td className="px-2 py-2.5 text-slate-700">{money(row.ltv)}</td>
                     <td className="px-2 py-2.5">
                       <TemperatureBadge
                         temperature={row.temperature}
@@ -1438,41 +1326,14 @@ export default function DashboardPage() {
   const [subscriptionsModal, setSubscriptionsModal] = useState<"mrr" | "arr" | null>(null);
   const [showTrialsModal, setShowTrialsModal] = useState(false);
   const [showCancelledTrialsModal, setShowCancelledTrialsModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "ash" | "apex" | "leads">("primewell");
-  const [crossFunnel, setCrossFunnel] = useState<CrossFunnelSummary | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/dashboard/cross-funnel", { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const body = (await res.json()) as CrossFunnelSummary;
-        if (!cancelled) setCrossFunnel(body);
-      } catch (err) {
-        if (!cancelled)
-          setCrossFunnel({
-            connected: false,
-            error: err instanceof Error ? err.message : "Failed to load cross-funnel",
-            cohorts: [],
-            total: { label: "total", pwLeads: 0, pwUs: 0, moved: 0, movedUs: 0 },
-            medianDaysToMove: null,
-            excludedAshFirst: 0,
-            truncated: false,
-          });
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-  // Shared across the PrimeWell/Facebook/ASH lead tables so switching tabs
+  const [activeTab, setActiveTab] = useState<"primewell" | "facebook" | "apex">("primewell");
+  // Shared across the PrimeWell and Facebook lead tables so switching tabs
   // keeps the same window applied — "" means unbounded on that side.
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [temperatureCounts, setTemperatureCounts] = useState<
-    Record<"primewell" | "facebook" | "ash", TemperatureCounts | null>
-  >({ primewell: null, facebook: null, ash: null });
+    Record<"primewell" | "facebook", TemperatureCounts | null>
+  >({ primewell: null, facebook: null });
 
   // Stable references so GhlLeadsTable's counts-reporting effect only re-runs
   // when the counts themselves actually change, not on every parent render.
@@ -1484,16 +1345,11 @@ export default function DashboardPage() {
     (counts: TemperatureCounts) => setTemperatureCounts((prev) => ({ ...prev, facebook: counts })),
     [],
   );
-  const reportAshCounts = useCallback(
-    (counts: TemperatureCounts) => setTemperatureCounts((prev) => ({ ...prev, ash: counts })),
-    [],
-  );
-
   const load = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/dashboard/summary", { cache: "no-store" });
+      const res = await fetch(`/api/dashboard/summary${data ? "?fresh=1" : ""}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setData(await res.json());
     } catch (err) {
@@ -1602,11 +1458,9 @@ export default function DashboardPage() {
             <div className="inline-flex flex-wrap items-center gap-1.5 bg-white border border-slate-200 rounded-full p-1.5 shadow-sm">
               {(
                 [
-                  { id: "primewell", label: "PrimeWell Funnel", icon: Users },
-                  { id: "facebook", label: "Facebook Funnel", icon: Facebook },
-                  { id: "ash", label: "ASH Funnel", icon: ShoppingBag },
-                  { id: "apex", label: "Apex Funnel", icon: Rocket },
-                  { id: "leads", label: "All Leads", icon: Inbox },
+                  { id: "primewell", label: "PrimeWell", icon: Users },
+                  { id: "facebook", label: "Facebook Ads", icon: Facebook },
+                  { id: "apex", label: "Apex Accounts", icon: Rocket },
                 ] as const
               ).map((tab) => (
                 <button
@@ -1622,7 +1476,7 @@ export default function DashboardPage() {
               ))}
             </div>
 
-            {(activeTab === "primewell" || activeTab === "facebook" || activeTab === "ash") && (
+            {(activeTab === "primewell" || activeTab === "facebook") && (
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Joined between:
@@ -1654,16 +1508,15 @@ export default function DashboardPage() {
                     Clear
                   </button>
                 )}
-                <span className="text-xs text-slate-400">Applies across PrimeWell, Facebook &amp; ASH.</span>
+                <span className="text-xs text-slate-400">Applies to both funnels.</span>
               </div>
             )}
 
             {activeTab === "primewell" && (
               <div className="space-y-8">
-                <CrossFunnelCard summary={crossFunnel} />
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
                   <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">
-                    PrimeWell → Apex Funnel
+                    PrimeWell → Apex
                   </h2>
                   {data.primewell.connected ? (
                     <div className="flex flex-wrap items-center gap-4">
@@ -1690,13 +1543,12 @@ export default function DashboardPage() {
                         }
                       />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-                      <FunnelStep label="PrimeWell → Apex Converts" value={data.primewell.crossConverted} accent />
+                      <FunnelStep label="Signed up to Apex" value={data.primewell.crossConverted} accent />
                     </div>
                   ) : null}
                   {data.primewell.connected && data.primewell.crossConvertedTruncated && (
                     <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-4">
-                      "PrimeWell → Apex Converts" only checked a subset of leads/signups (list too large to
-                      fully cross-reference on every page load) — the real number may be slightly higher.
+                      Apex could not be reached, so who signed up is unknown right now. Refresh in a minute.
                     </p>
                   )}
                   {!data.primewell.connected && (
@@ -1710,12 +1562,6 @@ export default function DashboardPage() {
                   <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">PrimeWell Leads</h2>
                   {data.primewell.connected ? (
                     <>
-                      {!data.signups.connected && (
-                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-                          "Subscribed to Apex" shows Unknown until Supabase is connected — that's what tracks
-                          free Apex signups.
-                        </p>
-                      )}
                       {data.primewell.rows.length < data.primewell.totalLeads && (
                         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
                           Showing the {data.primewell.rows.length} most recent leads out of{" "}
@@ -1745,11 +1591,11 @@ export default function DashboardPage() {
               <div className="space-y-8">
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
                   <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">
-                    Facebook → Apex Funnel
+                    Facebook Ads → Apex
                   </h2>
                   {data.facebook.connected ? (
                     <div className="flex flex-wrap items-center gap-4">
-                      <FunnelStep label="Facebook Leads" value={data.facebook.totalLeads} />
+                      <FunnelStep label="Facebook Ads Leads" value={data.facebook.totalLeads} />
                       <FunnelStep label="New Leads (7d)" value={data.facebook.newLeads7d} />
                       <FunnelStep label="New Leads (30d)" value={data.facebook.newLeads30d} />
                       <FunnelStep
@@ -1772,13 +1618,12 @@ export default function DashboardPage() {
                         }
                       />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-                      <FunnelStep label="Facebook → Apex Converts" value={data.facebook.crossConverted} accent />
+                      <FunnelStep label="Signed up to Apex" value={data.facebook.crossConverted} accent />
                     </div>
                   ) : null}
                   {data.facebook.connected && data.facebook.crossConvertedTruncated && (
                     <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-4">
-                      "Facebook → Apex Converts" only checked a subset of leads/signups (list too large to
-                      fully cross-reference on every page load) — the real number may be slightly higher.
+                      Apex could not be reached, so who signed up is unknown right now. Refresh in a minute.
                     </p>
                   )}
                   {!data.facebook.connected && (
@@ -1789,15 +1634,9 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">Facebook Leads</h2>
+                  <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">Facebook Ads Leads</h2>
                   {data.facebook.connected ? (
                     <>
-                      {!data.signups.connected && (
-                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-                          "Subscribed to Apex" shows Unknown until Supabase is connected — that's what tracks
-                          free Apex signups.
-                        </p>
-                      )}
                       {data.facebook.rows.length < data.facebook.totalLeads && (
                         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
                           Showing the {data.facebook.rows.length} most recent leads out of{" "}
@@ -1823,99 +1662,19 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {activeTab === "ash" && (
-              <div className="space-y-8">
-                <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">
-                    ASH → Apex Funnel
-                  </h2>
-                  {data.ash.connected ? (
-                    <div className="flex flex-wrap items-center gap-4">
-                      <FunnelStep label="ASH Leads" value={data.ash.totalLeads} />
-                      <FunnelStep label="New Leads (7d)" value={data.ash.newLeads7d} />
-                      <FunnelStep label="New Leads (30d)" value={data.ash.newLeads30d} />
-                      <FunnelStep
-                        label="Hot Leads"
-                        value={temperatureCounts.ash?.hot ?? null}
-                        caption={
-                          temperatureCounts.ash
-                            ? `of ${temperatureCounts.ash.checkedCount}/${temperatureCounts.ash.totalCount} checked`
-                            : undefined
-                        }
-                      />
-                      <FunnelStep
-                        label="Very Hot Leads"
-                        value={temperatureCounts.ash?.veryHot ?? null}
-                        accent
-                        caption={
-                          temperatureCounts.ash
-                            ? `of ${temperatureCounts.ash.checkedCount}/${temperatureCounts.ash.totalCount} checked`
-                            : undefined
-                        }
-                      />
-                      <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-                      <FunnelStep label="ASH → Apex Converts" value={data.ash.crossConverted} accent />
-                    </div>
-                  ) : null}
-                  {data.ash.connected && data.ash.crossConvertedTruncated && (
-                    <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-4">
-                      "ASH → Apex Converts" only checked a subset of leads/signups (list too large to
-                      fully cross-reference on every page load) — the real number may be slightly higher.
-                    </p>
-                  )}
-                  {!data.ash.connected && (
-                    <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-                      {data.ash.error ?? "ASH lead tracking is not configured yet."}
-                    </p>
-                  )}
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">ASH Leads</h2>
-                  {data.ash.connected ? (
-                    <>
-                      {!data.signups.connected && (
-                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-                          "Subscribed to Apex" shows Unknown until Supabase is connected — that's what tracks
-                          free Apex signups.
-                        </p>
-                      )}
-                      {data.ash.rows.length < data.ash.totalLeads && (
-                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-                          Showing the {data.ash.rows.length} most recent leads out of{" "}
-                          {data.ash.totalLeads} total — the rest couldn't be fetched this time, try
-                          refreshing.
-                        </p>
-                      )}
-                      <GhlLeadsTable
-                        rows={data.ash.rows}
-                        signupsConnected={data.signups.connected}
-                        sourceLabel="ASH"
-                        csvPrefix="ash"
-                        source="ash"
-                        onTemperatureCounts={reportAshCounts}
-                        dateFrom={dateFrom}
-                        dateTo={dateTo}
-                      />
-                    </>
-                  ) : (
-                    <p className="text-sm text-slate-400">Connect Amazon Success Hub's GHL to see leads here.</p>
-                  )}
-                </div>
-              </div>
-            )}
-
             {activeTab === "apex" && (
               <div className="rounded-2xl border border-slate-200 bg-white p-6">
                 <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">
-                  Apex Signups &amp; Revenue
+                  Apex Accounts
                 </h2>
                 {data.signups.connected ? (
                   <>
                     <div className="flex flex-wrap items-center gap-4 mb-6">
-                      <FunnelStep label="Accounts Created" value={data.signups.totalAccounts} />
+                      <FunnelStep label="Accounts" value={data.signups.totalAccounts} />
+                      <FunnelStep label="New (30d)" value={data.signups.new30d} />
+                      <FunnelStep label="On trial" value={data.signups.totalTrialing} />
                       <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-                      <FunnelStep label="Became Clients" value={data.signups.totalPayingCustomers} accent />
+                      <FunnelStep label="Paying" value={data.signups.totalPayingCustomers} accent />
                       <FunnelStep
                         label="Account → Client Rate"
                         value={
@@ -1926,12 +1685,20 @@ export default function DashboardPage() {
                         suffix="%"
                       />
                     </div>
-                    {data.signups.payingCustomersTruncated && (
-                      <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-                        "Became Clients" and the table below only cover the {data.signups.rows.length} most
-                        recent signups out of {data.signups.totalAccounts} total.
-                      </p>
-                    )}
+                    {/* Where accounts come from, in the two funnels that are paid for. */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {Object.entries(data.signups.bySource)
+                        .sort((a, b) => b[1].accounts - a[1].accounts)
+                        .map(([source, totals]) => (
+                          <span
+                            key={source}
+                            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-700"
+                          >
+                            <span className="font-bold">{SOURCE_LABELS[source] ?? source}</span>
+                            {totals.accounts} accounts · {totals.paying} paying · {totals.new30d} new in 30d
+                          </span>
+                        ))}
+                    </div>
                     {data.signups.rows.length > 0 ? (
                       <div className="overflow-x-auto -mx-2">
                         <table className="w-full text-sm">
@@ -1941,7 +1708,7 @@ export default function DashboardPage() {
                               <th className="px-2 py-2">Signed Up</th>
                               <th className="px-2 py-2">Source</th>
                               <th className="px-2 py-2">Status</th>
-                              <th className="px-2 py-2">LTV</th>
+                              <th className="px-2 py-2">Plan</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1958,71 +1725,32 @@ export default function DashboardPage() {
                                 </td>
                                 <td className="px-2 py-2.5">
                                   <div className="flex gap-1.5">
-                                    {row.unsubscribed ? (
-                                      <Badge tone="red">Churned</Badge>
-                                    ) : row.isPayingCustomer ? (
+                                    {row.isPayingCustomer ? (
                                       <Badge tone="green">Customer</Badge>
+                                    ) : row.isTrialing ? (
+                                      <Badge tone="amber">Trial</Badge>
                                     ) : (
                                       <Badge tone="slate">Free</Badge>
                                     )}
                                   </div>
                                 </td>
-                                <td className="px-2 py-2.5 text-slate-700">{money(row.ltv)}</td>
+                                <td className="px-2 py-2.5 text-slate-700 whitespace-nowrap">
+                                  {row.planName ?? "—"}
+                                  {row.status && row.status !== "active" && row.status !== "trialing" ? ` (${row.status})` : ""}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-500">No Apex signups recorded yet.</p>
+                      <p className="text-sm text-slate-500">No Apex accounts yet.</p>
                     )}
                   </>
                 ) : (
                   <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-                    {data.signups.error ?? "Signups tracking is not configured yet."}
+                    {data.signups.error ?? "Apex is not connected yet."}
                   </p>
-                )}
-              </div>
-            )}
-
-            {activeTab === "leads" && (
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                <h2 className="text-lg font-black text-slate-900 tracking-tight mb-5">Every Lead Coming In</h2>
-                {data.leads.connected && data.leads.recent.length > 0 ? (
-                  <div className="overflow-x-auto -mx-2">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="text-left text-xs font-bold uppercase tracking-wider text-slate-500">
-                          <th className="px-2 py-2">When</th>
-                          <th className="px-2 py-2">Source</th>
-                          <th className="px-2 py-2">Event</th>
-                          <th className="px-2 py-2">Email</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.leads.recent.map((lead) => (
-                          <tr key={lead.id} className="border-t border-slate-100">
-                            <td className="px-2 py-2.5 text-slate-500 whitespace-nowrap">
-                              {new Date(lead.createdAt).toLocaleString()}
-                            </td>
-                            <td className="px-2 py-2.5 font-bold text-slate-900">
-                              {SOURCE_LABELS[lead.source] ?? lead.source}
-                            </td>
-                            <td className="px-2 py-2.5 text-slate-700">
-                              {EVENT_LABELS[lead.event] ?? lead.event}
-                            </td>
-                            <td className="px-2 py-2.5 text-slate-700">
-                              <CopyableEmail email={lead.email} />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : data.leads.connected ? (
-                  <p className="text-sm text-slate-500">No leads recorded yet.</p>
-                ) : (
-                  <p className="text-sm text-slate-400">Connect Supabase to start seeing leads here.</p>
                 )}
               </div>
             )}

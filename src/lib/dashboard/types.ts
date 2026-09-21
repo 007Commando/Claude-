@@ -1,5 +1,5 @@
-/** Which GHL funnel a customer's email was found in — "unknown" if it matched none. */
-export type LeadSource = "primewell" | "facebook" | "ash" | "unknown";
+/** Which funnel a customer came through, from Apex's own acquisition record first and the GHL lists second; "unknown" when neither says. */
+export type LeadSource = "primewell" | "facebook" | "unknown";
 
 export interface StripeSubscriptionRow {
   id: string;
@@ -134,10 +134,8 @@ export interface GhlLeadRow {
    * filled out ASH's form. Takes priority over sourceLabel since "already
    * knew them from PrimeWell" is a stronger signal than a guessed UTM tag. */
   priorFunnel: LeadSource | null;
-  /** True if this email also appears as a contact in ASH's GHL account,
-   * regardless of which funnel they joined first (unlike priorFunnel, which
-   * only counts an earlier appearance). Always false for ASH's own rows. */
-  alsoInAsh: boolean;
+  /** Stripe's word for the subscription behind the access: active, trialing, past_due. Null when none. */
+  subscriptionStatus: string | null;
 }
 
 export interface GhlFunnel {
@@ -152,15 +150,37 @@ export interface GhlFunnel {
   rows: GhlLeadRow[];
 }
 
+/** One Apex account, as the Apex accounts table shows it. */
+export interface ApexSignupRow {
+  email: string;
+  signedUpAt: string;
+  /** Acquisition source Apex recorded at signup, else which GHL list holds the email, else "direct". */
+  source: string;
+  isPayingCustomer: boolean;
+  isTrialing: boolean;
+  planName: string | null;
+  status: string | null;
+}
+
+export interface SignupsSummary {
+  connected: boolean;
+  error?: string;
+  totalAccounts: number;
+  totalPayingCustomers: number;
+  totalTrialing: number;
+  new7d: number;
+  new30d: number;
+  bySource: Record<string, { accounts: number; paying: number; trialing: number; new7d: number; new30d: number }>;
+  rows: ApexSignupRow[];
+}
+
 export interface DashboardSummary {
   stripe: StripeMetrics;
   mailchimp: MailchimpMetrics;
   meta: MetaMetrics;
-  leads: import("./leads").LeadsSummary;
-  signups: import("./signups").SignupsSummary;
+  signups: SignupsSummary;
   primewell: GhlFunnel;
   facebook: GhlFunnel;
-  ash: GhlFunnel;
   blended: {
     costPerLead30d: number | null;
     costPerSale30d: number | null;

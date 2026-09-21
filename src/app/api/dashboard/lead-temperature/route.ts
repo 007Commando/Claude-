@@ -11,21 +11,15 @@ export const runtime = "nodejs";
 const MAX_CONTACTS_PER_REQUEST = 100;
 
 const bodySchema = z.object({
-  source: z.enum(["primewell", "ash", "facebook"]),
+  source: z.enum(["primewell", "facebook"]),
   contactIds: z.array(z.string().trim().min(1)).min(1).max(MAX_CONTACTS_PER_REQUEST),
 });
 
-function credentialsFor(source: "primewell" | "ash" | "facebook"): { token?: string; locationId?: string } {
+function credentialsFor(source: "primewell" | "facebook"): { token?: string; locationId?: string } {
   if (source === "primewell") {
     return {
       token: process.env.GHL_PRIMEWELL_PRIVATE_INTEGRATION_TOKEN,
       locationId: process.env.GHL_PRIMEWELL_LOCATION_ID,
-    };
-  }
-  if (source === "ash") {
-    return {
-      token: process.env.GHL_ASH_PRIVATE_INTEGRATION_TOKEN,
-      locationId: process.env.GHL_ASH_LOCATION_ID,
     };
   }
   return {
