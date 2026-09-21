@@ -17,7 +17,8 @@ import { TRUSTPILOT } from "../../components/TrustpilotBadge";
  * the index like its siblings.
  */
 export const metadata: Metadata = {
-  title: "Apex POP for PrimeWell Sellers: Build Your First or Next Purchase Order",
+  title:
+    "Apex POP for PrimeWell Sellers: Build Your First or Next Purchase Order",
   description:
     "For sellers applying to PrimeWell: Apex POP is a working process with the Apex team, from suppliers and catalog analysis to a purchase order built in the Apex software. Not a course.",
   alternates: {
@@ -47,7 +48,14 @@ export default function Page() {
         href: TRY_URL,
       }}
       trustpilot={TRUSTPILOT}
-      hide={["denial", "problem"]}
+      hide={["denial", "problem", "flow", "outcome", "fit", "faq"]}
+      softwareTitle={
+        <>
+          3 Wholesale Suppliers Sent Upon Sign up
+          <br />
+          <span className="pop-blue">+ Every month!</span>
+        </>
+      }
     />
   );
 }

@@ -30,8 +30,14 @@
  * rather than an illustration of it.
  */
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import {
   ArrowRight,
   Boxes,
@@ -101,8 +107,7 @@ const STEPS = [
     rail: "Suppliers",
     Icon: Building2,
     title: "Start from suppliers you can actually buy from.",
-    body:
-      "Put the accounts you already have into Vendors, and work the list for the ones you do not. Catalogs requested, account requirements noted, minimums and payment terms written down in one place instead of across eleven email threads.",
+    body: "Put the accounts you already have into Vendors, and work the list for the ones you do not. Catalogs requested, account requirements noted, minimums and payment terms written down in one place instead of across eleven email threads.",
     outcome: "A shortlist of suppliers that will sell to you.",
     tool: "Vendors",
   },
@@ -111,8 +116,7 @@ const STEPS = [
     rail: "Analyze",
     Icon: ScanBarcode,
     title: "Run the whole catalog, not the ten products you remember.",
-    body:
-      "Load a supplier price list into the UPC Scanner and read it line by line: landed cost against current sold price, FBA and referral fees, shipping, margin and ROI. Most of a catalog does not work. This is how you find the part that might.",
+    body: "Load a supplier price list into the UPC Scanner and read it line by line: landed cost against current sold price, FBA and referral fees, shipping, margin and ROI. Most of a catalog does not work. This is how you find the part that might.",
     outcome: "A filtered list of products worth a second look.",
     tool: "UPC Scanner",
   },
@@ -121,8 +125,7 @@ const STEPS = [
     rail: "Learn",
     Icon: GraduationCap,
     title: "Learn the one thing blocking this order.",
-    body:
-      "Not a forty-hour curriculum. If the hold-up is ungating, or prep, or what a distributor expects from a new reseller, you look up that piece in Apex University at the moment it is in your way, and then you carry on building.",
+    body: "Not a forty-hour curriculum. If the hold-up is ungating, or prep, or what a distributor expects from a new reseller, you look up that piece in Apex University at the moment it is in your way, and then you carry on building.",
     outcome: "The specific answer you were stuck on.",
     tool: "Apex University",
   },
@@ -131,8 +134,7 @@ const STEPS = [
     rail: "Set capital",
     Icon: Wallet,
     title: "Decide the number before you fall in love with a product.",
-    body:
-      "How much you are putting into this order, what stays in reserve, and what is left for the one after it. The order gets built to fit the capital. Doing it the other way round is how a first order turns into stock you cannot restock.",
+    body: "How much you are putting into this order, what stays in reserve, and what is left for the one after it. The order gets built to fit the capital. Doing it the other way round is how a first order turns into stock you cannot restock.",
     outcome: "A budget the purchase order has to fit inside.",
     tool: "Your numbers",
     key: true,
@@ -142,8 +144,7 @@ const STEPS = [
     rail: "Meet with Apex",
     Icon: Users,
     title: "Go through it with someone who has bought before.",
-    body:
-      "Bring the shortlist and the number to a working session with our team. We go through the products you are considering, the costs you have entered and the order you are shaping, and you leave the call knowing what the next move is.",
+    body: "Bring the shortlist and the number to a working session with our team. We go through the products you are considering, the costs you have entered and the order you are shaping, and you leave the call knowing what the next move is.",
     outcome: "Your decisions made out loud, with a second opinion.",
     tool: "Live session",
   },
@@ -152,8 +153,7 @@ const STEPS = [
     rail: "Build the PO",
     Icon: ClipboardCheck,
     title: "Build the purchase order and see it before you send it.",
-    body:
-      "Quantities, cost of goods, Amazon fees, shipping and prep go into the Purchase Order Builder, and it returns the projection: total revenue, total expenses, profit, margin and ROI on the order as configured. Change a quantity and watch it move.",
+    body: "Quantities, cost of goods, Amazon fees, shipping and prep go into the Purchase Order Builder, and it returns the projection: total revenue, total expenses, profit, margin and ROI on the order as configured. Change a quantity and watch it move.",
     outcome: "A purchase order you can actually send to a supplier.",
     tool: "Purchase Order Builder",
     key: true,
@@ -254,6 +254,7 @@ export default function ApexPop({
   cta,
   trustpilot,
   hide = [],
+  softwareTitle,
 }: {
   chrome?: "own" | "site";
   utmTerm?: string;
@@ -274,6 +275,8 @@ export default function ApexPop({
    * to what an applicant needs; the ad pages show everything.
    */
   hide?: PopSection[];
+  /** Replaces the heading of the software section when a page needs its own. */
+  softwareTitle?: ReactNode;
 }) {
   const hidden = new Set(hide);
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
@@ -300,33 +303,39 @@ export default function ApexPop({
   return (
     <div className={"apex-surface pop-page" + (sited ? " pop-page-sited" : "")}>
       {!sited && (
-      <header className="pop-header">
-        <div className="pop-header-in">
-          <a className="pop-brand" href={ORIGIN} aria-label="Apex Applications home">
-            <img src="/assets/bull.png" alt="" width={54} height={42} />
-            <span className="pop-brand-name">
-              APEX
-              <small>APPLICATIONS</small>
-            </span>
-          </a>
-          <div className="pop-header-right">
-            <span className="pop-header-note">Purchase Order Program</span>
-            <a className="pop-cta pop-cta-sm" href={primary.href}>
-              <span className="pop-cta-row">
-                {cta ? "Get started" : "Build my PO"}
-                <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
+        <header className="pop-header">
+          <div className="pop-header-in">
+            <a
+              className="pop-brand"
+              href={ORIGIN}
+              aria-label="Apex Applications home"
+            >
+              <img src="/assets/bull.png" alt="" width={54} height={42} />
+              <span className="pop-brand-name">
+                APEX
+                <small>APPLICATIONS</small>
               </span>
             </a>
+            <div className="pop-header-right">
+              <span className="pop-header-note">Purchase Order Program</span>
+              <a className="pop-cta pop-cta-sm" href={primary.href}>
+                <span className="pop-cta-row">
+                  {cta ? "Get started" : "Build my PO"}
+                  <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
+                </span>
+              </a>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
       )}
 
       <main>
         {/* ------------------------------------------------------------ hero */}
         <section className="pop-hero mesh-bg" ref={heroRef}>
           <div className="pop-shell pop-hero-in">
-            <p className="pop-label pop-eyebrow">Apex POP · Purchase Order Program</p>
+            <p className="pop-label pop-eyebrow">
+              Apex POP · Purchase Order Program
+            </p>
 
             <h1>
               Build your first or next Amazon wholesale{" "}
@@ -334,9 +343,9 @@ export default function ApexPop({
             </h1>
 
             <p className="pop-hero-sub">
-              You have researched enough. POP is a working process with our team that
-              takes you from suppliers and catalogs to a purchase order built around
-              the capital you actually have.
+              You have researched enough. POP is a working process with our team
+              that takes you from suppliers and catalogs to a purchase order
+              built around the capital you actually have.
             </p>
 
             <div className="pop-hero-actions">
@@ -352,7 +361,10 @@ export default function ApexPop({
                 <small>{primary.sub}</small>
               </a>
               {(!cta || cta.secondaryLabel) && (
-                <a className="pop-cta-ghost" href={cta ? BOOK_URL : "#how-it-works"}>
+                <a
+                  className="pop-cta-ghost"
+                  href={cta ? BOOK_URL : "#how-it-works"}
+                >
                   {cta ? cta.secondaryLabel : "See how it works"}
                 </a>
               )}
@@ -366,7 +378,9 @@ export default function ApexPop({
 
             <motion.div
               className="pop-hero-art"
-              style={reduceMotion ? undefined : { y: artY, opacity: artOpacity }}
+              style={
+                reduceMotion ? undefined : { y: artY, opacity: artOpacity }
+              }
             >
               <figure className="pop-frame glow-edge">
                 <div className="pop-frame-bar">
@@ -388,8 +402,8 @@ export default function ApexPop({
                 />
               </figure>
               <p className="pop-hero-caption">
-                The Apex Purchase Order Builder. Figures shown are example data from
-                the product, not a forecast of results.
+                The Apex Purchase Order Builder. Figures shown are example data
+                from the product, not a forecast of results.
               </p>
             </motion.div>
           </div>
@@ -397,7 +411,10 @@ export default function ApexPop({
 
         {/* ---------------------------------------------------------- denial */}
         {!hidden.has("denial") && (
-          <section className="pop-denial pop-section-tight" aria-label="What Apex POP is not">
+          <section
+            className="pop-denial pop-section-tight"
+            aria-label="What Apex POP is not"
+          >
             <div className="pop-shell">
               <div className="pop-denial-grid">
                 {DENIALS.map(([title, body]) => (
@@ -426,20 +443,21 @@ export default function ApexPop({
                   <span className="pop-blue">Not enough purchase orders.</span>
                 </h2>
                 <p className="pop-lede">
-                  You have watched the modules. You have saved the threads, joined the
-                  group, and bookmarked the supplier list. On paper you understand
-                  Amazon wholesale better than plenty of people who are currently
-                  selling on it.
+                  You have watched the modules. You have saved the threads,
+                  joined the group, and bookmarked the supplier list. On paper
+                  you understand Amazon wholesale better than plenty of people
+                  who are currently selling on it.
                 </p>
                 <p className="pop-lede">
-                  <strong>What you do not have is an order.</strong> Not because the
-                  information was wrong, but because none of it ever made you sit down
-                  with one supplier catalog, one number you are willing to commit, and
-                  build the thing that turns money into inventory.
+                  <strong>What you do not have is an order.</strong> Not because
+                  the information was wrong, but because none of it ever made
+                  you sit down with one supplier catalog, one number you are
+                  willing to commit, and build the thing that turns money into
+                  inventory.
                 </p>
                 <p className="pop-lede">
-                  Research has no finish line, so it is easy to stay in. A purchase
-                  order has one. POP exists to get you to it.
+                  Research has no finish line, so it is easy to stay in. A
+                  purchase order has one. POP exists to get you to it.
                 </p>
               </div>
 
@@ -510,30 +528,37 @@ export default function ApexPop({
               </ol>
 
               <ol className="pop-steps">
-                {STEPS.map(({ n, Icon, title, body, outcome, tool, ...rest }) => (
-                  <motion.li
-                    key={n}
-                    className={"pop-step" + ("key" in rest && rest.key ? " is-key glow-edge" : "")}
-                    initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
-                    whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <span className="pop-step-ico" aria-hidden="true">
-                      <Icon size={21} strokeWidth={2} />
-                    </span>
-                    <div className="pop-step-body">
-                      <p className="pop-label">{n}</p>
-                      <h3>{title}</h3>
-                      <p>{body}</p>
-                    </div>
-                    <div className="pop-step-aside">
-                      <p className="pop-label">You end up with</p>
-                      <p>{outcome}</p>
-                      <span className="pop-step-tool">{tool}</span>
-                    </div>
-                  </motion.li>
-                ))}
+                {STEPS.map(
+                  ({ n, Icon, title, body, outcome, tool, ...rest }) => (
+                    <motion.li
+                      key={n}
+                      className={
+                        "pop-step" +
+                        ("key" in rest && rest.key ? " is-key glow-edge" : "")
+                      }
+                      initial={reduceMotion ? undefined : { opacity: 0, y: 14 }}
+                      whileInView={
+                        reduceMotion ? undefined : { opacity: 1, y: 0 }
+                      }
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <span className="pop-step-ico" aria-hidden="true">
+                        <Icon size={21} strokeWidth={2} />
+                      </span>
+                      <div className="pop-step-body">
+                        <p className="pop-label">{n}</p>
+                        <h3>{title}</h3>
+                        <p>{body}</p>
+                      </div>
+                      <div className="pop-step-aside">
+                        <p className="pop-label">You end up with</p>
+                        <p>{outcome}</p>
+                        <span className="pop-step-tool">{tool}</span>
+                      </div>
+                    </motion.li>
+                  ),
+                )}
               </ol>
             </div>
           </section>
@@ -546,13 +571,17 @@ export default function ApexPop({
               <div className="pop-soft-head">
                 <p className="pop-label">The software you do it in</p>
                 <h2>
-                  The work happens in the product,
-                  <br />
-                  <span className="pop-blue">not in a workbook.</span>
+                  {softwareTitle ?? (
+                    <>
+                      The work happens in the product,
+                      <br />
+                      <span className="pop-blue">not in a workbook.</span>
+                    </>
+                  )}
                 </h2>
                 <p className="pop-lede">
-                  These are the screens the six steps are worked in. Same tools we use,
-                  same ones you keep after the order is built.
+                  These are the screens the six steps are worked in. Same tools
+                  we use, same ones you keep after the order is built.
                 </p>
               </div>
 
@@ -562,22 +591,22 @@ export default function ApexPop({
                     <p className="pop-label">Step 01 · Vendors</p>
                     <h3>Your suppliers in one table.</h3>
                     <p>
-                      Accounts, contacts, lead times, payment method and catalog status
-                      for every supplier you deal with, instead of a spreadsheet that
-                      stopped being accurate in March.
+                      Accounts, contacts, lead times, payment method and catalog
+                      status for every supplier you deal with, instead of a
+                      spreadsheet that stopped being accurate in March.
                     </p>
                     <ul className="pop-shot-list">
                       <li>
-                        <span aria-hidden="true">→</span> Account numbers, logins and
-                        contacts held per supplier
+                        <span aria-hidden="true">→</span> Account numbers,
+                        logins and contacts held per supplier
                       </li>
                       <li>
-                        <span aria-hidden="true">→</span> Lead times and terms recorded
-                        as you learn them
+                        <span aria-hidden="true">→</span> Lead times and terms
+                        recorded as you learn them
                       </li>
                       <li>
-                        <span aria-hidden="true">→</span> Spend by vendor once orders
-                        start landing
+                        <span aria-hidden="true">→</span> Spend by vendor once
+                        orders start landing
                       </li>
                     </ul>
                   </div>
@@ -603,18 +632,19 @@ export default function ApexPop({
                     <p className="pop-label">Step 02 · UPC Scanner</p>
                     <h3>A whole price list, costed line by line.</h3>
                     <p>
-                      Load the catalog and read landed cost against sold price with
-                      Amazon&rsquo;s fees already taken out, so the products that do not
-                      work rule themselves out before you spend an evening on them.
+                      Load the catalog and read landed cost against sold price
+                      with Amazon&rsquo;s fees already taken out, so the
+                      products that do not work rule themselves out before you
+                      spend an evening on them.
                     </p>
                     <ul className="pop-shot-list">
                       <li>
-                        <span aria-hidden="true">→</span> Landed cost, current and
-                        average sold price
+                        <span aria-hidden="true">→</span> Landed cost, current
+                        and average sold price
                       </li>
                       <li>
-                        <span aria-hidden="true">→</span> FBA, referral, shipping and
-                        inbound fees per line
+                        <span aria-hidden="true">→</span> FBA, referral,
+                        shipping and inbound fees per line
                       </li>
                       <li>
                         <span aria-hidden="true">→</span> Profit, ROI and margin
@@ -629,7 +659,9 @@ export default function ApexPop({
                         <i />
                         <i />
                       </span>
-                      <span className="pop-frame-title">Apex · UPC Scanner</span>
+                      <span className="pop-frame-title">
+                        Apex · UPC Scanner
+                      </span>
                     </div>
                     <img
                       src={SHOT.upcScanner}
@@ -641,25 +673,28 @@ export default function ApexPop({
 
                 <article className="pop-shot">
                   <div className="pop-shot-copy">
-                    <p className="pop-label">Step 06 · Purchase Order Builder</p>
+                    <p className="pop-label">
+                      Step 06 · Purchase Order Builder
+                    </p>
                     <h3>The order, projected before it is placed.</h3>
                     <p>
-                      Put the units and costs in and the builder returns the order&rsquo;s
-                      arithmetic: revenue, expenses, profit, margin and ROI at the
-                      quantities you chose, while you can still change them.
+                      Put the units and costs in and the builder returns the
+                      order&rsquo;s arithmetic: revenue, expenses, profit,
+                      margin and ROI at the quantities you chose, while you can
+                      still change them.
                     </p>
                     <ul className="pop-shot-list">
                       <li>
-                        <span aria-hidden="true">→</span> Units purchased and cost of
-                        goods per supplier
+                        <span aria-hidden="true">→</span> Units purchased and
+                        cost of goods per supplier
                       </li>
                       <li>
-                        <span aria-hidden="true">→</span> Amazon fees, shipping and prep
-                        carried into the total
+                        <span aria-hidden="true">→</span> Amazon fees, shipping
+                        and prep carried into the total
                       </li>
                       <li>
-                        <span aria-hidden="true">→</span> One projection for the order as
-                        a whole
+                        <span aria-hidden="true">→</span> One projection for the
+                        order as a whole
                       </li>
                     </ul>
                   </div>
@@ -670,7 +705,9 @@ export default function ApexPop({
                         <i />
                         <i />
                       </span>
-                      <span className="pop-frame-title">Apex · Purchase Orders</span>
+                      <span className="pop-frame-title">
+                        Apex · Purchase Orders
+                      </span>
                     </div>
                     <img
                       src={SHOT.purchaseOrders}
@@ -682,9 +719,9 @@ export default function ApexPop({
               </div>
 
               <p className="pop-fineprint">
-                Screenshots show the Apex application with example data. Figures are
-                calculated from the costs and prices entered and are projections, not
-                statements of results.
+                Screenshots show the Apex application with example data. Figures
+                are calculated from the costs and prices entered and are
+                projections, not statements of results.
               </p>
             </div>
           </section>
@@ -702,8 +739,8 @@ export default function ApexPop({
                   have <span className="pop-blue">last month.</span>
                 </h2>
                 <p className="pop-lede">
-                  Not notes. Not a framework. The four artefacts that stand between
-                  researching wholesale and buying inventory.
+                  Not notes. Not a framework. The four artefacts that stand
+                  between researching wholesale and buying inventory.
                 </p>
               </div>
               <ul className="pop-deliver">
@@ -734,20 +771,20 @@ export default function ApexPop({
                   <h3>POP is for you if</h3>
                   <ul>
                     <li>
-                      <span aria-hidden="true">✓</span> You have done the learning and
-                      still have not placed an order.
+                      <span aria-hidden="true">✓</span> You have done the
+                      learning and still have not placed an order.
                     </li>
                     <li>
-                      <span aria-hidden="true">✓</span> You are selling already and your
-                      next order is guesswork rather than process.
+                      <span aria-hidden="true">✓</span> You are selling already
+                      and your next order is guesswork rather than process.
                     </li>
                     <li>
-                      <span aria-hidden="true">✓</span> You have capital you are ready to
-                      deploy deliberately.
+                      <span aria-hidden="true">✓</span> You have capital you are
+                      ready to deploy deliberately.
                     </li>
                     <li>
-                      <span aria-hidden="true">✓</span> You want someone to check your
-                      numbers before the money moves.
+                      <span aria-hidden="true">✓</span> You want someone to
+                      check your numbers before the money moves.
                     </li>
                   </ul>
                 </div>
@@ -755,20 +792,20 @@ export default function ApexPop({
                   <h3>POP is not for you if</h3>
                   <ul>
                     <li>
-                      <span aria-hidden="true">✕</span> You are looking for a course to
-                      work through at your own pace.
+                      <span aria-hidden="true">✕</span> You are looking for a
+                      course to work through at your own pace.
                     </li>
                     <li>
-                      <span aria-hidden="true">✕</span> You want passive income without
-                      buying inventory.
+                      <span aria-hidden="true">✕</span> You want passive income
+                      without buying inventory.
                     </li>
                     <li>
-                      <span aria-hidden="true">✕</span> You want a promise about what an
-                      order will return.
+                      <span aria-hidden="true">✕</span> You want a promise about
+                      what an order will return.
                     </li>
                     <li>
-                      <span aria-hidden="true">✕</span> You are not in a position to
-                      spend money on stock yet.
+                      <span aria-hidden="true">✕</span> You are not in a
+                      position to spend money on stock yet.
                     </li>
                   </ul>
                 </div>
@@ -823,7 +860,11 @@ export default function ApexPop({
                 >
                   <span className="pop-cta-row">
                     {primary.label}
-                    <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
+                    <ArrowRight
+                      size={19}
+                      strokeWidth={2.4}
+                      aria-hidden="true"
+                    />
                   </span>
                   <small>{primary.sub}</small>
                 </a>
@@ -841,12 +882,12 @@ export default function ApexPop({
             <div className="pop-shell">
               <p className="pop-fineprint">
                 Apex POP is a working process and software, not a course, an
-                investment product, or a guarantee of results. Supplier acceptance,
-                stock, pricing and terms vary and are decided by each supplier. Amazon
-                decides selling approvals. Projections shown in the Apex Purchase Order
-                Builder are calculated from figures you enter and are not a forecast of
-                sales or profit. Amazon is a trademark of Amazon.com, Inc. or its
-                affiliates.
+                investment product, or a guarantee of results. Supplier
+                acceptance, stock, pricing and terms vary and are decided by
+                each supplier. Amazon decides selling approvals. Projections
+                shown in the Apex Purchase Order Builder are calculated from
+                figures you enter and are not a forecast of sales or profit.
+                Amazon is a trademark of Amazon.com, Inc. or its affiliates.
               </p>
             </div>
           </section>
@@ -854,39 +895,40 @@ export default function ApexPop({
       </main>
 
       {!sited && (
-      <footer className="pop-footer">
-        <div className="pop-shell">
-          <div className="pop-footer-top">
-            <a className="pop-brand" href={ORIGIN}>
-              <img src="/assets/bull.png" alt="" width={54} height={42} />
-              <span className="pop-brand-name">
-                APEX
-                <small>APPLICATIONS</small>
-              </span>
-            </a>
-            <nav className="pop-footer-links" aria-label="Footer">
-              <a href={`${ORIGIN}/how-it-works`}>How it works</a>
-              <a href={`${ORIGIN}/contact-us`}>Contact</a>
-              <a href={`${ORIGIN}/privacy`}>Privacy</a>
-              <a href={`${ORIGIN}/terms`}>Terms</a>
-            </nav>
+        <footer className="pop-footer">
+          <div className="pop-shell">
+            <div className="pop-footer-top">
+              <a className="pop-brand" href={ORIGIN}>
+                <img src="/assets/bull.png" alt="" width={54} height={42} />
+                <span className="pop-brand-name">
+                  APEX
+                  <small>APPLICATIONS</small>
+                </span>
+              </a>
+              <nav className="pop-footer-links" aria-label="Footer">
+                <a href={`${ORIGIN}/how-it-works`}>How it works</a>
+                <a href={`${ORIGIN}/contact-us`}>Contact</a>
+                <a href={`${ORIGIN}/privacy`}>Privacy</a>
+                <a href={`${ORIGIN}/terms`}>Terms</a>
+              </nav>
+            </div>
+            <div className="pop-footer-legal">
+              <span>© {new Date().getFullYear()} Apex Applications</span>
+              <span>Apex POP · Purchase Order Program</span>
+            </div>
+            <p className="pop-fineprint">
+              Apex POP is a working process and software, not a course, an
+              investment product, or a guarantee of results. Supplier
+              acceptance, stock, pricing and terms vary and are decided by each
+              supplier. Amazon decides selling approvals. Projections shown in
+              the Apex Purchase Order Builder are calculated from figures you
+              enter and are not a forecast of sales or profit. Amazon is a
+              trademark of Amazon.com, Inc. or its affiliates. This site is not
+              part of or endorsed by Facebook. FACEBOOK is a trademark of Meta
+              Platforms, Inc.
+            </p>
           </div>
-          <div className="pop-footer-legal">
-            <span>© {new Date().getFullYear()} Apex Applications</span>
-            <span>Apex POP · Purchase Order Program</span>
-          </div>
-          <p className="pop-fineprint">
-            Apex POP is a working process and software, not a course, an investment
-            product, or a guarantee of results. Supplier acceptance, stock, pricing and
-            terms vary and are decided by each supplier. Amazon decides selling
-            approvals. Projections shown in the Apex Purchase Order Builder are
-            calculated from figures you enter and are not a forecast of sales or
-            profit. Amazon is a trademark of Amazon.com, Inc. or its affiliates. This
-            site is not part of or endorsed by Facebook. FACEBOOK is a trademark of
-            Meta Platforms, Inc.
-          </p>
-        </div>
-      </footer>
+        </footer>
       )}
     </div>
   );
