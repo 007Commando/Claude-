@@ -23,10 +23,12 @@ export default function Footer() {
    * Pages that ship a complete footer of their own, including the Meta and
    * Amazon disclaimers a paid landing page has to carry. Rendering the site
    * footer under one of those gives the page two footers and two copyright
-   * lines.
+   * lines. /apex-pop-primewell has no footer at all: a PrimeWell applicant
+   * is meant to go into the software, not wander the site.
    */
   const hasOwnFooter =
     pathname === "/apex-pop" ||
+    pathname === "/apex-pop-primewell" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works" ||
     pathname === "/first-order-roadmap" ||
@@ -54,10 +56,16 @@ export default function Footer() {
             />
             <div className="w-full pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-center items-center gap-4">
               <div className="flex gap-8 text-slate-600 text-sm">
-                <Link href="/terms" className="hover:text-brand transition-colors">
+                <Link
+                  href="/terms"
+                  className="hover:text-brand transition-colors"
+                >
                   Terms of Service
                 </Link>
-                <Link href="/privacy" className="hover:text-brand transition-colors">
+                <Link
+                  href="/privacy"
+                  className="hover:text-brand transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </div>
@@ -97,17 +105,26 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/features/black#review-booster" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/black#review-booster"
+                  className="hover:text-brand transition-colors"
+                >
                   Review Booster
                 </Link>
               </li>
               <li>
-                <Link href="/apex-vas" className="hover:text-brand transition-colors">
+                <Link
+                  href="/apex-vas"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex VAs
                 </Link>
               </li>
               <li>
-                <Link href="/contact-us" className="hover:text-brand transition-colors">
+                <Link
+                  href="/contact-us"
+                  className="hover:text-brand transition-colors"
+                >
                   Contact Us
                 </Link>
               </li>
@@ -119,27 +136,42 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5">Features</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link href="/features/black" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/black"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex Black
                 </Link>
               </li>
               <li>
-                <Link href="/features/blue" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/blue"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex Blue
                 </Link>
               </li>
               <li>
-                <Link href="/features/green" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/green"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex Green
                 </Link>
               </li>
               <li>
-                <Link href="/features/red" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/red"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex Red
                 </Link>
               </li>
               <li>
-                <Link href="/features/gold" className="hover:text-brand transition-colors">
+                <Link
+                  href="/features/gold"
+                  className="hover:text-brand transition-colors"
+                >
                   Apex Gold
                 </Link>
               </li>
@@ -151,7 +183,10 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5">Pricing</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link href="/pricing" className="hover:text-brand transition-colors">
+                <Link
+                  href="/pricing"
+                  className="hover:text-brand transition-colors"
+                >
                   Plans
                 </Link>
               </li>
@@ -159,27 +194,42 @@ export default function Footer() {
             <h4 className="font-semibold text-slate-900 mb-5 mt-8">Compare</h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link href="/compare/helium10" className="hover:text-brand transition-colors">
+                <Link
+                  href="/compare/helium10"
+                  className="hover:text-brand transition-colors"
+                >
                   vs Helium 10
                 </Link>
               </li>
               <li>
-                <Link href="/compare/junglescout" className="hover:text-brand transition-colors">
+                <Link
+                  href="/compare/junglescout"
+                  className="hover:text-brand transition-colors"
+                >
                   vs Jungle Scout
                 </Link>
               </li>
               <li>
-                <Link href="/compare/smartscout" className="hover:text-brand transition-colors">
+                <Link
+                  href="/compare/smartscout"
+                  className="hover:text-brand transition-colors"
+                >
                   vs SmartScout
                 </Link>
               </li>
               <li>
-                <Link href="/compare/sellersnap" className="hover:text-brand transition-colors">
+                <Link
+                  href="/compare/sellersnap"
+                  className="hover:text-brand transition-colors"
+                >
                   vs Seller Snap
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="hover:text-brand transition-colors">
+                <Link
+                  href="/compare"
+                  className="hover:text-brand transition-colors"
+                >
                   All comparisons
                 </Link>
               </li>
@@ -188,45 +238,71 @@ export default function Footer() {
 
           {/* How Amazon Wholesale Works */}
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-slate-900 mb-5">How Amazon Wholesale Works</h4>
+            <h4 className="font-semibold text-slate-900 mb-5">
+              How Amazon Wholesale Works
+            </h4>
             <ul className="space-y-3 text-slate-600">
               <li>
-                <Link href="/how-it-works" className="hover:text-brand transition-colors">
+                <Link
+                  href="/how-it-works"
+                  className="hover:text-brand transition-colors"
+                >
                   The Roadmap
                 </Link>
               </li>
               <li>
-                <Link href="/ungating-guide" className="hover:text-brand transition-colors">
+                <Link
+                  href="/ungating-guide"
+                  className="hover:text-brand transition-colors"
+                >
                   Ungating Guide
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-brand transition-colors">
+                <Link
+                  href="/blog"
+                  className="hover:text-brand transition-colors"
+                >
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/tools/amazon-profit-calculator" className="hover:text-brand transition-colors">
+                <Link
+                  href="/tools/amazon-profit-calculator"
+                  className="hover:text-brand transition-colors"
+                >
                   Profit &amp; ROI Calculator
                 </Link>
               </li>
               <li>
-                <Link href="/amazon-inventory-management-software" className="hover:text-brand transition-colors">
+                <Link
+                  href="/amazon-inventory-management-software"
+                  className="hover:text-brand transition-colors"
+                >
                   Inventory &amp; Restock Planning
                 </Link>
               </li>
               <li>
-                <Link href="/amazon-wholesale-suppliers" className="hover:text-brand transition-colors">
+                <Link
+                  href="/amazon-wholesale-suppliers"
+                  className="hover:text-brand transition-colors"
+                >
                   Vetting Wholesale Suppliers
                 </Link>
               </li>
               <li>
-                <Link href="/amazon-fba-prep-centers" className="hover:text-brand transition-colors">
+                <Link
+                  href="/amazon-fba-prep-centers"
+                  className="hover:text-brand transition-colors"
+                >
                   Choosing a Prep Center
                 </Link>
               </li>
               <li>
-                <Link href="/amazon-review-automation" className="hover:text-brand transition-colors">
+                <Link
+                  href="/amazon-review-automation"
+                  className="hover:text-brand transition-colors"
+                >
                   Review Request Automation
                 </Link>
               </li>
@@ -249,7 +325,10 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-brand transition-colors">
               Terms of Service
             </Link>
-            <Link href="/privacy" className="hover:text-brand transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-brand transition-colors"
+            >
               Privacy Policy
             </Link>
           </div>
