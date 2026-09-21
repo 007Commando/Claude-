@@ -48,7 +48,15 @@ export default function Page() {
         href: TRY_URL,
       }}
       trustpilot={TRUSTPILOT}
-      hide={["denial", "problem", "flow", "outcome", "fit", "faq"]}
+      hide={[
+        "denial",
+        "problem",
+        "flow",
+        "outcome",
+        "fit",
+        "faq",
+        "disclaimer",
+      ]}
       software={{
         label: "Suppliers included",
         title: (

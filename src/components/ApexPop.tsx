@@ -246,7 +246,8 @@ export type PopSection =
   | "outcome"
   | "fit"
   | "faq"
-  | "close";
+  | "close"
+  | "disclaimer";
 
 export default function ApexPop({
   chrome = "own",
@@ -879,7 +880,7 @@ export default function ApexPop({
             </div>
           </section>
         )}
-        {sited && (
+        {sited && !hidden.has("disclaimer") && (
           <section className="pop-section-tight" aria-label="Disclaimer">
             <div className="pop-shell">
               <p className="pop-fineprint">
