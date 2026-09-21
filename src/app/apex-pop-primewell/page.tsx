@@ -25,6 +25,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/**
+ * Into the software, not onto a call. A PrimeWell applicant is sent here
+ * straight after applying, and the ask is to try Apex free and build their
+ * next order in it. utm_source=primewell is what the app later reads off
+ * the account to run the PrimeWell walkthrough; plan=free is the free
+ * account the app has always had.
+ */
+const TRY_URL =
+  "https://www.apexapplications.io/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
+
 export default function Page() {
-  return <ApexPop chrome="site" utmTerm="apex-pop-primewell" />;
+  return (
+    <ApexPop
+      chrome="site"
+      utmTerm="apex-pop-primewell"
+      cta={{
+        label: "Try Apex free and build your next order",
+        sub: "Free account. Scan the PrimeWell catalog and build a purchase order in it.",
+        href: TRY_URL,
+        secondaryLabel: "Or book a working session with the team",
+      }}
+    />
+  );
 }

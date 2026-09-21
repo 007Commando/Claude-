@@ -54,6 +54,8 @@ declare global {
         period?: "monthly" | "yearly";
         /** Hold the redirect so the code screen can run first. */
         deferRedirect?: boolean;
+        /** Where they came from, captured on landing; kept on the account. */
+        acquisition?: { source: string; medium?: string; campaign?: string };
       }) => Promise<SignupResult>;
       /** Replays the redirect signUp held back, once the code is accepted. */
       completeSignup?: (data: SignupResult) => boolean;
@@ -584,12 +586,27 @@ export default function Auth() {
         const parsed = signupSchema.safeParse({ name, email, password });
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
         signupInFlightRef.current = true;
+        /**
+         * The traffic source travels with the signup. A PrimeWell applicant
+         * lands with utm_source=primewell, and the app reads it off the
+         * account to run their walkthrough instead of the general one.
+         */
+        const landed = readStoredAttribution();
         const signup = await withAuthRetry(() =>
           auth.signUp({
             name: parsed.data.name,
             email: parsed.data.email,
             password: parsed.data.password,
             ...(isFreeSignup ? {} : { plan: planTier, period }),
+            ...(landed && landed.source && landed.source !== "direct"
+              ? {
+                  acquisition: {
+                    source: landed.source,
+                    medium: landed.utmMedium,
+                    campaign: landed.utmCampaign,
+                  },
+                }
+              : {}),
             // Held so the code screen runs between making the account and
             // entering it. Where the signup was going travels back untouched.
             deferRedirect: true,

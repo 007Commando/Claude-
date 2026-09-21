@@ -239,11 +239,24 @@ const FAQS: readonly (readonly [string, string])[] = [
 export default function ApexPop({
   chrome = "own",
   utmTerm = "apex-pop",
+  cta,
 }: {
   chrome?: "own" | "site";
   utmTerm?: string;
+  /**
+   * What the big buttons do. By default they book the working session. The
+   * PrimeWell version sends applicants into Apex on a free account instead,
+   * to build their next order in the software, with the booking as the
+   * quieter second choice.
+   */
+  cta?: { label: string; sub: string; href: string; secondaryLabel?: string };
 }) {
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
+  const primary = cta ?? {
+    label: "Build my first or next PO",
+    sub: "Book a working session with the Apex team",
+    href: BOOK_URL,
+  };
   const sited = chrome === "site";
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
@@ -273,9 +286,9 @@ export default function ApexPop({
           </a>
           <div className="pop-header-right">
             <span className="pop-header-note">Purchase Order Program</span>
-            <a className="pop-cta pop-cta-sm" href={BOOK_URL}>
+            <a className="pop-cta pop-cta-sm" href={primary.href}>
               <span className="pop-cta-row">
-                Build my PO
+                {cta ? "Get started" : "Build my PO"}
                 <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
               </span>
             </a>
@@ -304,17 +317,17 @@ export default function ApexPop({
             <div className="pop-hero-actions">
               <a
                 className={`pop-cta pop-cta-lg ${heroSheen.className}`}
-                href={BOOK_URL}
+                href={primary.href}
                 ref={heroSheen.ref}
               >
                 <span className="pop-cta-row">
-                  Build my first or next PO
+                  {primary.label}
                   <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
                 </span>
-                <small>Book a working session with the Apex team</small>
+                <small>{primary.sub}</small>
               </a>
-              <a className="pop-cta-ghost" href="#how-it-works">
-                See how it works
+              <a className="pop-cta-ghost" href={cta ? BOOK_URL : "#how-it-works"}>
+                {cta ? (cta.secondaryLabel ?? "Or book a working session") : "See how it works"}
               </a>
             </div>
 
@@ -760,14 +773,14 @@ export default function ApexPop({
             <div className="pop-hero-actions">
               <a
                 className={`pop-cta pop-cta-lg ${closeSheen.className}`}
-                href={BOOK_URL}
+                href={primary.href}
                 ref={closeSheen.ref}
               >
                 <span className="pop-cta-row">
-                  Build my first or next PO
+                  {primary.label}
                   <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
                 </span>
-                <small>Book a working session with the Apex team</small>
+                <small>{primary.sub}</small>
               </a>
             </div>
             <p className="pop-close-fine">
