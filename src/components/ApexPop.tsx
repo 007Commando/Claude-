@@ -1,30 +1,33 @@
 "use client";
 
 /**
- * Purchase Order Program — the landing page for the four-part offer.
+ * Apex POP — the Purchase Order Program landing page.
  *
  * One job: get a reader to book a working session that ends in a purchase
- * order. Nothing else is sold here — no plan, no price, no bundle. What is
- * offered is four things, in the order they are needed: the first suppliers,
- * the selling approvals, the research, and the first order itself.
+ * order. Everything on the page is bent toward that and nothing else is sold
+ * here — no plan, no price, no bundle. The offer is the meeting.
  *
- * It is a sibling of /apex-pop and borrows that page's surface wholesale —
- * same stylesheet, same classes, same mesh background and CTA sheen — so the
- * two read as one company. Where /apex-pop is written for someone who has
- * done the research and stalled, this page is written for someone who has
- * none of the four things yet and wants them done with, not taught.
+ * Two constraints shaped the copy and are worth keeping if this is edited.
  *
- * Two constraints carry over and are load-bearing. It must not read as a
- * course: the denial is made near the top. It must not promise outcomes:
- * suppliers decide who they open accounts for, Amazon decides selling
- * approvals, and the builder's projections are arithmetic on inputs the
- * seller supplies. Those disclaimers are in the FAQ and the footer.
+ * It must not read as a course. The audience for this page has already bought
+ * courses; the positioning is the opposite of one, so the denial is made
+ * explicitly near the top rather than implied. Apex University exists and is
+ * referenced once, as a place to look something up mid-order, never as the
+ * thing being sold.
  *
- * The section headed "Always be loading your database" is the operating
- * philosophy the product is built to enforce, stated plainly: add vendors,
- * scan and rescan catalogs, turn what clears into purchase orders, let the
- * repricer win the Buy Box, let the restock planner say what to buy next.
- * The four deliverables are the first turn of that loop.
+ * It must not promise outcomes. Suppliers decide who they open accounts for,
+ * Amazon decides selling approvals, and the builder's projections are
+ * arithmetic on inputs the seller supplies — not forecasts. Those three
+ * disclaimers are load-bearing and appear in the FAQ and the footer.
+ *
+ * Visually this is a sibling of /zero-to-hero: same shared surface, same mesh
+ * background, same blue block marking the key phrase in the headline, same
+ * sheen crossing the large CTAs. The two pages sell adjacent things to the
+ * same audience and should look like they came from one company.
+ *
+ * Every screenshot is a real Apex screen pulled from the assets the rest of
+ * the site already ships, so the page shows the software that does the work
+ * rather than an illustration of it.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -35,11 +38,11 @@ import {
   Building2,
   ClipboardCheck,
   ClipboardList,
-  Database,
-  RefreshCw,
+  FileSpreadsheet,
+  GraduationCap,
   ScanBarcode,
-  ShieldCheck,
-  TrendingUp,
+  Users,
+  Wallet,
 } from "lucide-react";
 
 import "./apex-surface.css";
@@ -48,12 +51,14 @@ import "./apex-pop.css";
 const ORIGIN = "https://www.apexapplications.io";
 
 /**
- * The booking link the whole page points at. Same Calendly the rest of the
- * site books into, with utm_term set so a booking from this page is
- * identifiable in the calendar without asking the caller.
+ * The booking link the whole page points at.
+ *
+ * Same Calendly the rest of the site books into, with utm_term set so a
+ * booking that came from this page is identifiable in the calendar without
+ * anyone having to ask the caller where they came from.
  */
 const BOOK_URL =
-  "https://calendly.com/apexapplications-info/new-meeting?utm_term=purchase-order-program";
+  "https://calendly.com/apexapplications-info/new-meeting?utm_term=apex-pop";
 
 /** Real Apex screens, served from the same asset paths the product pages use. */
 const SHOT = {
@@ -61,12 +66,16 @@ const SHOT = {
     "/__l5e/assets-v1/68d206bf-650d-4e94-b983-3ee9d56d0dd0/purchase-orders.png",
   upcScanner:
     "/__l5e/assets-v1/336e0c0d-434c-4b09-a8a3-288d56a5c421/upc-scanner.png",
-  database:
-    "/__l5e/assets-v1/1a86b853-f5c6-4578-a0d4-2ccbe7398535/market-intelligence-database.png",
   vendors: "/images/vendors-with-products.webp",
 } as const;
 
-/** Lights the CTA sheen once, the moment the element is properly on screen. */
+/**
+ * Lights the sheen once, the moment the element is properly on screen.
+ *
+ * Same hook /zero-to-hero uses, for the same reason: the class is returned
+ * rather than the animation run directly, so `prefers-reduced-motion` can
+ * switch it off in one CSS rule.
+ */
 function useSheen<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const inView = useInView(ref, { once: true, margin: "-25% 0px -25% 0px" });
@@ -80,49 +89,72 @@ function useSheen<T extends HTMLElement>() {
 }
 
 /**
- * The four things the program delivers, in the order they are worked.
- * Each one produces what the next one needs.
+ * The six steps, in the order they are worked.
+ *
+ * `key` marks the two that carry the positioning: setting capital before
+ * choosing product is the step a course never makes you do, and building the
+ * PO is the thing the page is named after.
  */
-const PILLARS = [
+const STEPS = [
   {
-    n: "Part 01",
+    n: "Step 01",
     rail: "Suppliers",
     Icon: Building2,
-    title: "Your first suppliers: the ones who will actually sell to you.",
+    title: "Start from suppliers you can actually buy from.",
     body:
-      "We start with the distributors we already work with and the ones that fit your category and budget. Account applications go in, catalogs get requested, and every requirement, minimum and payment term is written down in Vendors instead of scattered across email.",
-    outcome: "Supplier accounts opening, with catalogs on the way.",
-    tool: "Vendors · Distributor Vault",
+      "Put the accounts you already have into Vendors, and work the list for the ones you do not. Catalogs requested, account requirements noted, minimums and payment terms written down in one place instead of across eleven email threads.",
+    outcome: "A shortlist of suppliers that will sell to you.",
+    tool: "Vendors",
   },
   {
-    n: "Part 02",
-    rail: "Ungating",
-    Icon: ShieldCheck,
-    title: "Ungating: know what you are allowed to sell before you buy it.",
+    n: "Step 02",
+    rail: "Analyze",
+    Icon: ScanBarcode,
+    title: "Run the whole catalog, not the ten products you remember.",
     body:
-      "The Ungate Checker asks Amazon, brand by brand, whether your account can list what those catalogs hold. We sort the answers into sell now, needs approval and gated, and we help you put the approval applications in with the right invoices behind them.",
-    outcome: "A list of brands you can list today, and applications in for the rest.",
-    tool: "Ungate Checker",
+      "Load a supplier price list into the UPC Scanner and read it line by line: landed cost against current sold price, FBA and referral fees, shipping, margin and ROI. Most of a catalog does not work. This is how you find the part that might.",
+    outcome: "A filtered list of products worth a second look.",
+    tool: "UPC Scanner",
+  },
+  {
+    n: "Step 03",
+    rail: "Learn",
+    Icon: GraduationCap,
+    title: "Learn the one thing blocking this order.",
+    body:
+      "Not a forty-hour curriculum. If the hold-up is ungating, or prep, or what a distributor expects from a new reseller, you look up that piece in Apex University at the moment it is in your way, and then you carry on building.",
+    outcome: "The specific answer you were stuck on.",
+    tool: "Apex University",
+  },
+  {
+    n: "Step 04",
+    rail: "Set capital",
+    Icon: Wallet,
+    title: "Decide the number before you fall in love with a product.",
+    body:
+      "How much you are putting into this order, what stays in reserve, and what is left for the one after it. The order gets built to fit the capital. Doing it the other way round is how a first order turns into stock you cannot restock.",
+    outcome: "A budget the purchase order has to fit inside.",
+    tool: "Your numbers",
     key: true,
   },
   {
-    n: "Part 03",
-    rail: "Research",
-    Icon: ScanBarcode,
-    title: "Research: whole catalogs costed line by line, not ten products you remember.",
+    n: "Step 05",
+    rail: "Meet with Apex",
+    Icon: Users,
+    title: "Go through it with someone who has bought before.",
     body:
-      "Every supplier price list goes through the UPC Scanner: landed cost against sold price, Amazon fees, shipping, margin, ROI and a monthly sales estimate on each row. What clears goes into your database. What does not, rules itself out before you spend an evening on it.",
-    outcome: "A database of products that work, not a spreadsheet of maybes.",
-    tool: "UPC Scanner · Databases",
+      "Bring the shortlist and the number to a working session with our team. We go through the products you are considering, the costs you have entered and the order you are shaping, and you leave the call knowing what the next move is.",
+    outcome: "Your decisions made out loud, with a second opinion.",
+    tool: "Live session",
   },
   {
-    n: "Part 04",
-    rail: "First order",
+    n: "Step 06",
+    rail: "Build the PO",
     Icon: ClipboardCheck,
-    title: "Your first purchase order: built together, projected before it is sent.",
+    title: "Build the purchase order and see it before you send it.",
     body:
-      "We size the order to the capital you have decided to put in, then build it in the Purchase Order Builder: quantities, cost of goods, fees, shipping and prep, and the projection that comes back. You send it to the supplier knowing what the order looks like on paper.",
-    outcome: "A purchase order sent to a supplier, and a plan for the next one.",
+      "Quantities, cost of goods, Amazon fees, shipping and prep go into the Purchase Order Builder, and it returns the projection: total revenue, total expenses, profit, margin and ROI on the order as configured. Change a quantity and watch it move.",
+    outcome: "A purchase order you can actually send to a supplier.",
     tool: "Purchase Order Builder",
     key: true,
   },
@@ -131,83 +163,76 @@ const PILLARS = [
 const DENIALS = [
   [
     "Not another course",
-    "Nothing to watch and nothing to finish. We do the four things with you, in the software, on your account.",
+    "Nothing to binge and nothing to finish. You already know more about wholesale than your order history shows.",
   ],
   [
     "Not get-rich-quick",
-    "Buying inventory is a real business decision with real downside. We help you make it carefully, in the right order.",
+    "Buying inventory is a business decision with real downside. We are here to help you make it carefully, not quickly.",
   ],
   [
     "Not a guarantee",
-    "Suppliers choose who they open accounts for and Amazon decides selling approvals. We prepare you for both and we tell you the answer straight.",
+    "Suppliers choose who they open accounts for and Amazon decides selling approvals. We help you prepare for both.",
   ],
-] as const;
-
-/** The operating loop the four parts are the first turn of. */
-const LOOP = [
-  ["Add vendors", "New suppliers, all the time. The database only grows from the top."],
-  ["Scan and rescan", "Every catalog, every few weeks. A rescan asks what has become profitable since last time."],
-  ["Turn it into orders", "What clears becomes a purchase order, sized to the money you have."],
-  ["Win the Buy Box", "The repricer holds the price that wins, so the stock you bought actually sells."],
-  ["Restock what moves", "The restock planner says what to order next and how many, from your own sales."],
 ] as const;
 
 const DELIVERABLES = [
   {
     Icon: Boxes,
-    title: "Supplier accounts",
-    body: "Applications in, terms and minimums recorded, catalogs requested from suppliers that fit you.",
+    title: "A supplier shortlist",
+    body: "The accounts you can buy from now, with their terms and minimums recorded, not remembered.",
   },
   {
-    Icon: ShieldCheck,
-    title: "Your approvals map",
-    body: "Brand by brand: what you can list now, what needs approval, and what to skip.",
+    Icon: FileSpreadsheet,
+    title: "A scanned catalog",
+    body: "A supplier price list run against real Amazon fees, narrowed to the lines that survive the maths.",
   },
   {
-    Icon: Database,
-    title: "A loaded database",
-    body: "Catalogs scanned against real Amazon fees and narrowed to the lines that survive the maths.",
+    Icon: Wallet,
+    title: "A capital figure",
+    body: "A number you chose deliberately for this order, with the rest of your cash accounted for.",
   },
   {
     Icon: ClipboardList,
     title: "A purchase order",
-    body: "Units, costs and a full projection, built in Apex and sent to the supplier.",
+    body: "Units, costs and a full projection, built in Apex and ready to go to the supplier.",
   },
 ] as const;
 
 const FAQS: readonly (readonly [string, string])[] = [
   [
-    "Is the Purchase Order Program a course?",
-    "No. Apex University exists inside the software if you want to look something up, but the program is not something you study. It is a working process with our team: suppliers, approvals, research and the order, done on your account, in the software you keep afterwards.",
+    "Is Apex POP a course?",
+    "No. Apex University already exists inside the software and you can look things up in it whenever an order needs it. POP is the opposite of sitting down to study: it is a working process with our team that ends in a purchase order you have actually built.",
   ],
   [
     "Do you guarantee supplier accounts, selling approvals or profit?",
-    "No. Every supplier sets its own requirements and decides who it opens an account for. Amazon decides selling approvals. The figures in the Purchase Order Builder are arithmetic on the costs and prices entered, so they are projections, not a promise of what an order will return.",
+    "No. Every supplier sets its own account requirements and decides who it opens an account for. Amazon decides selling approvals. The figures in the Purchase Order Builder are arithmetic on the costs and prices you enter, so they are projections, not guarantees of what an order will return.",
   ],
   [
-    "What if the brands I want are gated?",
-    "That is exactly why ungating comes before research. The Ungate Checker tells us which brands your account can list now and which need approval, and we help you apply for the ones worth applying for. You buy against what you are allowed to sell, not the other way round.",
-  ],
-  [
-    "I have never placed an order. Is this too early for me?",
-    "No, that is who it is for. The program starts before your first order: the suppliers, then the approvals, then the catalogs, then the number you are comfortable committing. If you are already selling, the same four parts build your next order and load your database properly.",
+    "I have not placed an order before. Is this too early for me?",
+    "No, that is the first half of the name. The process starts before your first order: suppliers, then the catalog, then the number you are comfortable committing. If you have already sold, the same six steps build your next one.",
   ],
   [
     "Do I need capital ready?",
-    "You need to be at the point where buying inventory is the next real step. We size the order to what you decide to put in, and we would rather you keep money in reserve than spend all of it on the first order. How much you commit is your decision.",
+    "You need to be at the point where buying inventory is the next real step. POP is about deploying capital deliberately rather than telling you how much to spend. What you commit to an order is your decision.",
   ],
   [
-    "Does this need the Apex software?",
-    "Yes. The work happens in Vendors, the Ungate Checker, the UPC Scanner, Databases and the Purchase Order Builder, and you keep all of it after the order is built. We go through what your setup needs on the call.",
+    "What actually happens on the call?",
+    "We look at where you are: which suppliers you have, what the catalog analysis turned up, and what you are prepared to put into this order. Then we work through shaping the purchase order around it. It is a working session about your order, not a presentation.",
+  ],
+  [
+    "Does this require the Apex software?",
+    "The process runs on the Apex suite — Vendors for suppliers, the UPC Scanner for catalogs, the Purchase Order Builder for the order itself. We will go through what your setup needs on the call.",
   ],
 ];
 
-export default function PurchaseOrderProgram() {
+export default function ApexPop() {
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroSheen = useSheen<HTMLAnchorElement>();
   const closeSheen = useSheen<HTMLAnchorElement>();
 
+  // The hero screenshot lifts a little as it enters, which reads as the
+  // product coming forward rather than as an animation for its own sake.
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start 0.85", "end 0.35"],
@@ -230,7 +255,7 @@ export default function PurchaseOrderProgram() {
             <span className="pop-header-note">Purchase Order Program</span>
             <a className="pop-cta pop-cta-sm" href={BOOK_URL}>
               <span className="pop-cta-row">
-                Start my first order
+                Build my PO
                 <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
               </span>
             </a>
@@ -242,17 +267,17 @@ export default function PurchaseOrderProgram() {
         {/* ------------------------------------------------------------ hero */}
         <section className="pop-hero mesh-bg" ref={heroRef}>
           <div className="pop-shell pop-hero-in">
-            <p className="pop-label pop-eyebrow">Apex · Purchase Order Program</p>
+            <p className="pop-label pop-eyebrow">Apex POP · Purchase Order Program</p>
 
             <h1>
-              Your first suppliers, your approvals, your research and your first{" "}
-              <mark>purchase order.</mark>
+              Build your first or next Amazon wholesale{" "}
+              <mark>purchase order</mark> with Apex.
             </h1>
 
             <p className="pop-hero-sub">
-              A working program with the Apex team. We open the supplier doors, check
-              what Amazon will let you sell, run the catalogs with you and build the
-              order together, in the software you keep afterwards.
+              You have researched enough. POP is a working process with our team that
+              takes you from suppliers and catalogs to a purchase order built around
+              the capital you actually have.
             </p>
 
             <div className="pop-hero-actions">
@@ -262,18 +287,18 @@ export default function PurchaseOrderProgram() {
                 ref={heroSheen.ref}
               >
                 <span className="pop-cta-row">
-                  Start my first order
+                  Build my first or next PO
                   <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
                 </span>
                 <small>Book a working session with the Apex team</small>
               </a>
-              <a className="pop-cta-ghost" href="#what-you-get">
-                See what is included
+              <a className="pop-cta-ghost" href="#how-it-works">
+                See how it works
               </a>
             </div>
 
             <p className="pop-hero-fine">
-              Not a course. Four things done with you, ending in one purchase order.
+              Not a course. Not a get-rich-quick program. One purchase order.
             </p>
 
             <motion.div
@@ -287,7 +312,9 @@ export default function PurchaseOrderProgram() {
                     <i />
                     <i />
                   </span>
-                  <span className="pop-frame-title">Apex · Purchase Orders · Projection</span>
+                  <span className="pop-frame-title">
+                    Apex · Purchase Orders · Projection
+                  </span>
                 </div>
                 <img
                   src={SHOT.purchaseOrders}
@@ -298,15 +325,15 @@ export default function PurchaseOrderProgram() {
                 />
               </figure>
               <p className="pop-hero-caption">
-                The Apex Purchase Order Builder. Figures shown are example data from the
-                product, not a forecast of results.
+                The Apex Purchase Order Builder. Figures shown are example data from
+                the product, not a forecast of results.
               </p>
             </motion.div>
           </div>
         </section>
 
         {/* ---------------------------------------------------------- denial */}
-        <section className="pop-denial pop-section-tight" aria-label="What the program is not">
+        <section className="pop-denial pop-section-tight" aria-label="What Apex POP is not">
           <div className="pop-shell">
             <div className="pop-denial-grid">
               {DENIALS.map(([title, body]) => (
@@ -326,49 +353,50 @@ export default function PurchaseOrderProgram() {
         <section className="pop-section pop-problem">
           <div className="pop-shell pop-problem-grid">
             <div className="pop-problem-copy">
-              <p className="pop-label">Why the order never happens</p>
+              <p className="pop-label">The actual problem</p>
               <h2>
-                Four doors, in the wrong order,
+                Too many courses.
                 <br />
-                <span className="pop-blue">and none of them open.</span>
+                <span className="pop-blue">Not enough purchase orders.</span>
               </h2>
               <p className="pop-lede">
-                Most people who want to sell wholesale on Amazon get stuck in the same
-                place. No supplier will answer. The brands they like turn out to be
-                gated. The research is a spreadsheet of maybes. And the first order
-                never gets built because nothing before it was finished.
+                You have watched the modules. You have saved the threads, joined the
+                group, and bookmarked the supplier list. On paper you understand
+                Amazon wholesale better than plenty of people who are currently
+                selling on it.
               </p>
               <p className="pop-lede">
-                <strong>The order is the last of four things, and it needs the other
-                three first.</strong> Suppliers who will sell to you. Approval for what
-                they sell. Numbers you trust. Then, and only then, a purchase order.
+                <strong>What you do not have is an order.</strong> Not because the
+                information was wrong, but because none of it ever made you sit down
+                with one supplier catalog, one number you are willing to commit, and
+                build the thing that turns money into inventory.
               </p>
               <p className="pop-lede">
-                That is the program. We do the four things with you, in that order, on
-                your account.
+                Research has no finish line, so it is easy to stay in. A purchase
+                order has one. POP exists to get you to it.
               </p>
             </div>
 
-            <aside className="pop-loop" aria-label="The usual order of events">
+            <aside className="pop-loop" aria-label="The research loop">
               <div className="pop-loop-head">
-                <strong>How it usually goes</strong>
-                <span className="pop-label">Month 5</span>
+                <strong>The loop</strong>
+                <span className="pop-label">Month 7</span>
               </div>
               <ol>
                 <li>
-                  <b>01</b> Email twelve suppliers, hear back from one
+                  <b>01</b> Watch another module on sourcing
                 </li>
                 <li>
-                  <b>02</b> Find a product, discover the brand is gated
+                  <b>02</b> Add three suppliers to a spreadsheet
                 </li>
                 <li>
-                  <b>03</b> Check a few ASINs by hand, lose the tab
+                  <b>03</b> Scroll a catalog, check a few ASINs by hand
                 </li>
                 <li>
-                  <b>04</b> Decide to learn more before buying anything
+                  <b>04</b> Decide you need to learn more first
                 </li>
                 <li>
-                  <b>05</b> Start again with a different supplier
+                  <b>05</b> Buy a course about the part you skipped
                 </li>
               </ol>
               <p className="pop-loop-end">
@@ -378,43 +406,43 @@ export default function PurchaseOrderProgram() {
           </div>
         </section>
 
-        {/* ---------------------------------------------------------- pillars */}
-        <section className="pop-section pop-flow mesh-bg" id="what-you-get">
+        {/* ------------------------------------------------------------ flow */}
+        <section className="pop-section pop-flow mesh-bg" id="how-it-works">
           <div className="pop-shell">
             <div className="pop-flow-head">
-              <p className="pop-label">What you get</p>
+              <p className="pop-label">How POP works</p>
               <h2>
-                Four things, in order,
+                Six steps, in order,
                 <br />
                 ending in a <mark>purchase order.</mark>
               </h2>
               <p className="pop-lede">
-                Each one produces what the next one needs. Nothing here is general
-                research. Everything is about this order.
+                Each one produces something the next one needs. You are never
+                researching in general; you are always working on this order.
               </p>
             </div>
 
             <ol className="pop-rail" aria-hidden="true">
-              {PILLARS.map((part, i) => (
+              {STEPS.map((step, i) => (
                 <li
-                  key={part.rail}
+                  key={step.rail}
                   className={
                     "pop-rail-node" +
-                    (i === PILLARS.length - 1
+                    (i === STEPS.length - 1
                       ? " is-last"
-                      : "key" in part && part.key
+                      : "key" in step && step.key
                         ? " is-key"
                         : "")
                   }
                 >
                   <i>{i + 1}</i>
-                  <span>{part.rail}</span>
+                  <span>{step.rail}</span>
                 </li>
               ))}
             </ol>
 
             <ol className="pop-steps">
-              {PILLARS.map(({ n, Icon, title, body, outcome, tool, ...rest }) => (
+              {STEPS.map(({ n, Icon, title, body, outcome, tool, ...rest }) => (
                 <motion.li
                   key={n}
                   className={"pop-step" + ("key" in rest && rest.key ? " is-key glow-edge" : "")}
@@ -442,45 +470,6 @@ export default function PurchaseOrderProgram() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ philosophy */}
-        <section className="pop-section pop-outcome">
-          <div className="pop-shell pop-outcome-grid">
-            <div>
-              <p className="pop-label">The idea behind it</p>
-              <h2>
-                Always be loading
-                <br />
-                <span className="pop-blue">your database.</span>
-              </h2>
-              <p className="pop-lede">
-                An Amazon wholesale business is not a list of tools. It is one loop,
-                run over and over. The purpose of a scan is not the scan. It is loading
-                the database. The four parts of the program are the first turn of that
-                loop, and the software is built to keep it turning.
-              </p>
-            </div>
-            <ul className="pop-deliver">
-              {LOOP.map(([title, body], i) => (
-                <li key={title}>
-                  <span className="pop-deliver-ico" aria-hidden="true">
-                    {i === 3 ? (
-                      <TrendingUp size={19} strokeWidth={2} />
-                    ) : i === 4 ? (
-                      <RefreshCw size={19} strokeWidth={2} />
-                    ) : (
-                      <b style={{ fontStyle: "normal", fontSize: 13 }}>{i + 1}</b>
-                    )}
-                  </span>
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{body}</small>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
         {/* -------------------------------------------------------- software */}
         <section className="pop-section">
           <div className="pop-shell">
@@ -492,7 +481,7 @@ export default function PurchaseOrderProgram() {
                 <span className="pop-blue">not in a workbook.</span>
               </h2>
               <p className="pop-lede">
-                These are the screens the four parts are worked in. Same tools we use,
+                These are the screens the six steps are worked in. Same tools we use,
                 same ones you keep after the order is built.
               </p>
             </div>
@@ -500,12 +489,12 @@ export default function PurchaseOrderProgram() {
             <div className="pop-shots">
               <article className="pop-shot">
                 <div className="pop-shot-copy">
-                  <p className="pop-label">Part 01 · Vendors</p>
+                  <p className="pop-label">Step 01 · Vendors</p>
                   <h3>Your suppliers in one table.</h3>
                   <p>
                     Accounts, contacts, lead times, payment method and catalog status
-                    for every supplier you deal with, and the distributors we bring to
-                    the table alongside your own.
+                    for every supplier you deal with, instead of a spreadsheet that
+                    stopped being accurate in March.
                   </p>
                   <ul className="pop-shot-list">
                     <li>
@@ -513,8 +502,8 @@ export default function PurchaseOrderProgram() {
                       contacts held per supplier
                     </li>
                     <li>
-                      <span aria-hidden="true">→</span> Lead times, minimums and terms
-                      recorded as you learn them
+                      <span aria-hidden="true">→</span> Lead times and terms recorded
+                      as you learn them
                     </li>
                     <li>
                       <span aria-hidden="true">→</span> Spend by vendor once orders
@@ -541,48 +530,7 @@ export default function PurchaseOrderProgram() {
 
               <article className="pop-shot">
                 <div className="pop-shot-copy">
-                  <p className="pop-label">Part 02 and 03 · Databases</p>
-                  <h3>What you can sell, and what it is worth.</h3>
-                  <p>
-                    Every product that clears the scanner lands here with its landed
-                    cost, fees, profit and sales estimate, and the Ungate Checker marks
-                    each one as ungated, needing approval or gated for your account.
-                  </p>
-                  <ul className="pop-shot-list">
-                    <li>
-                      <span aria-hidden="true">→</span> Ungated and Gated views, one
-                      click apart
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Profit, ROI and monthly sales
-                      estimate on each row
-                    </li>
-                    <li>
-                      <span aria-hidden="true">→</span> Supply chain, stock and Buy Box
-                      once you are selling
-                    </li>
-                  </ul>
-                </div>
-                <figure className="pop-frame glow-edge">
-                  <div className="pop-frame-bar">
-                    <span className="pop-dots" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span className="pop-frame-title">Apex · Databases</span>
-                  </div>
-                  <img
-                    src={SHOT.database}
-                    alt="The Apex Databases screen listing housed products with cost, sold price, profit, ROI and a market intelligence breakdown."
-                    loading="lazy"
-                  />
-                </figure>
-              </article>
-
-              <article className="pop-shot">
-                <div className="pop-shot-copy">
-                  <p className="pop-label">Part 03 · UPC Scanner</p>
+                  <p className="pop-label">Step 02 · UPC Scanner</p>
                   <h3>A whole price list, costed line by line.</h3>
                   <p>
                     Load the catalog and read landed cost against sold price with
@@ -591,8 +539,8 @@ export default function PurchaseOrderProgram() {
                   </p>
                   <ul className="pop-shot-list">
                     <li>
-                      <span aria-hidden="true">→</span> Landed cost, current and average
-                      sold price
+                      <span aria-hidden="true">→</span> Landed cost, current and
+                      average sold price
                     </li>
                     <li>
                       <span aria-hidden="true">→</span> FBA, referral, shipping and
@@ -623,7 +571,7 @@ export default function PurchaseOrderProgram() {
 
               <article className="pop-shot">
                 <div className="pop-shot-copy">
-                  <p className="pop-label">Part 04 · Purchase Order Builder</p>
+                  <p className="pop-label">Step 06 · Purchase Order Builder</p>
                   <h3>The order, projected before it is placed.</h3>
                   <p>
                     Put the units and costs in and the builder returns the order&rsquo;s
@@ -632,8 +580,8 @@ export default function PurchaseOrderProgram() {
                   </p>
                   <ul className="pop-shot-list">
                     <li>
-                      <span aria-hidden="true">→</span> Units purchased and cost of goods
-                      per supplier
+                      <span aria-hidden="true">→</span> Units purchased and cost of
+                      goods per supplier
                     </li>
                     <li>
                       <span aria-hidden="true">→</span> Amazon fees, shipping and prep
@@ -679,11 +627,11 @@ export default function PurchaseOrderProgram() {
               <h2>
                 Four things you did not
                 <br />
-                have <span className="pop-blue">before.</span>
+                have <span className="pop-blue">last month.</span>
               </h2>
               <p className="pop-lede">
-                Not notes. Not a framework. The four things that stand between wanting
-                to sell wholesale and buying inventory, done.
+                Not notes. Not a framework. The four artefacts that stand between
+                researching wholesale and buying inventory.
               </p>
             </div>
             <ul className="pop-deliver">
@@ -709,28 +657,28 @@ export default function PurchaseOrderProgram() {
             <h2>Worth being honest about.</h2>
             <div className="pop-fit-grid">
               <div className="pop-fit is-yes glow-edge">
-                <h3>The program is for you if</h3>
+                <h3>POP is for you if</h3>
                 <ul>
                   <li>
-                    <span aria-hidden="true">✓</span> You want to sell wholesale on
-                    Amazon and have no suppliers yet.
+                    <span aria-hidden="true">✓</span> You have done the learning and
+                    still have not placed an order.
                   </li>
                   <li>
-                    <span aria-hidden="true">✓</span> You keep finding products and then
-                    finding out you cannot list them.
+                    <span aria-hidden="true">✓</span> You are selling already and your
+                    next order is guesswork rather than process.
                   </li>
                   <li>
                     <span aria-hidden="true">✓</span> You have capital you are ready to
                     deploy deliberately.
                   </li>
                   <li>
-                    <span aria-hidden="true">✓</span> You want someone beside you for the
-                    first order, not a video about it.
+                    <span aria-hidden="true">✓</span> You want someone to check your
+                    numbers before the money moves.
                   </li>
                 </ul>
               </div>
               <div className="pop-fit is-no">
-                <h3>The program is not for you if</h3>
+                <h3>POP is not for you if</h3>
                 <ul>
                   <li>
                     <span aria-hidden="true">✕</span> You are looking for a course to
@@ -745,8 +693,8 @@ export default function PurchaseOrderProgram() {
                     order will return.
                   </li>
                   <li>
-                    <span aria-hidden="true">✕</span> You are not in a position to spend
-                    money on stock yet.
+                    <span aria-hidden="true">✕</span> You are not in a position to
+                    spend money on stock yet.
                   </li>
                 </ul>
               </div>
@@ -780,13 +728,13 @@ export default function PurchaseOrderProgram() {
           <div className="pop-shell pop-close-in">
             <p className="pop-label">Your next step</p>
             <h2>
-              Suppliers. Approvals. Research.
+              Stop researching.
               <br />
-              Then <mark>your first order.</mark>
+              Start <mark>building the order.</mark>
             </h2>
             <p className="pop-lede" style={{ marginInline: "auto" }}>
               Book a working session with the Apex team. Bring what you have, even if
-              that is nothing but the intention to buy, and we start at the suppliers.
+              that is nothing but the intention to buy, and we will start at step one.
             </p>
             <div className="pop-hero-actions">
               <a
@@ -795,15 +743,15 @@ export default function PurchaseOrderProgram() {
                 ref={closeSheen.ref}
               >
                 <span className="pop-cta-row">
-                  Start my first order
+                  Build my first or next PO
                   <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
                 </span>
                 <small>Book a working session with the Apex team</small>
               </a>
             </div>
             <p className="pop-close-fine">
-              A conversation about your first order. No obligation to buy anything on
-              the call.
+              A conversation about your order. No obligation to buy anything on the
+              call.
             </p>
           </div>
         </section>
@@ -828,17 +776,17 @@ export default function PurchaseOrderProgram() {
           </div>
           <div className="pop-footer-legal">
             <span>© {new Date().getFullYear()} Apex Applications</span>
-            <span>Apex · Purchase Order Program</span>
+            <span>Apex POP · Purchase Order Program</span>
           </div>
           <p className="pop-fineprint">
-            The Purchase Order Program is a working process and software, not a course,
-            an investment product, or a guarantee of results. Supplier acceptance,
-            stock, pricing and terms vary and are decided by each supplier. Amazon
-            decides selling approvals. Projections shown in the Apex Purchase Order
-            Builder are calculated from figures you enter and are not a forecast of
-            sales or profit. Amazon is a trademark of Amazon.com, Inc. or its
-            affiliates. This site is not part of or endorsed by Facebook. FACEBOOK is a
-            trademark of Meta Platforms, Inc.
+            Apex POP is a working process and software, not a course, an investment
+            product, or a guarantee of results. Supplier acceptance, stock, pricing and
+            terms vary and are decided by each supplier. Amazon decides selling
+            approvals. Projections shown in the Apex Purchase Order Builder are
+            calculated from figures you enter and are not a forecast of sales or
+            profit. Amazon is a trademark of Amazon.com, Inc. or its affiliates. This
+            site is not part of or endorsed by Facebook. FACEBOOK is a trademark of
+            Meta Platforms, Inc.
           </p>
         </div>
       </footer>

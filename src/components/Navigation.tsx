@@ -57,6 +57,7 @@ export default function Navigation() {
    * page with its own header needs this branch instead, or it gets two.
    */
   const hasOwnHeader =
+    pathname === "/apex-pop" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works";
 
