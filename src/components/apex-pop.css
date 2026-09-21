@@ -267,6 +267,48 @@ body:has(.pop-page) { margin: 0; background: #fff; }
   flex-wrap: wrap;
 }
 
+/* Trustpilot line under the hero button: a pill with the five green boxes
+   filled to the score. Sits between the buttons and the fine print. */
+.pop-trust {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--body);
+  transition: border-color .18s ease, transform .18s ease;
+}
+.pop-trust:hover { border-color: rgb(0 182 122 / .45); transform: translateY(-1px); }
+.pop-trust-stars { display: inline-flex; gap: 2px; }
+.pop-trust-star {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  background: #dcdce6;
+  overflow: hidden;
+}
+.pop-trust-star-fill { position: absolute; inset: 0 auto 0 0; background: #00b67a; }
+.pop-trust-star svg { position: relative; }
+.pop-trust-text strong { color: var(--ink-strong); font-weight: 700; }
+.pop-trust-sep { margin: 0 6px; color: var(--faint); }
+.pop-trust-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--ink-strong);
+}
+
 .pop-hero-fine {
   margin-top: 20px;
   font-size: 13.5px;

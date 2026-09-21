@@ -35,6 +35,16 @@ export const metadata: Metadata = {
 const TRY_URL =
   "https://www.apexapplications.io/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
 
+/**
+ * Shown under the hero button. Trustpilot blocks server-side fetches, so the
+ * figures live here; update them when the profile moves.
+ */
+const TRUSTPILOT = {
+  score: 4.2,
+  reviews: 6,
+  href: "https://www.trustpilot.com/review/apexapplications.io",
+};
+
 export default function Page() {
   return (
     <ApexPop
@@ -44,8 +54,8 @@ export default function Page() {
         label: "Try Apex free and build your next order",
         sub: "Free account. Scan the PrimeWell catalog and build a purchase order in it.",
         href: TRY_URL,
-        secondaryLabel: "Or book a working session with the team",
       }}
+      trustpilot={TRUSTPILOT}
     />
   );
 }
