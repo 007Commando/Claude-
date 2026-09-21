@@ -120,6 +120,11 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 
 /* ---------------------------------------------------------------- header */
 
+/* Framed by the site's fixed 80px header instead of its own: the hero has to
+   start below it, and the bottom clears before the site footer. */
+.pop-page-sited { padding-top: 80px; }
+.pop-page-sited main { padding-bottom: 24px; }
+
 .pop-header {
   position: sticky;
   top: 0;

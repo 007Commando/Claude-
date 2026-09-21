@@ -57,8 +57,7 @@ const ORIGIN = "https://www.apexapplications.io";
  * booking that came from this page is identifiable in the calendar without
  * anyone having to ask the caller where they came from.
  */
-const BOOK_URL =
-  "https://calendly.com/apexapplications-info/new-meeting?utm_term=apex-pop";
+const BOOK_BASE = "https://calendly.com/apexapplications-info/new-meeting";
 
 /** Real Apex screens, served from the same asset paths the product pages use. */
 const SHOT = {
@@ -225,7 +224,27 @@ const FAQS: readonly (readonly [string, string])[] = [
   ],
 ];
 
-export default function ApexPop() {
+/**
+ * The same page in two frames.
+ *
+ * `own` is the paid-traffic version: the page carries its own one-button
+ * header and its own footer with the ad disclaimers, and nothing on it leads
+ * anywhere but the booking. `site` drops both and lets the regular site
+ * header and footer wrap the content instead — the version PrimeWell
+ * applicants are sent to, who should be able to reach Features, Pricing and
+ * sign-up from it because they arrived as customers of another business,
+ * not from an ad. Each frame books with its own utm_term so the calendar
+ * says which one the caller came through.
+ */
+export default function ApexPop({
+  chrome = "own",
+  utmTerm = "apex-pop",
+}: {
+  chrome?: "own" | "site";
+  utmTerm?: string;
+}) {
+  const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
+  const sited = chrome === "site";
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroSheen = useSheen<HTMLAnchorElement>();
@@ -241,7 +260,8 @@ export default function ApexPop() {
   const artOpacity = useTransform(scrollYProgress, [0, 0.55], [0, 1]);
 
   return (
-    <div className="apex-surface pop-page">
+    <div className={"apex-surface pop-page" + (sited ? " pop-page-sited" : "")}>
+      {!sited && (
       <header className="pop-header">
         <div className="pop-header-in">
           <a className="pop-brand" href={ORIGIN} aria-label="Apex Applications home">
@@ -262,6 +282,7 @@ export default function ApexPop() {
           </div>
         </div>
       </header>
+      )}
 
       <main>
         {/* ------------------------------------------------------------ hero */}
@@ -755,8 +776,24 @@ export default function ApexPop() {
             </p>
           </div>
         </section>
+        {sited && (
+          <section className="pop-section-tight" aria-label="Disclaimer">
+            <div className="pop-shell">
+              <p className="pop-fineprint">
+                Apex POP is a working process and software, not a course, an
+                investment product, or a guarantee of results. Supplier acceptance,
+                stock, pricing and terms vary and are decided by each supplier. Amazon
+                decides selling approvals. Projections shown in the Apex Purchase Order
+                Builder are calculated from figures you enter and are not a forecast of
+                sales or profit. Amazon is a trademark of Amazon.com, Inc. or its
+                affiliates.
+              </p>
+            </div>
+          </section>
+        )}
       </main>
 
+      {!sited && (
       <footer className="pop-footer">
         <div className="pop-shell">
           <div className="pop-footer-top">
@@ -790,6 +827,7 @@ export default function ApexPop() {
           </p>
         </div>
       </footer>
+      )}
     </div>
   );
 }
