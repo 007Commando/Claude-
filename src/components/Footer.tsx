@@ -17,6 +17,7 @@ export default function Footer() {
      * terms and privacy. No columns of links to wander off into.
      */
     pathname === "/apex-pop-primewell" ||
+    pathname === "/apex-pop-facebook" ||
     /**
      * The sign-up form had the whole site footer under it — four columns of
      * links, on a phone, below a form. Terms and privacy still belong there,
