@@ -117,8 +117,17 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                {/*
+                  Points at /virtual-assistants, not /apex-vas.
+
+                  This was the site's only link to the VA service, and it went
+                  to the twin that is noindex, nofollow. So the one sitewide
+                  signal we had walked a crawler into a dead end and left the
+                  indexable page with no internal links at all. The quote
+                  builder is one click on from here.
+                */}
                 <Link
-                  href="/apex-vas"
+                  href="/virtual-assistants"
                   className="hover:text-brand transition-colors"
                 >
                   Apex VAs

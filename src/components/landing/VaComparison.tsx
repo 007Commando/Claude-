@@ -1,4 +1,5 @@
 import { Check, Minus, ShieldCheck } from "lucide-react";
+import { rateRangeLabel } from "../../lib/vaPricing";
 
 import { Rail } from "./OfferKit";
 
@@ -24,7 +25,7 @@ type Cell = { state: "yes" | "varies"; text: string };
 const ROWS: { label: string; apex: Cell; fiverr: Cell; upwork: Cell }[] = [
   {
     label: "Hourly rate",
-    apex: { state: "yes", text: "$5.00 to $6.50, fixed" },
+    apex: { state: "yes", text: `${rateRangeLabel()}, fixed` },
     fiverr: { state: "varies", text: "$6 to $15 typical" },
     upwork: { state: "varies", text: "$6 to $15 typical" },
   },
@@ -416,7 +417,7 @@ export function SatisfactionGuarantee() {
                 ],
                 [
                   "A fixed rate after that",
-                  "$5.00 to $6.50 an hour, with no platform fee on top.",
+                  `${rateRangeLabel()} an hour, with no platform fee on top.`,
                 ],
               ].map(([title, sub]) => (
                 <li key={title} className="flex items-start gap-3">

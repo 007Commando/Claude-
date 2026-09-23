@@ -24,6 +24,23 @@ export const WEEKS_PER_MONTH = 52 / 12;
  */
 export const CARD_FEE_RATE = 0.04;
 
+/**
+ * `$5.50 to $7.00` — the advertised rate range, built from the rates above.
+ *
+ * The marketing pages had this typed by hand as "$5.00 to $6.50" in four
+ * places, which was below both real rates: full time is $5.50 and part time is
+ * $7.00. A page that advertises a price nobody is charged is a page that loses
+ * the argument at the quote screen, and one of those pages was about to be put
+ * in front of paid traffic and the search index. Derived here so the claim and
+ * the charge come from the same numbers.
+ */
+export const rateRangeLabel = (): string => {
+  const low = Math.min(PART_TIME_RATE, FULL_TIME_RATE);
+  const high = Math.max(PART_TIME_RATE, FULL_TIME_RATE);
+  const money = (n: number) => `$${n.toFixed(2)}`;
+  return `${money(low)} to ${money(high)}`;
+};
+
 export interface VaProfile {
   name: string;
   role: string;

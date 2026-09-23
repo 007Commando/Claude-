@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+import { absoluteUrl } from "../../config/site";
+import { rateRangeLabel } from "../../lib/vaPricing";
 import Link from "next/link";
 import { ArrowRight, ClipboardList, UserCheck, Users } from "lucide-react";
 
@@ -23,7 +26,20 @@ export const metadata: Metadata = {
   title: "Apex Virtual Assistants, Trained Amazon Staff",
   description:
     "Professional Amazon-trained assistants, part time or full time, who install SOPs into your business. First 7 days free.",
-  robots: { index: false, follow: false },
+  /**
+   * Indexable, and the canonical it never had.
+   *
+   * This page was noindex and absent from the sitemap, which meant the only
+   * way anyone reached it was a footer link or an ad. It is a real offer page
+   * with an H1 and a service nobody else on the comparison list sells, so it
+   * earns nothing by hiding.
+   *
+   * `/apex-vas` covers the same service and stays noindex deliberately. Two
+   * indexable pages about one service compete with each other for the same
+   * query and split whatever authority either would have had. If that one is
+   * ever opened up instead, this one closes on the same day, not alongside it.
+   */
+  alternates: { canonical: absoluteUrl("/virtual-assistants") },
 };
 
 const CONTACT = "/contact-us";
@@ -56,12 +72,18 @@ export default function VirtualAssistantsPage() {
             <Link href={CONTACT} className={ctaPrimary}>
               Start 7 Days Free <ArrowRight size={18} />
             </Link>
-            <Link href="#compare" className={ctaSecondary}>
-              Compare Rates
+            {/*
+              Was an anchor to #compare, which is the very next section and
+              reachable by scrolling. Pointing it at the quote builder makes it
+              a step in the funnel instead of a no-op, and keeps /apex-vas
+              reachable now that the footer link moved here.
+            */}
+            <Link href="/apex-vas" className={ctaSecondary}>
+              See Rates And Availability
             </Link>
           </>
         }
-        note="First 7 days free · Part time or full time · $5.00 to $6.50 an hour, fixed"
+        note={`First 7 days free · Part time or full time · ${rateRangeLabel()} an hour, fixed`}
         art={<ProductFrame src={purchaseOrders.url} alt="Work an Apex assistant takes off your desk" />}
       />
 
@@ -131,7 +153,7 @@ export default function VirtualAssistantsPage() {
           </div>
 
           <p className="text-center text-sm text-slate-500 mt-10 max-w-xl mx-auto">
-            Both are billed at the same fixed $5.00 to $6.50 an hour. No platform
+            Both are billed at the same fixed {rateRangeLabel()} an hour. No platform
             fee, no agency retainer, no charge for the first seven days.
           </p>
         </Rail>
