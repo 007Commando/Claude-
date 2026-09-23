@@ -1,0 +1,3 @@
+Campaign,Ad Group,Ad type,Description 1,Description 2,Dynamic ad target condition,Dynamic ad target value,Status
+S10 | DSA | Comparisons & Blog,DSA | Comparison Pages,Dynamic search ad,"An honest comparison, including where the other tool wins. Real pricing, no spin.","Scanning, purchase orders, repricing and profit in one place. Seven days free.",URL_CONTAINS,/compare,Paused
+S10 | DSA | Comparisons & Blog,DSA | Blog,Dynamic search ad,"Scanning, purchase orders, repricing and profit in one place. Seven days free.","An honest comparison, including where the other tool wins. Real pricing, no spin.",URL_CONTAINS,/blog,Paused

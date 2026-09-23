@@ -11,6 +11,17 @@ export interface StoredAttribution {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  /**
+   * The Google click identifier, if this visitor arrived on a paid Google
+   * click. Held separately from `source` because the two answer different
+   * questions and have different lifetimes: `source` is first-touch and
+   * decides which walkthrough the account gets, while the click id is
+   * last-touch and is the only key Google will accept when we upload the
+   * conversion back to it weeks later.
+   */
+  clickId?: string;
+  /** Which parameter the click id came from: gclid, wbraid or gbraid. */
+  clickSource?: string;
 }
 
 export function readStoredAttribution(): StoredAttribution | null {
@@ -38,6 +49,14 @@ function sourceFromReferrer(referrer: string): string | null {
   }
 }
 
+/**
+ * Google auto-tagging appends exactly one of these. `gclid` is the ordinary
+ * case; `wbraid` and `gbraid` appear when the click crossed an iOS privacy
+ * boundary or came from an app surface, and Google's conversion import accepts
+ * all three. Checked in this order because only one is ever present.
+ */
+const CLICK_PARAMS = ["gclid", "wbraid", "gbraid"] as const;
+
 function AttributionCapture() {
   const params = useSearchParams();
 
@@ -48,13 +67,46 @@ function AttributionCapture() {
     const utmCampaign = params.get("utm_campaign") ?? undefined;
     const referrer = document.referrer || undefined;
 
+    const clickSource = CLICK_PARAMS.find((name) => params.get(name));
+    const clickId = clickSource ? params.get(clickSource) ?? undefined : undefined;
+
     const existing = readStoredAttribution();
+
     // Explicit UTM/click-id params always win (a deliberate campaign click).
     // Otherwise, first-touch: keep whatever attribution we already captured.
-    if (!utmSource && !visitorId && existing) return;
+    //
+    // A Google click is the one case where those two rules disagree. Auto-
+    // tagging adds gclid whether or not a tracking template adds utm_source,
+    // so a paid click can arrive with a click id and nothing else. When that
+    // happens to a visitor who already has stored attribution — a PrimeWell
+    // applicant who later clicks an ad — the first-touch source is kept,
+    // because it is what decides their walkthrough, and only the click id is
+    // refreshed. Losing the click id would cost us the conversion upload;
+    // overwriting the source would cost them the right onboarding.
+    if (!utmSource && !visitorId && existing) {
+      if (clickId && existing.clickId !== clickId) {
+        try {
+          window.localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ ...existing, clickId, clickSource }),
+          );
+        } catch {
+          // localStorage unavailable; nothing else to do here.
+        }
+      }
+      return;
+    }
 
     const resolvedSource = utmSource ?? sourceFromReferrer(referrer ?? "") ?? "direct";
-    const attribution: StoredAttribution = { source: resolvedSource, visitorId, utmSource, utmMedium, utmCampaign };
+    const attribution: StoredAttribution = {
+      source: resolvedSource,
+      visitorId,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      clickId,
+      clickSource,
+    };
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(attribution));
     } catch {
@@ -73,6 +125,8 @@ function AttributionCapture() {
         utmSource,
         utmMedium,
         utmCampaign,
+        clickId,
+        clickSource,
       }),
       keepalive: true,
     }).catch(() => {});

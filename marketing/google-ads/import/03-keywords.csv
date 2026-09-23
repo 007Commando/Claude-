@@ -1,0 +1,1315 @@
+Campaign,Ad Group,Keyword,Criterion Type,Max CPC,Final URL,Status
+S01 | Brand Defence,Brand | Core,[apex applications],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apexapplications],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apexapplications""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications amazon],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications amazon""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications software],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications software""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications io],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications io""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex apps amazon],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex apps amazon""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex amazon wholesale software],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex amazon wholesale software""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications login],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications login""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications review],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications review""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,[apex applications pricing],Exact,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Core,"""apex applications pricing""",Phrase,2.00,https://www.apexapplications.io/,Paused
+S01 | Brand Defence,Brand | Modules,[apex gold repricer],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex gold repricer""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,[apex green scanner],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex green scanner""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,[apex blue profit],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex blue profit""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,[apex red fba],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex red fba""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,[apex black dashboard],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex black dashboard""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,[apex applications repricer],Exact,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Modules,"""apex applications repricer""",Phrase,2.00,https://www.apexapplications.io/features/gold,Paused
+S01 | Brand Defence,Brand | Programmes,[apex purchase order program],Exact,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,"""apex purchase order program""",Phrase,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,[apex pop amazon],Exact,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,"""apex pop amazon""",Phrase,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,[apex elite amazon],Exact,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,"""apex elite amazon""",Phrase,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,[primewell distribution],Exact,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,"""primewell distribution""",Phrase,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,[primewell wholesale],Exact,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S01 | Brand Defence,Brand | Programmes,"""primewell wholesale""",Phrase,2.00,https://www.apexapplications.io/purchase-order-program,Paused
+S02 | Conquest | Repricers,Aura | Brand,[goaura],Exact,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Brand,"""goaura""",Phrase,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Brand,[go aura],Exact,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Brand,"""go aura""",Phrase,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Brand,[aura repricer],Exact,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Brand,"""aura repricer""",Phrase,2.50,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura alternative],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""goaura alternative""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura alternatives],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""goaura alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[alternative to goaura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""alternative to goaura""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura competitors],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""goaura competitors""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura vs],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""goaura vs""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura review],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura pricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura reviews],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura cost],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura price],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura comparison],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura compared to],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[is goaura worth it],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura free trial],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[better than goaura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura competitor],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[similar to goaura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[apex vs goaura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[goaura vs apex],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura alternative],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""go aura alternative""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura alternatives],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""go aura alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[alternative to go aura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""alternative to go aura""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura competitors],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""go aura competitors""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura vs],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""go aura vs""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura review],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura pricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura reviews],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura cost],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura price],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura comparison],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura compared to],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[is go aura worth it],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura free trial],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[better than go aura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura competitor],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[similar to go aura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[apex vs go aura],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[go aura vs apex],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[alternative to aura repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""alternative to aura repricer""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer vs],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer review],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer reviews],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer cost],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer price],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer comparison],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer compared to],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[is aura repricer worth it],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer free trial],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[better than aura repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer competitor],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[similar to aura repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[apex vs aura repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricer vs apex],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing alternative],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricing alternative""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing alternatives],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricing alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[alternative to aura repricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""alternative to aura repricing""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing competitors],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricing competitors""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing vs],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura repricing vs""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing review],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing pricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing reviews],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing cost],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing price],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing comparison],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing compared to],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[is aura repricing worth it],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing free trial],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[better than aura repricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing competitor],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[similar to aura repricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[apex vs aura repricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura repricing vs apex],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura amazon repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura amazon repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[alternative to aura amazon repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""alternative to aura amazon repricer""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura amazon repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer vs],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,"""aura amazon repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer review],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer reviews],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer cost],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer price],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer comparison],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer compared to],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[is aura amazon repricer worth it],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer free trial],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[better than aura amazon repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer competitor],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[similar to aura amazon repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[apex vs aura amazon repricer],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,Aura | Switch,[aura amazon repricer vs apex],Exact,4.00,https://www.apexapplications.io/compare/aura,Paused
+S02 | Conquest | Repricers,SellerSnap | Brand,[sellersnap],Exact,2.50,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Brand,"""sellersnap""",Phrase,2.50,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Brand,[seller snap],Exact,2.50,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Brand,"""seller snap""",Phrase,2.50,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap alternative],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[alternative to sellersnap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""alternative to sellersnap""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap competitors],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap vs],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap review],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap pricing],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap reviews],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap cost],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap price],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap comparison],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap compared to],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[is sellersnap worth it],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap free trial],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[better than sellersnap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap competitor],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[similar to sellersnap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[apex vs sellersnap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap alternative],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""seller snap alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""seller snap alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[alternative to seller snap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""alternative to seller snap""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap competitors],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""seller snap competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap vs],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""seller snap vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap review],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap pricing],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap reviews],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap cost],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap price],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap comparison],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap compared to],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[is seller snap worth it],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap free trial],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[better than seller snap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap competitor],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[similar to seller snap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[apex vs seller snap],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[seller snap vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[alternative to sellersnap repricer],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""alternative to sellersnap repricer""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer vs],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,"""sellersnap repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer review],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer reviews],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer cost],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer price],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer comparison],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer compared to],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[is sellersnap repricer worth it],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer free trial],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[better than sellersnap repricer],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer competitor],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[similar to sellersnap repricer],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[apex vs sellersnap repricer],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,SellerSnap | Switch,[sellersnap repricer vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellersnap,Paused
+S02 | Conquest | Repricers,BQool,[bqool],Exact,2.50,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool""",Phrase,2.50,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool alternative],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool alternative""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool alternatives],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[alternative to bqool],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""alternative to bqool""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool competitors],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool competitors""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool vs],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool vs""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool review],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool pricing],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[alternative to bqool repricer],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""alternative to bqool repricer""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer vs],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer review],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central alternative],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricing central alternative""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central alternatives],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricing central alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[alternative to bqool repricing central],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""alternative to bqool repricing central""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central competitors],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricing central competitors""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central vs],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,"""bqool repricing central vs""",Phrase,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central review],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,BQool,[bqool repricing central pricing],Exact,4.00,https://www.apexapplications.io/compare/bqool,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer],Exact,2.50,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricer""",Phrase,2.50,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer],Exact,2.50,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed.co repricer""",Phrase,2.50,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[alternative to informed repricer],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""alternative to informed repricer""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer vs],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer review],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed co repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed co repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[alternative to informed co repricer],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""alternative to informed co repricer""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed co repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer vs],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed co repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer review],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed co repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer alternative],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed.co repricer alternative""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer alternatives],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed.co repricer alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[alternative to informed.co repricer],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""alternative to informed.co repricer""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer competitors],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed.co repricer competitors""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer vs],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed.co repricer vs""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer review],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed.co repricer pricing],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing alternative],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricing alternative""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing alternatives],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricing alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[alternative to informed repricing],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""alternative to informed repricing""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing competitors],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricing competitors""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing vs],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,"""informed repricing vs""",Phrase,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing review],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Informed Repricer,[informed repricing pricing],Exact,4.00,https://www.apexapplications.io/compare/informed-repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com],Exact,2.50,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com""",Phrase,2.50,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com],Exact,2.50,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer com""",Phrase,2.50,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com alternative],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com alternative""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com alternatives],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[alternative to repricer.com],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""alternative to repricer.com""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com competitors],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com competitors""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com vs],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com vs""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com review],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com pricing],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com alternative],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer com alternative""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com alternatives],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer com alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[alternative to repricer com],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""alternative to repricer com""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com competitors],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer com competitors""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com vs],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer com vs""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com review],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer com pricing],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[alternative to repricer.com amazon],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""alternative to repricer.com amazon""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon vs],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,"""repricer.com amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon review],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S02 | Conquest | Repricers,Repricer.com,[repricer.com amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/repricer,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,[selleramp],Exact,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,"""selleramp""",Phrase,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,[seller amp],Exact,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,"""seller amp""",Phrase,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,[selleramp sas],Exact,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,"""selleramp sas""",Phrase,2.50,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp alternative],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp alternative""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp alternatives],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[alternative to selleramp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""alternative to selleramp""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp competitors],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp competitors""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp vs],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp vs""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp review],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp pricing],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp reviews],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp cost],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp price],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp comparison],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp compared to],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[is selleramp worth it],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp free trial],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[better than selleramp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp competitor],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[similar to selleramp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[apex vs selleramp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp vs apex],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp alternative],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp alternative""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp alternatives],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[alternative to seller amp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""alternative to seller amp""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp competitors],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp competitors""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp vs],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp vs""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp review],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp pricing],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp reviews],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp cost],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp price],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp comparison],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp compared to],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[is seller amp worth it],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp free trial],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[better than seller amp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp competitor],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[similar to seller amp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[apex vs seller amp],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp vs apex],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas alternative],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp sas alternative""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas alternatives],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp sas alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[alternative to selleramp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""alternative to selleramp sas""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas competitors],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp sas competitors""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas vs],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""selleramp sas vs""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas review],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas pricing],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas reviews],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas cost],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas price],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas comparison],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas compared to],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[is selleramp sas worth it],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas free trial],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[better than selleramp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas competitor],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[similar to selleramp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[apex vs selleramp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[selleramp sas vs apex],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas alternative],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp sas alternative""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas alternatives],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp sas alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[alternative to seller amp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""alternative to seller amp sas""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas competitors],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp sas competitors""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas vs],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,"""seller amp sas vs""",Phrase,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas review],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas pricing],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas reviews],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas cost],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas price],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas comparison],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas compared to],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[is seller amp sas worth it],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas free trial],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[better than seller amp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas competitor],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[similar to seller amp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[apex vs seller amp sas],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,[seller amp sas vs apex],Exact,4.00,https://www.apexapplications.io/compare/selleramp,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,[third party profits],Exact,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,"""third party profits""",Phrase,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,[thirdpartyprofits],Exact,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,"""thirdpartyprofits""",Phrase,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,[3rd party profits],Exact,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,"""3rd party profits""",Phrase,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[alternative to third party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""alternative to third party profits""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits reviews],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits cost],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits price],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits comparison],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits compared to],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[is third party profits worth it],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits free trial],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[better than third party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits competitor],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[similar to third party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[apex vs third party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits vs apex],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""thirdpartyprofits alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""thirdpartyprofits alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[alternative to thirdpartyprofits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""alternative to thirdpartyprofits""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""thirdpartyprofits competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""thirdpartyprofits vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits reviews],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits cost],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits price],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits comparison],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits compared to],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[is thirdpartyprofits worth it],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits free trial],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[better than thirdpartyprofits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits competitor],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[similar to thirdpartyprofits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[apex vs thirdpartyprofits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[thirdpartyprofits vs apex],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""3rd party profits alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""3rd party profits alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[alternative to 3rd party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""alternative to 3rd party profits""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""3rd party profits competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""3rd party profits vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits reviews],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits cost],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits price],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits comparison],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits compared to],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[is 3rd party profits worth it],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits free trial],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[better than 3rd party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits competitor],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[similar to 3rd party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[apex vs 3rd party profits],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[3rd party profits vs apex],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[alternative to third party profits amazon],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""alternative to third party profits amazon""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,"""third party profits amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon reviews],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon cost],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon price],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon comparison],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon compared to],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[is third party profits amazon worth it],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon free trial],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[better than third party profits amazon],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon competitor],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[similar to third party profits amazon],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[apex vs third party profits amazon],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,[third party profits amazon vs apex],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited],Exact,2.50,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited""",Phrase,2.50,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited],Exact,2.50,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scanunlimited""",Phrase,2.50,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited alternative],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited alternative""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited alternatives],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[alternative to scan unlimited],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""alternative to scan unlimited""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited competitors],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited competitors""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited vs],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited vs""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited review],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited pricing],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited alternative],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scanunlimited alternative""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited alternatives],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scanunlimited alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[alternative to scanunlimited],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""alternative to scanunlimited""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited competitors],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scanunlimited competitors""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited vs],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scanunlimited vs""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited review],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scanunlimited pricing],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[alternative to scan unlimited amazon],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""alternative to scan unlimited amazon""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon vs],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,"""scan unlimited amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon review],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Scan Unlimited,[scan unlimited amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/scan-unlimited,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source],Exact,2.50,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source""",Phrase,2.50,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource],Exact,2.50,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocketsource""",Phrase,2.50,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source alternative],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source alternative""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source alternatives],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[alternative to rocket source],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""alternative to rocket source""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source competitors],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source competitors""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source vs],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source vs""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source review],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source pricing],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource alternative],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocketsource alternative""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource alternatives],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocketsource alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[alternative to rocketsource],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""alternative to rocketsource""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource competitors],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocketsource competitors""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource vs],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocketsource vs""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource review],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocketsource pricing],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[alternative to rocket source amazon],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""alternative to rocket source amazon""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon vs],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,"""rocket source amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon review],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Rocket Source,[rocket source amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/rocket-source,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app],Exact,2.50,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant app""",Phrase,2.50,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant],Exact,2.50,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""sellerassistant""",Phrase,2.50,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app alternative],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant app alternative""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app alternatives],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant app alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[alternative to seller assistant app],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""alternative to seller assistant app""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app competitors],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant app competitors""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app vs],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant app vs""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app review],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant app pricing],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant alternative],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""sellerassistant alternative""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant alternatives],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""sellerassistant alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[alternative to sellerassistant],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""alternative to sellerassistant""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant competitors],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""sellerassistant competitors""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant vs],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""sellerassistant vs""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant review],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[sellerassistant pricing],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[alternative to seller assistant amazon],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""alternative to seller assistant amazon""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon vs],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon review],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension alternative],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant extension alternative""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension alternatives],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant extension alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[alternative to seller assistant extension],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""alternative to seller assistant extension""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension competitors],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant extension competitors""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension vs],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,"""seller assistant extension vs""",Phrase,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension review],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Seller Assistant,[seller assistant extension pricing],Exact,4.00,https://www.apexapplications.io/compare/seller-assistant,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage],Exact,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tactical arbitrage""",Phrase,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage],Exact,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tacticalarbitrage""",Phrase,2.50,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tactical arbitrage alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tactical arbitrage alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[alternative to tactical arbitrage],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""alternative to tactical arbitrage""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tactical arbitrage competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tactical arbitrage vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tactical arbitrage pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage alternative],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tacticalarbitrage alternative""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage alternatives],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tacticalarbitrage alternatives""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[alternative to tacticalarbitrage],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""alternative to tacticalarbitrage""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage competitors],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tacticalarbitrage competitors""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage vs],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,"""tacticalarbitrage vs""",Phrase,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage review],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Tactical Arbitrage,[tacticalarbitrage pricing],Exact,4.00,https://www.apexapplications.io/compare,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem],Exact,2.50,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem""",Phrase,2.50,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem alternative],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem alternative""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem alternatives],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[alternative to boxem],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""alternative to boxem""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem competitors],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem competitors""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem vs],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem vs""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem review],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem pricing],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[alternative to boxem amazon],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""alternative to boxem amazon""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon vs],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,"""boxem amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon review],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,Boxem,[boxem amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/boxem,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow],Exact,2.50,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2d workflow""",Phrase,2.50,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow],Exact,2.50,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2dworkflow""",Phrase,2.50,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow alternative],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2d workflow alternative""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow alternatives],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2d workflow alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[alternative to 2d workflow],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""alternative to 2d workflow""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow competitors],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2d workflow competitors""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow vs],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2d workflow vs""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow review],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2d workflow pricing],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow alternative],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2dworkflow alternative""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow alternatives],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2dworkflow alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[alternative to 2dworkflow],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""alternative to 2dworkflow""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow competitors],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2dworkflow competitors""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow vs],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""2dworkflow vs""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow review],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[2dworkflow pricing],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow alternative],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""two d workflow alternative""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow alternatives],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""two d workflow alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[alternative to two d workflow],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""alternative to two d workflow""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow competitors],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""two d workflow competitors""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow vs],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,"""two d workflow vs""",Phrase,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow review],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S03 | Conquest | Sourcing & Ops,2D Workflow,[two d workflow pricing],Exact,4.00,https://www.apexapplications.io/compare/2d-workflow,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Brand,[sellerboard],Exact,2.50,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Brand,"""sellerboard""",Phrase,2.50,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Brand,[seller board],Exact,2.50,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Brand,"""seller board""",Phrase,2.50,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard alternative],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[alternative to sellerboard],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""alternative to sellerboard""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard competitors],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard vs],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard review],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard pricing],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard reviews],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard cost],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard price],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard comparison],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard compared to],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[is sellerboard worth it],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard free trial],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[better than sellerboard],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard competitor],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[similar to sellerboard],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[apex vs sellerboard],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board alternative],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""seller board alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""seller board alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[alternative to seller board],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""alternative to seller board""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board competitors],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""seller board competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board vs],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""seller board vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board review],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board pricing],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board reviews],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board cost],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board price],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board comparison],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board compared to],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[is seller board worth it],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board free trial],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[better than seller board],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board competitor],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[similar to seller board],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[apex vs seller board],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[seller board vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[alternative to sellerboard amazon],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""alternative to sellerboard amazon""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon vs],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,"""sellerboard amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon review],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon reviews],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon cost],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon price],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon comparison],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon compared to],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[is sellerboard amazon worth it],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon free trial],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[better than sellerboard amazon],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon competitor],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[similar to sellerboard amazon],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[apex vs sellerboard amazon],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,sellerboard | Switch,[sellerboard amazon vs apex],Exact,4.00,https://www.apexapplications.io/compare/sellerboard,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Brand,[smartscout],Exact,2.50,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Brand,"""smartscout""",Phrase,2.50,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Brand,[smart scout],Exact,2.50,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Brand,"""smart scout""",Phrase,2.50,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout alternative],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout alternative""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout alternatives],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[alternative to smartscout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""alternative to smartscout""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout competitors],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout competitors""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout vs],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout vs""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout review],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout pricing],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout reviews],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout cost],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout price],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout comparison],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout compared to],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[is smartscout worth it],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout free trial],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[better than smartscout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout competitor],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[similar to smartscout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[apex vs smartscout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout vs apex],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout alternative],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smart scout alternative""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout alternatives],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smart scout alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[alternative to smart scout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""alternative to smart scout""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout competitors],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smart scout competitors""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout vs],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smart scout vs""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout review],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout pricing],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout reviews],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout cost],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout price],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout comparison],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout compared to],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[is smart scout worth it],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout free trial],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[better than smart scout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout competitor],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[similar to smart scout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[apex vs smart scout],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smart scout vs apex],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon alternative],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout amazon alternative""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon alternatives],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout amazon alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[alternative to smartscout amazon],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""alternative to smartscout amazon""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon competitors],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout amazon competitors""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon vs],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,"""smartscout amazon vs""",Phrase,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon review],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon pricing],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon reviews],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon cost],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon price],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon comparison],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon compared to],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[is smartscout amazon worth it],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon free trial],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[better than smartscout amazon],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon competitor],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[similar to smartscout amazon],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[apex vs smartscout amazon],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,SmartScout | Switch,[smartscout amazon vs apex],Exact,4.00,https://www.apexapplications.io/compare/smartscout,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Brand,[helium 10],Exact,2.50,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Brand,"""helium 10""",Phrase,2.50,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Brand,[helium10],Exact,2.50,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Brand,"""helium10""",Phrase,2.50,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 alternative],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium 10 alternative""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 alternatives],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium 10 alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[alternative to helium 10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""alternative to helium 10""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 competitors],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium 10 competitors""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 vs],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium 10 vs""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 review],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 pricing],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 reviews],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 cost],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 price],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 comparison],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 compared to],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[is helium 10 worth it],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 free trial],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[better than helium 10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 competitor],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[similar to helium 10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[apex vs helium 10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium 10 vs apex],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 alternative],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium10 alternative""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 alternatives],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium10 alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[alternative to helium10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""alternative to helium10""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 competitors],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium10 competitors""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 vs],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,"""helium10 vs""",Phrase,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 review],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 pricing],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 reviews],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 cost],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 price],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 comparison],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 compared to],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[is helium10 worth it],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 free trial],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[better than helium10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 competitor],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[similar to helium10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[apex vs helium10],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Helium 10 | Switch,[helium10 vs apex],Exact,4.00,https://www.apexapplications.io/compare/helium10,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Brand,[jungle scout],Exact,2.50,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Brand,"""jungle scout""",Phrase,2.50,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Brand,[junglescout],Exact,2.50,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Brand,"""junglescout""",Phrase,2.50,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout alternative],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""jungle scout alternative""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout alternatives],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""jungle scout alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[alternative to jungle scout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""alternative to jungle scout""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout competitors],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""jungle scout competitors""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout vs],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""jungle scout vs""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout review],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout pricing],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout reviews],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout cost],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout price],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout comparison],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout compared to],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[is jungle scout worth it],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout free trial],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[better than jungle scout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout competitor],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[similar to jungle scout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[apex vs jungle scout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[jungle scout vs apex],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout alternative],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""junglescout alternative""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout alternatives],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""junglescout alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[alternative to junglescout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""alternative to junglescout""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout competitors],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""junglescout competitors""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout vs],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,"""junglescout vs""",Phrase,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout review],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout pricing],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout reviews],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout cost],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout price],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout comparison],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout compared to],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[is junglescout worth it],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout free trial],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[better than junglescout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout competitor],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[similar to junglescout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[apex vs junglescout],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,Jungle Scout | Switch,[junglescout vs apex],Exact,4.00,https://www.apexapplications.io/compare/junglescout,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab],Exact,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventorylab""",Phrase,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab],Exact,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventory lab""",Phrase,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365],Exact,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller 365""",Phrase,2.50,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab alternative],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventorylab alternative""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab alternatives],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventorylab alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[alternative to inventorylab],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""alternative to inventorylab""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab competitors],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventorylab competitors""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab vs],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventorylab vs""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab review],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventorylab pricing],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab alternative],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventory lab alternative""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab alternatives],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventory lab alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[alternative to inventory lab],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""alternative to inventory lab""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab competitors],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventory lab competitors""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab vs],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""inventory lab vs""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab review],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[inventory lab pricing],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 alternative],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller 365 alternative""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 alternatives],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller 365 alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[alternative to seller 365],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""alternative to seller 365""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 competitors],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller 365 competitors""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 vs],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller 365 vs""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 review],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller 365 pricing],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 alternative],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller365 alternative""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 alternatives],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller365 alternatives""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[alternative to seller365],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""alternative to seller365""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 competitors],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller365 competitors""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 vs],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,"""seller365 vs""",Phrase,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 review],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S04 | Conquest | Analytics & Research,InventoryLab,[seller365 pricing],Exact,4.00,https://www.apexapplications.io/compare/inventorylab,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon repricer],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon repricer""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon repricing software],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon repricing software""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon repricing tool],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon repricing tool""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[best amazon repricer],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""best amazon repricer""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[automatic repricer amazon],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""automatic repricer amazon""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[fba repricer],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""fba repricer""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon seller repricer],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon seller repricer""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[repricing software for amazon sellers],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""repricing software for amazon sellers""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon price automation software],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon price automation software""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[amazon repricer software],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""amazon repricer software""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[repricer for amazon fba],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""repricer for amazon fba""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,[automated repricing amazon],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Core,"""automated repricing amazon""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[amazon buy box software],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""amazon buy box software""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[win the buy box amazon],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""win the buy box amazon""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[buy box automation amazon],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""buy box automation amazon""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[how to win the buy box],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""how to win the buy box""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[amazon buy box tool],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""amazon buy box tool""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[buy box win rate software],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""buy box win rate software""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,[amazon buy box repricer],Exact,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Buy Box,"""amazon buy box repricer""",Phrase,9.00,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[repricer with profit floor],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""repricer with profit floor""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[repricer minimum price calculator],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""repricer minimum price calculator""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[amazon repricer roi floor],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""amazon repricer roi floor""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[repricer landed cost],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""repricer landed cost""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[break even repricer amazon],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""break even repricer amazon""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[repricer that uses cost of goods],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""repricer that uses cost of goods""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,[amazon repricer margin rules],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Profit Floors,"""amazon repricer margin rules""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,[wholesale repricer amazon],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,"""wholesale repricer amazon""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,[repricer for wholesale sellers],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,"""repricer for wholesale sellers""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,[amazon wholesale repricing],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,"""amazon wholesale repricing""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,[repricer for resellers amazon],Exact,7.50,https://www.apexapplications.io/features/gold,Paused
+S05 | Category | Repricing,Repricer | Wholesale,"""repricer for resellers amazon""",Phrase,7.50,https://www.apexapplications.io/features/gold,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[supplier price list scanner],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""supplier price list scanner""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[wholesale price list analysis amazon],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""wholesale price list analysis amazon""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[scan supplier catalog amazon],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""scan supplier catalog amazon""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[amazon wholesale scanner],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""amazon wholesale scanner""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[bulk price list scanner amazon],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""bulk price list scanner amazon""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[supplier list scanning tool],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""supplier list scanning tool""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[amazon wholesale list analysis],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""amazon wholesale list analysis""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,[price list to amazon asin],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Price Lists,"""price list to amazon asin""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[bulk asin scanner],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""bulk asin scanner""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[bulk upc lookup amazon],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""bulk upc lookup amazon""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[upc to asin bulk],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""upc to asin bulk""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[amazon bulk product scanner],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""amazon bulk product scanner""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[bulk asin lookup tool],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""bulk asin lookup tool""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[upc scanner for amazon sellers],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""upc scanner for amazon sellers""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,[bulk product matching amazon],Exact,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,"""bulk product matching amazon""",Phrase,6.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[amazon wholesale software],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""amazon wholesale software""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[wholesale fba software],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""wholesale fba software""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[amazon wholesale sourcing software],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""amazon wholesale sourcing software""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[software for amazon wholesale sellers],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""software for amazon wholesale sellers""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[amazon wholesale automation software],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""amazon wholesale automation software""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,[wholesale sourcing tool amazon],Exact,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,"""wholesale sourcing tool amazon""",Phrase,7.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,[amazon ungating checker],Exact,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,"""amazon ungating checker""",Phrase,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,[check amazon selling eligibility bulk],Exact,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,"""check amazon selling eligibility bulk""",Phrase,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,[bulk gated brand check amazon],Exact,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,"""bulk gated brand check amazon""",Phrase,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,[amazon approval checker tool],Exact,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,"""amazon approval checker tool""",Phrase,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,[check if i can sell on amazon tool],Exact,5.00,https://www.apexapplications.io/features/green,Paused
+S06 | Category | Wholesale Scanning,Scanner | Ungating,"""check if i can sell on amazon tool""",Phrase,5.00,https://www.apexapplications.io/features/green,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon seller profit tracker],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon seller profit tracker""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon fba profit tracker],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon fba profit tracker""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon profit analytics],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon profit analytics""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon seller dashboard software],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon seller dashboard software""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[fba profit dashboard],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""fba profit dashboard""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon profit tracking software],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon profit tracking software""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,[amazon seller p&l software],Exact,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Tracker,"""amazon seller p&l software""",Phrase,6.50,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,[amazon cogs tracking software],Exact,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,"""amazon cogs tracking software""",Phrase,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,[landed cost calculator amazon fba],Exact,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,"""landed cost calculator amazon fba""",Phrase,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,[amazon fba true profit],Exact,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,"""amazon fba true profit""",Phrase,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,[track cost of goods amazon seller],Exact,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,"""track cost of goods amazon seller""",Phrase,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,[amazon fee and freight calculator],Exact,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | True Cost,"""amazon fee and freight calculator""",Phrase,6.00,https://www.apexapplications.io/features/blue,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[amazon restock software],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""amazon restock software""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[amazon inventory management software],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""amazon inventory management software""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[fba restock planner],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""fba restock planner""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[amazon inventory forecasting tool],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""amazon inventory forecasting tool""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[restock recommendations amazon],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""restock recommendations amazon""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,[amazon reorder software],Exact,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Restock,"""amazon reorder software""",Phrase,6.00,https://www.apexapplications.io/amazon-inventory-management-software,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,[amazon review request automation],Exact,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,"""amazon review request automation""",Phrase,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,[automate request a review amazon],Exact,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,"""automate request a review amazon""",Phrase,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,[amazon review automation software],Exact,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,"""amazon review automation software""",Phrase,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,[amazon feedback automation tool],Exact,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S07 | Category | Profit & Analytics,Profit | Review Requests,"""amazon feedback automation tool""",Phrase,5.00,https://www.apexapplications.io/amazon-review-automation,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[amazon wholesale suppliers],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""amazon wholesale suppliers""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[wholesale distributors for amazon sellers],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""wholesale distributors for amazon sellers""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[us wholesale distributors amazon fba],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""us wholesale distributors amazon fba""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[find wholesale suppliers for amazon],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""find wholesale suppliers for amazon""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[amazon fba supplier list],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""amazon fba supplier list""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[wholesale supplier list for amazon],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""wholesale supplier list for amazon""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,[legitimate wholesale distributors usa],Exact,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Distributors,"""legitimate wholesale distributors usa""",Phrase,5.00,https://www.apexapplications.io/amazon-wholesale-suppliers,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[how to get ungated on amazon],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""how to get ungated on amazon""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[amazon ungating service],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""amazon ungating service""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[get approved to sell a brand on amazon],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""get approved to sell a brand on amazon""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[amazon brand approval process],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""amazon brand approval process""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[amazon category ungating],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""amazon category ungating""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,[ungate amazon grocery],Exact,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Ungating,"""ungate amazon grocery""",Phrase,4.50,https://www.apexapplications.io/ungating-guide,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,[amazon fba prep center],Exact,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,"""amazon fba prep center""",Phrase,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,[fba prep center near me],Exact,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,"""fba prep center near me""",Phrase,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,[amazon prep center list],Exact,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,"""amazon prep center list""",Phrase,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,[best fba prep centers],Exact,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,"""best fba prep centers""",Phrase,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,[prep center for amazon sellers],Exact,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,"""prep center for amazon sellers""",Phrase,4.00,https://www.apexapplications.io/prep-center-network,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,[how to start amazon wholesale],Exact,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,"""how to start amazon wholesale""",Phrase,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,[first wholesale purchase order amazon],Exact,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,"""first wholesale purchase order amazon""",Phrase,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,[amazon wholesale for beginners],Exact,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,"""amazon wholesale for beginners""",Phrase,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,[how to buy wholesale for amazon fba],Exact,5.00,https://www.apexapplications.io/purchase-order-program,Paused
+S08 | Category | Suppliers & Ungating,Suppliers | First Order,"""how to buy wholesale for amazon fba""",Phrase,5.00,https://www.apexapplications.io/purchase-order-program,Paused

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import GoogleTag from "../components/GoogleTag";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
@@ -155,6 +156,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           data-tracking-id="tk_38b71d0c9c964a29938c819ffce85afa"
           strategy="afterInteractive"
         />
+        {/*
+          Outside the IS_PRODUCTION gate below on purpose. That gate exists so
+          preview deploys do not pollute the Meta pixel's data; the Google tag
+          gates itself on whether its ids are configured, and a preview
+          environment simply does not have them set. Gating it twice would
+          mean nobody could ever verify the tag anywhere but production.
+        */}
+        <GoogleTag />
         {IS_PRODUCTION && (
           <>
             <Script id="oaiq-pixel" strategy="afterInteractive">

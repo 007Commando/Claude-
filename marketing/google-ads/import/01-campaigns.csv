@@ -1,0 +1,10 @@
+Campaign,Campaign Type,Campaign Daily Budget,Budget Type,Status,Networks,Languages,Bid Strategy Type,Ad Rotation,Notes
+S01 | Brand Defence,Search,5.00,Daily,Paused,Google search,en,Manual CPC,Optimize,Search partners off. Target impression share absolute top later.
+S02 | Conquest | Repricers,Search,12.00,Daily,Paused,Google search,en,Manual CPC,Optimize,"Exact and phrase only. No broad, ever. No DKI."
+S03 | Conquest | Sourcing & Ops,Search,12.00,Daily,Paused,Google search,en,Manual CPC,Optimize,"Exact and phrase only. No broad, ever. No DKI."
+S04 | Conquest | Analytics & Research,Search,11.00,Daily,Paused,Google search,en,Manual CPC,Optimize,"Exact and phrase only. No broad, ever. No DKI."
+S05 | Category | Repricing,Search,14.00,Daily,Paused,Google search,en,Manual CPC,Optimize,Highest commercial intent non-brand set. Expect the highest CPCs.
+S06 | Category | Wholesale Scanning,Search,12.00,Daily,Paused,Google search,en,Manual CPC,Optimize,Closest match to what Apex actually is.
+S07 | Category | Profit & Analytics,Search,9.00,Daily,Paused,Google search,en,Manual CPC,Optimize,Crowded and cheap-looking. Watch for accounting-software drift.
+S08 | Category | Suppliers & Ungating,Search,10.00,Daily,Paused,Google search,en,Manual CPC,Optimize,"Top of funnel. Free account, not the trial. Judge on signups."
+S10 | DSA | Comparisons & Blog,Search,5.00,Daily,Paused,Google search,en,Manual CPC,Optimize,"Targets /compare and /blog only. A query miner, not a scale lever."

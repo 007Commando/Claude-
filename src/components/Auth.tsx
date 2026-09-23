@@ -635,6 +635,10 @@ export default function Auth() {
             utmSource: attribution?.utmSource,
             utmMedium: attribution?.utmMedium,
             utmCampaign: attribution?.utmCampaign,
+            // The Google click id travels with the signup so the paying
+            // customer can be uploaded back to Google weeks later.
+            clickId: attribution?.clickId,
+            clickSource: attribution?.clickSource,
           }),
           keepalive: true,
         }).catch(() => {});

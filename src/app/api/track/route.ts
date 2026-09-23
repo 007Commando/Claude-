@@ -23,6 +23,10 @@ const trackSchema = z.object({
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
   utmCampaign: z.string().trim().max(120).optional(),
+  // Google click identifier, for offline conversion import. Captured here
+  // because there is no backfill for a click id nobody wrote down.
+  clickId: z.string().trim().max(255).optional(),
+  clickSource: z.string().trim().max(16).optional(),
 });
 
 export async function OPTIONS() {
@@ -53,8 +57,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { source, event, email, visitorId, url, referrer, utmSource, utmMedium, utmCampaign } =
-    parsed.data;
+  const {
+    source,
+    event,
+    email,
+    visitorId,
+    url,
+    referrer,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    clickId,
+    clickSource,
+  } = parsed.data;
 
   const { error } = await admin.from("leads").insert({
     source,
@@ -66,6 +81,8 @@ export async function POST(req: NextRequest) {
     utm_source: utmSource ?? null,
     utm_medium: utmMedium ?? null,
     utm_campaign: utmCampaign ?? null,
+    click_id: clickId ?? null,
+    click_source: clickSource ?? null,
   });
 
   if (error) {
