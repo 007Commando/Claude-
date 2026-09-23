@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, PlayCircle } from "lucide-react";
-
-import TrustpilotBadge, { TRUSTPILOT } from "./TrustpilotBadge";
+import { ArrowRight } from "lucide-react";
 
 /**
  * The ad destination: one claim, the proof, and the way in.
@@ -9,7 +7,9 @@ import TrustpilotBadge, { TRUSTPILOT } from "./TrustpilotBadge";
  * Built for paid traffic arriving cold from a video ad, so it carries nothing
  * that competes with the video. Somebody who has just watched fifteen seconds
  * of the software in a feed wants the rest of it, not a tour of the
- * navigation, and every extra section is a place to leave.
+ * navigation, and every extra section is a place to leave. That is also why
+ * there is no rating badge beside the button: the video is the proof, and a
+ * second thing asking to be read is a second thing to weigh up.
  *
  * One component behind every version of the page. The ads point at more than
  * one cut of the software, and a page per video copied by hand is a page per
@@ -58,9 +58,14 @@ function Player({ video, title }: { video: WatchVideo; title: string }) {
   const portrait = video.kind === "youtube" && video.portrait;
 
   return (
+    /*
+     * A dark well for the picture and nothing else. On a white page the frame
+     * should be the only heavy thing on screen, so it is a soft ring and a
+     * long shadow rather than a border.
+     */
     <div
-      className={`mx-auto mt-10 w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_30px_80px_rgba(0,0,0,0.55)] sm:mt-12 sm:rounded-3xl ${
-        portrait ? "max-w-[26rem]" : "max-w-4xl"
+      className={`mx-auto w-full overflow-hidden rounded-2xl bg-slate-900 shadow-[0_24px_60px_-20px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/10 sm:rounded-3xl ${
+        portrait ? "max-w-[21rem] sm:max-w-[23rem]" : "max-w-3xl"
       }`}
     >
       <div className={portrait ? "aspect-[9/16] w-full" : "aspect-video w-full"}>
@@ -118,62 +123,47 @@ export default function WatchLanding({
   const autoplays = video.kind === "youtube" || (video.autoplay ?? true);
 
   return (
-    <section className="bg-slate-950 px-5 py-16 text-white sm:py-20">
-      <div className="mx-auto max-w-5xl">
-        <p className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-sky-400">
-          <PlayCircle size={15} />
+    /*
+     * White, and padded to clear the fixed nav.
+     *
+     * The nav is white at 80% with a blur, so over the dark version of this
+     * page it read as a dark bar with the logo knocked out of it, and the
+     * whole thing looked like two unrelated sites stacked. On white it is one
+     * surface from the logo down.
+     */
+    <section className="bg-white px-5 pb-20 pt-28 sm:pb-24 sm:pt-32 lg:pt-36">
+      <div className="mx-auto max-w-3xl">
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
           {eyebrow}
         </p>
 
-        <h1 className="mx-auto mt-5 max-w-4xl text-balance text-center text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+        <h1 className="mx-auto mt-4 max-w-2xl text-balance text-center text-[1.75rem] font-black leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]">
           {headline}
         </h1>
 
         {/* The reason the page exists, so it sits directly under the claim
             with nothing between them. */}
-        <Player video={video} title={videoTitle} />
+        <div className="mt-9 sm:mt-11">
+          <Player video={video} title={videoTitle} />
+        </div>
 
         {autoplays && (
-          <p className="mt-3 text-center text-xs text-slate-500">
+          <p className="mt-3 text-center text-xs text-slate-400">
             Starts muted. Press the speaker in the player for sound.
           </p>
         )}
 
-        <div className="mt-10 flex flex-col items-center gap-5 sm:mt-12">
+        <div className="mt-9 flex justify-center sm:mt-11">
           <Link
             href={signupHref(campaign)}
-            className="flex w-full max-w-md items-center justify-center gap-3 rounded-2xl bg-brand px-10 py-5 text-sm font-black uppercase tracking-widest text-white shadow-[0_20px_40px_rgba(37,99,235,0.35)] transition-all hover:scale-105 hover:bg-brand-dark active:scale-95"
+            className="flex w-full max-w-sm items-center justify-center gap-2.5 rounded-xl bg-brand px-8 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-[0_12px_28px_-8px_rgba(37,99,235,0.55)] transition-colors hover:bg-brand-dark"
           >
             Start your 7 day free trial
-            <ArrowRight size={18} />
+            <ArrowRight size={17} />
           </Link>
-
-          {/*
-            Under the button, where the badge is designed to sit and where it
-            answers the question the button just raised.
-
-            The custom properties are supplied here because the badge's CSS
-            defines them on .pop-page, a class this page does not use. Without
-            them `color: var(--body)` and `border: 1px solid var(--line)`
-            resolve to nothing, so the pill inherited this section's white text
-            onto its white background and rendered as five stars and no words.
-            Same values .pop-page sets, so the badge looks like itself.
-          */}
-          <span
-            style={
-              {
-                "--ink-strong": "#12151c",
-                "--body": "#6b7280",
-                "--faint": "#9199a8",
-                "--line": "#e5e7eb",
-              } as React.CSSProperties
-            }
-          >
-            <TrustpilotBadge {...TRUSTPILOT} />
-          </span>
         </div>
 
-        <p className="mx-auto mt-6 max-w-xl text-balance text-center text-base leading-relaxed text-slate-300 sm:text-lg">
+        <p className="mx-auto mt-5 max-w-md text-balance text-center text-[0.9375rem] leading-relaxed text-slate-500">
           Three supplier catalogs on registration, to give you a lift on Amazon.
         </p>
       </div>
