@@ -1,6 +1,8 @@
 # Video scripts
 
-Ten scripts. Each one names the campaign it belongs to in `03-youtube.md`.
+Fourteen scripts and three six second bumpers. Each one names the campaign it
+belongs to in `03-youtube.md`. The first eight sell the suite; the six under
+**Six more angles** sell a specific bad afternoon.
 
 **Two rules before anything is filmed.**
 
@@ -209,3 +211,157 @@ If only three get made, make these three, in this order:
    far as the checkout.
 
 Everything else can wait for the first performance data.
+
+---
+---
+
+# Six more angles
+
+The ten above sell the suite. These six sell a specific bad afternoon, which is
+usually what makes somebody go looking. Each one targets an audience the first
+ten do not reach, and each names the campaign and the page it belongs to.
+
+Same two rules. No rival named. Every number checked against
+`src/config/offer.ts` and `PLAN_LIMITS` before it is recorded, and the honest
+figures are not always the flattering ones: Starter carries a $10K monthly
+sales ceiling and 1,000 monitored listings, and any script that implies
+otherwise is a script that contradicts its own landing page.
+
+---
+
+## FIRST-45 | Nobody sells you the first one
+**S08 and Y01 cold traffic, aimed at the seller who has not bought anything yet. 45 seconds.**
+
+The beginner angle, and the one place the offer is genuinely unusual. Everybody
+else sells software to a business that already exists.
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "Everyone sells you software for the Amazon business you already have. Nobody helps you place the first order." | A dashboard with every number at zero |
+| 0:08 | "So here is the part that is actually hard. You need a real distributor who will open an account for someone with no history. You need to know which brands you are allowed to sell before you spend anything. And you need to know whether the deal makes money after Amazon takes its cut." | Three cards appear: DISTRIBUTOR, APPROVAL, MARGIN |
+| 0:22 | "Open a free account and we send you three vetted US distributors. Three more every month, for as long as you have the account." | The distributors page, three cards landing |
+| 0:30 | "Run their price list through the scanner. Check what you are already ungated for before you buy a single unit." | Scan running, then the ungate check, Ungated and Gated |
+| 0:38 | "And if you want, book a session and we will work out the first order together. The real landed cost, the real margin, what it costs to get it into Amazon." | Calendly page, then a PO being built on a call |
+| 0:43 | "Apex Applications. Start free." | Logo. Caption: THREE DISTRIBUTORS, FREE ACCOUNT |
+
+**CTA:** Open a free account → `/purchase-order-program`
+
+---
+
+## METER-30 | Paying to stop looking
+**S03 and S06, plus Y01 against the scanner rivals. 30 seconds.**
+
+The cap angle, aimed at anyone whose tool meters scanning. Note what it does
+not claim: Apex has tiers too. The argument is about *which* thing is metered,
+not about being unlimited.
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "Your supplier sent next month's price list. Do you scan it?" | An email with a spreadsheet attached |
+| 0:05 | "If the answer depends on how many scans you have left this month, you are paying to stop looking." | A usage meter, nearly full. Caption: 4 OF 5 SCANS USED |
+| 0:12 | "And that is backwards, because the point of a scan was never the scan. It is what the catalogue gained that you do not already own." | Result screen, the "not in your database yet" count |
+| 0:21 | "On Pro, scanning is not metered at all. Scan it, rescan it next month, rescan it again when their prices move." | Rescan running, a small sharp result set |
+| 0:27 | "Apex Applications. Always be loading your database." | Logo. Caption: SEE WHAT EACH PLAN ALLOWS |
+
+**CTA:** See what each plan allows → `/pricing`
+
+**Do not** shorten the line at 0:21 to "we do not meter scanning". Starter is
+metered at five scans and 60,000 SKUs a month, the pricing page says so, and an
+ad that contradicts its own landing page is both a policy problem and the kind
+of thing this audience checks.
+
+**And do not say Plus.** Plus has unlimited scans in `PLAN_LIMITS`, but
+`PLANS_SHOWN` filters it off the pricing page, so an ad naming it would send
+people to a page where that plan does not exist. Pro is the one the page
+actually sells with scanning unmetered.
+
+---
+
+## RESTOCK-30 | The two ways to get it wrong
+**S07 restock ad group, and Y04 remarketing. 30 seconds.**
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "There are two ways to get a reorder wrong, and they cost about the same." | Split screen |
+| 0:05 | "Order too little and you go out of stock, lose the rank you paid for, and hand the Buy Box to somebody else." | Left: a listing greyed to unavailable, rank falling |
+| 0:13 | "Order too much and the money is sitting in a warehouse accruing storage fees instead of buying the next deal." | Right: stacked pallets, a storage fee ticking up |
+| 0:21 | "Apex works the reorder from your own numbers. What sold, how fast, and what it actually cost you landed." | Restock planner, quantities filling in per SKU |
+| 0:27 | "Then it builds the purchase order from the same screen." | PO builder opening. Caption: SEE THE RESTOCK PLANNER |
+
+**CTA:** See the restock planner → `/amazon-inventory-management-software`
+
+**Do not** say "forecasts demand" or imply seasonality. The estimator does not
+model seasonality yet, and a claim the product cannot support is the one a
+trial cancels over on day two. The first cut of this script also said "what is
+still in transit"; nothing on the site claims inbound stock is counted, so it
+came out rather than went to camera unverified.
+
+---
+
+## BUYBOX-30 | It happened while you were asleep
+**S05 Buy Box ad group, and Y02 placements. 30 seconds.**
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "At two in the morning somebody dropped their price by forty cents and took the Buy Box off you." | A clock at 02:00, then the Buy Box flipping to another seller |
+| 0:08 | "By the time you see it, you have lost a day of sales on a SKU you have four hundred units of." | Sales chart flattening, inventory count unchanged |
+| 0:15 | "So the repricer reacts for you. And because it knows what that unit actually cost you, landed and after fees, it knows exactly how far it can go and where to stop." | Price moving down, stopping hard on a line marked LANDED COST |
+| 0:24 | "It chases the Buy Box. It does not chase it off a cliff." | Buy Box regained, price held above the floor |
+| 0:28 | "Apex Applications. The repricer is in every plan." | Logo. Caption: REPRICER IN EVERY PLAN |
+
+**CTA:** See how the floor is built → `/features/gold`
+
+---
+
+## PREP-30 | The handoff
+**S08 prep centre ad group. 30 seconds. The honest one about Red.**
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "Picking a prep centre is mostly guesswork. A name in a Facebook group, a rate sheet, and hope." | A Facebook group thread, blurred |
+| 0:08 | "We keep a directory of prep centres with what they charge, what they actually do, and where they are." | The prep centre network page, cards with services and locations |
+| 0:16 | "It is free to browse and you do not need an account to use it." | Filtering by state |
+| 0:21 | "Our own shipment workflow, Apex Red, is still in beta, and we would rather say that than sell you a roadmap. The buying, pricing and profit side is not." | Red marked BETA beside Green, Gold and Blue shipping |
+| 0:28 | "Apex Applications." | Logo. Caption: BROWSE THE PREP CENTRES |
+
+**CTA:** Browse the directory → `/prep-center-network`
+
+Red is in beta and the comparison pages say so on every page that touches it.
+A video that quietly implies otherwise would be the only place on the site that
+does.
+
+---
+
+## VA-30 | Hand it over without handing over everything
+**Y04 remarketing and S06, aimed at the seller who has outgrown doing it alone. 30 seconds.**
+
+| Time | Voiceover | On screen |
+| --- | --- | --- |
+| 0:00 | "You know the scanning should not be your job any more. You just do not want to hand somebody the keys to everything." | One person at a desk late, tabs open |
+| 0:09 | "So give them the part you actually want done. Someone can run the scans and build the purchase orders without ever seeing the bank side." | Permissions screen, access granted per module |
+| 0:19 | "Extra seats are eight ninety nine a month. And if you would rather not go and find somebody, we train Amazon assistants ourselves, part time or full time, first seven days free." | The VA page, hours and a weekly block being picked |
+| 0:27 | "Apex Applications. Stop being the bottleneck." | Logo. Caption: SEE HOW SEATS WORK |
+
+**CTA:** See how seats and assistants work → `/virtual-assistants`
+
+Starter includes one seat, Plus three, Pro five, and extra seats are $8.99 a
+month on either plan. Check those against `PLAN_LIMITS` before the voiceover is
+recorded, not after.
+
+---
+
+## Where these six go
+
+| Script | Search campaign | YouTube | Lands on |
+| --- | --- | --- | --- |
+| FIRST-45 | S08 Suppliers, First Order | Y01 cold | `/purchase-order-program` |
+| METER-30 | S03, S06 | Y01 scanner rivals | `/pricing` |
+| RESTOCK-30 | S07 Restock | Y04 | `/amazon-inventory-management-software` |
+| BUYBOX-30 | S05 Buy Box | Y02 placements | `/features/gold` |
+| PREP-30 | S08 Prep Centers | none at first | `/prep-center-network` |
+| VA-30 | S06 | Y04 | `/virtual-assistants` |
+
+If only two of the six get made: **BUYBOX-30 and FIRST-45.** BUYBOX-30 is the
+most specific pain in the account and points at the highest-intent search
+campaign. FIRST-45 is the only script here selling something no competitor
+offers, which is help placing an order rather than software to place it with.

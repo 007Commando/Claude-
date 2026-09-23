@@ -2,7 +2,7 @@
 
 A complete paid programme for Apex Applications: 9 search campaigns, 48 ad
 groups, 1,338 keywords, 818 negatives, 46 responsive search ads, 7 YouTube and
-Demand Gen campaigns, and 10 video scripts.
+Demand Gen campaigns, and 17 video scripts.
 
 **Everything ships paused.** Nothing spends until the tracking in
 `05-tracking.md` is live and verified, because there is currently no Google tag

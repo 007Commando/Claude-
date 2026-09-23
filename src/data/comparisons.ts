@@ -1,4 +1,5 @@
 import type { Coverage } from "../components/CompareShared";
+import { PLAN_LIMITS, limitLabel, salesCeilingLabel } from "../config/offer";
 
 /**
  * The comparisons, as data.
@@ -44,13 +45,39 @@ export type Comparison = {
   sources: { label: string; href: string }[];
 };
 
-/** Apex's own entry price, repeated in the bars. Kept in one place here. */
+/**
+ * Apex's own entry price, repeated in the bars. Kept in one place here.
+ *
+ * The caption used to read "Every module, no listing or revenue caps", and it
+ * rendered on every comparison page carrying price bars. It was not true:
+ * `PLAN_LIMITS.starter` enforces a $10K monthly sales ceiling and 1,000 housed
+ * ASINs, and crossing the sales figure moves the customer onto Plus rather than
+ * warning them. Telling a competitor's customer we have no caps, three inches
+ * above a table criticising theirs, is the one claim on these pages a rival
+ * could screenshot.
+ *
+ * So the caps are stated, and read from the file that enforces them, which is
+ * the only version that cannot drift back.
+ */
 const APEX_BAR = {
   label: "Apex Starter (whole suite)",
   price: 149,
-  caption: "Every module, no listing or revenue caps",
+  caption: `Every module. ${salesCeilingLabel("starter")}, ${limitLabel(PLAN_LIMITS.starter.housedAsins)} ASINs`,
   apex: true,
 };
+
+/**
+ * What our plans allow, for the rows that compare tier against tier.
+ *
+ * Derived rather than typed, for the reason above APEX_BAR: four of these rows
+ * said "No listing caps" while billing enforced one.
+ */
+const APEX_TIER_LIMITS =
+  // Only the first letter is lowered. Lowercasing the whole label turns the
+  // $10K into $10k, which reads as a typo in a table about being precise.
+  `Starter ${limitLabel(PLAN_LIMITS.starter.housedAsins)} listings, ` +
+  `${salesCeilingLabel("starter").replace(/^U/, "u")}; ` +
+  `Pro ${limitLabel(PLAN_LIMITS.pro.housedAsins)} and no sales ceiling`;
 
 export const COMPARISONS: Comparison[] = [
   {
@@ -84,7 +111,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Repricing analytics" },
-      { label: "Tier limits", apex: "No listing or revenue caps", rival: "Compare tier limits, not entry price alone" },
+      { label: "Tier limits", apex: APEX_TIER_LIMITS, rival: "Compare tier limits, not entry price alone" },
     ],
     priceBars: [
       { label: "Aura entry", price: 47, caption: "Lowest of four tiers; check the limits on it" },
@@ -135,7 +162,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "AI repricing", apex: false, rival: true },
       { label: "Rule-based repricing", apex: true, rival: true },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
-      { label: "Listing capacity", apex: "No listing caps", rival: "Tiered: AI and rule-based capacity differ per tier" },
+      { label: "Listing capacity", apex: APEX_TIER_LIMITS, rival: "Tiered: AI and rule-based capacity differ per tier" },
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: false },
@@ -247,7 +274,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Reporting varies by tier" },
-      { label: "SKU and channel limits", apex: "No listing caps", rival: "Vary by tier; add-ons apply" },
+      { label: "SKU and channel limits", apex: APEX_TIER_LIMITS, rival: "Vary by tier; add-ons apply" },
     ],
     priceBars: [
       { label: "Repricer.com entry", price: 99, caption: "Check channel and SKU limits on this tier" },
@@ -738,7 +765,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Automated repricing", apex: "Included (Apex Gold)", rival: "Not mentioned on their site" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
       { label: "Profit reporting", apex: "P&L and cashflow by day, week or month", rival: "Supplier spending and profit tracking" },
-      { label: "Tier limits", apex: "No listing or revenue caps", rival: "Tiers are Limited and Unlimited; check what Limited limits" },
+      { label: "Tier limits", apex: APEX_TIER_LIMITS, rival: "Tiers are Limited and Unlimited; check what Limited limits" },
     ],
     priceBars: [
       { label: "Third-Party Profits Limited", price: 67, caption: "Entry tier; check what Limited limits" },

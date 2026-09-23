@@ -230,5 +230,5 @@ Revisit at month three with brand exclusions applied, or not at all.
 | `import/01-campaigns.csv` … `10-…` | Google Ads Editor import files |
 | `02-search-campaigns.md` | Campaign by campaign, why each keyword set exists |
 | `03-youtube.md` | YouTube and Demand Gen structure, audiences, placements |
-| `04-video-scripts.md` | Every video script, shot by shot |
+| `04-video-scripts.md` | Seventeen scripts, shot by shot, with the text assets |
 | `05-tracking.md` | Conversion tracking: what was built, what is left |
