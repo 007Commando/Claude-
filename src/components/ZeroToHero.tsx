@@ -313,8 +313,8 @@ function trackStart(event?: MouseEvent<HTMLAnchorElement>) {
       utmSource: attribution?.utmSource,
       utmMedium: attribution?.utmMedium,
       utmCampaign: attribution?.utmCampaign,
-      // The Google click id travels with the signup so the paying
-      // customer can be uploaded back to Google weeks later.
+      // The Google click id rides along with the CTA click, so this row can
+      // be joined to the signup that follows it and, later, to the invoice.
       clickId: attribution?.clickId,
       clickSource: attribution?.clickSource,
     }),

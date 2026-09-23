@@ -33,7 +33,7 @@ Delivery: 16:9, 9:16 and 1:1 for all of them. Burned-in captions always.
 | 0:21 | "So the cost you priced against is not the cost you paid. The restock number is a guess. And the margin you are looking at was true last month." | Spreadsheet, a cell being retyped by hand |
 | 0:31 | "Apex runs the whole loop in one place. Scan the supplier's price list, see what is profitable and what you do not already own, turn it into a purchase order, and the repricer sets its floor from that order's real landed cost." | Screen recording: price list uploads, matches appear, PO builds, repricer floor populates from the PO cost |
 | 0:46 | "One login. One subscription. A hundred and forty nine a month, repricer included." | Apex dashboard, clean. Caption: $149/MO, REPRICER INCLUDED |
-| 0:52 | "Seven days free. We take a card, we do not charge it. Have a look at the honest comparison against whatever you are running now, we wrote one for every tool." | `/compare` index scrolling, sixteen cards |
+| 0:52 | "Seven days free. We take a card, we do not charge it. Have a look at the honest comparison against whatever you are running now, we wrote one for every tool." | `/compare` index scrolling, eighteen cards |
 | 0:58 | "Apex Applications." | Logo. Caption: SEE THE COMPARISON |
 
 **CTA:** See the comparison → `/compare`
@@ -82,11 +82,11 @@ Delivery: 16:9, 9:16 and 1:1 for all of them. Burned-in captions always.
 
 | Time | Voiceover | On screen |
 | --- | --- | --- |
-| 0:00 | "We wrote sixteen comparisons against the tools you are probably already paying for, and we let them win." | `/compare` index |
+| 0:00 | "We wrote eighteen comparisons against the tools you are probably already paying for, and we let them win." | `/compare` index |
 | 0:07 | "If you source by scanning items in front of you on a phone, we say so, we do not do that." | A comparison row with a red cross on our side |
 | 0:13 | "If all you need is repricing and nothing else, there are cheaper ways to buy it, and we say that too." | Price bars, a rival's bar lower than ours |
 | 0:19 | "What we do is the whole loop. Find it, buy it, price it, restock it, and see the profit from the same numbers." | Workflow coverage table, five steps filled |
-| 0:26 | "Read the one about whatever you are using now. Real pricing, checked." | Caption: SIXTEEN HONEST COMPARISONS |
+| 0:26 | "Read the one about whatever you are using now. Real pricing, checked." | Caption: EIGHTEEN HONEST COMPARISONS |
 
 **CTA:** Read the comparisons → `/compare`
 

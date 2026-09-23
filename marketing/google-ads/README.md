@@ -1,7 +1,7 @@
 # Apex Google Search + YouTube programme
 
-A complete paid programme for Apex Applications: 9 search campaigns, 47 ad
-groups, 1,314 keywords, 818 negatives, 45 responsive search ads, 7 YouTube and
+A complete paid programme for Apex Applications: 9 search campaigns, 48 ad
+groups, 1,338 keywords, 818 negatives, 46 responsive search ads, 7 YouTube and
 Demand Gen campaigns, and 10 video scripts.
 
 **Everything ships paused.** Nothing spends until the tracking in
@@ -44,6 +44,7 @@ Edit `build.py`, never the CSVs. They are output.
 2. **Never turn on Dynamic Keyword Insertion in a conquest ad group.** It would
    print a competitor's trademark into the headline automatically. Bidding on
    their name is allowed; printing it is not.
-3. **Two ad groups cannot be unpaused as shipped.** Third Party Profits and
-   Tactical Arbitrage have no page under `/compare/`, so they point at the
-   index. Write those two pages or delete the ad groups.
+3. **Nineteen rivals, nineteen landing pages.** A conquest ad group must never
+   point at `/compare` itself. The index is a menu, and a comparative question
+   deserves an answer. `import/10-conquest-landing-pages.csv` is the map; add a
+   rival only when its page exists.

@@ -23,6 +23,7 @@ import {
 import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import "./apex-surface.css";
 import { readStoredAttribution } from "./LeadAttribution";
+import { trackConversion } from "./GoogleTag";
 
 /**
  * Where this signup came from, for the account record. The app reads
@@ -285,7 +286,23 @@ const FREE_TIER = [
  * this one later. There is no twin yet; adding the id now costs nothing and
  * means the browser event does not have to be found and changed when there is.
  */
-function reportFreeSignup() {
+/**
+ * A signup that chose a plan, reported at the moment the account exists.
+ *
+ * This is "Checkout Started" rather than a trial: apex-auth.js takes it to
+ * Stripe from here, and whether a card is ever entered happens on Stripe's
+ * domain. Reporting it as a trial would count intent as revenue, which is the
+ * mistake that makes a target CPA meaningless.
+ *
+ * A trial start is reported separately, on the return from Stripe with a
+ * session id, which is the first moment a card is genuinely on file.
+ */
+function reportPaidSignup(email?: string) {
+  trackConversion("checkout", { email });
+}
+
+function reportFreeSignup(email?: string) {
+  trackConversion("freeAccount", { email });
   const eventId = `free-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   window.fbq?.(
     "track",
@@ -642,7 +659,22 @@ export default function Auth() {
           }),
           keepalive: true,
         }).catch(() => {});
-        if (isFreeSignup) reportFreeSignup();
+        if (isFreeSignup) reportFreeSignup(parsed.data.email);
+        else reportPaidSignup(parsed.data.email);
+        /**
+         * The card-first arrival, completed.
+         *
+         * `isPrepaid` means they came back from Stripe with a session id, so a
+         * card is genuinely on file and the trial has begun. Deduplicated on
+         * the session id: a refresh of this page would otherwise report the
+         * same trial twice, and Google counts what it is sent.
+         */
+        if (isPrepaid && sessionIdParam) {
+          trackConversion("trial", {
+            email: parsed.data.email,
+            transactionId: sessionIdParam,
+          });
+        }
 
         /**
          * Hand over to the code screen.
@@ -766,12 +798,18 @@ export default function Auth() {
       );
       /*
        * Only from the Sign Up tab. Google sign-in cannot tell us here whether
-       * the account is new, so a returning free user who lands on Sign Up and
-       * uses Google is counted again. That overcounts a little; reporting
-       * nothing from the Google path would hide most free signups instead,
-       * which costs the test far more than the noise does.
+       * the account is new, so a returning user who lands on Sign Up and uses
+       * Google is counted again. That overcounts a little; reporting nothing
+       * from the Google path would hide most signups instead, which costs the
+       * test far more than the noise does.
+       *
+       * No email is passed for enhanced conversions on this path: the address
+       * is Google's to know and this component never sees it.
        */
-      if (isFreeSignup && mode === "signup") reportFreeSignup();
+      if (mode === "signup") {
+        if (isFreeSignup) reportFreeSignup();
+        else reportPaidSignup();
+      }
       // Auto-redirects: to Stripe checkout for a brand-new account with a
       // plan, or straight into the app for a returning Google user.
     } catch (err: unknown) {

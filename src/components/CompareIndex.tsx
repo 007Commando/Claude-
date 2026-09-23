@@ -5,57 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { fadeIn, CompareCta } from "./CompareShared";
 import { COMPARISONS as WRITTEN } from "../data/comparisons";
-
-type Card = {
-  href: string;
-  rival: string;
-  category: string;
-  frame: string;
-  /** Which job the rival competes for, used to group the index. */
-  module: string;
-};
-
-/**
- * The four hand-built comparisons.
- *
- * They predate the data file and keep their own components and their own
- * copy; there is nothing to gain from rewriting pages that work. They are
- * described here so the index can show all sixteen in one ordering.
- */
-const HAND_BUILT: Card[] = [
-  {
-    href: "/compare/helium10",
-    rival: "Helium 10",
-    category: "Private-label suite",
-    module: "/features/green",
-    frame:
-      "The giant of private label: keywords, listings, PPC. Apex plays the other game, third-party wholesale. The comparison is really a fork: which business are you in?",
-  },
-  {
-    href: "/compare/junglescout",
-    rival: "Jungle Scout",
-    category: "Product research",
-    module: "/features/green",
-    frame:
-      "The original niche-validation tool, for inventing your own product. Apex runs products that already exist. Bought at wholesale, repriced to break-even, restocked on math.",
-  },
-  {
-    href: "/compare/smartscout",
-    rival: "SmartScout",
-    category: "Wholesale research",
-    module: "/features/green",
-    frame:
-      "Closest to our lane: excellent brand and market analytics. The difference is what happens after research. Apex adds the purchase orders, repricer, and P&L.",
-  },
-  {
-    href: "/compare/sellersnap",
-    rival: "Seller Snap",
-    category: "AI repricer",
-    module: "/features/gold",
-    frame:
-      "A respected game-theory repricer, and only a repricer. Apex Gold reprices with break-even floors from live fees. Inside the suite the rest of your operation runs on.",
-  },
-];
+import { HAND_BUILT, type Card } from "../data/compareIndexCards";
 
 const ALL: Card[] = [
   ...HAND_BUILT,
@@ -71,7 +21,7 @@ const ALL: Card[] = [
 /**
  * Grouped by the job the rival is hired for, not alphabetically.
  *
- * Sixteen cards in one undifferentiated grid is a list to scroll past. Someone
+ * Every card in one undifferentiated grid is a list to scroll past. Someone
  * arriving here is shopping for one thing — a repricer, a scanner, a profit
  * dashboard — and the grouping lets them find the three pages that are about
  * their decision and ignore the rest.

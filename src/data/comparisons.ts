@@ -694,6 +694,132 @@ export const COMPARISONS: Comparison[] = [
     shotCaption: "The buying and pricing loop that runs before a box is ever packed.",
     sources: [{ label: "2D Workflow", href: "https://2dworkflow.com/" }],
   },
+  /*
+   * Added in a second research pass, September 23, 2026, against each
+   * rival's own live pages rather than the September 13 snapshot. Both were
+   * written because paid search was about to bid on their names and had
+   * nowhere to land the click.
+   *
+   * Tactical Arbitrage moved while we were looking at it: tacticalarbitrage.com
+   * now 301s to the Threecolts Seller 365 page, so the thing a seller buys is
+   * the bundle or a standalone plan sold beside it, not the independent
+   * product the name still evokes.
+   */
+  {
+    slug: "third-party-profits",
+    rival: "Third-Party Profits",
+    category: "Amazon wholesale platform",
+    frame:
+      "The closest thing on this page to what Apex is: supplier leads, UPC scanning, purchase orders, restocking and ungated-brand checks. The comparison comes down to what prices the item afterwards, and to what their tiers allow.",
+    title: "Apex vs Third-Party Profits (2026): The Same Loop Compared | Apex Applications",
+    description:
+      "Third-Party Profits runs supplier leads, UPC scanning, purchase orders, restocking and ungated-brand checks at $67 to $197 a month. So does Apex, with the repricer included at $149. Checked September 2026.",
+    h1: "Apex Applications vs Third-Party Profits",
+    intro:
+      "This is the closest comparison on the site, and pretending otherwise would waste your time. Third-Party Profits builds a supplier pipeline, scans supplier catalogues by UPC, turns what clears into purchase orders, plans the restock and finds the brands your account is already ungated for. That is the same loop Apex runs. Two things separate them and both are worth checking on your own numbers: their site does not mention repricing anywhere, and their tiers are named Limited and Unlimited, so what the limit is matters more here than the entry price does.",
+    moduleHref: "/features/green",
+    moduleLabel: "Apex Green",
+    coverage: [
+      { state: "full", note: "UPC scanner" },
+      { state: "full", note: "POs + restock" },
+      { state: "none" },
+      { state: "none" },
+      { state: "partial", note: "supplier spend" },
+    ],
+    rows: [
+      { label: "What it is", apex: "Amazon wholesale suite", rival: "Amazon wholesale platform" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$67/mo Limited, $197/mo Unlimited" },
+      { label: "Free trial", apex: "7 days, card required", rival: "10 days" },
+      { label: "Supplier sourcing and contacts", apex: true, rival: true },
+      { label: "Supplier catalog scanning by UPC", apex: true, rival: true },
+      { label: "Purchase orders", apex: true, rival: true },
+      { label: "Restock planning", apex: true, rival: true },
+      { label: "Ungated brand checks", apex: "In bulk, one probe per brand", rival: true },
+      { label: "Automated repricing", apex: "Included (Apex Gold)", rival: "Not mentioned on their site" },
+      { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
+      { label: "Profit reporting", apex: "P&L and cashflow by day, week or month", rival: "Supplier spending and profit tracking" },
+      { label: "Tier limits", apex: "No listing or revenue caps", rival: "Tiers are Limited and Unlimited; check what Limited limits" },
+    ],
+    priceBars: [
+      { label: "Third-Party Profits Limited", price: 67, caption: "Entry tier; check what Limited limits" },
+      APEX_BAR,
+      { label: "Third-Party Profits Unlimited", price: 197, caption: "Top tier" },
+    ],
+    chooseRival: [
+      "Their entry tier is cheaper than ours, and if its limits fit the way you actually buy, that is a real saving every month.",
+      "You do not need a repricer inside this, because something else already does that job well for you.",
+      "Ten days is longer than seven, and a supplier catalogue takes time to run properly.",
+    ],
+    chooseApex: [
+      "You want the repricer in the same system, with the floor on every listing built from the purchase order you actually placed.",
+      "You want profit as a real statement by day, week or month, rather than spend and profit per supplier.",
+      "You want the ungating check to sweep the whole catalogue in bulk before you commit to an order.",
+    ],
+    ctaLine:
+      "This is the closest comparison we have written. Run the same supplier list through both and let the results settle it.",
+    shotCaption: "The same loop, with the repricer inside it rather than beside it.",
+    sources: [{ label: "Third-Party Profits", href: "https://thirdpartyprofits.com/" }],
+  },
+
+  {
+    slug: "tactical-arbitrage",
+    rival: "Tactical Arbitrage",
+    category: "Multi-source product research",
+    frame:
+      "Scans over 1,400 retail sites, plus reverse search, books and Amazon flips. A wider net for finding stock than ours, and now sold mainly inside the Threecolts Seller 365 bundle.",
+    title: "Apex vs Tactical Arbitrage (2026): Two Ways to Find Stock | Apex Applications",
+    description:
+      "Tactical Arbitrage scans retail sites, supplier catalogues, books and Amazon flips, standalone at $59 to $159 or inside Seller 365 from $69. Apex buys wholesale and carries it through to a purchase order. Checked September 2026.",
+    h1: "Apex Applications vs Tactical Arbitrage",
+    intro:
+      "Tactical Arbitrage searches more places for stock than Apex does, and that is the honest headline. Product Search scans over 1,400 retail sites, Reverse Search starts from an Amazon category instead of a retailer, and there is book scouting and Amazon flips besides. Apex does none of that. One of their six modes overlaps with ours: Wholesale Search takes a supplier catalogue and runs matching and profit analysis across the list, which is what Apex Green does. The difference is what happens next. Theirs ends at a profitable shortlist; ours ends at a purchase order, a price floor built from that order and a P&L that reads from both. Worth knowing where it is sold, too: tacticalarbitrage.com now redirects to Threecolts Seller 365, which our InventoryLab page also covers.",
+    moduleHref: "/features/green",
+    moduleLabel: "Apex Green",
+    coverage: [
+      { state: "full", note: "1,400+ retail sites" },
+      { state: "none" },
+      { state: "none" },
+      { state: "none" },
+      { state: "none" },
+    ],
+    rows: [
+      { label: "What it is", apex: "Amazon wholesale suite", rival: "Multi-source product research" },
+      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$59 to $159/mo standalone, or from $69/mo inside Seller 365" },
+      { label: "Free trial", apex: "7 days, card required", rival: "Seller 365: 7 days, plus 7 more after connecting an eligible seller account" },
+      { label: "Retail site scanning for online arbitrage", apex: false, rival: "Over 1,400 sites" },
+      { label: "Reverse search from an Amazon category", apex: false, rival: true },
+      { label: "Book scouting", apex: false, rival: true },
+      { label: "Supplier catalog scanning", apex: true, rival: true },
+      { label: "Selling eligibility checks", apex: "In bulk, one probe per brand", rival: "Restriction Checker" },
+      { label: "Purchase orders and restock planning", apex: true, rival: "Not part of the product" },
+      { label: "Automated repricing", apex: "Included (Apex Gold)", rival: "A separate tool in the Seller 365 bundle" },
+      { label: "Break-even floors from your own fee data", apex: true, rival: "No repricing in the product" },
+      { label: "P&L and cashflow from your own store", apex: true, rival: "Not part of the product" },
+    ],
+    priceBars: [
+      { label: "Tactical Arbitrage entry", price: 59, caption: "Standalone monthly; scan limits vary by tier" },
+      { label: "Seller 365 Standard", price: 69, caption: "The bundle it is also sold inside" },
+      APEX_BAR,
+      { label: "Tactical Arbitrage top", price: 159, caption: "Standalone monthly" },
+    ],
+    chooseRival: [
+      "You source by finding price gaps on retail sites and want the widest net available. That is what it is built for and Apex does not do it at all.",
+      "Book scouting or Amazon flips are part of how you buy.",
+      "You want the rest of the Seller 365 bundle anyway, in which case this comes with it.",
+    ],
+    chooseApex: [
+      "You buy from wholesale price lists, and you want what clears to end in a purchase order rather than a shortlist you rekey somewhere else.",
+      "You want the floor under every price computed from what the unit actually cost you, landed.",
+      "You would rather the research, the buying, the pricing and the books were one system than a bundle of separate ones.",
+    ],
+    ctaLine:
+      "Two different ways of finding stock. If yours is a supplier price list, run one through both and compare what you are left holding.",
+    shotCaption: "A supplier price list, carried past the shortlist and into a purchase order.",
+    sources: [
+      { label: "Tactical Arbitrage in Seller 365", href: "https://www.threecolts.com/seller-365/tactical-arbitrage" },
+      { label: "Threecolts Seller 365 pricing", href: "https://www.threecolts.com/seller-365" },
+    ],
+  },
 ];
 
 export const comparisonBySlug = (slug: string): Comparison => {

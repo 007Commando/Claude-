@@ -180,13 +180,9 @@ RIVALS = [
         "name": "Third Party Profits",
         "campaign": "S03 | Conquest | Sourcing & Ops",
         "tier": "A",
-        # No comparison page exists yet. See 02-search-campaigns.md: this ad
-        # group stays paused until one does, because /compare is an index and
-        # an index does not answer a comparative question.
-        "url": "/compare",
+        "url": "/compare/third-party-profits",
         "stems": ["third party profits", "thirdpartyprofits", "3rd party profits", "third party profits amazon"],
         "brand_ok": ["third party profits", "thirdpartyprofits", "3rd party profits"],
-        "paused": True,
     },
     {
         "key": "scan-unlimited",
@@ -219,12 +215,10 @@ RIVALS = [
         "key": "tactical-arbitrage",
         "name": "Tactical Arbitrage",
         "campaign": "S03 | Conquest | Sourcing & Ops",
-        "tier": "B",
-        # Same caveat as Third Party Profits: no page, so it launches paused.
-        "url": "/compare",
+        "tier": "A",
+        "url": "/compare/tactical-arbitrage",
         "stems": ["tactical arbitrage", "tacticalarbitrage"],
         "brand_ok": ["tactical arbitrage", "tacticalarbitrage"],
-        "paused": True,
     },
     {
         "key": "boxem",
@@ -1027,8 +1021,8 @@ def build():
     write(
         "10-conquest-landing-pages.csv",
         ["Rival", "Tier", "Campaign", "Ad group prefix", "Landing page", "Page exists"],
-        [[r["name"], r["tier"], r["campaign"], rival_groups(r)[0][0], SITE + r["url"],
-          "no, ad group paused" if r.get("paused") else "yes"] for r in RIVALS],
+        [[r["name"], r["tier"], r["campaign"], rival_groups(r)[0][0], SITE + r["url"], "yes"]
+         for r in RIVALS],
     )
 
 

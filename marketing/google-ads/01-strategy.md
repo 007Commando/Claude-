@@ -23,9 +23,10 @@ That means, as of today:
 - Smart Bidding is unavailable, because it has nothing to bid toward.
 
 Running conquest campaigns without this is paying competitor-level CPCs to
-learn nothing. `05-tracking.md` covers what was built for it in this session
-and the two things only Stefano can do (create the Google Ads account and paste
-two IDs).
+learn nothing. `05-tracking.md` covers what was built for it and the part
+only Stefano can do: create the Google Ads account, create the conversion
+actions and paste six variables into Vercel. No further code change is needed,
+because every call site is already written and no-ops until its label exists.
 
 ---
 
@@ -167,7 +168,7 @@ product.
 | Trial Started | Start trial | One | $250 | **Yes, this is the bid target** |
 | Free Account Created | Sign up | One | $15 | No, observe only |
 | Checkout Started | Begin checkout | One | $25 | No, observe only |
-| Call Booked | Contact | One | $40 | No, observe only |
+| Booking Started | Contact | One | $40 | No, observe only |
 | Paid Customer | Purchase | One | actual first invoice | No, imported offline |
 
 Only **Trial Started** is marked primary. Everything else is a secondary

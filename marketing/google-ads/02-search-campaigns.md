@@ -1,6 +1,6 @@
 # Search campaigns, one by one
 
-1,314 keywords across 9 campaigns and 47 ad groups. The CSVs are the source of
+1,338 keywords across 9 campaigns and 48 ad groups. The CSVs are the source of
 truth; this file is why they look the way they do.
 
 All campaigns: United States only, English, **Search Network only, search
@@ -82,15 +82,24 @@ to replace it; it makes the other argument, **"stop scanning one by one"**, and
 lets the seller decide whether a whole supplier price list is how they actually
 buy.
 
-**Two ad groups stay paused and cannot be unpaused as shipped:** Third Party
-Profits and Tactical Arbitrage have no page under `/compare/`, so they point at
-the index, which does not answer a comparative question. Either write those two
-comparison pages, or delete the ad groups. Sending conquest traffic to an index
-is paying a $4 click to make someone choose from a menu.
+**Third Party Profits is the most important ad group in this campaign**, and
+its page was written for it. It is the closest competitor Apex has: supplier
+leads, UPC scanning of supplier catalogues, purchase orders, restock planning,
+ungated-brand checks and per-supplier profit tracking. The same loop. Their own
+site does not mention repricing anywhere, and their tiers are named Limited and
+Unlimited at $67 and $197. So the ad argument is not "we do more things", it is
+the repricer and what Limited limits, and the page says both without
+overclaiming.
 
-Third Party Profits is worth the page. It was on the list of names to target
-first, and it sits in exactly our lane: a wholesale-sourcing offer rather than
-a general research tool.
+**Tactical Arbitrage moved while this was being built.** tacticalarbitrage.com
+now 301s to Threecolts Seller 365, so it is sold either standalone at $59 to
+$159 or inside the $69 bundle our InventoryLab page already covers. Its page
+concedes the honest headline in the first line: it searches more places for
+stock than Apex does, over 1,400 retail sites plus reverse search, books and
+Amazon flips. One of its six modes, Wholesale Search, is the overlap. Expect
+this ad group to be the weaker of the two, because most of its searchers are
+online-arbitrage sellers rather than wholesale buyers. Measure it on that
+basis and be willing to pause it.
 
 ---
 
@@ -186,7 +195,7 @@ point: they are wholesale sellers, and the directory is a real answer.
 
 Two ad groups, targeting `URL_CONTAINS /compare` and `URL_CONTAINS /blog`.
 
-This is a query miner, not a scale lever. The comparison pages cover sixteen
+This is a query miner, not a scale lever. The comparison pages cover eighteen
 rivals with real pricing, which means Google can match them to "X vs Y" queries
 nobody thought to add as a keyword. Every week, read its search terms report and
 promote the good ones into S02 to S04 as exact-match keywords, then add them as
