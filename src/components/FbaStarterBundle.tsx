@@ -91,6 +91,13 @@ function BuyButton({ className = "", children }: { className?: string; children:
       href={CHECKOUT_URL}
       newTab
       mode="prefill"
+      onClick={() =>
+        window.fbq?.("track", "InitiateCheckout", {
+          value: 29,
+          currency: "USD",
+          content_name: "Amazon FBA Starter Bundle",
+        })
+      }
       className={`inline-flex items-center justify-center gap-2 transition-all ${className}`}
     >
       {children}

@@ -15,11 +15,44 @@ const CALENDLY_URL = "https://calendly.com/apexapplications-info/meeting";
 
 export default function FbaThankYou() {
   useEffect(() => {
-    window.fbq?.("track", "Purchase", {
-      value: 29,
-      currency: "USD",
-      content_name: "Amazon FBA Starter Bundle",
-    });
+    // Stripe's payment link redirects here with ?session_id={CHECKOUT_SESSION_ID}.
+    // Only a real checkout carries one, so a visit or a bookmark does not count
+    // as a sale, and the session id doubles as the event id so a reload of the
+    // same page is deduplicated by Meta (and skipped here as well).
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    if (!sessionId) return;
+    const firedKey = `fba-purchase-${sessionId}`;
+    try {
+      if (window.localStorage.getItem(firedKey)) return;
+    } catch {
+      // storage blocked; Meta still deduplicates on the event id
+    }
+    // The pixel loads afterInteractive, so it can arrive after this effect.
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      tries += 1;
+      if (!window.fbq) {
+        if (tries >= 40) window.clearInterval(timer); // give up after ~10s
+        return;
+      }
+      window.clearInterval(timer);
+      window.fbq(
+        "track",
+        "Purchase",
+        {
+          value: 29,
+          currency: "USD",
+          content_name: "Amazon FBA Starter Bundle",
+        },
+        { eventID: sessionId },
+      );
+      try {
+        window.localStorage.setItem(firedKey, "1");
+      } catch {
+        // ignore
+      }
+    }, 250);
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
