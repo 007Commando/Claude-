@@ -165,6 +165,25 @@ function validateField(
   return parsed.success ? undefined : parsed.error.issues[0].message;
 }
 
+// Copy our own code deliberately throws, written for a customer to read.
+// Anything else reaching getFriendlyAuthError is a raw browser or library
+// error — fine to log, never safe to show verbatim. A customer once saw a
+// bare "The string did not match the expected pattern." on this screen: some
+// native error slipped through untranslated because the old fallback here
+// was `return message`. Everything not on this list, or not a recognized
+// Firebase auth code below, now gets the generic message instead.
+const SAFE_AUTH_MESSAGES = new Set([
+  "Enter a valid email",
+  "Enter a password",
+  "Enter your name",
+  "At least 6 characters",
+  "Auth service unavailable. Please refresh.",
+  "Google sign-in isn't available yet. Please use email instead.",
+]);
+
+const GENERIC_AUTH_ERROR =
+  "Something went wrong. Please try again. If it keeps happening, email info@apexapplications.io and we'll set you up directly.";
+
 function getFriendlyAuthError(message: string): string {
   if (/is not a function/i.test(message)) {
     return "The login service didn't finish loading in time. Please try again.";
@@ -175,7 +194,9 @@ function getFriendlyAuthError(message: string): string {
   }
 
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
-  if (!codeMatch) return message;
+  if (!codeMatch) {
+    return SAFE_AUTH_MESSAGES.has(message) ? message : GENERIC_AUTH_ERROR;
+  }
 
   switch (codeMatch[1]) {
     case "invalid-credential":
