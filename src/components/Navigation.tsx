@@ -90,6 +90,17 @@ export default function Navigation() {
     pathname === "/free-course" ||
     pathname === "/wholesale-course" ||
     /**
+     * The VA promotional page asks for one thing, a booked meeting, and the
+     * footer under it has already been cut to terms and privacy for the same
+     * reason. Leaving seven menu links across the top would have made that
+     * pointless: the top bar is the easier exit of the two.
+     *
+     * /apex-vas/hire keeps the full nav. Somebody choosing a person and a
+     * schedule is mid-decision, not mid-funnel, and they should be able to
+     * go and check the pricing page before they commit.
+     */
+    pathname === "/apex-vas" ||
+    /**
      * Someone on the sign-up form has already chosen. A full menu there is a
      * row of exits from the one thing the page is for, and on a phone it is
      * a hamburger sitting above a form that has not even come into view yet.
