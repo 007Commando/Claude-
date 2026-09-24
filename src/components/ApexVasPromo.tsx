@@ -28,7 +28,7 @@ const fadeIn = {
 
 /** The same calendar the rest of the site books onto. */
 const BOOK_HREF =
-  "https://calendly.com/apexapplications-info/new-meeting?utm_term=apex-vas";
+  "https://calendly.com/apexapplications-info/new-meeting?utm_term=virtual-assistants";
 
 /** Named by the seller, in the order they think about the work. */
 const SERVICES = [

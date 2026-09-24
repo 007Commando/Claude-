@@ -25,7 +25,7 @@ export default function Footer() {
      * already deciding, and hiding the way back out of a checkout is a
      * different and worse thing.
      */
-    pathname === "/apex-vas" ||
+    pathname === "/virtual-assistants" ||
     /**
      * The sign-up form had the whole site footer under it — four columns of
      * links, on a phone, below a form. Terms and privacy still belong there,

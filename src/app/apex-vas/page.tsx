@@ -1,22 +1,15 @@
-import type { Metadata } from "next";
-import ApexVasPromo from "../../components/ApexVasPromo";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "14 days free with a professional Amazon VA | Apex Applications",
-  description:
-    "Put a trained Amazon wholesale VA to work in your business free for 14 days. Account audits, product research, supplier management, restocking, repricing and more, with 20+ years of Amazon experience across the team.",
-  alternates: { canonical: "https://www.apexapplications.io/apex-vas" },
-  /**
-   * Footer-only, and now deliberately so rather than provisionally.
-   *
-   * `/virtual-assistants` was opened to search and put in the sitemap. This
-   * page sells the same service, so indexing both would put two of our own
-   * pages in the same auction for the same query. One of them is the
-   * indexable one; this is the other.
-   */
-  robots: { index: false, follow: false },
-};
-
+/**
+ * The VA promotion moved to /virtual-assistants, which is the canonical VA
+ * URL: it is the one in the sitemap, the one the footer links to, and the one
+ * search traffic arrives on.
+ *
+ * Redirected rather than deleted because this path has been linked from ads
+ * and from the hire page, and two identical promotional pages is the thing
+ * the split was meant to avoid. /apex-vas/hire is unaffected, since a
+ * redirect here does not match its children.
+ */
 export default function Page() {
-  return <ApexVasPromo />;
+  redirect("/virtual-assistants");
 }

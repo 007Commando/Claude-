@@ -468,7 +468,7 @@ export function SatisfactionGuarantee() {
             <ul className="space-y-4">
               {[
                 [
-                  "Nothing to pay for the first week",
+                  `Nothing to pay for the first ${VA_TRIAL_DAYS_LABEL}`,
                   "If it is not right, you walk away having spent nothing.",
                 ],
                 [

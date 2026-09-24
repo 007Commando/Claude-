@@ -99,7 +99,7 @@ export default function Navigation() {
      * schedule is mid-decision, not mid-funnel, and they should be able to
      * go and check the pricing page before they commit.
      */
-    pathname === "/apex-vas" ||
+    pathname === "/virtual-assistants" ||
     /**
      * Someone on the sign-up form has already chosen. A full menu there is a
      * row of exits from the one thing the page is for, and on a phone it is
