@@ -1,5 +1,5 @@
 import { Check, Minus, ShieldCheck } from "lucide-react";
-import { rateRangeLabel } from "../../lib/vaPricing";
+import { rateRangeLabel, VA_TRIAL_DAYS_LABEL, VA_TRIAL_DAYS_WORD } from "../../lib/vaPricing";
 
 import { Rail } from "./OfferKit";
 
@@ -263,8 +263,8 @@ export default function VaComparison() {
 /**
  * The guarantee.
  *
- * Worded strictly against what the offer already promises — seven days at no
- * cost — rather than a refund policy we have not written. A guarantee is a
+ * Worded strictly against what the offer already promises, the trial at no
+ * cost, rather than a refund policy we have not written. A guarantee is a
  * commercial commitment, and the page should not invent terms someone will
  * later be held to.
  */
@@ -399,7 +399,7 @@ export function SatisfactionGuarantee() {
             </h3>
 
             <p className="mb-8 text-base sm:text-lg leading-relaxed text-slate-600">
-              Your first seven days cost nothing. Hand your assistant the work
+              Your first {VA_TRIAL_DAYS_WORD} days cost nothing. Hand your assistant the work
               that has been sitting on your desk, watch it land in your Apex
               account, and decide from what you can see rather than from a
               promise on a landing page.

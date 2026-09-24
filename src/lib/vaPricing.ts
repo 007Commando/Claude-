@@ -7,6 +7,21 @@
  * what Stripe charges.
  */
 
+/**
+ * How long the VA trial runs, in days.
+ *
+ * A constant because it has already drifted once: the offer moved to fourteen
+ * days and four places across two pages went on saying seven, including the
+ * hero of the one page in this set that search traffic lands on. The length is
+ * a commercial promise, so the pages that make it should all read it from
+ * here.
+ */
+export const VA_TRIAL_DAYS = 14;
+
+/** "14 days" / "fourteen days", for prose that needs one or the other. */
+export const VA_TRIAL_DAYS_LABEL = `${VA_TRIAL_DAYS} days`;
+export const VA_TRIAL_DAYS_WORD = "fourteen";
+
 export const PART_TIME_RATE = 7.0;
 export const FULL_TIME_RATE = 5.5;
 export const QUARTERLY_DISCOUNT = 0.05;

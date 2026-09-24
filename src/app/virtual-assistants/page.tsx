@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 
 import { absoluteUrl } from "../../config/site";
-import { rateRangeLabel } from "../../lib/vaPricing";
+import {
+  rateRangeLabel,
+  VA_TRIAL_DAYS,
+  VA_TRIAL_DAYS_LABEL,
+  VA_TRIAL_DAYS_WORD,
+} from "../../lib/vaPricing";
 import Link from "next/link";
 import { ArrowRight, ClipboardList, UserCheck, Users } from "lucide-react";
 
@@ -25,7 +30,7 @@ import purchaseOrders from "../../assets/purchase-orders.png.asset.json";
 export const metadata: Metadata = {
   title: "Apex Virtual Assistants, Trained Amazon Staff",
   description:
-    "Professional Amazon-trained assistants, part time or full time, who install SOPs into your business. First 7 days free.",
+    "Professional Amazon-trained assistants, part time or full time, who install SOPs into your business. First 14 days free.",
   /**
    * Indexable, and the canonical it never had.
    *
@@ -70,7 +75,7 @@ export default function VirtualAssistantsPage() {
         actions={
           <>
             <Link href={CONTACT} className={ctaPrimary}>
-              Start 7 Days Free <ArrowRight size={18} />
+              Start {VA_TRIAL_DAYS} Days Free <ArrowRight size={18} />
             </Link>
             {/*
               Was an anchor to #compare, which is the very next section and
@@ -86,7 +91,7 @@ export default function VirtualAssistantsPage() {
             </Link>
           </>
         }
-        note={`First 7 days free · Part time or full time · ${rateRangeLabel()} an hour, fixed`}
+        note={`First ${VA_TRIAL_DAYS_LABEL} free · Part time or full time · ${rateRangeLabel()} an hour, fixed`}
         art={<ProductFrame src={purchaseOrders.url} alt="Work an Apex assistant takes off your desk" />}
       />
 
@@ -130,8 +135,8 @@ export default function VirtualAssistantsPage() {
               Part time or full time.
             </h3>
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-              Both start with 7 days free, so you can judge the work before you
-              pay for it.
+              Both start with {VA_TRIAL_DAYS_LABEL} free, so you can judge the work
+              before you pay for it.
             </p>
           </div>
 
@@ -149,7 +154,7 @@ export default function VirtualAssistantsPage() {
                 </p>
                 <p className="text-slate-600 mb-8 leading-relaxed">{plan.body}</p>
                 <Link href={CONTACT} className={`${ctaPrimary} w-full`}>
-                  Start 7 Days Free
+                  Start {VA_TRIAL_DAYS} Days Free
                 </Link>
               </div>
             ))}
@@ -157,7 +162,7 @@ export default function VirtualAssistantsPage() {
 
           <p className="text-center text-sm text-slate-500 mt-10 max-w-xl mx-auto">
             Both are billed at the same fixed {rateRangeLabel()} an hour. No platform
-            fee, no agency retainer, no charge for the first seven days.
+            fee, no agency retainer, no charge for the first {VA_TRIAL_DAYS_WORD} days.
           </p>
         </Rail>
       </section>
@@ -174,7 +179,7 @@ export default function VirtualAssistantsPage() {
             </p>
             <div className="flex justify-center">
               <Link href={CONTACT} className={ctaPrimary}>
-                Start 7 Days Free <ArrowRight size={18} />
+                Start {VA_TRIAL_DAYS} Days Free <ArrowRight size={18} />
               </Link>
             </div>
           </div>

@@ -19,6 +19,7 @@ import {
   MIN_WEEKLY_HOURS,
   PART_TIME_RATE,
   QUARTERLY_DISCOUNT,
+  VA_TRIAL_DAYS,
   VAS,
   WEEKS_PER_MONTH,
   computeVaQuote,
@@ -308,7 +309,7 @@ export default function ApexVas() {
         <motion.p {...fadeIn} className="mt-6 text-sm text-slate-500">
           Rather talk it through first?{" "}
           <Link href="/apex-vas" className="font-semibold text-indigo-600 underline underline-offset-2 hover:text-indigo-700">
-            Start with the 14 day free trial
+            Start with the {VA_TRIAL_DAYS} day free trial
           </Link>
         </motion.p>
       </section>

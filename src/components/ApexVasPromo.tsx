@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, CalendarCheck, Clock3 } from "lucide-react";
 
 import VaComparison from "./landing/VaComparison";
-import { rateRangeLabel } from "../lib/vaPricing";
+import { rateRangeLabel, VA_TRIAL_DAYS_LABEL } from "../lib/vaPricing";
 
 /**
  * The VA offer, for somebody who has not decided yet.
@@ -70,7 +70,7 @@ export default function ApexVasPromo() {
           {...fadeIn}
           className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 mb-5"
         >
-          14 days free. Put a professional Amazon VA to work in your business
+          {VA_TRIAL_DAYS_LABEL} free. Put a professional Amazon VA to work in your business
         </motion.h1>
         <motion.p {...fadeIn} className="text-lg text-slate-500 max-w-2xl mx-auto">
           Not a general assistant you have to teach. Ours work inside your Apex
