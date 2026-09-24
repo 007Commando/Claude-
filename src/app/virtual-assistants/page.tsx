@@ -75,10 +75,13 @@ export default function VirtualAssistantsPage() {
             {/*
               Was an anchor to #compare, which is the very next section and
               reachable by scrolling. Pointing it at the quote builder makes it
-              a step in the funnel instead of a no-op, and keeps /apex-vas
-              reachable now that the footer link moved here.
+              a step in the funnel instead of a no-op.
+
+              /apex-vas/hire rather than /apex-vas since the VA offer split in
+              two: the parent now sells the trial and books a meeting, and the
+              rates and roster this button promises live on the child.
             */}
-            <Link href="/apex-vas" className={ctaSecondary}>
+            <Link href="/apex-vas/hire" className={ctaSecondary}>
               See Rates And Availability
             </Link>
           </>

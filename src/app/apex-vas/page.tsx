@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import ApexVas from "../../components/ApexVas";
+import ApexVasPromo from "../../components/ApexVasPromo";
 
 export const metadata: Metadata = {
-  title: "Apex VAs. Trained Amazon Virtual Assistants | Apex Applications",
+  title: "14 days free with a professional Amazon VA | Apex Applications",
   description:
-    "Hire a trained Amazon wholesale VA who works inside your Apex account. Part-time from $7/hour, full-time from $5.50/hour, 5% off paid quarterly.",
+    "Put a trained Amazon wholesale VA to work in your business free for 14 days. Account audits, product research, supplier management, restocking, repricing and more, with 20+ years of Amazon experience across the team.",
   alternates: { canonical: "https://www.apexapplications.io/apex-vas" },
   /**
    * Footer-only, and now deliberately so rather than provisionally.
@@ -18,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ApexVas />;
+  return <ApexVasPromo />;
 }
