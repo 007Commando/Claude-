@@ -1,5 +1,10 @@
 import { Check, Minus, ShieldCheck } from "lucide-react";
-import { rateRangeLabel, VA_TRIAL_DAYS_LABEL, VA_TRIAL_DAYS_WORD } from "../../lib/vaPricing";
+import {
+  rateRangeLabel,
+  VA_TRIAL_DAYS,
+  VA_TRIAL_DAYS_LABEL,
+  VA_TRIAL_DAYS_WORD,
+} from "../../lib/vaPricing";
 
 import { Rail } from "./OfferKit";
 import apexBullLogo from "../../assets/apex-bull-logo.png.asset.json";
@@ -355,8 +360,14 @@ export function SatisfactionGuarantee() {
                 return (
                   <circle
                     key={i}
-                    cx={100 + 88 * Math.cos(rad)}
-                    cy={100 + 88 * Math.sin(rad)}
+                    /*
+                      Rounded, because React compares the rendered attribute
+                      as a string and Node and the browser disagree on the
+                      last digit of Math.cos here. Unrounded, every scallop is
+                      a hydration mismatch on a page that is otherwise static.
+                    */
+                    cx={Math.round((100 + 88 * Math.cos(rad)) * 100) / 100}
+                    cy={Math.round((100 + 88 * Math.sin(rad)) * 100) / 100}
                     r="7"
                     fill="url(#sealFill)"
                   />
@@ -395,7 +406,7 @@ export function SatisfactionGuarantee() {
                 fontWeight="900"
                 letterSpacing="-1"
               >
-                7 DAYS
+                {VA_TRIAL_DAYS} DAYS
               </text>
               <text
                 x="100"
