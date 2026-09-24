@@ -19,6 +19,14 @@ export default function Footer() {
     pathname === "/apex-pop-primewell" ||
     pathname === "/apex-pop-facebook" ||
     /**
+     * The VA promotional page exists to get one meeting booked. Four columns
+     * of links under it are four more offers competing with the only action
+     * the page is for. The hire page keeps the full footer: somebody there is
+     * already deciding, and hiding the way back out of a checkout is a
+     * different and worse thing.
+     */
+    pathname === "/apex-vas" ||
+    /**
      * The sign-up form had the whole site footer under it — four columns of
      * links, on a phone, below a form. Terms and privacy still belong there,
      * and nothing else does.

@@ -2,6 +2,7 @@ import { Check, Minus, ShieldCheck } from "lucide-react";
 import { rateRangeLabel, VA_TRIAL_DAYS_LABEL, VA_TRIAL_DAYS_WORD } from "../../lib/vaPricing";
 
 import { Rail } from "./OfferKit";
+import apexBullLogo from "../../assets/apex-bull-logo.png.asset.json";
 
 /**
  * Apex assistants against the freelancer marketplaces.
@@ -55,15 +56,64 @@ const SKILLS = [
 ];
 
 /**
- * Fiverr and Upwork set as typographic wordmarks in their own brand colours.
- * Naming a competitor in a comparison is ordinary practice; reproducing their
- * logo artwork is a different thing, and at this size a wordmark reads the
- * same. Drop real files in and swap these out if you obtain permission.
+ * The three marks, as artwork.
+ *
+ * This was set as typography before, on the reasoning that naming a
+ * competitor is ordinary and reproducing their logo is a different thing.
+ * Using the real marks is a call the business has made, and it is the normal
+ * shape of a comparison table: a reader scanning three columns recognises a
+ * logo a great deal faster than a word set in a font that is not the one they
+ * know.
+ *
+ * Fiverr's own artwork carries its green field, so it is framed rather than
+ * floated on white. Upwork's sits on white already.
  */
-function Wordmark({ name, color }: { name: string; color: string }) {
+function LogoCell({
+  src,
+  alt,
+  chip,
+}: {
+  src: string;
+  alt: string;
+  /** True when the artwork carries its own coloured field, like Fiverr's. */
+  chip?: boolean;
+}) {
+  /*
+   * Two treatments, because the two files are padded differently.
+   *
+   * Both are 2:1 with the mark floating inside, so sizing by height alone put
+   * a 1588px image on screen at 64px and the word inside it at about thirty.
+   * But they cannot be cropped the same way: Fiverr's wordmark sits in the
+   * middle of its green field, so zooming past the edges tightens it into a
+   * brand chip, while Upwork's spans nearly the full width and the same zoom
+   * sliced it down to "pwor".
+   *
+   * So the one with its own background is cropped, and the one on white is
+   * contained. Its export margins are white on a white cell and disappear.
+   */
+  if (chip) {
+    return (
+      <span className="inline-flex h-9 w-28 items-center justify-center overflow-hidden rounded-lg">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          className="h-full w-full scale-[1.7] object-cover object-center"
+          loading="lazy"
+        />
+      </span>
+    );
+  }
+
   return (
-    <span className="text-xl font-black tracking-tight" style={{ color }}>
-      {name}
+    <span className="inline-flex h-9 w-32 items-center justify-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        className="max-h-full w-full object-contain"
+        loading="lazy"
+      />
     </span>
   );
 }
@@ -79,8 +129,11 @@ function StateIcon({ state }: { state: Cell["state"] }) {
 export default function VaComparison() {
   const columns = [
     { key: "apex", head: null },
-    { key: "fiverr", head: <Wordmark name="fiverr" color="#1DBF73" /> },
-    { key: "upwork", head: <Wordmark name="Upwork" color="#14A800" /> },
+    {
+      key: "fiverr",
+      head: <LogoCell src="/logos/fiverr.webp" alt="Fiverr" chip />,
+    },
+    { key: "upwork", head: <LogoCell src="/logos/upwork.webp" alt="Upwork" /> },
   ] as const;
 
   return (
@@ -100,7 +153,14 @@ export default function VaComparison() {
           {/* Column heads. Below lg the table stacks, so each cell names itself. */}
           <div className="hidden lg:grid lg:grid-cols-[1.1fr_1.2fr_1fr_1fr]">
             <div className="bg-white p-7" />
-            <div className="flex items-center justify-center bg-brand/[0.06] p-7">
+            <div className="flex items-center justify-center gap-2.5 bg-brand/[0.06] p-7">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={apexBullLogo.url}
+                alt=""
+                className="h-9 w-auto"
+                loading="lazy"
+              />
               <span className="text-xl font-black tracking-tight text-slate-900">
                 Apex Assistants
               </span>
