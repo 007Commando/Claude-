@@ -73,11 +73,15 @@ export default function Navigation() {
    * from the one thing the page asks for.
    */
   const isLeanHeaderPage =
-    pathname === "/apex-pop-primewell" || pathname === "/apex-pop-facebook";
+    pathname === "/apex-pop-primewell" ||
+    pathname === "/apex-pop-facebook" ||
+    pathname === "/primewell";
   const leanSignupHref =
     pathname === "/apex-pop-facebook"
       ? "/auth?mode=signup&plan=free&utm_source=facebook&utm_medium=funnel&utm_campaign=apex-pop-promotion"
-      : "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
+      : pathname === "/primewell"
+        ? "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=primewell-form"
+        : "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
 
   const isDistractionFreePage =
     pathname === "/fba-starter-bundle" ||

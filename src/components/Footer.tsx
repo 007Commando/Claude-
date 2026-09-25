@@ -18,6 +18,7 @@ export default function Footer() {
      */
     pathname === "/apex-pop-primewell" ||
     pathname === "/apex-pop-facebook" ||
+    pathname === "/primewell" ||
     /**
      * The VA promotional page exists to get one meeting booked. Four columns
      * of links under it are four more offers competing with the only action

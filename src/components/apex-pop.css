@@ -651,3 +651,78 @@ body:has(.pop-page) { margin: 0; background: #fff; }
   .pop-page *::before,
   .pop-page *::after { transition: none !important; animation: none !important; }
 }
+
+/* ------------------------------------------------ PrimeWell lead form */
+
+.pop-hero-form {
+  max-width: 520px;
+  margin: 34px auto 0;
+  scroll-margin-top: 110px;
+}
+.pw-form {
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 26px 26px 20px;
+  box-shadow: 0 24px 60px -30px rgba(18, 21, 28, .35), 0 2px 6px rgba(18, 21, 28, .05);
+}
+.pop-page .pw-form-title {
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink-strong);
+  margin-bottom: 16px;
+}
+.pw-fields { display: grid; gap: 12px; }
+.pw-field { display: grid; gap: 6px; }
+.pw-field span { font-size: 13px; font-weight: 600; color: var(--ink); }
+.pw-field input {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink-strong);
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.pw-field input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px hsl(221 83% 53% / .15);
+}
+.pw-hp {
+  position: absolute !important;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.pop-page .pw-submit { width: 100%; margin-top: 18px; border: 0; color: #fff; font-weight: 700; font-size: 19px; letter-spacing: -.01em; }
+.pw-submit:disabled { opacity: .7; cursor: wait; transform: none; }
+.pop-page .pw-error {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #b42318;
+  background: #fef3f2;
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+.pop-page .pw-consent {
+  margin-top: 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--faint);
+}
+.pop-page .pw-consent a { text-decoration: underline; }
+.pw-form-done { text-align: center; }
+.pw-done-icon { color: #16a34a; margin: 0 auto 10px; }
+.pop-page .pw-form-done h3 { font-size: 22px; color: var(--ink-strong); margin-bottom: 8px; }
+.pop-page .pw-form-done p { color: var(--body); margin-bottom: 18px; }
+.pop-page .pw-form-done a.pop-cta { color: #fff; }
+
+@media (max-width: 640px) {
+  .pw-form { padding: 20px 16px 16px; }
+  .pw-form-done .pop-cta { width: 100%; }
+}

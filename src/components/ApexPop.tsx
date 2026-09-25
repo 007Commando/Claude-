@@ -257,6 +257,7 @@ export default function ApexPop({
   trustpilot,
   hide = [],
   software,
+  form,
 }: {
   chrome?: "own" | "site";
   utmTerm?: string;
@@ -279,6 +280,12 @@ export default function ApexPop({
   hide?: PopSection[];
   /** Replaces the label, heading and lede of the software section. */
   software?: { label?: ReactNode; title?: ReactNode; lede?: ReactNode };
+  /**
+   * A lead form shown in the hero instead of the big button. The header and
+   * closing buttons then scroll back up to it rather than leaving the page,
+   * so the page asks for the details before anything else.
+   */
+  form?: ReactNode;
 }) {
   const hidden = new Set(hide);
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
@@ -288,6 +295,7 @@ export default function ApexPop({
     href: BOOK_URL,
   };
   const sited = chrome === "site";
+  const primaryHref = form ? "#get-started" : primary.href;
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroSheen = useSheen<HTMLAnchorElement>();
@@ -320,7 +328,7 @@ export default function ApexPop({
             </a>
             <div className="pop-header-right">
               <span className="pop-header-note">Purchase Order Program</span>
-              <a className="pop-cta pop-cta-sm" href={primary.href}>
+              <a className="pop-cta pop-cta-sm" href={primaryHref}>
                 <span className="pop-cta-row">
                   {cta ? "Get started" : "Build my PO"}
                   <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
@@ -350,27 +358,37 @@ export default function ApexPop({
               built around the capital you actually have.
             </p>
 
-            <div className="pop-hero-actions">
-              <a
-                className={`pop-cta pop-cta-lg ${heroSheen.className}`}
-                href={primary.href}
-                ref={heroSheen.ref}
-              >
-                <span className="pop-cta-row">
-                  {primary.label}
-                  <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
-                </span>
-                <small>{primary.sub}</small>
-              </a>
-              {(!cta || cta.secondaryLabel) && (
+            {form ? (
+              <div className="pop-hero-form" id="get-started">
+                {form}
+              </div>
+            ) : (
+              <div className="pop-hero-actions">
                 <a
-                  className="pop-cta-ghost"
-                  href={cta ? BOOK_URL : "#how-it-works"}
+                  className={`pop-cta pop-cta-lg ${heroSheen.className}`}
+                  href={primary.href}
+                  ref={heroSheen.ref}
                 >
-                  {cta ? cta.secondaryLabel : "See how it works"}
+                  <span className="pop-cta-row">
+                    {primary.label}
+                    <ArrowRight
+                      size={19}
+                      strokeWidth={2.4}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <small>{primary.sub}</small>
                 </a>
-              )}
-            </div>
+                {(!cta || cta.secondaryLabel) && (
+                  <a
+                    className="pop-cta-ghost"
+                    href={cta ? BOOK_URL : "#how-it-works"}
+                  >
+                    {cta ? cta.secondaryLabel : "See how it works"}
+                  </a>
+                )}
+              </div>
+            )}
 
             {trustpilot && <TrustpilotBadge {...trustpilot} />}
 
@@ -861,7 +879,7 @@ export default function ApexPop({
               <div className="pop-hero-actions">
                 <a
                   className={`pop-cta pop-cta-lg ${closeSheen.className}`}
-                  href={primary.href}
+                  href={primaryHref}
                   ref={closeSheen.ref}
                 >
                   <span className="pop-cta-row">
