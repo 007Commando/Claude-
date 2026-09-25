@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import {
+  GhlNotConfigured,
+  addGhlNote,
+  addGhlTags,
+  normalisePhone,
+  upsertGhlContact,
+} from "../../../lib/ghlLead";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -9,14 +16,8 @@ export const runtime = "nodejs";
  * GoHighLevel location (GHL_LOCATION_ID, the same one the Facebook leads land
  * in) and tags them `primewell-lead`. That tag is what starts the PrimeWell
  * SMS and email sequence in GHL, so the tag, not the form, is the contract.
- *
- * Upsert first, then add the tag in its own call: GHL's upsert replaces the
- * contact's tag list with whatever it is given, which would strip an
- * applicant who is already a contact of the tags they carry.
  */
 
-const GHL_BASE_URL = "https://services.leadconnectorhq.com";
-const GHL_VERSION = "2021-07-28";
 const LEAD_TAG = "primewell-lead";
 
 const leadSchema = z.object({
@@ -31,15 +32,6 @@ const leadSchema = z.object({
   pageUrl: z.string().trim().max(2048).optional(),
 });
 
-/** US numbers typed without a country code are the common case here. */
-function normalisePhone(raw: string): string | null {
-  const digits = raw.replace(/[^\d+]/g, "");
-  if (digits.startsWith("+")) return digits.length >= 9 ? digits : null;
-  if (digits.length === 10) return `+1${digits}`;
-  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
-  return null;
-}
-
 // A light per-instance brake on repeat submissions from one address. Not a
 // real rate limiter (instances do not share it), just enough to stop a
 // refresh loop or a naive script from writing hundreds of contacts.
@@ -52,27 +44,7 @@ function tooMany(ip: string): boolean {
   return hits.length > 5;
 }
 
-async function ghl(path: string, token: string, init: RequestInit): Promise<Response> {
-  return fetch(`${GHL_BASE_URL}${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Version: GHL_VERSION,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-    signal: AbortSignal.timeout(8000),
-  });
-}
-
 export async function POST(req: NextRequest) {
-  const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
-  const locationId = process.env.GHL_LOCATION_ID;
-  if (!token || !locationId) {
-    return NextResponse.json({ error: "The form is not available right now." }, { status: 503 });
-  }
-
   let body: unknown;
   try {
     body = await req.json();
@@ -105,51 +77,38 @@ export async function POST(req: NextRequest) {
   }
 
   const [firstName, ...rest] = lead.name.split(/\s+/);
-  const upsert = await ghl("/contacts/upsert", token, {
-    method: "POST",
-    body: JSON.stringify({
-      locationId,
+  let contactId: string;
+  try {
+    const contact = await upsertGhlContact({
       firstName,
       lastName: rest.join(" ") || undefined,
       name: lead.name,
       email: lead.email,
       phone,
       source: "PrimeWell landing page",
-    }),
-  });
-  if (!upsert.ok) {
-    const detail = await upsert.text().catch(() => "");
-    console.error("primewell-lead upsert failed", upsert.status, detail.slice(0, 300));
-    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 502 });
-  }
-  const { contact } = (await upsert.json()) as { contact?: { id?: string } };
-  if (!contact?.id) {
-    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 502 });
-  }
-
-  const tagged = await ghl(`/contacts/${contact.id}/tags`, token, {
-    method: "POST",
-    body: JSON.stringify({ tags: [LEAD_TAG] }),
-  });
-  if (!tagged.ok) {
-    const detail = await tagged.text().catch(() => "");
-    console.error("primewell-lead tag failed", tagged.status, detail.slice(0, 300));
+    });
+    contactId = contact.id;
+    await addGhlTags(contactId, [LEAD_TAG]);
+  } catch (err) {
+    if (err instanceof GhlNotConfigured) {
+      return NextResponse.json({ error: "The form is not available right now." }, { status: 503 });
+    }
+    console.error("primewell-lead failed", err);
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 502 });
   }
 
   // Where they came from, as a note on the contact. Best effort only.
-  const origin = [
-    `Came in through ${lead.pageUrl ?? "/primewell"}`,
-    lead.utmSource && `utm_source=${lead.utmSource}`,
-    lead.utmMedium && `utm_medium=${lead.utmMedium}`,
-    lead.utmCampaign && `utm_campaign=${lead.utmCampaign}`,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-  await ghl(`/contacts/${contact.id}/notes`, token, {
-    method: "POST",
-    body: JSON.stringify({ body: origin }),
-  }).catch(() => undefined);
+  await addGhlNote(
+    contactId,
+    [
+      `Came in through ${lead.pageUrl ?? "/primewell"}`,
+      lead.utmSource && `utm_source=${lead.utmSource}`,
+      lead.utmMedium && `utm_medium=${lead.utmMedium}`,
+      lead.utmCampaign && `utm_campaign=${lead.utmCampaign}`,
+    ]
+      .filter(Boolean)
+      .join(" · "),
+  );
 
-  return NextResponse.json({ ok: true, eventId: `pw-${contact.id}` });
+  return NextResponse.json({ ok: true, eventId: `pw-${contactId}` });
 }
