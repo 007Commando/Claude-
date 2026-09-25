@@ -5,11 +5,12 @@ import PrimewellLeadForm from "../../components/PrimewellLeadForm";
 import { TRUSTPILOT } from "../../components/TrustpilotBadge";
 
 /**
- * /apex-pop-primewell with a form in the hero. A PrimeWell applicant who
- * fills it in lands in Apex's own GoHighLevel CRM tagged `primewell-lead`
- * (see /api/primewell-lead), which starts the PrimeWell SMS and email
- * sequence there, and is then sent on to the free account. The original page
- * stays as it is, so the two can be compared.
+ * /apex-pop-primewell with a sign-up form in the hero. One submit puts the
+ * applicant into Apex's own GoHighLevel CRM tagged `primewell-lead` (see
+ * /api/primewell-lead), which starts the PrimeWell SMS and email sequence
+ * there, and creates their free Apex account; the form then becomes the
+ * six-digit code screen. The original page stays as it is, so the two can be
+ * compared.
  */
 export const metadata: Metadata = {
   title: "Apex for PrimeWell Sellers: Your Suppliers and Free Account",
@@ -33,7 +34,7 @@ export default function Page() {
         sub: "Free. Takes 10 seconds.",
         href: TRY_URL,
       }}
-      form={<PrimewellLeadForm signupUrl={TRY_URL} />}
+      form={<PrimewellLeadForm />}
       trustpilot={TRUSTPILOT}
       hide={[
         "denial",

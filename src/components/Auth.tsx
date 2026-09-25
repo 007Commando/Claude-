@@ -50,7 +50,7 @@ import {
 import VerifyCode from "./VerifyCode";
 
 /** What sign-up returns when it is told not to redirect. */
-interface SignupResult {
+export interface SignupResult {
   checkout?: { clientSecret: string; publishableKey: string };
   checkoutUrl?: string;
   redirectUrl?: string;
@@ -184,7 +184,7 @@ const SAFE_AUTH_MESSAGES = new Set([
 const GENERIC_AUTH_ERROR =
   "Something went wrong. Please try again. If it keeps happening, email info@apexapplications.io and we'll set you up directly.";
 
-function getFriendlyAuthError(message: string): string {
+export function getFriendlyAuthError(message: string): string {
   if (/is not a function/i.test(message)) {
     return "The login service didn't finish loading in time. Please try again.";
   }
@@ -235,7 +235,7 @@ function getFriendlyAuthError(message: string): string {
 // by the time we call into it, calls fail with a raw "X is not a function"
 // TypeError. window.ApexAuth existing doesn't guarantee that setup is done,
 // so retry once after a short delay before giving up.
-async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
+export async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
   try {
     return await fn();
   } catch (err) {
@@ -250,7 +250,7 @@ async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
 // redirect_uri when it needs a session, and someone who is already signed in
 // must be handed straight back, otherwise they sit on this form staring at a
 // login box while the app keeps bouncing them here — an endless loop.
-function forwardToApp(
+export function forwardToApp(
   auth: NonNullable<Window["ApexAuth"]>,
   fallbackPath = "/dashboard",
 ) {
@@ -266,7 +266,7 @@ function forwardToApp(
   auth.redirectToApp(fallbackPath);
 }
 
-function waitForApexAuth(
+export function waitForApexAuth(
   timeoutMs = 8000,
 ): Promise<NonNullable<Window["ApexAuth"]>> {
   return new Promise((resolve, reject) => {
@@ -322,7 +322,7 @@ function reportPaidSignup(email?: string) {
   trackConversion("checkout", { email });
 }
 
-function reportFreeSignup(email?: string) {
+export function reportFreeSignup(email?: string) {
   trackConversion("freeAccount", { email });
   const eventId = `free-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   window.fbq?.(

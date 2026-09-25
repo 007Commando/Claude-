@@ -716,13 +716,36 @@ body:has(.pop-page) { margin: 0; background: #fff; }
   color: var(--faint);
 }
 .pop-page .pw-consent a { text-decoration: underline; }
-.pw-form-done { text-align: center; }
-.pw-done-icon { color: #16a34a; margin: 0 auto 10px; }
-.pop-page .pw-form-done h3 { font-size: 22px; color: var(--ink-strong); margin-bottom: 8px; }
-.pop-page .pw-form-done p { color: var(--body); margin-bottom: 18px; }
-.pop-page .pw-form-done a.pop-cta { color: #fff; }
+.pw-password { position: relative; display: block; }
+.pw-password input { padding-right: 46px; }
+.pop-page .pw-eye {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--faint);
+}
+.pop-page .pw-eye:hover { color: var(--ink); background: var(--surface); }
+.pop-page .pw-error a { text-decoration: underline; font-weight: 600; }
+/* The code screen is /auth's VerifyCode, which is styled with Tailwind; the
+   page reset above zeroes its margins, so give its blocks room again. */
+.pop-page .pw-form-code h1,
+.pop-page .pw-form-code h2,
+.pop-page .pw-form-code h3 {
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  margin: 14px 0 8px;
+}
+.pop-page .pw-form-code p { margin-bottom: 12px; }
 
 @media (max-width: 640px) {
   .pw-form { padding: 20px 16px 16px; }
-  .pw-form-done .pop-cta { width: 100%; }
 }
