@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { readStoredAttribution } from "./LeadAttribution";
 import VerifyCode from "./VerifyCode";
@@ -37,6 +37,35 @@ type Pending = {
   signup: SignupResult | null;
 };
 
+const PREFILL_KEY = "apex_pw_prefill";
+
+type Prefill = { name?: string; first_name?: string; last_name?: string; email?: string; phone?: string };
+
+/**
+ * What the applicant already typed into PrimeWell's form, handed over by the
+ * inline script on /primewell (see app/primewell/page.tsx). Survives a reload
+ * of the tab; cleared once the account exists.
+ */
+function readPrefill(): Prefill | null {
+  const w = window as unknown as { __pwPrefill?: Prefill };
+  if (w.__pwPrefill) return w.__pwPrefill;
+  try {
+    const raw = sessionStorage.getItem(PREFILL_KEY);
+    return raw ? (JSON.parse(raw) as Prefill) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearPrefill() {
+  delete (window as unknown as { __pwPrefill?: Prefill }).__pwPrefill;
+  try {
+    sessionStorage.removeItem(PREFILL_KEY);
+  } catch {
+    // Storage blocked: nothing was saved there either.
+  }
+}
+
 /** The same rule the server applies, so a bad number is caught before sending. */
 function looksLikePhone(raw: string): boolean {
   const digits = raw.replace(/[^\d]/g, "");
@@ -50,6 +79,23 @@ export default function PrimewellLeadForm() {
   const [pending, setPending] = useState<Pending | null>(null);
   // Bots fill every field and submit instantly; people do neither.
   const openedAt = useRef(Date.now());
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Fill in what PrimeWell already has, leaving anything typed here alone.
+  useEffect(() => {
+    const prefill = readPrefill();
+    const form = formRef.current;
+    if (!prefill || !form) return;
+    const values: Record<string, string | undefined> = {
+      name: prefill.name || [prefill.first_name, prefill.last_name].filter(Boolean).join(" ") || undefined,
+      email: prefill.email,
+      phone: prefill.phone,
+    };
+    for (const [field, value] of Object.entries(values)) {
+      const input = form.elements.namedItem(field);
+      if (value && input instanceof HTMLInputElement && !input.value) input.value = value;
+    }
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -124,6 +170,7 @@ export default function PrimewellLeadForm() {
         keepalive: true,
       }).catch(() => {});
       reportFreeSignup(email);
+      clearPrefill();
 
       if (signup?.verification?.ticket) {
         setPending({
@@ -192,7 +239,7 @@ export default function PrimewellLeadForm() {
   const alreadyHasAccount = error?.startsWith("An account with this email already exists");
 
   return (
-    <form className="pw-form" onSubmit={onSubmit} noValidate>
+    <form ref={formRef} className="pw-form" onSubmit={onSubmit} noValidate>
       <p className="pw-form-title">Create your free Apex account</p>
       <div className="pw-fields">
         <label className="pw-field">
