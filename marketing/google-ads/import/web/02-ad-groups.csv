@@ -1,0 +1,49 @@
+Row Type,Action,Ad group status,Campaign,Ad group,Ad group type,Ad rotation,Default max. CPC
+Ad group,Add,Enabled,S01 | Brand Defence,Brand | Core,Standard,Optimize,2.00
+Ad group,Add,Enabled,S01 | Brand Defence,Brand | Modules,Standard,Optimize,2.00
+Ad group,Add,Enabled,S01 | Brand Defence,Brand | Programmes,Standard,Optimize,2.00
+Ad group,Add,Enabled,S02 | Conquest | Repricers,Aura | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S02 | Conquest | Repricers,Aura | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S02 | Conquest | Repricers,SellerSnap | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S02 | Conquest | Repricers,SellerSnap | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S02 | Conquest | Repricers,BQool,Standard,Optimize,4.00
+Ad group,Add,Enabled,S02 | Conquest | Repricers,Informed Repricer,Standard,Optimize,4.00
+Ad group,Add,Enabled,S02 | Conquest | Repricers,Repricer.com,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,SellerAmp | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,SellerAmp | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Third Party Profits | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Third Party Profits | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Scan Unlimited,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Rocket Source,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Seller Assistant,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Tactical Arbitrage | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Tactical Arbitrage | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,Boxem,Standard,Optimize,4.00
+Ad group,Add,Enabled,S03 | Conquest | Sourcing & Ops,2D Workflow,Standard,Optimize,4.00
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,sellerboard | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,sellerboard | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,SmartScout | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,SmartScout | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,Helium 10 | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,Helium 10 | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,Jungle Scout | Brand,Standard,Optimize,2.50
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,Jungle Scout | Switch,Standard,Optimize,4.00
+Ad group,Add,Enabled,S04 | Conquest | Analytics & Research,InventoryLab,Standard,Optimize,4.00
+Ad group,Add,Enabled,S05 | Category | Repricing,Repricer | Core,Standard,Optimize,9.00
+Ad group,Add,Enabled,S05 | Category | Repricing,Repricer | Buy Box,Standard,Optimize,9.00
+Ad group,Add,Enabled,S05 | Category | Repricing,Repricer | Profit Floors,Standard,Optimize,7.50
+Ad group,Add,Enabled,S05 | Category | Repricing,Repricer | Wholesale,Standard,Optimize,7.50
+Ad group,Add,Enabled,S06 | Category | Wholesale Scanning,Scanner | Price Lists,Standard,Optimize,7.00
+Ad group,Add,Enabled,S06 | Category | Wholesale Scanning,Scanner | Bulk Lookup,Standard,Optimize,6.00
+Ad group,Add,Enabled,S06 | Category | Wholesale Scanning,Scanner | Wholesale Software,Standard,Optimize,7.00
+Ad group,Add,Enabled,S06 | Category | Wholesale Scanning,Scanner | Ungating,Standard,Optimize,5.00
+Ad group,Add,Enabled,S07 | Category | Profit & Analytics,Profit | Tracker,Standard,Optimize,6.50
+Ad group,Add,Enabled,S07 | Category | Profit & Analytics,Profit | True Cost,Standard,Optimize,6.00
+Ad group,Add,Enabled,S07 | Category | Profit & Analytics,Profit | Restock,Standard,Optimize,6.00
+Ad group,Add,Enabled,S07 | Category | Profit & Analytics,Profit | Review Requests,Standard,Optimize,5.00
+Ad group,Add,Enabled,S08 | Category | Suppliers & Ungating,Suppliers | Distributors,Standard,Optimize,5.00
+Ad group,Add,Enabled,S08 | Category | Suppliers & Ungating,Suppliers | Ungating,Standard,Optimize,4.50
+Ad group,Add,Enabled,S08 | Category | Suppliers & Ungating,Suppliers | Prep Centers,Standard,Optimize,4.00
+Ad group,Add,Enabled,S08 | Category | Suppliers & Ungating,Suppliers | First Order,Standard,Optimize,5.00
+Ad group,Add,Enabled,S10 | DSA | Comparisons & Blog,DSA | Comparison Pages,Dynamic,Optimize,4.00
+Ad group,Add,Enabled,S10 | DSA | Comparisons & Blog,DSA | Blog,Dynamic,Optimize,2.50
