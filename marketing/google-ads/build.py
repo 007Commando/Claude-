@@ -863,12 +863,19 @@ def build():
     print("Building Google Ads import files")
 
     # Campaigns -----------------------------------------------------------
+    # Column names follow the web UI's Bulk uploads, which is where these files
+    # now go in: it wants the budget under "Budget" (Editor accepted "Campaign
+    # Daily Budget"; the uploader rejects it as a missing value) and refuses
+    # any campaign row without the "EU political ads" declaration Google added
+    # in 2026. None of this is political advertising.
     write(
         "01-campaigns.csv",
-        ["Campaign", "Campaign Type", "Campaign Daily Budget", "Budget Type", "Status",
-         "Networks", "Languages", "Bid Strategy Type", "Ad Rotation", "Notes"],
+        ["Campaign", "Campaign Type", "Budget", "Budget Type", "Status",
+         "Networks", "Languages", "Bid Strategy Type", "Ad Rotation",
+         "EU political ads", "Notes"],
         [[c["name"], "Search", f"{c['budget']:.2f}", "Daily", "Paused", c["networks"],
-          "en", c["bid_strategy"], "Optimize", c["notes"]] for c in CAMPAIGNS],
+          "en", c["bid_strategy"], "Optimize",
+          "Does not contain EU political ads", c["notes"]] for c in CAMPAIGNS],
     )
 
     # Ad groups -----------------------------------------------------------
