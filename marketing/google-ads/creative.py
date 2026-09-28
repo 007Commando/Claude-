@@ -1,5 +1,6 @@
 """
-Display images for the desktop remarketing campaign (06-desktop-remarketing.md).
+Display images for the desktop remarketing campaign (06-desktop-remarketing.md):
+the trial pitch to account holders who have no plan yet.
 
 Google's responsive display ads want a landscape image (1.91:1, 1200x628), a
 square image (1:1, 1200x1200), a square logo and a 4:1 logo. This draws them
@@ -31,9 +32,21 @@ GREEN = (22, 163, 74)     # Apex green button
 WHITE = (255, 255, 255)
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 
-HEADLINE = "Connect\nSeller Central\nin 2 minutes"
-SUB = "You already have the account.\nThis is the one step left."
-CTA = "Connect now"
+# Two campaigns, two messages, mutually exclusive audiences (see the plan):
+# "trial" for account holders with no plan, "connect" for paying accounts
+# that never connected Seller Central.
+VARIANTS = {
+    "trial": {
+        "headline": "Start your\n7 day free trial",
+        "sub": "Your Apex account is ready.\nScan your first catalog today.",
+        "cta": "Start free trial",
+    },
+    "connect": {
+        "headline": "Connect\nSeller Central\nin 2 minutes",
+        "sub": "You already have the account.\nThis is the one step left.",
+        "cta": "Connect now",
+    },
+}
 
 
 def fetch(name):
@@ -65,14 +78,14 @@ def button(draw, xy, text, size):
     draw.text((x + pad_x, y + pad_y - size * 0.08), text, font=f, fill=WHITE)
 
 
-def landscape(bull, shot):
+def landscape(bull, shot, v):
     im = Image.new("RGBA", (1200, 628), WHITE)
     d = ImageDraw.Draw(im)
     logo = fit(bull, (150, 92))
     im.alpha_composite(logo, (64, 48))
-    d.multiline_text((64, 160), HEADLINE, font=font(58, bold=True), fill=INK, spacing=6)
-    d.multiline_text((64, 386), SUB, font=font(24), fill=MUTED, spacing=6)
-    button(d, (64, 476), CTA, 28)
+    d.multiline_text((64, 160), v["headline"], font=font(58, bold=True), fill=INK, spacing=6)
+    d.multiline_text((64, 386), v["sub"], font=font(24), fill=MUTED, spacing=6)
+    button(d, (64, 476), v["cta"], 28)
     # Dashboard screenshot on the right, cropped to its left edge so the
     # table reads, with a soft shadow so it sits on the white.
     crop = shot.crop((0, 0, 900, 620))
@@ -84,14 +97,14 @@ def landscape(bull, shot):
     return im
 
 
-def square(bull, shot):
+def square(bull, shot, v):
     im = Image.new("RGBA", (1200, 1200), WHITE)
     d = ImageDraw.Draw(im)
     logo = fit(bull, (200, 122))
     im.alpha_composite(logo, (80, 72))
-    d.multiline_text((80, 220), HEADLINE, font=font(92, bold=True), fill=INK, spacing=10)
-    d.multiline_text((80, 560), SUB, font=font(34), fill=MUTED, spacing=8)
-    button(d, (80, 660), CTA, 40)
+    d.multiline_text((80, 220), v["headline"], font=font(92, bold=True), fill=INK, spacing=10)
+    d.multiline_text((80, 560), v["sub"], font=font(34), fill=MUTED, spacing=8)
+    button(d, (80, 660), v["cta"], 40)
     crop = fit(shot.crop((0, 0, 1621, 620)), (1040, 398))
     im.alpha_composite(crop, (80, 790))
     return im
@@ -116,11 +129,10 @@ def logo_wide(bull):
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     bull, shot = fetch("apex-bull-logo.png"), fetch("purchase-orders.png")
-    for name, img in {
-        "rmkt-1200x628.png": landscape(bull, shot),
-        "rmkt-1200x1200.png": square(bull, shot),
-        "logo-1200x1200.png": logo_square(bull),
-        "logo-1200x300.png": logo_wide(bull),
-    }.items():
+    images = {"logo-1200x1200.png": logo_square(bull), "logo-1200x300.png": logo_wide(bull)}
+    for key, v in VARIANTS.items():
+        images[f"rmkt-{key}-1200x628.png"] = landscape(bull, shot, v)
+        images[f"rmkt-{key}-1200x1200.png"] = square(bull, shot, v)
+    for name, img in images.items():
         img.convert("RGB").save(os.path.join(OUT, name), optimize=True)
         print(f"  {name}")
