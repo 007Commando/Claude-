@@ -21,17 +21,25 @@ Built from the Google Ads tag in the app (frontend branch
 - `amazon_connect_started` on the Connect click.
 - `amazon_connected` on OAuth success.
 
-Segments in Google Ads (Tools > Audience manager > Your data):
+Google Ads' own audience builder works on URLs, not custom events (those
+need a GA4 property the app tag deliberately does not have), so the tag also
+reports each session as a page view of a virtual path:
+
+- `/__audience/amazon-not-connected` when the account has no Amazon access
+- `/__audience/amazon-connected` when it has, and again on OAuth success
+
+Segments in Google Ads (Tools > Audience manager > Your data), all "Website
+visitors", rule "URL contains":
 
 | Segment | Rule | Window |
 |---|---|---|
-| App users, not connected | `app_session` with `amazon_connected = false` | 30 days |
-| Connected | `amazon_connected` event | 540 days |
-| Campaign audience | not connected AND NOT connected | |
+| App: Amazon not connected | `/__audience/amazon-not-connected` | 30 days |
+| App: Amazon connected | `/__audience/amazon-connected` | 540 days |
+| App visitors (any) | `app.apexapplications.io` | 30 days |
 
-Until the app tag ships, the segment "Visitors of app.apexapplications.io"
-(URL contains `app.apexapplications.io`, 30 days) is the stand-in; it also
-catches connected users, which is a small waste, not a harm.
+Campaign audience: "App: Amazon not connected" targeted, "App: Amazon
+connected" excluded. Until the app deploy ships the lists stay empty and
+"App visitors (any)" is the stand-in.
 
 Not Customer Match. The account is weeks old and Customer Match needs policy
 history first; revisit at 90 days.
