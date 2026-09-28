@@ -231,18 +231,35 @@ export function getFriendlyAuthError(message: string): string {
   }
 }
 
-// If ApexAuth's own internal setup (e.g. its Firebase init) hasn't finished
-// by the time we call into it, calls fail with a raw "X is not a function"
-// TypeError. window.ApexAuth existing doesn't guarantee that setup is done,
-// so retry once after a short delay before giving up.
+// Two things fail transiently here, both worth one browser reload's worth of
+// patience rather than an immediate error:
+//
+// - window.ApexAuth existing doesn't mean its own setup (loading the Firebase
+//   SDK from gstatic) is done, so a call into it can throw a raw "X is not a
+//   function" TypeError. apex-auth.js no longer lets this wedge permanently
+//   (a fixed script-load failure used to poison every later call on the page
+//   until a hard reload), but the underlying script fetch can still be slow
+//   or drop once.
+// - Loading those scripts, or the exchange-token round trip after signing
+//   in, is a real network request and can fail the same way any fetch can
+//   ("Failed to fetch", "NetworkError...", "Load failed" depending on
+//   browser) on a flaky connection.
+//
+// A customer hitting either used to have to click "sign in" several times
+// themselves (each click a fresh, independent attempt) to get through --
+// this does that waiting for them, with backoff, before giving up.
+const RETRYABLE_ERROR = /is not a function|failed to fetch|networkerror|load failed/i;
+
 export async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
-  try {
-    return await fn();
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "";
-    if (!/is not a function/i.test(msg)) throw err;
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    return fn();
+  const delaysMs = [300, 800, 1500];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      if (attempt >= delaysMs.length || !RETRYABLE_ERROR.test(msg)) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delaysMs[attempt]));
+    }
   }
 }
 
