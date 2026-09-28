@@ -39,7 +39,13 @@ type Pending = {
 
 const PREFILL_KEY = "apex_pw_prefill";
 
-type Prefill = { name?: string; first_name?: string; last_name?: string; email?: string; phone?: string };
+type Prefill = {
+  name?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
+};
 
 /**
  * What the applicant already typed into PrimeWell's form, handed over by the
@@ -69,7 +75,9 @@ function clearPrefill() {
 /** The same rule the server applies, so a bad number is caught before sending. */
 function looksLikePhone(raw: string): boolean {
   const digits = raw.replace(/[^\d]/g, "");
-  return raw.trim().startsWith("+") ? digits.length >= 8 : digits.length === 10 || (digits.length === 11 && digits.startsWith("1"));
+  return raw.trim().startsWith("+")
+    ? digits.length >= 8
+    : digits.length === 10 || (digits.length === 11 && digits.startsWith("1"));
 }
 
 export default function PrimewellLeadForm() {
@@ -87,13 +95,17 @@ export default function PrimewellLeadForm() {
     const form = formRef.current;
     if (!prefill || !form) return;
     const values: Record<string, string | undefined> = {
-      name: prefill.name || [prefill.first_name, prefill.last_name].filter(Boolean).join(" ") || undefined,
+      name:
+        prefill.name ||
+        [prefill.first_name, prefill.last_name].filter(Boolean).join(" ") ||
+        undefined,
       email: prefill.email,
       phone: prefill.phone,
     };
     for (const [field, value] of Object.entries(values)) {
       const input = form.elements.namedItem(field);
-      if (value && input instanceof HTMLInputElement && !input.value) input.value = value;
+      if (value && input instanceof HTMLInputElement && !input.value)
+        input.value = value;
     }
   }, []);
 
@@ -102,20 +114,28 @@ export default function PrimewellLeadForm() {
     if (sending) return;
     const data = new FormData(event.currentTarget);
     const name = String(data.get("name") ?? "").trim();
-    const email = String(data.get("email") ?? "").trim().toLowerCase();
+    const email = String(data.get("email") ?? "")
+      .trim()
+      .toLowerCase();
     const phone = String(data.get("phone") ?? "").trim();
     const password = String(data.get("password") ?? "");
 
     if (!name) return setError("Please enter your name.");
-    if (!/^\S+@\S+\.\S+$/.test(email)) return setError("Please enter a valid email.");
-    if (!looksLikePhone(phone)) return setError("Please enter a valid mobile number.");
-    if (password.length < 6) return setError("Your password needs at least 6 characters.");
+    if (!/^\S+@\S+\.\S+$/.test(email))
+      return setError("Please enter a valid email.");
+    if (!looksLikePhone(phone))
+      return setError("Please enter a valid mobile number.");
+    if (password.length < 6)
+      return setError("Your password needs at least 6 characters.");
 
     const attribution = readStoredAttribution();
     const params = new URLSearchParams(window.location.search);
-    const utmSource = params.get("utm_source") ?? attribution?.utmSource ?? undefined;
-    const utmMedium = params.get("utm_medium") ?? attribution?.utmMedium ?? undefined;
-    const utmCampaign = params.get("utm_campaign") ?? attribution?.utmCampaign ?? undefined;
+    const utmSource =
+      params.get("utm_source") ?? attribution?.utmSource ?? undefined;
+    const utmMedium =
+      params.get("utm_medium") ?? attribution?.utmMedium ?? undefined;
+    const utmCampaign =
+      params.get("utm_campaign") ?? attribution?.utmCampaign ?? undefined;
 
     setSending(true);
     setError(null);
@@ -150,7 +170,11 @@ export default function PrimewellLeadForm() {
           name,
           email,
           password,
-          acquisition: { source: "primewell", medium: "funnel", campaign: SIGNUP_CAMPAIGN },
+          acquisition: {
+            source: "primewell",
+            medium: "funnel",
+            campaign: SIGNUP_CAMPAIGN,
+          },
           deferRedirect: true,
         }),
       );
@@ -189,7 +213,9 @@ export default function PrimewellLeadForm() {
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
       setError(
-        /Please (enter|check)/.test(message) ? message : getFriendlyAuthError(message) || null,
+        /Please (enter|check)/.test(message)
+          ? message
+          : getFriendlyAuthError(err) || null,
       );
       setSending(false);
     }
@@ -206,8 +232,13 @@ export default function PrimewellLeadForm() {
           onBack={() => setPending(null)}
           onSubmit={async (code) => {
             const apex = await waitForApexAuth();
-            await apex.verifyCode?.({ ticket: pending.ticket, email: pending.email, code });
-            if (!apex.completeSignup?.(pending.signup as SignupResult)) forwardToApp(apex);
+            await apex.verifyCode?.({
+              ticket: pending.ticket,
+              email: pending.email,
+              code,
+            });
+            if (!apex.completeSignup?.(pending.signup as SignupResult))
+              forwardToApp(apex);
           }}
           onResend={async () => {
             const apex = await waitForApexAuth();
@@ -219,7 +250,8 @@ export default function PrimewellLeadForm() {
           }}
           onChangeEmail={async (next) => {
             const apex = await waitForApexAuth();
-            if (!pending.ticket) throw new Error("Start again to change the address");
+            if (!pending.ticket)
+              throw new Error("Start again to change the address");
             const res = await apex.changeVerificationEmail?.({
               ticket: pending.ticket,
               newEmail: next,
@@ -236,7 +268,9 @@ export default function PrimewellLeadForm() {
     );
   }
 
-  const alreadyHasAccount = error?.startsWith("An account with this email already exists");
+  const alreadyHasAccount = error?.startsWith(
+    "An account with this email already exists",
+  );
 
   return (
     <form ref={formRef} className="pw-form" onSubmit={onSubmit} noValidate>
@@ -244,15 +278,33 @@ export default function PrimewellLeadForm() {
       <div className="pw-fields">
         <label className="pw-field">
           <span>Full name</span>
-          <input name="name" type="text" autoComplete="name" required maxLength={120} />
+          <input
+            name="name"
+            type="text"
+            autoComplete="name"
+            required
+            maxLength={120}
+          />
         </label>
         <label className="pw-field">
           <span>Email</span>
-          <input name="email" type="email" autoComplete="email" required maxLength={255} />
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            maxLength={255}
+          />
         </label>
         <label className="pw-field">
           <span>Mobile phone</span>
-          <input name="phone" type="tel" autoComplete="tel" required maxLength={30} />
+          <input
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            required
+            maxLength={30}
+          />
         </label>
         <label className="pw-field">
           <span>Create a password</span>
@@ -294,7 +346,11 @@ export default function PrimewellLeadForm() {
         </p>
       )}
 
-      <button className="pop-cta pop-cta-lg pw-submit" type="submit" disabled={sending}>
+      <button
+        className="pop-cta pop-cta-lg pw-submit"
+        type="submit"
+        disabled={sending}
+      >
         <span className="pop-cta-row">
           {sending ? "Creating your account..." : "Unlock my suppliers"}
           <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
@@ -303,10 +359,11 @@ export default function PrimewellLeadForm() {
       </button>
 
       <p className="pw-consent">
-        By creating your account, you agree to the Apex <a href="/terms">terms</a> and{" "}
-        <a href="/privacy">privacy policy</a>, and to receive texts and emails from Apex
-        Applications about your account and suppliers. Message frequency varies. Message and data
-        rates may apply. Reply STOP to opt out, HELP for help.
+        By creating your account, you agree to the Apex{" "}
+        <a href="/terms">terms</a> and <a href="/privacy">privacy policy</a>,
+        and to receive texts and emails from Apex Applications about your
+        account and suppliers. Message frequency varies. Message and data rates
+        may apply. Reply STOP to opt out, HELP for help.
       </p>
     </form>
   );

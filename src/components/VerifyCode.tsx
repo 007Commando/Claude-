@@ -41,6 +41,8 @@ export default function VerifyCode({
   const [cooldown, setCooldown] = useState(Math.ceil(initialCooldownMs / 1000));
   const [changing, setChanging] = useState(false);
   const [newEmail, setNewEmail] = useState(email);
+  const [resending, setResending] = useState(false);
+  const [submittingEmailChange, setSubmittingEmailChange] = useState(false);
 
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -110,8 +112,10 @@ export default function VerifyCode({
       }
       return;
     }
-    if (event.key === "ArrowLeft" && index > 0) inputs.current[index - 1]?.focus();
-    if (event.key === "ArrowRight" && index < LENGTH - 1) inputs.current[index + 1]?.focus();
+    if (event.key === "ArrowLeft" && index > 0)
+      inputs.current[index - 1]?.focus();
+    if (event.key === "ArrowRight" && index < LENGTH - 1)
+      inputs.current[index + 1]?.focus();
   };
 
   if (changing) {
@@ -126,6 +130,8 @@ export default function VerifyCode({
           className="mt-8 space-y-4"
           onSubmit={async (event) => {
             event.preventDefault();
+            if (submittingEmailChange) return;
+            setSubmittingEmailChange(true);
             setError(null);
             try {
               await onChangeEmail(newEmail.trim());
@@ -134,8 +140,12 @@ export default function VerifyCode({
               setCooldown(Math.ceil(initialCooldownMs / 1000));
             } catch (err) {
               setError(
-                err instanceof Error ? err.message : "That address did not work",
+                err instanceof Error
+                  ? err.message
+                  : "That address did not work",
               );
+            } finally {
+              setSubmittingEmailChange(false);
             }
           }}
         >
@@ -153,19 +163,21 @@ export default function VerifyCode({
           <div className="flex gap-3">
             <button
               type="button"
+              disabled={submittingEmailChange}
               onClick={() => {
                 setChanging(false);
                 setError(null);
               }}
-              className="flex-1 rounded-xl border-2 border-slate-200 px-4 py-3 font-bold text-slate-600"
+              className="flex-1 rounded-xl border-2 border-slate-200 px-4 py-3 font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Back
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-xl bg-brand px-4 py-3 font-bold text-white"
+              disabled={submittingEmailChange}
+              className="flex-1 rounded-xl bg-brand px-4 py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Send the code
+              {submittingEmailChange ? "Sending…" : "Send the code"}
             </button>
           </div>
         </form>
@@ -247,11 +259,17 @@ export default function VerifyCode({
 
       <button
         type="button"
-        disabled={cooldown > 0 || checking}
+        disabled={cooldown > 0 || checking || resending}
         onClick={async () => {
+          if (resending) return;
+          setResending(true);
           setError(null);
-          const wait = await onResend();
-          setCooldown(Math.ceil(wait / 1000));
+          try {
+            const wait = await onResend();
+            setCooldown(Math.ceil(wait / 1000));
+          } finally {
+            setResending(false);
+          }
         }}
         className="mt-3 text-sm font-semibold text-brand disabled:cursor-not-allowed disabled:text-slate-300 hover:underline disabled:hover:no-underline"
       >

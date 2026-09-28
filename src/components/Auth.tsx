@@ -96,7 +96,9 @@ declare global {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         acquisition?: { source: string; medium?: string; campaign?: string };
-      }) => Promise<unknown>;
+      }) => Promise<{
+        adoptionStatus?: "adopted" | "duplicate" | "ignored" | null;
+      }>;
       /**
        * Present only on builds that know about the card-first funnel. This
        * file is served from app.apexapplications.io and cached hard, so an
@@ -184,7 +186,23 @@ const SAFE_AUTH_MESSAGES = new Set([
 const GENERIC_AUTH_ERROR =
   "Something went wrong. Please try again. If it keeps happening, email info@apexapplications.io and we'll set you up directly.";
 
-export function getFriendlyAuthError(message: string): string {
+/**
+ * apiPost (apex-auth.js) attaches the backend's parsed JSON body to `.data`
+ * on every error it throws. Its presence means this message is one of our
+ * own ApexError strings -- written for a customer to read, the same way the
+ * SAFE_AUTH_MESSAGES ones are -- not a raw browser/library exception. Without
+ * this, "An account with this email already exists. Try logging in
+ * instead." (and every other backend-curated signup error) was getting
+ * discarded to the generic message for anyone not on the prepaid path,
+ * because it matches neither an (auth/xxx) code nor the allowlist.
+ */
+function isBackendMessage(err: unknown): boolean {
+  return err instanceof Error && "data" in err;
+}
+
+export function getFriendlyAuthError(err: unknown): string {
+  const message = err instanceof Error ? err.message : "Something went wrong";
+
   if (/is not a function/i.test(message)) {
     return "The login service didn't finish loading in time. Please try again.";
   }
@@ -195,7 +213,9 @@ export function getFriendlyAuthError(message: string): string {
 
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
   if (!codeMatch) {
-    return SAFE_AUTH_MESSAGES.has(message) ? message : GENERIC_AUTH_ERROR;
+    if (isBackendMessage(err) || SAFE_AUTH_MESSAGES.has(message))
+      return message;
+    return GENERIC_AUTH_ERROR;
   }
 
   switch (codeMatch[1]) {
@@ -248,7 +268,8 @@ export function getFriendlyAuthError(message: string): string {
 // A customer hitting either used to have to click "sign in" several times
 // themselves (each click a fresh, independent attempt) to get through --
 // this does that waiting for them, with backoff, before giving up.
-const RETRYABLE_ERROR = /is not a function|failed to fetch|networkerror|load failed/i;
+const RETRYABLE_ERROR =
+  /is not a function|failed to fetch|networkerror|load failed/i;
 
 export async function withAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
   const delaysMs = [300, 800, 1500];
@@ -738,7 +759,13 @@ export default function Auth() {
           setLoading(false);
           return;
         }
-        auth.completeSignup?.(signup);
+        // completeSignup returns false when the response carried neither a
+        // Stripe checkout secret/URL nor an app redirect (e.g. sessionStorage
+        // is blocked so the embedded-checkout handoff has nowhere to go) --
+        // without this fallback that left the account created server-side
+        // with the browser just sitting on the signup form, spinner cleared,
+        // no error and no way forward.
+        if (!auth.completeSignup?.(signup)) forwardToApp(auth);
         window.oaiq?.("measure", "trial_started", { type: "plan_enrollment" });
         fetch("/api/oaiq-conversion", {
           method: "POST",
@@ -809,7 +836,7 @@ export default function Auth() {
             "put the plan you just paid for onto it.",
         );
       } else {
-        setError(getFriendlyAuthError(msg));
+        setError(getFriendlyAuthError(err));
       }
     } finally {
       setLoading(false);
@@ -828,12 +855,25 @@ export default function Auth() {
         );
       }
       signupInFlightRef.current = true;
-      await withAuthRetry(() =>
+      const result = await withAuthRetry(() =>
         auth.signInWithGoogle!({
           ...(isFreeSignup ? {} : { plan: planTier, period }),
           ...acquisitionFromLanding(),
         }),
       );
+      // A returning Google user who paid again through the card-first funnel.
+      // apex-auth.js holds the redirect for exactly this case so there is a
+      // chance to say so -- without this check that pause bought nothing and
+      // the customer was sent into the app none the wiser about the charge.
+      if (result?.adoptionStatus === "duplicate") {
+        signupInFlightRef.current = false;
+        setGoogleLoading(false);
+        setInfo(
+          "You already had a subscription, so we have not charged you twice — " +
+            "the second payment is flagged for refund and support will confirm by email.",
+        );
+        return;
+      }
       /*
        * Only from the Sign Up tab. Google sign-in cannot tell us here whether
        * the account is new, so a returning user who lands on Sign Up and uses
@@ -852,8 +892,7 @@ export default function Auth() {
       // plan, or straight into the app for a returning Google user.
     } catch (err: unknown) {
       signupInFlightRef.current = false;
-      const msg = err instanceof Error ? err.message : "Something went wrong";
-      const friendly = getFriendlyAuthError(msg);
+      const friendly = getFriendlyAuthError(err);
       if (friendly) setError(friendly);
     } finally {
       setGoogleLoading(false);
