@@ -4,11 +4,12 @@ import {
   Check,
   Compass,
   DollarSign,
-  HelpCircle,
+  Handshake,
   ListChecks,
   Pencil,
   Rocket,
   Search,
+  ShoppingBag,
   Store,
   TrendingUp,
   type LucideIcon,
@@ -40,15 +41,15 @@ const STARTER_KIT = "I have less than $1,000 for inventory";
 type Card = { value: string; title: string; body: string; icon: LucideIcon };
 
 const JOURNEY: { value: Sells; title: string; body: string; icon: LucideIcon }[] = [
-  { value: "No", title: "I'm just getting started", body: "New to Amazon and ready to begin the right way.", icon: Rocket },
-  { value: "Yes", title: "I already sell on Amazon", body: "Selling today and ready to grow faster.", icon: TrendingUp },
+  { value: "No", title: "I don't have an Amazon account set up", body: "Not selling yet, and I want to start the right way.", icon: Rocket },
+  { value: "Yes", title: "I have an Amazon account ready", body: "My seller account is live and I want to grow.", icon: ShoppingBag },
 ];
 
 const SELLER_OBSTACLES: Card[] = [
-  { value: "Find profitable products", title: "Find profitable products", body: "Too many catalogs, not enough margin.", icon: Search },
-  { value: "Find more suppliers", title: "Find more suppliers", body: "Distributors who actually reply.", icon: Store },
+  { value: "Find profitable products", title: "Finding profitable products", body: "Too many catalogs, not enough margin.", icon: Search },
+  { value: "Find more suppliers", title: "Finding more suppliers", body: "Distributors who actually reply.", icon: Store },
+  { value: "Going brand direct", title: "Going brand direct", body: "Getting approved by the brand itself.", icon: Handshake },
   { value: "Scale operations", title: "Scale operations", body: "More orders without more chaos.", icon: TrendingUp },
-  { value: "I don't know", title: "I don't know yet", body: "Let's figure it out on the call.", icon: HelpCircle },
 ];
 
 const NEW_OBSTACLES: Card[] = [
@@ -238,10 +239,10 @@ function obstacleScene(obstacle: string) {
           <PoScene />
         </Scene>
       );
-    case "I don't know":
+    case "Going brand direct":
       return (
-        <Scene title="That is what the setup call is for." body="We look at where you are, pick the first supplier and the first catalog with you, and leave you with a shortlist you can actually order.">
-          <RoadScene stops={["Setup call", "First supplier", "First scan", "First order"]} />
+        <Scene title="Brand direct starts with knowing who can say yes." body="Check whether the brand is gated before you write, keep every brand contact and reply in one place, and build the first order in the software once you are approved.">
+          <RoadScene stops={["Check the gating", "Reach the brand", "Get approved", "First order"]} />
         </Scene>
       );
     case "Getting started":
@@ -551,7 +552,7 @@ export default function PopQualify() {
               {sells && (
                 <motion.div key={sells} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, ease }}>
                   <hr className="my-6 border-slate-100" />
-                  <p className="text-base font-bold text-slate-900">{sells === "No" ? "What is stopping you from starting?" : "What is the biggest thing in your way?"}</p>
+                  <p className="text-base font-bold text-slate-900">{sells === "No" ? "What is stopping you from starting?" : "What is your biggest obstacle?"}</p>
                   <p className="mb-4 text-sm text-slate-500">Select the one that costs you the most time. The demo is built around it.</p>
                   <div className={`grid gap-4 ${obstacles.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
                     {obstacles.map((o) => (

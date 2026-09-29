@@ -26,8 +26,8 @@ const SELLS = ["Yes", "No"] as const;
 const OBSTACLE_SELLER = [
   "Find profitable products",
   "Find more suppliers",
+  "Going brand direct",
   "Scale operations",
-  "I don't know",
 ] as const;
 const OBSTACLE_NEW = [
   "Getting started",
