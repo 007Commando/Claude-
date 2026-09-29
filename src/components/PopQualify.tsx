@@ -462,7 +462,7 @@ export default function PopQualify() {
               {error && step === 1 && <p className="text-sm font-medium text-red-600 sm:col-span-2">{error}</p>}
               <div className="flex items-center justify-between gap-4 sm:col-span-2">
                 <p className="text-xs text-slate-500">
-                  We text you to set up the demo. One reply opts you out. <a className="underline" href={`${ORIGIN}/privacy`}>Privacy</a>
+                  We text you to set up the demo. One reply opts you out. <a className="underline" href={`${ORIGIN}/privacy`} target="_blank" rel="noreferrer">Privacy</a>
                 </p>
                 <button type="submit" disabled={busy} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
                   {busy ? "One moment" : "Continue"}

@@ -17,7 +17,6 @@ export default function Footer() {
      * terms and privacy. No columns of links to wander off into.
      */
     pathname === "/apex-pop-primewell" ||
-    pathname === "/apex-pop-facebook" ||
     pathname === "/primewell" ||
     /**
      * The VA promotional page exists to get one meeting booked. Four columns
@@ -49,6 +48,39 @@ export default function Footer() {
     pathname === "/free-course" ||
     pathname === "/wholesale-course";
   if (hasOwnFooter) return null;
+
+  /**
+   * The website A/B arm of Apex Pop: the Facebook page and the qualifier
+   * after it. Stefano asked for no links at all on this journey, so that a
+   * stray tap cannot leave the form. Logo (not linked), the partner badge
+   * and the copyright line; privacy is linked from the form's own consent
+   * text, where it opens in a new tab.
+   */
+  const isNoLinksFooterPage =
+    pathname === "/apex-pop-facebook" || pathname === "/apex-pop/start";
+  if (isNoLinksFooterPage) {
+    return (
+      <footer className="bg-white text-slate-900 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-8">
+            <img
+              src={apexBullLogo.url}
+              alt="Apex Applications"
+              className="h-16 w-auto object-contain"
+            />
+            <img
+              src={amazonPartnerBadge.url}
+              alt="Amazon Selling Partner Appstore Software Partner"
+              className="h-24 w-auto object-contain"
+            />
+            <div className="w-full pt-8 border-t border-slate-200 text-center text-slate-500 text-sm">
+              © 2026 Apex Applications. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   if (isMinimalFooterPage) {
     return (

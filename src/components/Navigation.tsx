@@ -76,15 +76,27 @@ export default function Navigation() {
     pathname === "/apex-pop-primewell" ||
     pathname === "/apex-pop-facebook" ||
     pathname === "/primewell";
+  /**
+   * The Facebook page is the top of the website A/B arm, and the qualifier
+   * on /apex-pop/start is the only way through it. A header button straight
+   * to /auth was a leak past the questions, and LOG IN on that page was a
+   * misclick waiting to happen for someone who has no account yet.
+   */
+  const isPopWebJourney = pathname === "/apex-pop-facebook";
   const leanSignupHref =
     pathname === "/apex-pop-facebook"
-      ? "/auth?mode=signup&plan=free&utm_source=facebook&utm_medium=funnel&utm_campaign=apex-pop-promotion"
+      ? "/apex-pop/start?from=apex-pop-facebook&utm_source=facebook&utm_medium=website&utm_campaign=apex-pop-promotion-web"
       : pathname === "/primewell"
         ? "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=primewell-form"
         : "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
 
   const isDistractionFreePage =
     pathname === "/fba-starter-bundle" ||
+    /**
+     * The Apex Pop qualifier: three steps and nothing else to click. The
+     * centred logo is not a link either; the way out is the browser's.
+     */
+    pathname === "/apex-pop/start" ||
     pathname === "/apex-elite" ||
     pathname === "/premium-membership" ||
     pathname === "/proposal" ||
@@ -152,12 +164,14 @@ export default function Navigation() {
               </span>
             </Link>
             <div className="flex items-center gap-4 sm:gap-6 uppercase tracking-wider text-[13px]">
-              <Link
-                href="/auth"
-                className="text-slate-900 hover:text-brand transition-colors font-bold"
-              >
-                LOG IN
-              </Link>
+              {!isPopWebJourney && (
+                <Link
+                  href="/auth"
+                  className="text-slate-900 hover:text-brand transition-colors font-bold"
+                >
+                  LOG IN
+                </Link>
+              )}
               <Link
                 href={leanSignupHref}
                 className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
