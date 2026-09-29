@@ -88,18 +88,14 @@ function initials(name: string) {
  * loop is seamless; the second copy is hidden from assistive tech.
  */
 export default function TrustpilotReviews() {
-  const { score, reviews } = TRUSTPILOT;
+  const { score } = TRUSTPILOT;
   const duration = `${Math.max(30, TRUSTPILOT_REVIEWS.length * 12)}s`;
   return (
     <section className="tpr" aria-label="Trustpilot reviews">
+      {/* Stars and the name only: the score and the count stay on Trustpilot. */}
       <div className="tpr-head">
         <Stars value={score} />
-        <span>
-          <strong>{score.toFixed(1)}</strong> <span className="tpr-muted">out of 5</span>
-        </span>
-        <span className="tpr-muted">
-          {reviews} {reviews === 1 ? "review" : "reviews"} on
-        </span>
+        <span className="tpr-muted">Reviews on</span>
         <span className="tpr-brand">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
             <path
