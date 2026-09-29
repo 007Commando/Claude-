@@ -543,6 +543,8 @@ export default function PopQualify() {
                   onPick={() => {
                     setSells(j.value);
                     setObstacle(null);
+                    // Tag the contact now, so a seller who stops here is still sorted.
+                    post({ stage: "journey", sellsOnAmazon: j.value }).catch(() => {});
                   }}
                 />
               ))}

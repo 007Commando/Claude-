@@ -85,6 +85,24 @@ export async function upsertGhlContact(fields: {
   return { id: contact.id, tags: contact.tags ?? [] };
 }
 
+/**
+ * Takes tags off one contact. Used only to undo a tag the same visitor set
+ * seconds earlier (changing their answer on the qualifier), never to clean
+ * up in bulk.
+ */
+export async function removeGhlTags(contactId: string, tags: string[]): Promise<void> {
+  const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+  if (!token) throw new GhlNotConfigured("GHL is not configured");
+  const res = await ghl(`/contacts/${contactId}/tags`, token, {
+    method: "DELETE",
+    body: JSON.stringify({ tags }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`GHL untag failed: ${res.status} ${detail.slice(0, 300)}`);
+  }
+}
+
 export async function addGhlTags(contactId: string, tags: string[]): Promise<void> {
   const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
   if (!token) throw new GhlNotConfigured("GHL is not configured");
