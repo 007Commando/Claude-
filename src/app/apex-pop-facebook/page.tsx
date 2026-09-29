@@ -27,8 +27,14 @@ export const metadata: Metadata = {
  * marketing dashboard and the account's acquisition record read; plan=free
  * is the free account the app has always had.
  */
+/**
+ * The website arm of the Apex Pop A/B: the button goes to the qualifier,
+ * which asks the instant form's questions on our own page (with a picture
+ * for each answer) and only then makes the free account. utm_medium=website
+ * is what separates this arm from the lead-form arm in GHL and in the app.
+ */
 const TRY_URL =
-  "https://www.apexapplications.io/auth?mode=signup&plan=free&utm_source=facebook&utm_medium=funnel&utm_campaign=apex-pop-promotion";
+  "/apex-pop/start?from=apex-pop-facebook&utm_source=facebook&utm_medium=website&utm_campaign=apex-pop-promotion-web";
 
 export default function Page() {
   return (

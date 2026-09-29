@@ -50,6 +50,12 @@ export async function upsertGhlContact(fields: {
   email?: string;
   phone?: string | null;
   source: string;
+  /**
+   * Custom fields by their key (the part after `contact.` in GHL), which is
+   * how the Facebook lead-form mapping already names them. Written on the
+   * upsert itself so a contact who exists gets the new answers too.
+   */
+  customFields?: { key: string; value: string }[];
 }): Promise<UpsertedContact> {
   const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
   const locationId = process.env.GHL_LOCATION_ID;
@@ -65,6 +71,9 @@ export async function upsertGhlContact(fields: {
       email: fields.email || undefined,
       phone: fields.phone || undefined,
       source: fields.source,
+      customFields: fields.customFields?.length
+        ? fields.customFields.map((f) => ({ key: f.key, field_value: f.value }))
+        : undefined,
     }),
   });
   if (!res.ok) {
