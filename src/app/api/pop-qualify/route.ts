@@ -38,7 +38,7 @@ const TIMING = ["Today", "Tomorrow", "Next week"] as const;
  * the follow-up. Same email both times, so it is one contact.
  */
 const schema = z.object({
-  stage: z.enum(["details", "journey", "complete"]).default("complete"),
+  stage: z.enum(["details", "journey", "obstacle", "complete"]).default("complete"),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().min(7).max(40),
@@ -62,6 +62,33 @@ export const STARTER_KIT_ANSWER = "I have less than $1,000 for inventory";
  */
 function journeyTags(sellsOnAmazon: "Yes" | "No") {
   return sellsOnAmazon === "Yes" ? ["sells on amazon", "already-selling"] : ["just-getting-started"];
+}
+
+/**
+ * One tag per obstacle, so a seller who said "Going brand direct" can get an
+ * SMS or email about brand direct and nothing else. New-seller answers get
+ * the same treatment; it costs nothing and keeps the smart lists symmetrical.
+ */
+const OBSTACLE_TAGS: Record<string, string> = {
+  "Find profitable products": "obstacle:profitable-products",
+  "Find more suppliers": "obstacle:more-suppliers",
+  "Going brand direct": "obstacle:brand-direct",
+  "Scale operations": "obstacle:scale-operations",
+  "Getting started": "obstacle:getting-started",
+  "Knowing the right steps": "obstacle:right-steps",
+  "I have less than $1,000 for inventory": "obstacle:under-1000",
+};
+
+/** Swap the obstacle tag: take every other obstacle tag off, put this one on. */
+async function setObstacleTag(contactId: string, obstacle: string) {
+  const tag = OBSTACLE_TAGS[obstacle];
+  if (!tag) return;
+  try {
+    await removeGhlTags(contactId, Object.values(OBSTACLE_TAGS).filter((t) => t !== tag));
+  } catch (err) {
+    console.warn("pop-qualify: GHL obstacle untag failed", err);
+  }
+  await addGhlTags(contactId, [tag]);
 }
 
 /** Untag the side the lead did not pick. Never fatal: a failed untag must not cost the lead. */
@@ -148,6 +175,32 @@ export async function POST(req: NextRequest) {
   if (!lead.sellsOnAmazon || !lead.obstacle) {
     return NextResponse.json({ error: "Pick an answer for each question." }, { status: 400 });
   }
+
+  /** The obstacle card tapped: field and tag at once, same reason as the journey stage. */
+  if (lead.stage === "obstacle") {
+    try {
+      const contact = await upsertGhlContact({
+        firstName,
+        lastName: rest.join(" ") || undefined,
+        name: lead.name,
+        email: lead.email.toLowerCase(),
+        phone,
+        source: "apex-pop-web",
+        customFields: [
+          { key: "sells_on_amazon", value: lead.sellsOnAmazon },
+          { key: lead.sellsOnAmazon === "Yes" ? "biggest_obstacle_seller" : "biggest_obstacle_new", value: lead.obstacle },
+        ],
+      });
+      await setObstacleTag(contact.id, lead.obstacle);
+    } catch (err) {
+      if (err instanceof GhlNotConfigured) {
+        return NextResponse.json({ error: "Lead capture is not configured." }, { status: 503 });
+      }
+      console.error("pop-qualify: GHL obstacle write failed", err);
+      return NextResponse.json({ error: "We could not save your answer. Please try again." }, { status: 502 });
+    }
+    return NextResponse.json({ ok: true });
+  }
   const starterKit = lead.obstacle === STARTER_KIT_ANSWER;
   const isSeller = lead.sellsOnAmazon === "Yes";
 
@@ -166,6 +219,7 @@ export async function POST(req: NextRequest) {
       ],
     });
     await dropOtherSide(contact.id, lead.sellsOnAmazon);
+    await setObstacleTag(contact.id, lead.obstacle);
     await addGhlTags(contact.id, [...journeyTags(lead.sellsOnAmazon), "pop-web-lead", starterKit ? "pop-starter-kit" : "pop-demo-lead"]);
     await addGhlNote(
       contact.id,

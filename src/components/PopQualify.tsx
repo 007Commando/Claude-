@@ -558,7 +558,17 @@ export default function PopQualify() {
                   <p className="mb-4 text-sm text-slate-500">Select the one that costs you the most time. The demo is built around it.</p>
                   <div className={`grid gap-4 ${obstacles.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
                     {obstacles.map((o) => (
-                      <ChoiceCard key={o.value} card={o} selected={obstacle === o.value} onPick={() => setObstacle(o.value)} compact />
+                      <ChoiceCard
+                        key={o.value}
+                        card={o}
+                        selected={obstacle === o.value}
+                        onPick={() => {
+                          setObstacle(o.value);
+                          // Field and tag land now, so the follow-up can speak to this obstacle.
+                          post({ stage: "obstacle", sellsOnAmazon: sells, obstacle: o.value }).catch(() => {});
+                        }}
+                        compact
+                      />
                     ))}
                   </div>
                   <AnimatePresence mode="wait">{obstacle && obstacleScene(obstacle)}</AnimatePresence>
@@ -574,21 +584,29 @@ export default function PopQualify() {
             </div>
           </StepCard>
 
-          {/* Step 3: the free account, and what has to happen on a computer. */}
-          <StepCard number={3} title="Create your Apex account to receive everything" state={stateOf(3)}>
-            <p className="text-base font-semibold text-slate-900">You will only receive everything as soon as you finish creating your Apex account.</p>
-            <div className="mt-4 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-              <span className="text-2xl leading-none" aria-hidden="true">
-                💻
-              </span>
-              <p className="text-sm leading-relaxed text-slate-700">
-                <strong className="text-slate-900">Catalogs must be analyzed on a computer.</strong> You can create the account from your phone now, and open Apex on a laptop or desktop when it is time to scan.
-              </p>
-            </div>
+          {/* Step 3: what happens next, and the one button. */}
+          <StepCard number={3} title="Your Apex account is next" state={stateOf(3)}>
+            <p className="text-base font-semibold leading-relaxed text-slate-900">
+              We will send you into our platform, where you can watch how Apex grows Amazon businesses and book your demo from there.
+            </p>
+            <ul className="mt-4 space-y-2.5">
+              {[
+                ["📱", "Reply to our text when it arrives. That is how we set up your demo."],
+                ["📧", "Keep an eye on your inbox. The emails we send activate your account."],
+                ["💻", "Catalogs are analyzed on a computer, so open Apex on a laptop or desktop when it is time to scan."],
+              ].map(([emoji, line]) => (
+                <li key={line} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-700">
+                  <span className="text-xl leading-none" aria-hidden="true">
+                    {emoji}
+                  </span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
             {error && step === 3 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
-            <div className="mt-6 flex justify-end">
-              <button type="button" disabled={busy} onClick={finish} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                {busy ? "One moment" : "Create my free account"}
+            <div className="mt-6">
+              <button type="button" disabled={busy} onClick={finish} className="w-full rounded-xl bg-blue-600 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
+                {busy ? "One moment" : "Create my Apex account"}
               </button>
             </div>
           </StepCard>
