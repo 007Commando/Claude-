@@ -1,0 +1,113 @@
+/* Real Trustpilot reviews, moving sideways above the footer. */
+.tpr {
+  padding: 40px 0 8px;
+  border-top: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+.tpr-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  padding: 0 16px;
+  margin-bottom: 22px;
+  color: #0f172a;
+  font-size: 15px;
+}
+.tpr-head strong { font-weight: 800; }
+.tpr-head .tpr-muted { color: #64748b; }
+.tpr-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  color: #191919;
+}
+.tpr-stars { display: inline-flex; gap: 3px; }
+.tpr-star {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  background: #dcdce6;
+  overflow: hidden;
+}
+.tpr-star-fill { position: absolute; inset: 0 auto 0 0; background: #00b67a; }
+.tpr-star svg { position: relative; }
+.tpr-stars.tpr-stars-sm .tpr-star { width: 16px; height: 16px; }
+
+.tpr-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  padding: 0 16px;
+  animation: tpr-scroll var(--tpr-duration, 48s) linear infinite;
+}
+.tpr:hover .tpr-track { animation-play-state: paused; }
+@keyframes tpr-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 8px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpr-track { animation: none; }
+  .tpr { overflow-x: auto; }
+}
+
+.tpr-card {
+  width: 320px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 18px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.tpr-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tpr-card-date { font-size: 12px; color: #94a3b8; }
+.tpr-card h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+.tpr-card p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #475569;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tpr-card-who {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #0f172a;
+  font-weight: 600;
+}
+.tpr-avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 12px;
+  font-weight: 800;
+}
+.tpr-card-who span.tpr-muted { font-weight: 500; color: #64748b; }
+@media (max-width: 480px) {
+  .tpr-card { width: 270px; }
+}

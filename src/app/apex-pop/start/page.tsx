@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PopQualify from "../../../components/PopQualify";
+import TrustpilotReviews from "../../../components/TrustpilotReviews";
 
 export const metadata: Metadata = {
   title: "Apex POP: Start Here",
@@ -11,8 +12,11 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Suspense fallback={null}>
-      <PopQualify />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <PopQualify />
+      </Suspense>
+      <TrustpilotReviews />
+    </>
   );
 }
