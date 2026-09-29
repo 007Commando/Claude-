@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import TrialTimeline from "./TrialTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 import { motion } from "motion/react";
 import { z } from "zod";
 import Link from "next/link";
@@ -479,6 +480,28 @@ export default function Auth() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [prefilled, setPrefilled] = useState(false);
+
+  /**
+   * Someone arriving from the Apex Pop qualifier has already typed their
+   * name and email once. The qualifier leaves them in session storage under
+   * SIGNUP_PREFILL_KEY; a follow-up link may also carry ?name= and ?email=.
+   * Either way the form opens filled, and only the password is left to type.
+   */
+  useEffect(() => {
+    let stored: { name?: unknown; email?: unknown } | null = null;
+    try {
+      stored = JSON.parse(sessionStorage.getItem(SIGNUP_PREFILL_KEY) ?? "null");
+    } catch {}
+    const pick = (fromQuery: string | null, fromStore: unknown) =>
+      (fromQuery ?? (typeof fromStore === "string" ? fromStore : "")).trim();
+    const n = pick(params.get("name"), stored?.name);
+    const e = pick(params.get("email"), stored?.email);
+    if (!n && !e) return;
+    if (n) setName((prev) => prev || n);
+    if (e) setEmail((prev) => prev || e);
+    setPrefilled(!!(n && e));
+  }, [params]);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -548,9 +571,12 @@ export default function Auth() {
   // First relevant field gets focus automatically on load and on every tab
   // switch, so typing can start immediately without an extra click.
   const firstFieldRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    firstFieldRef.current?.focus();
-  }, [mode]);
+    // Name and email already filled in: the password is the only thing left.
+    if (prefilled && mode === "signup") passwordRef.current?.focus();
+    else firstFieldRef.current?.focus();
+  }, [mode, prefilled]);
 
   // Set the instant a signup submission starts, and never cleared — once this
   // page has kicked off account creation, it must never independently decide
@@ -1420,6 +1446,7 @@ export default function Auth() {
                         <div className="relative">
                           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                           <input
+                            ref={passwordRef}
                             id="password"
                             type={showPassword ? "text" : "password"}
                             autoComplete={

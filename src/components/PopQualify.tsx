@@ -18,6 +18,7 @@ import { type ReactNode, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
+import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 
 /**
  * The website arm of the Apex Pop A/B, in the PrimeWell application's shape:
@@ -253,6 +254,35 @@ function obstacleScene(obstacle: string) {
   }
 }
 
+/* ---------------- the progress line under the header ---------------- */
+
+/**
+ * A thin blue line fixed right under the site header, filling as the steps
+ * are completed, with a percentage and a time estimate. Stefano wants the
+ * form to feel like a game: every tap moves the line, not only Continue.
+ */
+function ProgressLine({ fraction, label }: { fraction: number; label: string }) {
+  const pct = Math.round(fraction * 100);
+  return (
+    <div className="fixed left-0 right-0 top-20 z-40" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label="Sign-up progress">
+      <div className="h-1.5 w-full bg-slate-100">
+        <motion.div
+          className="h-full rounded-r-full bg-blue-600"
+          initial={false}
+          animate={{ width: `${Math.max(3, pct)}%` }}
+          transition={{ duration: 0.6, ease }}
+        />
+      </div>
+      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6">
+        <div className="rounded-b-lg bg-white/90 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-blue-600 shadow-sm backdrop-blur">
+          {pct}% complete
+        </div>
+        <div className="rounded-b-lg bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-slate-500 shadow-sm backdrop-blur">{label}</div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- the step shell, as the PrimeWell page draws it ---------------- */
 
 function StepCard({
@@ -426,6 +456,14 @@ export default function PopQualify() {
         keepalive: true,
       }).catch(() => {});
       const q = `utm_source=${encodeURIComponent(utm.utmSource)}&utm_medium=${encodeURIComponent(utm.utmMedium)}&utm_campaign=${encodeURIComponent(utm.utmCampaign)}`;
+      /**
+       * The signup form reads this and fills name and email, so the visitor
+       * only has to choose a password. Session storage rather than the URL:
+       * the address stays out of analytics, referrers and shared links.
+       */
+      try {
+        sessionStorage.setItem(SIGNUP_PREFILL_KEY, JSON.stringify({ name, email }));
+      } catch {}
       window.location.href = `${ORIGIN}/auth?mode=signup&plan=free&${q}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -436,9 +474,20 @@ export default function PopQualify() {
   const stateOf = (n: number): "done" | "active" | "locked" => (n < step ? "done" : n === step ? "active" : "locked");
   const journeyTitle = JOURNEY.find((j) => j.value === sells)?.title;
 
+  /**
+   * How far along the line is. Typing counts a little, each answer counts
+   * more, and the last stretch is the account itself, so the line never
+   * reads 100% on this page: that happens when the account exists.
+   */
+  const typed = [name, email, phone].filter((v) => v.trim().length > 1).length;
+  const progress = busy && step === 3 ? 0.95 : step === 1 ? typed * 0.08 : step === 2 ? 0.3 + (sells ? 0.15 : 0) + (obstacle ? 0.15 : 0) : 0.8;
+  const progressLabel =
+    progress < 0.3 ? "About 2 minutes" : progress < 0.6 ? "About 1 minute" : progress < 0.8 ? "Under a minute" : "Almost there";
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-[81px]">
-      <section className="mx-auto w-full max-w-3xl px-4 pb-16 pt-8 sm:px-6">
+      <ProgressLine fraction={progress} label={progressLabel} />
+      <section className="mx-auto w-full max-w-3xl px-4 pb-16 pt-12 sm:px-6">
         <div className="mb-8 text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">Apex POP</p>
           <h1 className="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">Your free demo and setup, built around you</h1>
