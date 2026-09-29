@@ -27,6 +27,13 @@ const trackSchema = z.object({
   // because there is no backfill for a click id nobody wrote down.
   clickId: z.string().trim().max(255).optional(),
   clickSource: z.string().trim().max(16).optional(),
+  // The general UTM content slot. The nurture-v2 router (/go/<target>) sets
+  // this to the EMAIL_ID (e.g. SELLER_09) so a trial that follows can be
+  // traced back to the email without GHL.
+  utmContent: z.string().trim().max(120).optional(),
+  // Which app destination a router click was headed to (trial, scan, ...).
+  // Only meaningful alongside a nurture_click event.
+  target: z.string().trim().max(40).optional(),
 });
 
 export async function OPTIONS() {
@@ -69,6 +76,8 @@ export async function POST(req: NextRequest) {
     utmCampaign,
     clickId,
     clickSource,
+    utmContent,
+    target,
   } = parsed.data;
 
   const { error } = await admin.from("leads").insert({
@@ -83,6 +92,8 @@ export async function POST(req: NextRequest) {
     utm_campaign: utmCampaign ?? null,
     click_id: clickId ?? null,
     click_source: clickSource ?? null,
+    utm_content: utmContent ?? null,
+    target: target ?? null,
   });
 
   if (error) {

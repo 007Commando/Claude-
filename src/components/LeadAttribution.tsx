@@ -11,6 +11,8 @@ export interface StoredAttribution {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  /** The general UTM content slot, e.g. the EMAIL_ID a nurture-v2 router click carried. */
+  utmContent?: string;
   /**
    * The Google click identifier, if this visitor arrived on a paid Google
    * click. Held separately from `source` because the two answer different
@@ -31,6 +33,21 @@ export function readStoredAttribution(): StoredAttribution | null {
     return raw ? (JSON.parse(raw) as StoredAttribution) : null;
   } catch {
     return null;
+  }
+}
+
+/**
+ * The one place attribution is written to storage, so every caller -- this
+ * file's own landing capture and anything else recording a campaign visit
+ * (the nurture-v2 /go router, for one) -- ends up in the same shape under the
+ * same key instead of inventing a second format.
+ */
+export function storeAttribution(attribution: StoredAttribution): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(attribution));
+  } catch {
+    // localStorage unavailable (private mode, etc.) — nothing else to do here.
   }
 }
 
@@ -85,14 +102,7 @@ function AttributionCapture() {
     // overwriting the source would cost them the right onboarding.
     if (!utmSource && !visitorId && existing) {
       if (clickId && existing.clickId !== clickId) {
-        try {
-          window.localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify({ ...existing, clickId, clickSource }),
-          );
-        } catch {
-          // localStorage unavailable; nothing else to do here.
-        }
+        storeAttribution({ ...existing, clickId, clickSource });
       }
       return;
     }
@@ -107,11 +117,7 @@ function AttributionCapture() {
       clickId,
       clickSource,
     };
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(attribution));
-    } catch {
-      // localStorage unavailable (private mode, etc.) — still fire the event below
-    }
+    storeAttribution(attribution);
 
     fetch("/api/track", {
       method: "POST",
