@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     target,
   } = parsed.data;
 
-  const { error } = await admin.from("leads").insert({
+  const baseRow = {
     source,
     event,
     email: email ?? null,
@@ -92,9 +92,20 @@ export async function POST(req: NextRequest) {
     utm_campaign: utmCampaign ?? null,
     click_id: clickId ?? null,
     click_source: clickSource ?? null,
+  };
+
+  let { error } = await admin.from("leads").insert({
+    ...baseRow,
     utm_content: utmContent ?? null,
     target: target ?? null,
   });
+
+  // The utm_content/target columns arrive with the 20260928190000 migration.
+  // Until it is applied, PostgREST rejects the row with "column ... does not
+  // exist" (PGRST204 / 42703); keep the click rather than lose it.
+  if (error && /utm_content|target/.test(error.message) && /column|schema cache/i.test(error.message)) {
+    ({ error } = await admin.from("leads").insert(baseRow));
+  }
 
   if (error) {
     return NextResponse.json({ error: "Failed to record event" }, { status: 500, headers: CORS_HEADERS });
