@@ -36,12 +36,20 @@ const OBSTACLE_NEW = [
 ] as const;
 const TIMING = ["Today", "Tomorrow", "Next week"] as const;
 
+/**
+ * Two stages, because the page asks for details first (the PrimeWell
+ * application's order): "details" lands the contact the moment they are
+ * typed, tagged `pop-web-started`, so a lead who leaves at question two is
+ * still a lead; "complete" adds the answers and the branch tag that starts
+ * the follow-up. Same email both times, so it is one contact.
+ */
 const schema = z.object({
+  stage: z.enum(["details", "complete"]).default("complete"),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().min(7).max(40),
-  sellsOnAmazon: z.enum(SELLS),
-  obstacle: z.enum([...OBSTACLE_SELLER, ...OBSTACLE_NEW]),
+  sellsOnAmazon: z.enum(SELLS).optional(),
+  obstacle: z.enum([...OBSTACLE_SELLER, ...OBSTACLE_NEW]).optional(),
   demoTiming: z.enum(TIMING).optional(),
   from: z.string().trim().max(80).optional(),
   utmSource: z.string().trim().max(120).optional(),
@@ -68,8 +76,33 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Enter a phone number with area code." }, { status: 400 });
   }
 
-  const starterKit = lead.obstacle === STARTER_KIT_ANSWER;
   const [firstName, ...rest] = lead.name.split(/\s+/);
+
+  if (lead.stage === "details") {
+    try {
+      const contact = await upsertGhlContact({
+        firstName,
+        lastName: rest.join(" ") || undefined,
+        name: lead.name,
+        email: lead.email.toLowerCase(),
+        phone,
+        source: "apex-pop-web",
+      });
+      await addGhlTags(contact.id, ["pop-web-started"]);
+    } catch (err) {
+      if (err instanceof GhlNotConfigured) {
+        return NextResponse.json({ error: "Lead capture is not configured." }, { status: 503 });
+      }
+      console.error("pop-qualify: GHL details write failed", err);
+      return NextResponse.json({ error: "We could not save your details. Please try again." }, { status: 502 });
+    }
+    return NextResponse.json({ ok: true });
+  }
+
+  if (!lead.sellsOnAmazon || !lead.obstacle) {
+    return NextResponse.json({ error: "Pick an answer for each question." }, { status: 400 });
+  }
+  const starterKit = lead.obstacle === STARTER_KIT_ANSWER;
   const isSeller = lead.sellsOnAmazon === "Yes";
 
   try {
