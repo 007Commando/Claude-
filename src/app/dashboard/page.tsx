@@ -1428,6 +1428,12 @@ export default function DashboardPage() {
             <p className="text-sm text-slate-500 mt-1">Your acquisition numbers, at a glance.</p>
           </div>
           <div className="flex items-center gap-3">
+            <a
+              href="/leads"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
+            >
+              Lead Desk
+            </a>
             <button
               onClick={load}
               disabled={loading}

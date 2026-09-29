@@ -1,0 +1,443 @@
+import { getPrimewellLeads, type PrimewellContact } from "../dashboard/ghlPrimewell";
+import { getFacebookLeads, type FacebookContact } from "../dashboard/ghlFacebook";
+import { getApexAccounts, type ApexMember } from "../dashboard/apex";
+import { getStripeMetrics } from "../dashboard/stripe";
+import { normalisePhone } from "../ghlLead";
+import { getCustomFieldKeyMap, decodeCustomFields } from "./ghlFields";
+import {
+  type Lead,
+  type LeadSource,
+  type Stage,
+  type ApexJoin,
+  furthestStage,
+  sourceFromTags,
+  sourceFromAcquisition,
+  deriveSellerType,
+  deriveObstacle,
+  deriveDemoTiming,
+  stageFromTags,
+  stageFromApex,
+  parseOutreach,
+  buildGhlUrl,
+  toIso,
+} from "./model";
+
+/**
+ * Merges three systems Apex already talks to into one lead list:
+ *
+ * 1. Apex's own GHL location (GHL_LOCATION_ID) — every contact who filled out
+ *    a Pop form, got copied over as a PrimeWell applicant, etc. (fetched via
+ *    getFacebookLeads, which pages the whole location despite its name).
+ * 2. PrimeWell's GHL location (GHL_PRIMEWELL_LOCATION_ID) — PrimeWell's own
+ *    applicant list, which includes people never copied into Apex's location.
+ * 3. Apex's own accounts table (getApexAccounts) — the source of truth for
+ *    "does this email actually have an account, and is it paying".
+ *
+ * A lead is one row per person, keyed by lowercased email (falling back to
+ * normalised phone digits when there's no email at all). See dedupe() below.
+ */
+
+const CACHE_MS = 5 * 60 * 1000;
+
+export interface LeadsTotals {
+  bySourceStage: Record<LeadSource, Record<Stage, number>>;
+  conversion: {
+    overall: ConversionRates;
+    bySource: Record<LeadSource, ConversionRates>;
+  };
+  weekly: WeeklyBucket[];
+}
+
+export interface ConversionRates {
+  leads: number;
+  registered: number;
+  trials: number;
+  customers: number;
+  leadToRegisteredPct: number | null;
+  registeredToTrialPct: number | null;
+  trialToCustomerPct: number | null;
+}
+
+export interface WeeklyBucket {
+  week: string;
+  leadsCreated: number;
+  registered: number;
+  trials: number;
+  customers: number;
+}
+
+export interface LeadsPayload {
+  generatedAt: string;
+  leads: Lead[];
+  totals: LeadsTotals;
+  warnings: string[];
+}
+
+const lower = (s: string) => s.trim().toLowerCase();
+
+const SOURCES: LeadSource[] = ["primewell", "facebook-form", "facebook-web", "google", "chatgpt", "ash", "direct", "other"];
+const STAGES: Stage[] = ["lead", "registered", "trial", "customer", "churned"];
+
+interface NormalisedContact {
+  ghlContactId: string;
+  ghlLocation: "apex" | "primewell";
+  name: string;
+  email: string | null;
+  phone: string | null;
+  dateAdded: string;
+  tags: string[];
+  fields: Record<string, string>;
+}
+
+function normalise(
+  contacts: (FacebookContact | PrimewellContact)[],
+  location: "apex" | "primewell",
+  idToKey: Record<string, string>,
+): NormalisedContact[] {
+  return contacts.map((c) => ({
+    ghlContactId: c.id,
+    ghlLocation: location,
+    name: c.name,
+    email: c.email ? lower(c.email) : null,
+    phone: normalisePhone(c.phone),
+    dateAdded: toIso(c.dateAdded) ?? new Date(0).toISOString(),
+    tags: c.tags,
+    fields: decodeCustomFields(c.customFields, idToKey),
+  }));
+}
+
+function resolveSource(
+  tags: string[],
+  acquisitionSource: string | null | undefined,
+  acquisitionCampaign: string | null | undefined,
+): { source: LeadSource; sourceDetail: string | null } {
+  return sourceFromTags(tags) ?? sourceFromAcquisition(acquisitionSource, acquisitionCampaign);
+}
+
+function buildApexJoin(member: ApexMember | undefined, mrrByEmail: Map<string, number>, trialOnlyCancelEmails: Set<string>): ApexJoin | null {
+  if (!member) return null;
+  const email = lower(member.email);
+  return {
+    createdAt: toIso(member.createdAt),
+    subscriptionStatus: member.subscription?.status ?? null,
+    trialEnd: toIso(member.subscription?.trialEnd),
+    since: toIso(member.subscription?.since),
+    currentPeriodEnd: toIso(member.subscription?.currentPeriodEnd),
+    planName: member.subscription?.plan ?? null,
+    wasTrialOnlyCancel: trialOnlyCancelEmails.has(email),
+    mrr: mrrByEmail.get(email) ?? 0,
+  };
+}
+
+type LeadPrimary = { kind: "ghl"; contact: NormalisedContact } | { kind: "apexOnly"; member: ApexMember };
+
+/** Builds one Lead from a primary contact record (GHL or Apex-only), joining in whatever the other sources know about the same email. */
+function buildLead(params: {
+  primary: LeadPrimary;
+  extraTags: string[];
+  extraFields: Record<string, string>;
+  extraLeadAt: string[];
+  apexMember: ApexMember | undefined;
+  mrrByEmail: Map<string, number>;
+  trialOnlyCancelEmails: Set<string>;
+}): Lead {
+  const { primary, extraTags, extraFields, extraLeadAt, apexMember, mrrByEmail, trialOnlyCancelEmails } = params;
+
+  const isGhl = primary.kind === "ghl";
+  const contact = primary.kind === "ghl" ? primary.contact : null;
+  const apexOnly = primary.kind === "apexOnly" ? primary.member : null;
+
+  const tags = contact ? [...new Set([...contact.tags, ...extraTags])] : [];
+  const fields = contact ? { ...extraFields, ...contact.fields } : extraFields;
+
+  const email = contact ? contact.email : lower(apexOnly!.email);
+  const name = (contact ? contact.name : apexOnly!.email) || email || "Unknown";
+  const phone = contact ? contact.phone : null;
+
+  const leadDates = contact ? [contact.dateAdded, ...extraLeadAt] : [];
+  const apexCreatedAt = toIso(apexMember?.createdAt ?? apexOnly?.createdAt ?? null);
+  const leadAt =
+    leadDates.length > 0
+      ? leadDates.reduce((earliest, d) => (d && (!earliest || d < earliest) ? d : earliest), leadDates[0])
+      : (apexCreatedAt ?? new Date().toISOString());
+
+  const acquisition = apexMember?.acquisition ?? apexOnly?.acquisition;
+  const { source: tagOrAcqSource, sourceDetail } = resolveSource(tags, acquisition?.source, acquisition?.campaign);
+
+  const isPrimewellSource = tagOrAcqSource === "primewell";
+  const sellerType = deriveSellerType(fields, tags, isPrimewellSource);
+  const obstacle = deriveObstacle(fields);
+  const demoTiming = deriveDemoTiming(fields);
+
+  const apexJoin = buildApexJoin(apexMember ?? apexOnly ?? undefined, mrrByEmail, trialOnlyCancelEmails);
+  const apexDerived = stageFromApex(apexJoin);
+  const tagStage = isGhl ? stageFromTags(tags) : "lead";
+  const stage = furthestStage(tagStage, apexDerived.stage);
+
+  const outreach = parseOutreach(tags);
+
+  const ghlContactId = contact ? contact.ghlContactId : null;
+  const ghlLocation = contact ? contact.ghlLocation : null;
+
+  return {
+    id: contact ? contact.ghlContactId : `acct:${apexOnly!.accountId ?? email}`,
+    ghlContactId,
+    ghlLocation,
+    name,
+    email,
+    phone,
+    source: tagOrAcqSource,
+    sourceDetail,
+    sellerType,
+    obstacle,
+    demoTiming,
+    leadAt,
+    registeredAt: apexDerived.registeredAt,
+    trialStartedAt: apexDerived.trialStartedAt,
+    trialEndsAt: apexDerived.trialEndsAt,
+    customerSince: apexDerived.customerSince,
+    churnedAt: apexDerived.churnedAt,
+    planName: apexDerived.planName,
+    mrr: apexDerived.mrr,
+    stage,
+    tags,
+    lastOutreachAt: outreach.last,
+    outreachCount: outreach.count,
+    ghlUrl: buildGhlUrl(ghlLocation, ghlContactId),
+  };
+}
+
+async function build(): Promise<LeadsPayload> {
+  const warnings: string[] = [];
+
+  const [primewellRaw, apexLocationRaw, apexAccounts, stripe] = await Promise.all([
+    getPrimewellLeads(),
+    getFacebookLeads(),
+    getApexAccounts(),
+    getStripeMetrics(),
+  ]);
+
+  if (!primewellRaw.connected) warnings.push(`PrimeWell GHL: ${primewellRaw.error ?? "not connected"}`);
+  if (!apexLocationRaw.connected) warnings.push(`Apex GHL: ${apexLocationRaw.error ?? "not connected"}`);
+  if (!apexAccounts.connected) warnings.push(`Apex accounts: ${apexAccounts.error ?? "not connected"}`);
+  if (!stripe.connected) warnings.push(`Stripe: ${stripe.error ?? "not connected"} (MRR figures may be incomplete)`);
+
+  const apexToken = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+  const apexLocationId = process.env.GHL_LOCATION_ID;
+  const primewellToken = process.env.GHL_PRIMEWELL_PRIVATE_INTEGRATION_TOKEN;
+  const primewellLocationId = process.env.GHL_PRIMEWELL_LOCATION_ID;
+
+  const [apexFieldMap, primewellFieldMap] = await Promise.all([
+    apexToken && apexLocationId ? getCustomFieldKeyMap(apexToken, apexLocationId) : Promise.resolve({}),
+    primewellToken && primewellLocationId ? getCustomFieldKeyMap(primewellToken, primewellLocationId) : Promise.resolve({}),
+  ]);
+
+  const apexContacts = normalise(apexLocationRaw.contacts, "apex", apexFieldMap);
+  const primewellContacts = normalise(primewellRaw.contacts, "primewell", primewellFieldMap);
+
+  // Stripe's own logic already tells apart "canceled during/near trial" (never
+  // converted) from a real churn — reused here instead of re-deriving it.
+  const trialOnlyCancelEmails = new Set(
+    stripe.cancelledTrials.map((t) => (t.customerEmail ? lower(t.customerEmail) : null)).filter((e): e is string => Boolean(e)),
+  );
+  // getStripeMetrics().subscriptions is already the "status: active" list —
+  // exactly the customers whose MRR a Lead row should show.
+  const mrrByEmail = new Map<string, number>();
+  for (const sub of stripe.subscriptions) {
+    if (sub.customerEmail) mrrByEmail.set(lower(sub.customerEmail), sub.mrrContribution);
+  }
+
+  const apexByEmail = new Map<string, ApexMember>();
+  for (const m of apexAccounts.accounts) apexByEmail.set(lower(m.email), m);
+
+  const consumedEmails = new Set<string>();
+  const leads: Lead[] = [];
+
+  // 1. Every contact in Apex's own GHL location, merged with any PrimeWell
+  //    twin sharing the same email (tags/fields/leadAt union across both).
+  const primewellByEmail = new Map<string, NormalisedContact>();
+  for (const c of primewellContacts) if (c.email) primewellByEmail.set(c.email, c);
+  const primewellByPhone = new Map<string, NormalisedContact>();
+  for (const c of primewellContacts) if (c.phone) primewellByPhone.set(c.phone, c);
+
+  const consumedPrimewellIds = new Set<string>();
+
+  for (const contact of apexContacts) {
+    const twin =
+      (contact.email && primewellByEmail.get(contact.email)) ||
+      (contact.phone && primewellByPhone.get(contact.phone)) ||
+      undefined;
+    if (twin) consumedPrimewellIds.add(twin.ghlContactId);
+
+    const apexMember = contact.email ? apexByEmail.get(contact.email) : undefined;
+    const lead = buildLead({
+      primary: { kind: "ghl", contact },
+      extraTags: twin?.tags ?? [],
+      extraFields: twin?.fields ?? {},
+      extraLeadAt: twin ? [twin.dateAdded] : [],
+      apexMember,
+      mrrByEmail,
+      trialOnlyCancelEmails,
+    });
+    leads.push(lead);
+    if (contact.email) consumedEmails.add(contact.email);
+  }
+
+  // 2. PrimeWell-location contacts with no Apex-location twin (by email, then
+  //    phone) are standalone PrimeWell leads in their own right.
+  for (const contact of primewellContacts) {
+    if (consumedPrimewellIds.has(contact.ghlContactId)) continue;
+    const apexMember = contact.email ? apexByEmail.get(contact.email) : undefined;
+    const lead = buildLead({
+      primary: { kind: "ghl", contact },
+      extraTags: [],
+      extraFields: {},
+      extraLeadAt: [],
+      apexMember,
+      mrrByEmail,
+      trialOnlyCancelEmails,
+    });
+    // Standalone PrimeWell-location leads are PrimeWell leads by definition,
+    // per spec, regardless of what (if any) tags/acquisition otherwise resolved to.
+    lead.source = "primewell";
+    if (!lead.sourceDetail) lead.sourceDetail = "PrimeWell application";
+    if (lead.sellerType === "unknown") lead.sellerType = "selling";
+    leads.push(lead);
+    if (contact.email) consumedEmails.add(contact.email);
+  }
+
+  // 3. Apex accounts with no GHL contact trace anywhere — signed up directly.
+  for (const member of apexAccounts.accounts) {
+    const email = lower(member.email);
+    if (consumedEmails.has(email)) continue;
+    const lead = buildLead({
+      primary: { kind: "apexOnly", member },
+      extraTags: [],
+      extraFields: {},
+      extraLeadAt: [],
+      apexMember: member,
+      mrrByEmail,
+      trialOnlyCancelEmails,
+    });
+    leads.push(lead);
+    consumedEmails.add(email);
+  }
+
+  leads.sort((a, b) => (a.leadAt < b.leadAt ? 1 : -1));
+
+  // Amazon Success Hub webinar imports are real contacts but not sales leads
+  // in any funnel sense — they're excluded from every aggregate (conversion,
+  // weekly trend, bySourceStage) though they still appear in `leads` itself
+  // for the All Leads table, gated there behind its own "include ASH" filter.
+  const totals = computeTotals(leads.filter((l) => l.source !== "ash"));
+
+  return { generatedAt: new Date().toISOString(), leads, totals, warnings };
+}
+
+function emptyConversion(): ConversionRates {
+  return {
+    leads: 0,
+    registered: 0,
+    trials: 0,
+    customers: 0,
+    leadToRegisteredPct: null,
+    registeredToTrialPct: null,
+    trialToCustomerPct: null,
+  };
+}
+
+function pct(numerator: number, denominator: number): number | null {
+  if (denominator <= 0) return null;
+  return Math.round((numerator / denominator) * 1000) / 10;
+}
+
+function rank(stage: Stage): number {
+  return STAGES.indexOf(stage);
+}
+
+function conversionFor(leads: Lead[]): ConversionRates {
+  const total = leads.length;
+  const registeredPlus = leads.filter((l) => rank(l.stage) >= rank("registered")).length;
+  const trialPlus = leads.filter((l) => rank(l.stage) >= rank("trial")).length;
+  const customerPlus = leads.filter((l) => rank(l.stage) >= rank("customer")).length; // includes churned — they did convert once
+  return {
+    leads: total,
+    registered: registeredPlus,
+    trials: trialPlus,
+    customers: customerPlus,
+    leadToRegisteredPct: pct(registeredPlus, total),
+    registeredToTrialPct: pct(trialPlus, registeredPlus),
+    trialToCustomerPct: pct(customerPlus, trialPlus),
+  };
+}
+
+function isoWeekKey(iso: string): string {
+  const d = new Date(iso);
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const dayNum = (date.getUTCDay() + 6) % 7; // Monday = 0
+  date.setUTCDate(date.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(date.getUTCFullYear(), 0, 4));
+  const firstThursdayDay = (firstThursday.getUTCDay() + 6) % 7;
+  const week = 1 + Math.round((date.getTime() - firstThursday.getTime()) / 86_400_000 / 7 - (firstThursdayDay - 3) / 7);
+  return `${date.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function computeTotals(leads: Lead[]): LeadsTotals {
+  const bySourceStage = {} as Record<LeadSource, Record<Stage, number>>;
+  for (const source of SOURCES) {
+    bySourceStage[source] = {} as Record<Stage, number>;
+    for (const stage of STAGES) bySourceStage[source][stage] = 0;
+  }
+  for (const lead of leads) bySourceStage[lead.source][lead.stage] += 1;
+
+  const conversionBySource = {} as Record<LeadSource, ConversionRates>;
+  for (const source of SOURCES) {
+    const subset = leads.filter((l) => l.source === source);
+    conversionBySource[source] = subset.length > 0 ? conversionFor(subset) : emptyConversion();
+  }
+
+  // Last 8 ISO weeks, oldest first, anchored on today regardless of whether
+  // every week has data — a flat trend line is real information too.
+  const weekKeys: string[] = [];
+  const cursor = new Date();
+  for (let i = 7; i >= 0; i--) {
+    const d = new Date(cursor.getTime() - i * 7 * 86_400_000);
+    weekKeys.push(isoWeekKey(d.toISOString()));
+  }
+  const weekIndex = new Map(weekKeys.map((w, i) => [w, i]));
+  const weekly: WeeklyBucket[] = weekKeys.map((week) => ({ week, leadsCreated: 0, registered: 0, trials: 0, customers: 0 }));
+
+  const bump = (iso: string | null, field: keyof Omit<WeeklyBucket, "week">) => {
+    if (!iso) return;
+    const idx = weekIndex.get(isoWeekKey(iso));
+    if (idx == null) return;
+    weekly[idx][field] += 1;
+  };
+  for (const lead of leads) {
+    bump(lead.leadAt, "leadsCreated");
+    bump(lead.registeredAt, "registered");
+    bump(lead.trialStartedAt, "trials");
+    bump(lead.customerSince, "customers");
+  }
+
+  return {
+    bySourceStage,
+    conversion: { overall: conversionFor(leads), bySource: conversionBySource },
+    weekly,
+  };
+}
+
+let cached: { at: number; payload: LeadsPayload } | null = null;
+
+export async function getLeads(fresh: boolean): Promise<LeadsPayload> {
+  if (!fresh && cached && Date.now() - cached.at < CACHE_MS) return cached.payload;
+  const payload = await build();
+  cached = { at: Date.now(), payload };
+  return payload;
+}
+
+/** Looks a single lead up from the cache, refreshing first if the cache is empty or stale. */
+export async function findLead(leadId: string): Promise<Lead | null> {
+  const payload = cached && Date.now() - cached.at < CACHE_MS ? cached.payload : await getLeads(false);
+  return payload.leads.find((l) => l.id === leadId) ?? null;
+}

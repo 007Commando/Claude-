@@ -13,6 +13,20 @@ const GHL_VERSION = "2021-07-28";
 
 export class GhlNotConfigured extends Error {}
 
+export type GhlLocationName = "apex" | "primewell";
+
+/**
+ * Tags and notes are per-contact writes and a contact only ever lives in one
+ * location, so callers that know which location (e.g. Lead Desk, matching a
+ * lead's own `ghlLocation`) can pick the right token instead of always
+ * writing against Apex's own GHL_LOCATION_ID.
+ */
+function tokenFor(location: GhlLocationName): string | undefined {
+  return location === "primewell"
+    ? process.env.GHL_PRIMEWELL_PRIVATE_INTEGRATION_TOKEN
+    : process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+}
+
 /** US numbers typed without a country code are the common case here. */
 export function normalisePhone(raw: string | undefined | null): string | null {
   if (!raw) return null;
@@ -103,8 +117,8 @@ export async function removeGhlTags(contactId: string, tags: string[]): Promise<
   }
 }
 
-export async function addGhlTags(contactId: string, tags: string[]): Promise<void> {
-  const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+export async function addGhlTags(contactId: string, tags: string[], location: GhlLocationName = "apex"): Promise<void> {
+  const token = tokenFor(location);
   if (!token) throw new GhlNotConfigured("GHL is not configured");
   const res = await ghl(`/contacts/${contactId}/tags`, token, {
     method: "POST",
@@ -117,8 +131,8 @@ export async function addGhlTags(contactId: string, tags: string[]): Promise<voi
 }
 
 /** Best effort: a note that says where the contact came from. */
-export async function addGhlNote(contactId: string, body: string): Promise<void> {
-  const token = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+export async function addGhlNote(contactId: string, body: string, location: GhlLocationName = "apex"): Promise<void> {
+  const token = tokenFor(location);
   if (!token) return;
   await ghl(`/contacts/${contactId}/notes`, token, {
     method: "POST",

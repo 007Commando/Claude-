@@ -7,6 +7,16 @@ import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
 
 export default function Footer() {
   const pathname = usePathname();
+
+  /**
+   * Internal tools (the ops dashboard, Lead Desk) are gated behind Basic Auth
+   * and noindexed — they're screens Stefano and Aliza work in, not pages a
+   * visitor lands on, so the public site footer (four columns of marketing
+   * links) has no business under them.
+   */
+  const isInternalToolPage = pathname.startsWith("/dashboard") || pathname.startsWith("/leads");
+  if (isInternalToolPage) return null;
+
   const isMinimalFooterPage =
     pathname === "/apex-elite" ||
     pathname === "/premium-membership" ||

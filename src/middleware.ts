@@ -31,6 +31,18 @@ export function middleware(req: NextRequest) {
     );
   }
 
+  // Extra logins on top of DASHBOARD_USER/DASHBOARD_PASSWORD, e.g. so Aliza
+  // has her own credentials instead of sharing Stefano's. Format:
+  // "user:password,user2:password2".
+  const extraCredentials = new Map<string, string>();
+  for (const pair of (process.env.DASHBOARD_USERS ?? "").split(",")) {
+    const trimmed = pair.trim();
+    if (!trimmed) continue;
+    const separatorIndex = trimmed.indexOf(":");
+    if (separatorIndex === -1) continue;
+    extraCredentials.set(trimmed.slice(0, separatorIndex), trimmed.slice(separatorIndex + 1));
+  }
+
   const authHeader = req.headers.get("authorization");
   if (authHeader?.startsWith("Basic ")) {
     const decoded = Buffer.from(authHeader.slice(6), "base64").toString("utf-8");
@@ -38,6 +50,9 @@ export function middleware(req: NextRequest) {
     const providedUser = decoded.slice(0, separatorIndex);
     const providedPassword = decoded.slice(separatorIndex + 1);
     if (providedUser === user && providedPassword === password) {
+      return withNoIndex(NextResponse.next());
+    }
+    if (extraCredentials.has(providedUser) && extraCredentials.get(providedUser) === providedPassword) {
       return withNoIndex(NextResponse.next());
     }
   }
@@ -53,5 +68,5 @@ export function middleware(req: NextRequest) {
 export const config = {
   // GroceryCommerce (any casing) is here only for the alias redirect above —
   // it returns before the dashboard auth gate and is never challenged.
-  matcher: ["/dashboard/:path*", "/api/dashboard/:path*", "/grocerycommerce"],
+  matcher: ["/dashboard/:path*", "/api/dashboard/:path*", "/leads/:path*", "/api/leads/:path*", "/grocerycommerce"],
 };

@@ -57,6 +57,12 @@ export default function Navigation() {
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
   /**
+   * Internal tools (the ops dashboard, Lead Desk) are gated behind Basic Auth
+   * and noindexed — not pages a visitor lands on — so the public nav (Home /
+   * Features / Pricing / Log in / Sign up) has no business on top of them.
+   */
+  const isInternalToolPage = pathname.startsWith("/dashboard") || pathname.startsWith("/leads");
+  /**
    * Pages that ship a complete header of their own.
    *
    * isDistractionFreePage below still renders a bar — a centred logo — so a
@@ -143,7 +149,7 @@ export default function Navigation() {
     setIsMenuOpen(false);
   };
 
-  if (hasOwnHeader) return null;
+  if (hasOwnHeader || isInternalToolPage) return null;
 
   if (isLeanHeaderPage) {
     return (

@@ -1,0 +1,13 @@
+{
+  "period": "30 days to 2026-09-28",
+  "campaign": "Apex Pop Promotion",
+  "men": { "pct": 62, "leads": 119, "costPerLead": 3.30 },
+  "women": { "pct": 38, "leads": 73, "costPerLead": 4.01 },
+  "byAge": [
+    { "range": "25-34", "men": 5, "women": 2 },
+    { "range": "35-44", "men": 9, "women": 9 },
+    { "range": "45-54", "men": 28, "women": 19 },
+    { "range": "55-64", "men": 41, "women": 27 },
+    { "range": "65+", "men": 35, "women": 16 }
+  ]
+}
