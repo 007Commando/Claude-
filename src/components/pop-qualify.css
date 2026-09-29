@@ -46,8 +46,6 @@
 .pq-road { display: flex; flex-direction: column; gap: 12px; }
 .pq-stop { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: var(--ink, #21252e); }
 .pq-stop-num { display: inline-flex; width: 26px; height: 26px; align-items: center; justify-content: center; border-radius: 50%; background: #1570ef; color: #fff; font-size: 12px; font-weight: 700; }
-.pq-kit { display: flex; flex-direction: column; gap: 10px; }
-.pq-kit-item { font-size: 14px; font-weight: 600; color: var(--ink, #21252e); }
 .pq-check { color: #12b76a; margin-right: 6px; }
 .pq-cal { display: flex; gap: 10px; align-items: center; justify-content: center; min-height: 180px; }
 .pq-day { border: 1.5px solid #e4e7ec; border-radius: 12px; padding: 16px 14px; font-weight: 700; color: #98a2b3; background: #fff; }

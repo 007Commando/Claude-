@@ -175,26 +175,49 @@ function RoadScene({ stops }: { stops: string[] }) {
   );
 }
 
-function KitScene() {
-  const items = ["Product research checklist", "First 10 suppliers to email", "Fee calculator", "Launch plan"];
+/**
+ * What the free account and the trial hand over, listed plainly. The new
+ * seller answers and the under-$1,000 answer show this instead of a picture:
+ * Stefano wants those visitors to see the goods before they are asked to
+ * make an account.
+ */
+function OfferScene({ heading, items, body }: { heading: string; items: string[]; body: string }) {
   return (
-    <div className="pq-kit">
-      {items.map((it, i) => (
-        <motion.div
-          key={it}
-          className="pq-kit-item"
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.15 + i * 0.12, duration: 0.3, ease }}
-        >
-          <span className="pq-check">✓</span> {it}
-        </motion.div>
-      ))}
-    </div>
+    <motion.div
+      key={heading}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.3, ease }}
+      className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5"
+    >
+      <h3 className="text-base font-bold text-slate-900">{heading}</h3>
+      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+        {items.map((it, i) => (
+          <motion.li
+            key={it}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 + i * 0.08, duration: 0.3, ease }}
+            className="flex items-start gap-2.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-900"
+          >
+            <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <Check className="h-3 w-3" aria-hidden="true" />
+            </span>
+            {it}
+          </motion.li>
+        ))}
+      </ul>
+      <p className="mt-4 text-sm leading-relaxed text-slate-600">{body}</p>
+    </motion.div>
   );
 }
 
-const ROAD_NEW = ["Three suppliers, day one", "Scan their catalog", "Pick what clears", "Build the order"];
+const TODAY_ITEMS = ["3 Suppliers + Practice Catalog", "3 Playbooks", "Software Demo", "9 Core Videos", "100% Ungating Roadmap"];
+const TODAY_BODY =
+  "Start the trial and explore all of our resources, and join our community where you can ask questions. Demos open up after you enable the free trial.";
+const TRIAL_ITEMS = ["Apex University, all modules", "Ungating Roadmap", "First Suppliers", "Keepa Playbook"];
+const TRIAL_BODY = "All of it opens the moment you start the trial. Nothing to pay today, and the community is there for your questions.";
 
 function obstacleScene(obstacle: string) {
   switch (obstacle) {
@@ -223,23 +246,10 @@ function obstacleScene(obstacle: string) {
         </Scene>
       );
     case "Getting started":
-      return (
-        <Scene title="Starting is the hard part. We do it with you." body="Suppliers on day one, a catalog scanned for you, and the order built in the software while you watch.">
-          <RoadScene stops={ROAD_NEW} />
-        </Scene>
-      );
     case "Knowing the right steps":
-      return (
-        <Scene title="There are four steps, and they are in the software." body="Suppliers, catalog scan, shortlist, purchase order. Apex walks them in that order, and the demo shows you each one on a real catalog.">
-          <RoadScene stops={["Suppliers", "Catalog scan", "Shortlist", "Purchase order"]} />
-        </Scene>
-      );
+      return <OfferScene heading="What we give you today" items={TODAY_ITEMS} body={TODAY_BODY} />;
     case STARTER_KIT:
-      return (
-        <Scene title="Start with the $29 kit, then come back for the suppliers." body="The starter kit gets you researching and emailing suppliers today. When you are ready to place an order, Apex is here.">
-          <KitScene />
-        </Scene>
-      );
+      return <OfferScene heading="What you get just for starting the trial" items={TRIAL_ITEMS} body={TRIAL_BODY} />;
     default:
       return null;
   }
@@ -282,7 +292,7 @@ function StepCard({
                   </span>
                 )}
               </div>
-              <h2 className={`text-lg font-bold text-slate-900 sm:text-xl ${state === "active" ? "" : "truncate"}`}>{title}</h2>
+              <h2 className={`text-lg font-bold text-slate-900 sm:text-xl ${state === "active" ? "" : "truncate"} ${state === "locked" ? "select-none blur-[3px]" : ""}`} aria-hidden={state === "locked" || undefined}>{title}</h2>
               {state === "done" && summary && <p className="truncate text-sm text-slate-500">{summary}</p>}
             </div>
           </div>
@@ -397,7 +407,7 @@ export default function PopQualify() {
     setError(null);
     const attribution = readStoredAttribution();
     try {
-      const data = await post({
+      await post({
         stage: "complete",
         sellsOnAmazon: sells,
         obstacle,
@@ -421,8 +431,7 @@ export default function PopQualify() {
         keepalive: true,
       }).catch(() => {});
       const q = `utm_source=${encodeURIComponent(utm.utmSource)}&utm_medium=${encodeURIComponent(utm.utmMedium)}&utm_campaign=${encodeURIComponent(utm.utmCampaign)}`;
-      window.location.href =
-        data.next === "starter-kit" ? `${ORIGIN}/fba-starter-bundle?${q}` : `${ORIGIN}/auth?mode=signup&plan=free&${q}`;
+      window.location.href = `${ORIGIN}/auth?mode=signup&plan=free&${q}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setBusy(false);
@@ -515,7 +524,7 @@ export default function PopQualify() {
             <div className="mt-6 flex justify-end">
               {starterKit ? (
                 <button type="button" disabled={busy} onClick={finish} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                  {busy ? "One moment" : "Get the $29 Starter Kit"}
+                  {busy ? "One moment" : "Create my free account"}
                 </button>
               ) : (
                 <button type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">

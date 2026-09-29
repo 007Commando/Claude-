@@ -140,5 +140,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "We could not save your answers. Please try again." }, { status: 502 });
   }
 
-  return NextResponse.json({ next: starterKit ? "starter-kit" : "signup" });
+  /**
+   * Every path ends at the free account now, the under-$1,000 answer included:
+   * that visitor is shown what the trial hands over rather than sent to the
+   * $29 kit (Stefano, 2026-09-29). The pop-starter-kit tag stays so GHL can
+   * still tell the segment apart.
+   */
+  return NextResponse.json({ next: "signup" });
 }
