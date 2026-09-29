@@ -219,6 +219,42 @@ const TODAY_BODY =
 const TRIAL_ITEMS = ["Apex University, all modules", "Ungating Roadmap", "First Suppliers", "Keepa Playbook"];
 const TRIAL_BODY = "All of it opens the moment you start the trial. Nothing to pay today, and the community is there for your questions.";
 
+/**
+ * Step 3 opens by naming what they said they need most and telling them the
+ * solution is on the other side of the account. Stefano: "making them feel
+ * they are in the right steps".
+ */
+const SOLUTIONS: Record<string, { headline: string; sub: string }> = {
+  "Find profitable products": {
+    headline: "Finding profitable products is the right place to start.",
+    sub: "Your account opens with the catalog scanner: every line checked against real Amazon fees, so the products that clear margin stand out. The solution is one login away.",
+  },
+  "Find more suppliers": {
+    headline: "Finding more suppliers is what Apex does best.",
+    sub: "Three vetted US distributors are waiting inside your account, each with the named contact who approves resellers, and three more arrive every month.",
+  },
+  "Going brand direct": {
+    headline: "Going brand direct is the right move, and you are about to get the map.",
+    sub: "Gating checks before you write, every brand contact in one place, and the first order built in the software once you are approved.",
+  },
+  "Scale operations": {
+    headline: "Scaling operations is exactly what the platform was built for.",
+    sub: "Purchase orders that carry their own numbers, restocking, COGS and profit tracking, all in one place instead of spreadsheets.",
+  },
+  "Getting started": {
+    headline: "Getting started is the hardest part, and you are past it.",
+    sub: "Three suppliers, a practice catalog, the playbooks and the core videos are waiting inside your account, with the demo built around your first order.",
+  },
+  "Knowing the right steps": {
+    headline: "Knowing the right steps is about to stop being a problem.",
+    sub: "The steps are in the software, in order: suppliers, catalog scan, shortlist, purchase order. Apex University walks you through each one.",
+  },
+  [STARTER_KIT]: {
+    headline: "Starting with less than $1,000 is possible, and you are in the right place.",
+    sub: "Apex University, the ungating roadmap, your first suppliers and the Keepa playbook open with the trial. Nothing to pay today.",
+  },
+};
+
 function obstacleScene(obstacle: string) {
   switch (obstacle) {
     case "Find profitable products":
@@ -586,6 +622,19 @@ export default function PopQualify() {
 
           {/* Step 3: what happens next, and the one button. */}
           <StepCard number={3} title="Your Apex account is next" state={stateOf(3)}>
+            {obstacle && SOLUTIONS[obstacle] && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease }}
+                className="mb-5 rounded-2xl border border-blue-100 bg-blue-50/60 p-5"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">What you need help with most</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">{obstacles.find((o) => o.value === obstacle)?.title ?? obstacle}</p>
+                <h3 className="mt-3 text-lg font-bold leading-snug text-slate-900 sm:text-xl">{SOLUTIONS[obstacle].headline}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{SOLUTIONS[obstacle].sub}</p>
+              </motion.div>
+            )}
             <p className="text-base font-semibold leading-relaxed text-slate-900">
               We will send you into our platform, where you can watch how Apex grows Amazon businesses and book your demo from there.
             </p>
