@@ -48,7 +48,16 @@ Stefano decides what happens next). Sender "Stefano at Apex"
 
 ## The emails in GHL
 
-Created as **Email Builder templates by API** (plain-text style HTML, one
+**Correction, 2026-09-29.** GHL's workflow Send Email step does not keep a
+picked template: it reopens as Quick compose with an empty body, and a Test
+workflow run delivered SELLER_01 with only the unsubscribe footer. The bodies
+therefore live **inside each workflow step** (Quick compose → the editor's
+Source code dialog → the HTML from `out/<EMAIL_ID>.html`, typed in one go),
+which is how v1 was built. The 47 API templates remain as the copy source
+and preview, not as the send path; a copy change means regenerating
+`out/` with `build_templates.py` and re-pasting that one step.
+
+Originally planned as **Email Builder templates by API** (plain-text style HTML, one
 template per EMAIL_ID, named `Nurture v2 | <EMAIL_ID> | <subject>`), so the
 workflow builder work is choosing a template and typing a subject, not typing
 48 bodies. Templates are the editable source; a change to one template
