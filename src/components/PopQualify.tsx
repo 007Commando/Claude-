@@ -35,8 +35,6 @@ const ORIGIN = "https://www.apexapplications.io";
 
 type Sells = "Yes" | "No";
 const STARTER_KIT = "I have less than $1,000 for inventory";
-const TIMINGS = ["Today", "Tomorrow", "Next week"] as const;
-type Timing = (typeof TIMINGS)[number];
 
 type Card = { value: string; title: string; body: string; icon: LucideIcon };
 
@@ -359,7 +357,6 @@ export default function PopQualify() {
   const [phone, setPhone] = useState("");
   const [sells, setSells] = useState<Sells | null>(null);
   const [obstacle, setObstacle] = useState<string | null>(null);
-  const [timing, setTiming] = useState<Timing | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -373,7 +370,6 @@ export default function PopQualify() {
     [params],
   );
 
-  const starterKit = obstacle === STARTER_KIT;
   const obstacles = sells === "No" ? NEW_OBSTACLES : SELLER_OBSTACLES;
 
   const post = async (body: Record<string, unknown>) => {
@@ -411,7 +407,6 @@ export default function PopQualify() {
         stage: "complete",
         sellsOnAmazon: sells,
         obstacle,
-        demoTiming: starterKit ? undefined : (timing ?? "Today"),
       });
       window.fbq?.("track", "Lead", { content_name: "apex-pop-web" });
       fetch("/api/track", {
@@ -498,7 +493,6 @@ export default function PopQualify() {
                   onPick={() => {
                     setSells(j.value);
                     setObstacle(null);
-                    setTiming(null);
                   }}
                 />
               ))}
@@ -522,50 +516,30 @@ export default function PopQualify() {
 
             {error && step === 2 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
             <div className="mt-6 flex justify-end">
-              {starterKit ? (
-                <button type="button" disabled={busy} onClick={finish} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                  {busy ? "One moment" : "Create my free account"}
-                </button>
-              ) : (
-                <button type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                  Continue
-                </button>
-              )}
+              <button type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
+                Continue
+              </button>
             </div>
           </StepCard>
 
-          {/* Step 3: when, then the free account. Not on the kit path. */}
-          {!starterKit && (
-            <StepCard number={3} title="How soon do you want your free demo and setup?" summary={timing ?? undefined} state={stateOf(3)}>
-              <p className="mb-4 text-sm text-slate-500">We text you to set it up. The demo is a working session: your account, a real catalog, and an order built in it.</p>
-              <div className="grid gap-4 sm:grid-cols-3">
-                {TIMINGS.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTiming(t)}
-                    aria-pressed={timing === t}
-                    className={`rounded-2xl border-2 px-4 py-5 text-center text-lg font-bold transition-all ${timing === t ? "border-amber-700 bg-blue-50/40 text-blue-700 shadow-md" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-              <AnimatePresence mode="wait">
-                {timing && (
-                  <Scene key={timing} title={`${timing} it is.`} body="Your free account is next. Nothing to pay today; the software has a free state you can use while we set you up.">
-                    <PoScene />
-                  </Scene>
-                )}
-              </AnimatePresence>
-              {error && step === 3 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
-              <div className="mt-6 flex justify-end">
-                <button type="button" disabled={!timing || busy} onClick={finish} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                  {busy ? "One moment" : "Create my free account"}
-                </button>
-              </div>
-            </StepCard>
-          )}
+          {/* Step 3: the free account, and what has to happen on a computer. */}
+          <StepCard number={3} title="Create your Apex account to receive everything" state={stateOf(3)}>
+            <p className="text-base font-semibold text-slate-900">You will only receive everything as soon as you finish creating your Apex account.</p>
+            <div className="mt-4 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <span className="text-2xl leading-none" aria-hidden="true">
+                💻
+              </span>
+              <p className="text-sm leading-relaxed text-slate-700">
+                <strong className="text-slate-900">Catalogs must be analyzed on a computer.</strong> You can create the account from your phone now, and open Apex on a laptop or desktop when it is time to scan.
+              </p>
+            </div>
+            {error && step === 3 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
+            <div className="mt-6 flex justify-end">
+              <button type="button" disabled={busy} onClick={finish} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
+                {busy ? "One moment" : "Create my free account"}
+              </button>
+            </div>
+          </StepCard>
         </div>
       </section>
     </div>
