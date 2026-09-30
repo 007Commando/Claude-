@@ -20,6 +20,7 @@ import {
   parseOutreach,
   buildGhlUrl,
   toIso,
+  deriveActivation,
 } from "./model";
 
 /**
@@ -114,7 +115,12 @@ function resolveSource(
   return sourceFromTags(tags) ?? sourceFromAcquisition(acquisitionSource, acquisitionCampaign);
 }
 
-function buildApexJoin(member: ApexMember | undefined, mrrByEmail: Map<string, number>, trialOnlyCancelEmails: Set<string>): ApexJoin | null {
+function buildApexJoin(
+  member: ApexMember | undefined,
+  mrrByEmail: Map<string, number>,
+  trialOnlyCancelEmails: Set<string>,
+  churnReasonByEmail: Map<string, string>,
+): ApexJoin | null {
   if (!member) return null;
   const email = lower(member.email);
   return {
@@ -126,6 +132,7 @@ function buildApexJoin(member: ApexMember | undefined, mrrByEmail: Map<string, n
     planName: member.subscription?.plan ?? null,
     wasTrialOnlyCancel: trialOnlyCancelEmails.has(email),
     mrr: mrrByEmail.get(email) ?? 0,
+    churnReason: churnReasonByEmail.get(email) ?? null,
   };
 }
 
@@ -140,8 +147,9 @@ function buildLead(params: {
   apexMember: ApexMember | undefined;
   mrrByEmail: Map<string, number>;
   trialOnlyCancelEmails: Set<string>;
+  churnReasonByEmail: Map<string, string>;
 }): Lead {
-  const { primary, extraTags, extraFields, extraLeadAt, apexMember, mrrByEmail, trialOnlyCancelEmails } = params;
+  const { primary, extraTags, extraFields, extraLeadAt, apexMember, mrrByEmail, trialOnlyCancelEmails, churnReasonByEmail } = params;
 
   const isGhl = primary.kind === "ghl";
   const contact = primary.kind === "ghl" ? primary.contact : null;
@@ -169,10 +177,11 @@ function buildLead(params: {
   const obstacle = deriveObstacle(fields);
   const demoTiming = deriveDemoTiming(fields);
 
-  const apexJoin = buildApexJoin(apexMember ?? apexOnly ?? undefined, mrrByEmail, trialOnlyCancelEmails);
+  const apexJoin = buildApexJoin(apexMember ?? apexOnly ?? undefined, mrrByEmail, trialOnlyCancelEmails, churnReasonByEmail);
   const apexDerived = stageFromApex(apexJoin);
   const tagStage = isGhl ? stageFromTags(tags) : "lead";
   const stage = furthestStage(tagStage, apexDerived.stage);
+  const activation = deriveActivation(tags, (apexMember ?? apexOnly ?? undefined)?.activation, apexDerived.registeredAt);
 
   const outreach = parseOutreach(tags);
 
@@ -197,6 +206,7 @@ function buildLead(params: {
     trialEndsAt: apexDerived.trialEndsAt,
     customerSince: apexDerived.customerSince,
     churnedAt: apexDerived.churnedAt,
+    churnReason: apexDerived.churnReason,
     planName: apexDerived.planName,
     mrr: apexDerived.mrr,
     stage,
@@ -204,6 +214,7 @@ function buildLead(params: {
     lastOutreachAt: outreach.last,
     outreachCount: outreach.count,
     ghlUrl: buildGhlUrl(ghlLocation, ghlContactId),
+    activation,
   };
 }
 
@@ -246,6 +257,13 @@ async function build(): Promise<LeadsPayload> {
   for (const sub of stripe.subscriptions) {
     if (sub.customerEmail) mrrByEmail.set(lower(sub.customerEmail), sub.mrrContribution);
   }
+  // Stripe's cancelledTrials rows are the only place a cancellation reason is
+  // captured today — reused here by email even for a lead whose churn wasn't
+  // itself a trial-only cancel, since it's the sole source of this field.
+  const churnReasonByEmail = new Map<string, string>();
+  for (const t of stripe.cancelledTrials) {
+    if (t.customerEmail && t.cancellationReason) churnReasonByEmail.set(lower(t.customerEmail), t.cancellationReason);
+  }
 
   const apexByEmail = new Map<string, ApexMember>();
   for (const m of apexAccounts.accounts) apexByEmail.set(lower(m.email), m);
@@ -278,6 +296,7 @@ async function build(): Promise<LeadsPayload> {
       apexMember,
       mrrByEmail,
       trialOnlyCancelEmails,
+      churnReasonByEmail,
     });
     leads.push(lead);
     if (contact.email) consumedEmails.add(contact.email);
@@ -296,6 +315,7 @@ async function build(): Promise<LeadsPayload> {
       apexMember,
       mrrByEmail,
       trialOnlyCancelEmails,
+      churnReasonByEmail,
     });
     // Standalone PrimeWell-location leads are PrimeWell leads by definition,
     // per spec, regardless of what (if any) tags/acquisition otherwise resolved to.
@@ -318,6 +338,7 @@ async function build(): Promise<LeadsPayload> {
       apexMember: member,
       mrrByEmail,
       trialOnlyCancelEmails,
+      churnReasonByEmail,
     });
     leads.push(lead);
     consumedEmails.add(email);

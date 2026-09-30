@@ -20,6 +20,25 @@ export type SellerType = "selling" | "beginner" | "unknown";
 
 export type Stage = "lead" | "registered" | "trial" | "customer" | "churned";
 
+/**
+ * Activation milestones — how far a lead has actually gotten into the
+ * product, independent of `stage` (which tracks the sales/billing funnel).
+ * The two tag-based booleans are filled from the contact's GHL tags in
+ * build.ts; the rest comes from the backend marketing API (ApexMember.activation
+ * in src/lib/dashboard/apex.ts) and defaults to nulls/0 until that ships.
+ */
+export interface LeadActivation {
+  /** GHL tag `catalog-sent` — Aliza's "send vendor catalog" workflow fired. */
+  vendorEmailSent: boolean;
+  /** GHL tag `vendor-catalog-request`. */
+  vendorEmailRequested: boolean;
+  firstScanAt: string | null;
+  scans: number;
+  databaseProducts: number;
+  databaseUpdatedAt: string | null;
+  amazonConnectedAt: string | null;
+}
+
 export interface Lead {
   /** GHL contact id, or `acct:<apexAccountId>` when the lead exists only as an Apex account. */
   id: string;
@@ -39,6 +58,7 @@ export interface Lead {
   trialEndsAt: string | null;
   customerSince: string | null;
   churnedAt: string | null;
+  churnReason: string | null;
   planName: string | null;
   mrr: number;
   stage: Stage;
@@ -46,6 +66,7 @@ export interface Lead {
   lastOutreachAt: string | null;
   outreachCount: number;
   ghlUrl: string | null;
+  activation: LeadActivation;
 }
 
 export const STAGE_RANK: Record<Stage, number> = {
@@ -150,6 +171,61 @@ export function deriveSellerType(fields: Record<string, string>, tags: string[],
   return "unknown";
 }
 
+/**
+ * The four activation-related GHL tags/fields, in priority order — the
+ * highest one reached is what colours a card/row border (see
+ * apex-app leadDesk.css and LeadCard/LeadTable). Not every lead reaches
+ * "emailed" first (an Apex-only signup with no GHL contact can jump straight
+ * to "connected"), so this checks highest-first rather than walking forward.
+ */
+export type ActivationTier = "connected" | "database" | "scanned" | "emailed";
+
+export function activationTier(activation: LeadActivation): ActivationTier | null {
+  if (activation.amazonConnectedAt) return "connected";
+  if (activation.databaseProducts > 0) return "database";
+  if (activation.firstScanAt) return "scanned";
+  if (activation.vendorEmailSent) return "emailed";
+  return null;
+}
+
+/** What the backend marketing API knows about one member's in-app activation — see ApexMember.activation. */
+export interface ApexActivation {
+  amazonConnectedAt: string | null;
+  firstScanAt: string | null;
+  scans: number;
+  databaseProducts: number;
+  databaseUpdatedAt: string | null;
+}
+
+/**
+ * Builds a lead's activation record from its GHL tags and (when it exists)
+ * the matching Apex member's own activation data. `registeredAt` is the
+ * lead's already-derived account-created date, used as the fallback below.
+ *
+ * The `stage:amazon-connected` tag means "connected" even when the backend
+ * hasn't reported an amazonConnectedAt yet (API field ships in parallel with
+ * this) — in that case the account's registeredAt stands in for the real
+ * connection date, since GHL doesn't carry one.
+ */
+export function deriveActivation(
+  tags: string[],
+  apexActivation: ApexActivation | null | undefined,
+  registeredAt: string | null,
+): LeadActivation {
+  const vendorEmailSent = tags.includes("catalog-sent");
+  const vendorEmailRequested = tags.includes("vendor-catalog-request");
+  const amazonConnectedFallback = tags.includes("stage:amazon-connected") ? registeredAt : null;
+  return {
+    vendorEmailSent,
+    vendorEmailRequested,
+    firstScanAt: apexActivation?.firstScanAt ?? null,
+    scans: apexActivation?.scans ?? 0,
+    databaseProducts: apexActivation?.databaseProducts ?? 0,
+    databaseUpdatedAt: apexActivation?.databaseUpdatedAt ?? null,
+    amazonConnectedAt: apexActivation?.amazonConnectedAt ?? amazonConnectedFallback,
+  };
+}
+
 export function deriveObstacle(fields: Record<string, string>): string | null {
   return fields["biggest_obstacle_seller"] || fields["biggest_obstacle_new"] || null;
 }
@@ -214,6 +290,8 @@ export interface ApexJoin {
    * so it should NOT count as churn, just as "didn't convert". */
   wasTrialOnlyCancel: boolean;
   mrr: number;
+  /** Stripe's cancellation reason for this email, when known — see build.ts. */
+  churnReason: string | null;
 }
 
 export interface ApexDerived {
@@ -223,6 +301,7 @@ export interface ApexDerived {
   trialEndsAt: string | null;
   customerSince: string | null;
   churnedAt: string | null;
+  churnReason: string | null;
   planName: string | null;
   mrr: number;
 }
@@ -234,6 +313,7 @@ const EMPTY_APEX_DERIVED: ApexDerived = {
   trialEndsAt: null,
   customerSince: null,
   churnedAt: null,
+  churnReason: null,
   planName: null,
   mrr: 0,
 };
@@ -272,6 +352,7 @@ export function stageFromApex(apex: ApexJoin | null): ApexDerived {
       registeredAt: apex.createdAt,
       customerSince: apex.since,
       churnedAt: apex.currentPeriodEnd ?? apex.since,
+      churnReason: apex.churnReason,
       planName: apex.planName,
     };
   }

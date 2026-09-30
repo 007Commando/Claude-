@@ -32,6 +32,19 @@ export interface ApexMember {
     trialEnd: string | null;
     currentPeriodEnd: string | null;
   } | null;
+  /**
+   * In-app activation milestones — being added to this endpoint in parallel
+   * with Lead Desk's own activation UI (see src/lib/leads/model.ts). Absent
+   * until that ships, so every reader treats it as optional and defaults to
+   * nulls/0 rather than crashing.
+   */
+  activation?: {
+    amazonConnectedAt: string | null;
+    firstScanAt: string | null;
+    scans: number;
+    databaseProducts: number;
+    databaseUpdatedAt: string | null;
+  };
 }
 
 export interface ApexMembersResult {
