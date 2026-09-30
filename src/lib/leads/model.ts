@@ -326,12 +326,18 @@ const EMPTY_APEX_DERIVED: ApexDerived = {
 export function stageFromApex(apex: ApexJoin | null): ApexDerived {
   if (!apex) return EMPTY_APEX_DERIVED;
   const status = apex.subscriptionStatus;
+  // Stripe keeps trial_end on a subscription after the trial converts, so a
+  // paid subscription with a trial started at `since` (subscription created)
+  // and first paid at trial_end. Without a trial, `since` is the first charge.
+  const hadTrial = Boolean(apex.trialEnd && apex.since && apex.trialEnd > apex.since);
+  const trialStartedAt = hadTrial ? apex.since : null;
+  const paidFrom = hadTrial ? apex.trialEnd : apex.since;
   if (status === "trialing") {
     return {
       ...EMPTY_APEX_DERIVED,
       stage: "trial",
       registeredAt: apex.createdAt,
-      trialStartedAt: apex.createdAt,
+      trialStartedAt: apex.since ?? apex.createdAt,
       trialEndsAt: apex.trialEnd,
     };
   }
@@ -340,7 +346,9 @@ export function stageFromApex(apex: ApexJoin | null): ApexDerived {
       ...EMPTY_APEX_DERIVED,
       stage: "customer",
       registeredAt: apex.createdAt,
-      customerSince: apex.since,
+      trialStartedAt,
+      trialEndsAt: hadTrial ? apex.trialEnd : null,
+      customerSince: paidFrom,
       planName: apex.planName,
       mrr: apex.mrr,
     };
@@ -350,7 +358,9 @@ export function stageFromApex(apex: ApexJoin | null): ApexDerived {
       ...EMPTY_APEX_DERIVED,
       stage: "churned",
       registeredAt: apex.createdAt,
-      customerSince: apex.since,
+      trialStartedAt,
+      trialEndsAt: hadTrial ? apex.trialEnd : null,
+      customerSince: paidFrom,
       churnedAt: apex.currentPeriodEnd ?? apex.since,
       churnReason: apex.churnReason,
       planName: apex.planName,

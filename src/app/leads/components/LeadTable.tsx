@@ -17,6 +17,8 @@ import type { TableSort } from "./useLeadFilters";
 import ColumnChooser from "./ColumnChooser";
 
 const ROW_HEIGHT = 32;
+import { accountToTrialMs, fmtDuration, leadAgeMs, leadToAccountMs, leadToPaidMs, trialToPaidMs } from "./shared";
+
 const STORAGE_KEY = "leadDesk.tableColumns.v1";
 
 type FilterKind = "text" | "select" | "date";
@@ -170,6 +172,46 @@ const COLUMNS: ColumnSpec[] = [
     width: 80,
     text: (l) => (l.mrr > 0 ? money(l.mrr) : "—"),
     sortValue: (l) => l.mrr,
+  },
+  {
+    id: "leadAge",
+    label: "Lead age",
+    kind: "text",
+    width: 80,
+    text: (l) => { const v = leadAgeMs(l); return v == null ? "—" : fmtDuration(v); },
+    sortValue: (l) => leadAgeMs(l) ?? -1,
+  },
+  {
+    id: "leadToAccount",
+    label: "Lead → account",
+    kind: "text",
+    width: 100,
+    text: (l) => { const v = leadToAccountMs(l); return v == null ? "—" : fmtDuration(v); },
+    sortValue: (l) => leadToAccountMs(l) ?? -1,
+  },
+  {
+    id: "accountToTrial",
+    label: "Account → trial",
+    kind: "text",
+    width: 100,
+    text: (l) => { const v = accountToTrialMs(l); return v == null ? "—" : fmtDuration(v); },
+    sortValue: (l) => accountToTrialMs(l) ?? -1,
+  },
+  {
+    id: "trialToPaid",
+    label: "Trial → paid",
+    kind: "text",
+    width: 90,
+    text: (l) => { const v = trialToPaidMs(l); return v == null ? "—" : fmtDuration(v); },
+    sortValue: (l) => trialToPaidMs(l) ?? -1,
+  },
+  {
+    id: "leadToPaid",
+    label: "Lead → paid",
+    kind: "text",
+    width: 90,
+    text: (l) => { const v = leadToPaidMs(l); return v == null ? "—" : fmtDuration(v); },
+    sortValue: (l) => leadToPaidMs(l) ?? -1,
   },
   {
     id: "lastOutreachAt",

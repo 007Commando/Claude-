@@ -744,11 +744,42 @@
 }
 
 .ld-card-line2 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   color: var(--ld-text-muted);
   white-space: nowrap;
   overflow: hidden;
+}
+.ld-card-line2-text {
+  overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+}
+.ld-time-tag {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ld-text-muted, #6b7280);
+  background: var(--ld-surface-muted, #f1f5f9);
+  border: 1px solid var(--ld-border, #e5e7eb);
+}
+.ld-time-tag-jump {
+  color: var(--jump, #2563eb);
+  background: color-mix(in srgb, var(--jump, #2563eb) 9%, white);
+  border-color: color-mix(in srgb, var(--jump, #2563eb) 30%, white);
+}
+.ld-time-tag-total {
+  color: #15803d;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
 }
 
 .ld-tag {

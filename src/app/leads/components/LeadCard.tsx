@@ -6,10 +6,13 @@ import { activationTier } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
-  daysInStageLabel,
   fmtDateShort,
+  fmtDuration,
   isRecentLead,
   lastOutreachLabel,
+  leadAgeMs,
+  leadToPaidMs,
+  stageJump,
   money,
   stageColorVar,
   trialEndLabel,
@@ -46,8 +49,11 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
 ) {
   const identity = lead.name || lead.email || "Unknown";
   const suffix = stageSuffix(lead);
-  const line2Parts = [daysInStageLabel(lead), lastOutreachLabel(lead.lastOutreachAt)];
+  const line2Parts = [lastOutreachLabel(lead.lastOutreachAt)];
   if (suffix) line2Parts.push(suffix);
+  const age = leadAgeMs(lead);
+  const jump = stageJump(lead);
+  const total = lead.stage === "customer" ? leadToPaidMs(lead) : null;
 
   const tier = activationTier(lead.activation);
   const cardStyle: React.CSSProperties = tier
@@ -78,7 +84,24 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
         <SourceLogo source={lead.source} />
         {lead.sellerType !== "unknown" && <span className="ld-tag">{SELLER_TYPE_LABELS[lead.sellerType]}</span>}
       </div>
-      <div className="ld-card-line2">{line2Parts.join(" · ")}</div>
+      <div className="ld-card-line2">
+        {age != null && (
+          <span className="ld-time-tag" title={`Lead since ${fmtDateShort(lead.leadAt)} (${fmtDuration(age)} ago)`}>
+            {fmtDuration(age)}
+          </span>
+        )}
+        {jump && (
+          <span className="ld-time-tag ld-time-tag-jump" style={{ ["--jump" as string]: stageColorVar(lead.stage) }} title={jump.title}>
+            → {jump.label}
+          </span>
+        )}
+        {total != null && (
+          <span className="ld-time-tag ld-time-tag-total" title={`Lead to paid in ${fmtDuration(total)}`}>
+            Σ {fmtDuration(total)}
+          </span>
+        )}
+        <span className="ld-card-line2-text">{line2Parts.join(" · ")}</span>
+      </div>
     </div>
   );
 });

@@ -1,5 +1,6 @@
 "use client";
 
+import { fmtDuration, spanMs } from "./shared";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, X } from "lucide-react";
 import type { ActivationTier, Lead, Stage } from "../../../lib/leads/model";
@@ -205,7 +206,14 @@ export default function LeadDrawer({
                     </div>
                     <div>
                       <div className="ld-timeline-label">{step.label}</div>
-                      <div className="ld-timeline-date">{reached ? fmtDate(date) : "Not reached"}</div>
+                      <div className="ld-timeline-date">
+                        {reached ? fmtDate(date) : "Not reached"}
+                        {reached && i > 0 && (() => {
+                          const prev = TIMELINE.slice(0, i).reverse().map((s) => s.getDate(lead)).find(Boolean) ?? null;
+                          const ms = spanMs(prev, date);
+                          return ms == null ? null : <span className="ld-time-tag ld-time-tag-jump" style={{ marginLeft: 6 }}>+{fmtDuration(ms)}</span>;
+                        })()}
+                      </div>
                       {step.stage === "churned" && lead.churnReason && <div className="ld-timeline-date">{lead.churnReason}</div>}
                     </div>
                   </div>

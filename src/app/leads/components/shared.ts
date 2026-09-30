@@ -197,3 +197,66 @@ export function outreachDates(tags: string[]): string[] {
     .sort()
     .reverse();
 }
+
+
+// ---------------------------------------------------------------------------
+// Sales-cycle timing (Stefano, 2026-09-30): how long since someone became a
+// lead, and how long each jump to the next stage took.
+// ---------------------------------------------------------------------------
+
+/** Compact duration: 12m, 5h, 3d, 45d, 4mo. */
+export function fmtDuration(ms: number): string {
+  const min = ms / 60_000;
+  if (min < 1) return "<1m";
+  if (min < 60) return `${Math.round(min)}m`;
+  const h = min / 60;
+  if (h < 24) return `${Math.round(h)}h`;
+  const d = h / 24;
+  if (d < 90) return `${Math.round(d)}d`;
+  return `${Math.round(d / 30.4)}mo`;
+}
+
+/** Milliseconds from a to b, or null when either is missing or b is before a (bad data, e.g. a customer added to GHL after paying). */
+export function spanMs(a: string | null | undefined, b: string | null | undefined): number | null {
+  if (!a || !b) return null;
+  const ms = new Date(b).getTime() - new Date(a).getTime();
+  if (Number.isNaN(ms) || ms < 0) return null;
+  return ms;
+}
+
+export function leadToAccountMs(l: Lead): number | null {
+  // Account-only people (no separate lead record) have leadAt = account date; no jump to show.
+  if (l.id.startsWith("acct:")) return null;
+  return spanMs(l.leadAt, l.registeredAt);
+}
+export function accountToTrialMs(l: Lead): number | null {
+  return spanMs(l.registeredAt, l.trialStartedAt);
+}
+export function trialToPaidMs(l: Lead): number | null {
+  return spanMs(l.trialStartedAt, l.customerSince);
+}
+export function leadToPaidMs(l: Lead): number | null {
+  return spanMs(l.leadAt, l.customerSince);
+}
+
+/** Time since the person became a lead in the CRM. */
+export function leadAgeMs(l: Lead, now: number = Date.now()): number | null {
+  return spanMs(l.leadAt, new Date(now).toISOString());
+}
+
+/** The jump that brought the lead into its current stage, for the card's second tag. */
+export function stageJump(l: Lead): { label: string; title: string } | null {
+  const make = (ms: number | null, title: string) => (ms == null ? null : { label: fmtDuration(ms), title: `${title} ${fmtDuration(ms)}` });
+  switch (l.stage) {
+    case "registered":
+      return make(leadToAccountMs(l), "Lead to account in");
+    case "trial":
+      return make(accountToTrialMs(l) ?? spanMs(l.leadAt, l.trialStartedAt), "Account to trial in");
+    case "customer":
+      return make(trialToPaidMs(l) ?? leadToPaidMs(l), "Trial to paid in");
+    case "churned":
+      return make(spanMs(l.customerSince ?? l.trialStartedAt, l.churnedAt), "Stayed");
+    default:
+      return null;
+  }
+}
