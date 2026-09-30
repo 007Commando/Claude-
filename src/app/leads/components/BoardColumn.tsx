@@ -22,6 +22,11 @@ interface BoardColumnProps {
   style?: React.CSSProperties;
   dragAttributes?: React.HTMLAttributes<HTMLElement>;
   dragListeners?: Record<string, unknown>;
+  /** Sub-column (activation milestone inside "Account, no trial"): own title and colour, no sort menu, not draggable. */
+  subTitle?: string;
+  subColor?: string;
+  /** Extra control rendered at the right of the header, e.g. the expand toggle. */
+  headerExtra?: React.ReactNode;
 }
 
 function useOutsideClose(onClose: () => void) {
@@ -149,6 +154,9 @@ export default function BoardColumn({
   style,
   dragAttributes,
   dragListeners,
+  subTitle,
+  subColor,
+  headerExtra,
 }: BoardColumnProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -189,15 +197,16 @@ export default function BoardColumn({
   };
 
   return (
-    <div className="ld-board-col" ref={setNodeRef} style={style}>
-      <div className="ld-board-col-header" {...dragAttributes} {...dragListeners}>
-        <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />
-        <span className="ld-board-col-dot" style={{ background: stageColorVar(stage) }} />
-        <span className="ld-board-col-name">{STAGE_SHORT_LABELS[stage]}</span>
+    <div className={subTitle ? "ld-board-col ld-board-col-sub" : "ld-board-col"} ref={setNodeRef} style={style}>
+      <div className="ld-board-col-header" {...dragAttributes} {...dragListeners} style={subTitle ? { cursor: "default" } : undefined}>
+        {!subTitle && <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />}
+        <span className="ld-board-col-dot" style={{ background: subColor ?? stageColorVar(stage) }} />
+        <span className="ld-board-col-name">{subTitle ?? STAGE_SHORT_LABELS[stage]}</span>
         <span className="ld-board-col-count">{leads.length}</span>
         <div className="ld-board-col-header-actions">
-          {stage === "churned" && <ReasonsMenu leads={leads} />}
-          <SortMenu stage={stage} sortKey={sortKey} onSetSort={onSetSort} />
+          {stage === "churned" && !subTitle && <ReasonsMenu leads={leads} />}
+          {!subTitle && <SortMenu stage={stage} sortKey={sortKey} onSetSort={onSetSort} />}
+          {headerExtra}
         </div>
       </div>
       <SourceSplit leads={leads} />

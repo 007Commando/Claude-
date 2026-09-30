@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, horizontalListSortingStrategy, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -10,6 +11,18 @@ import { sortBoardColumn, type BoardSortKey, type LeadFilters } from "./useLeadF
 import BoardColumn from "./BoardColumn";
 
 const COLUMN_ORDER_KEY = "leadDesk.boardColumnOrder.v1";
+const EXPANDED_KEY = "leadDesk.accountExpanded.v1";
+
+/**
+ * Activation milestones shown as extra columns next to "Account, no trial"
+ * when it is expanded (Stefano, 2026-09-30). A lead sits in every milestone
+ * it has reached, so the same person can appear in several columns.
+ */
+const ACTIVATION_SUBCOLUMNS: { key: string; title: string; color: string; test: (l: Lead) => boolean }[] = [
+  { key: "vendor", title: "Vendor email", color: "#eab308", test: (l) => l.activation.vendorEmailSent },
+  { key: "scan", title: "First scan", color: "#16a34a", test: (l) => Boolean(l.activation.firstScanAt) },
+  { key: "database", title: "Database", color: "#2563eb", test: (l) => l.activation.databaseProducts > 0 },
+];
 
 function loadColumnOrder(): Stage[] {
   if (typeof window === "undefined") return STAGES;
@@ -32,6 +45,7 @@ function SortableBoardColumn(props: {
   onSetSort: (stage: Stage, key: BoardSortKey | null) => void;
   selectedLeadId: string | null;
   onSelectLead: (lead: Lead) => void;
+  headerExtra?: React.ReactNode;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: props.stage });
   return (
@@ -57,10 +71,28 @@ export default function Board({
   onSelectLead: (lead: Lead) => void;
 }) {
   const [columnOrder, setColumnOrder] = useState<Stage[]>(STAGES);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     setColumnOrder(loadColumnOrder());
+    try {
+      setExpanded(window.localStorage.getItem(EXPANDED_KEY) === "1");
+    } catch {
+      // localStorage unavailable: starts collapsed.
+    }
   }, []);
+
+  const toggleExpanded = () => {
+    setExpanded((prev) => {
+      const next = !prev;
+      try {
+        window.localStorage.setItem(EXPANDED_KEY, next ? "1" : "0");
+      } catch {
+        // not persisted
+      }
+      return next;
+    });
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -95,15 +127,47 @@ export default function Board({
       <SortableContext items={columnOrder} strategy={horizontalListSortingStrategy}>
         <div className="ld-board">
           {columnOrder.map((stage) => (
-            <SortableBoardColumn
-              key={stage}
-              stage={stage}
-              leads={sortedByStage[stage]}
-              sortKey={filters.boardSort[stage]}
-              onSetSort={filters.setBoardSort}
-              selectedLeadId={selectedLeadId}
-              onSelectLead={onSelectLead}
-            />
+            <Fragment key={stage}>
+              <SortableBoardColumn
+                stage={stage}
+                leads={sortedByStage[stage]}
+                sortKey={filters.boardSort[stage]}
+                onSetSort={filters.setBoardSort}
+                selectedLeadId={selectedLeadId}
+                onSelectLead={onSelectLead}
+                headerExtra={
+                  stage === "registered" ? (
+                    <button
+                      type="button"
+                      className="ld-icon-btn ld-expand-btn"
+                      data-active={expanded}
+                      title={expanded ? "Hide activation" : "Show activation"}
+                      aria-label={expanded ? "Hide activation columns" : "Show activation columns"}
+                      aria-expanded={expanded}
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={toggleExpanded}
+                    >
+                      {expanded ? <ChevronsLeft size={13} /> : <ChevronsRight size={13} />}
+                    </button>
+                  ) : undefined
+                }
+              />
+              {stage === "registered" &&
+                expanded &&
+                ACTIVATION_SUBCOLUMNS.map((sub) => (
+                  <BoardColumn
+                    key={sub.key}
+                    stage="registered"
+                    subTitle={sub.title}
+                    subColor={sub.color}
+                    leads={sortedByStage.registered.filter(sub.test)}
+                    sortKey={filters.boardSort.registered}
+                    onSetSort={filters.setBoardSort}
+                    selectedLeadId={selectedLeadId}
+                    onSelectLead={onSelectLead}
+                  />
+                ))}
+            </Fragment>
           ))}
         </div>
       </SortableContext>
