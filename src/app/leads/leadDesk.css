@@ -1787,3 +1787,20 @@
   border-radius: 2px;
   display: inline-block;
 }
+
+/* Activation sub-columns inside "Account, no trial" */
+.ld-board-col-sub {
+  background: var(--ld-surface-muted, #f8fafc);
+  border-style: dashed;
+}
+.ld-board-col-sub .ld-board-col-header {
+  background: var(--ld-surface-muted, #f8fafc);
+}
+.ld-expand-btn[data-active="true"] {
+  color: var(--color-brand, #2563eb);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.ld-board-col-name {
+  min-width: 56px;
+}
