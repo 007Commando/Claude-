@@ -25,6 +25,17 @@ interface CheckoutHandoff {
   publishableKey: string;
   plan: string;
   period: string;
+  /**
+   * Set when the backend sold the $1 week instead of seven free days: the
+   * figures come from the same Stripe prices the session charges.
+   */
+  paidTrial?: {
+    days: number;
+    price: number;
+    plan: string;
+    thenPrice: number;
+    endsOn: string;
+  } | null;
 }
 
 /**
@@ -67,6 +78,7 @@ export default function Checkout() {
   );
 
   const planLabel = PLAN_LABELS[handoff?.plan || "starter"] || "Apex";
+  const week = handoff?.paidTrial ?? null;
   const periodLabel = handoff?.period === "yearly" ? "Billed yearly" : "Billed monthly";
 
   return (
@@ -87,10 +99,12 @@ export default function Checkout() {
           {/* Card form — Stripe's, inside our page */}
           <div>
             <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-              Start your free trial
+              {week ? "Start your $1 week" : "Start your free trial"}
             </h1>
             <p className="mt-2 text-slate-500">
-              {planLabel} · 7 days free · nothing charged today
+              {week
+                ? `${planLabel} · $${week.price} for ${week.days} days · then $${week.thenPrice}/month`
+                : `${planLabel} · 7 days free · nothing charged today`}
             </p>
 
             <div className="mt-8 min-h-[30rem] rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.15)]">
@@ -151,15 +165,45 @@ export default function Checkout() {
                   Due today
                 </span>
                 <span className="text-2xl font-black tabular-nums text-slate-900">
-                  $0.00
+                  {week ? `$${week.price.toFixed(2)}` : "$0.00"}
                 </span>
               </div>
             </div>
 
-            <TrialTimeline
-              plan={handoff?.plan || "starter"}
-              period={handoff?.period || "monthly"}
-            />
+            {week ? (
+              <ol className="space-y-4 rounded-2xl border border-slate-200 p-5">
+                <li>
+                  <p className="text-sm font-black text-slate-900">Today</p>
+                  <p className="text-sm text-slate-500">
+                    ${week.price} for your first {week.days} days. Everything
+                    in {week.plan} is unlocked.
+                  </p>
+                </li>
+                <li>
+                  <p className="text-sm font-black text-slate-900">
+                    Any day before {week.endsOn}
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    Not for you? Cancel from your dashboard and we refund your
+                    ${week.price}.
+                  </p>
+                </li>
+                <li>
+                  <p className="text-sm font-black text-slate-900">
+                    {week.endsOn}
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    {week.plan} continues at ${week.thenPrice}/month. We email
+                    you the day before.
+                  </p>
+                </li>
+              </ol>
+            ) : (
+              <TrialTimeline
+                plan={handoff?.plan || "starter"}
+                period={handoff?.period || "monthly"}
+              />
+            )}
           </aside>
         </div>
       </div>

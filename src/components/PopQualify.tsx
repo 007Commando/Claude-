@@ -20,6 +20,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
+import { DOLLAR_WEEK } from "../config/offer";
 
 /**
  * The website arm of the Apex Pop A/B, in the PrimeWell application's shape:
@@ -439,6 +440,12 @@ export default function PopQualify() {
 
   const obstacles = sells === "No" ? NEW_OBSTACLES : SELLER_OBSTACLES;
 
+  /**
+   * The $1 week: live when DOLLAR_WEEK.live flips (with the live Stripe
+   * price), and previewable before that with ?dollarweek=1.
+   */
+  const dollarWeek = DOLLAR_WEEK.live || params.get("dollarweek") === "1";
+
   const post = async (body: Record<string, unknown>) => {
     const res = await fetch("/api/pop-qualify", {
       method: "POST",
@@ -474,6 +481,7 @@ export default function PopQualify() {
         stage: "complete",
         sellsOnAmazon: sells,
         obstacle,
+        ...(dollarWeek ? { offer: "dollar-week" } : {}),
       });
       window.fbq?.("track", "Lead", { content_name: "apex-pop-web" });
       fetch("/api/track", {
@@ -501,7 +509,9 @@ export default function PopQualify() {
       try {
         sessionStorage.setItem(SIGNUP_PREFILL_KEY, JSON.stringify({ name, email }));
       } catch {}
-      window.location.href = `${ORIGIN}/auth?mode=signup&plan=free&${q}`;
+      window.location.href = dollarWeek
+        ? `${ORIGIN}/auth?mode=signup&plan=${DOLLAR_WEEK.plan}&period=${DOLLAR_WEEK.period}&offer=${DOLLAR_WEEK.offer}&${q}`
+        : `${ORIGIN}/auth?mode=signup&plan=free&${q}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setBusy(false);
@@ -621,7 +631,7 @@ export default function PopQualify() {
           </StepCard>
 
           {/* Step 3: what happens next, and the one button. */}
-          <StepCard number={3} title="Your Apex account is next" state={stateOf(3)}>
+          <StepCard number={3} title={dollarWeek ? `Start your first week for $${DOLLAR_WEEK.price}` : "Your Apex account is next"} state={stateOf(3)}>
             {obstacle && SOLUTIONS[obstacle] && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -634,6 +644,20 @@ export default function PopQualify() {
                 <h3 className="mt-3 text-lg font-bold leading-snug text-slate-900 sm:text-xl">{SOLUTIONS[obstacle].headline}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{SOLUTIONS[obstacle].sub}</p>
               </motion.div>
+            )}
+            {dollarWeek && (
+              <div className="mb-5">
+                <p className="flex items-baseline gap-2">
+                  <span className="text-4xl font-black tracking-tight text-slate-900">${DOLLAR_WEEK.price}</span>
+                  <span className="text-base font-semibold text-slate-600">for your first {DOLLAR_WEEK.days} days of Apex {DOLLAR_WEEK.planLabel}</span>
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  Then ${DOLLAR_WEEK.thenPrice}/month. Cancel before day {DOLLAR_WEEK.days} and we refund your ${DOLLAR_WEEK.price}.
+                </p>
+                <p className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800">
+                  Not for you? Cancel from your dashboard by day {DOLLAR_WEEK.days} and your dollar comes back.
+                </p>
+              </div>
             )}
             <p className="text-base font-semibold leading-relaxed text-slate-900">
               We will send you into our platform, where you can watch how Apex grows Amazon businesses and book your demo from there.
@@ -655,8 +679,9 @@ export default function PopQualify() {
             {error && step === 3 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
             <div className="mt-6">
               <button type="button" disabled={busy} onClick={finish} className="w-full rounded-xl bg-blue-600 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                {busy ? "One moment" : "Create my Apex account"}
+                {busy ? "One moment" : dollarWeek ? `Create my account and start for $${DOLLAR_WEEK.price}` : "Create my Apex account"}
               </button>
+              {dollarWeek && <p className="mt-2 text-center text-xs text-slate-500">Two quick steps: your account, then the ${DOLLAR_WEEK.price} checkout.</p>}
             </div>
           </StepCard>
         </div>

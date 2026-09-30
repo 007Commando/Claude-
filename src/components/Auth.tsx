@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import TrialTimeline from "./TrialTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
+import { DOLLAR_WEEK } from "../config/offer";
 import { motion } from "motion/react";
 import { z } from "zod";
 import Link from "next/link";
@@ -73,6 +74,7 @@ declare global {
         password: string;
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
+        offer?: string;
         /** Hold the redirect so the code screen can run first. */
         deferRedirect?: boolean;
         /** Where they came from, captured on landing; kept on the account. */
@@ -96,6 +98,7 @@ declare global {
       signInWithGoogle?: (opts?: {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
+        offer?: string;
         acquisition?: { source: string; medium?: string; campaign?: string };
       }) => Promise<{
         adoptionStatus?: "adopted" | "duplicate" | "ignored" | null;
@@ -417,6 +420,13 @@ export default function Auth() {
   // arrive in it from here.
   const planParam = params.get("plan");
   const isFreeSignup = planParam === "free";
+  /**
+   * The $1 week, asked for by the Apex Pop qualifier. Passed through to the
+   * backend, which sells it where the live price exists and otherwise falls
+   * back to the plan's free days; see DOLLAR_WEEK in config/offer.
+   */
+  const isDollarWeek = !isFreeSignup && params.get("offer") === DOLLAR_WEEK.offer;
+  const offerOpt = isDollarWeek ? { offer: DOLLAR_WEEK.offer } : {};
   const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "starter";
   const periodParam = params.get("period");
   const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
@@ -719,6 +729,7 @@ export default function Auth() {
             email: parsed.data.email,
             password: parsed.data.password,
             ...(isFreeSignup ? {} : { plan: planTier, period }),
+            ...offerOpt,
             ...acquisitionFromLanding(),
             // Held so the code screen runs between making the account and
             // entering it. Where the signup was going travels back untouched.
@@ -884,6 +895,7 @@ export default function Auth() {
       const result = await withAuthRetry(() =>
         auth.signInWithGoogle!({
           ...(isFreeSignup ? {} : { plan: planTier, period }),
+          ...offerOpt,
           ...acquisitionFromLanding(),
         }),
       );
@@ -961,7 +973,11 @@ export default function Auth() {
     mode === "signup"
       ? isPrepaid
         ? "Your trial has started — this is the last step"
-        : "Start your free trial today"
+        : isDollarWeek
+          ? "Step 1 of 2. Next: your $1 week."
+          : isFreeSignup
+            ? "Your free Apex account"
+            : "Start your free trial today"
       : mode === "forgot"
         ? "We'll email you a reset link"
         : "Log in to your Apex dashboard";
@@ -969,7 +985,11 @@ export default function Auth() {
     mode === "signup"
       ? isPrepaid
         ? "Create account"
-        : "Start free trial"
+        : isDollarWeek
+          ? "Continue to my $1 week"
+          : isFreeSignup
+            ? "Create my free account"
+            : "Start free trial"
       : mode === "forgot"
         ? "Send reset link"
         : "Log in";
@@ -1003,7 +1023,7 @@ export default function Auth() {
               order without leaving the tab.
             </p>
 
-            {mode === "signup" && !isFreeSignup && (
+            {mode === "signup" && !isFreeSignup && !isDollarWeek && (
               <div className="mt-10 max-w-lg">
                 <TrialTimeline plan={planTier} period={period} />
               </div>
@@ -1251,10 +1271,18 @@ export default function Auth() {
                           Card saved. Nothing else to pay — pick a password and
                           you&apos;re in.
                         </span>
+                      ) : isDollarWeek ? (
+                        <>
+                          Apex {DOLLAR_WEEK.planLabel}: ${DOLLAR_WEEK.price} for
+                          your first {DOLLAR_WEEK.days} days, then $
+                          {DOLLAR_WEEK.thenPrice}/month. Cancel before day{" "}
+                          {DOLLAR_WEEK.days} and we refund your $
+                          {DOLLAR_WEEK.price}.
+                        </>
                       ) : isFreeSignup ? (
                         <>
-                          Free account, no card, no plan. Apex University and
-                          Review Booster included.
+                          Free account, no card needed. Apex University and
+                          your first three suppliers are included.
                         </>
                       ) : (
                         <>

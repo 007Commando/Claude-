@@ -99,6 +99,34 @@ export const PAID_TRIALS: Partial<Record<Plan["id"], PaidTrial>> = NEW_PRICING_L
 export const TRIAL_REQUIRES_CARD = true;
 
 /**
+ * The $1 week (Stefano, 2026-09-29): Apex Pop leads start Plus at $1 for their
+ * first 7 days, and if they cancel inside the week the dollar is refunded.
+ * Then Plus monthly.
+ *
+ * The backend sells it on offer=paid-trial (services/stripe/dollarWeek.ts)
+ * with a $1 weekly price that exists in test mode only. Until the live price
+ * id is filled in (paidTrialConfigurations.live.plus), a signup asking for
+ * the week silently gets Plus's seven free days instead, so the site must not
+ * promise it: `live` stays false until that id and this switch flip together.
+ *
+ * `thenPrice` is what live Plus monthly charges today (price_1Sxxsl09vRtiSO1RibrTmCUg,
+ * $199). Stripe's own checkout text reads the price from Stripe; this copy of
+ * the number is for the pages before checkout and must match it.
+ *
+ * Preview before launch with ?dollarweek=1 on /apex-pop/start.
+ */
+export const DOLLAR_WEEK = {
+  live: false,
+  plan: "plus" as const,
+  planLabel: "Plus",
+  period: "monthly" as const,
+  offer: "paid-trial" as const,
+  days: 7,
+  price: 1,
+  thenPrice: 199,
+};
+
+/**
  * VERIFIED — every route in `routes/api/gold.ts` is gated by `subRequired()`
  * with no plan argument, and that middleware admits any account holding any
  * active subscription. The repricer is therefore included in every paid plan,

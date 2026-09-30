@@ -49,6 +49,8 @@ const schema = z.object({
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
   utmCampaign: z.string().trim().max(120).optional(),
+  /** "dollar-week" when step 3 sold the $1 week; tags pop-dollar-week. */
+  offer: z.enum(["dollar-week"]).optional(),
 });
 
 export const STARTER_KIT_ANSWER = "I have less than $1,000 for inventory";
@@ -220,7 +222,12 @@ export async function POST(req: NextRequest) {
     });
     await dropOtherSide(contact.id, lead.sellsOnAmazon);
     await setObstacleTag(contact.id, lead.obstacle);
-    await addGhlTags(contact.id, [...journeyTags(lead.sellsOnAmazon), "pop-web-lead", starterKit ? "pop-starter-kit" : "pop-demo-lead"]);
+    await addGhlTags(contact.id, [
+      ...journeyTags(lead.sellsOnAmazon),
+      "pop-web-lead",
+      starterKit ? "pop-starter-kit" : "pop-demo-lead",
+      ...(lead.offer === "dollar-week" ? ["pop-dollar-week"] : []),
+    ]);
     await addGhlNote(
       contact.id,
       [
