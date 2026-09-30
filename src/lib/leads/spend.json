@@ -1,0 +1,11 @@
+{
+  "updated": "2026-09-29",
+  "note": "Facebook = all Apex campaigns in Ads Manager (account 1670331607634964): Jun-Aug total $39.42 recorded in August, Sep 1-29 $1,202.23. PrimeWell = Wholesale Central listing; $2,700/month from October per the Q4 plan, earlier months not confirmed yet, so left empty.",
+  "months": {
+    "2026-06": { "primewell": null, "facebook": 0 },
+    "2026-07": { "primewell": null, "facebook": 0 },
+    "2026-08": { "primewell": null, "facebook": 39.42 },
+    "2026-09": { "primewell": null, "facebook": 1202.23 },
+    "2026-10": { "primewell": 2700, "facebook": 2700 }
+  }
+}

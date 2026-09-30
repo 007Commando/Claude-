@@ -222,6 +222,9 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "table"} onClick={() => filters.setView("table")}>
           Table
         </button>
+        <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
+          Funnels
+        </button>
       </div>
 
       <div className="ld-search">

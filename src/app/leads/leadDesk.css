@@ -1249,6 +1249,14 @@
 /* ---------------------------------------------------------------------- */
 
 @media (max-width: 899px) {
+  .ld-funnels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ld-funnel-cost-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .ld-board {
     grid-auto-flow: column;
     grid-auto-columns: 78vw;
@@ -1389,4 +1397,305 @@
   line-height: 1;
   color: var(--ld-text-muted, #6b7280);
   letter-spacing: 0.01em;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Funnels                                                                 */
+/* ---------------------------------------------------------------------- */
+
+.ld-funnels {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ld-funnels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.ld-funnel-card {
+  background: var(--ld-surface);
+  border: 1px solid var(--ld-border);
+  border-radius: var(--ld-radius);
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ld-funnel-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.ld-funnel-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ld-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-funnel-card-select {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 4px 6px;
+  border: 1px solid var(--ld-border-strong);
+  border-radius: var(--ld-radius-sm);
+  background: var(--ld-surface);
+  color: var(--ld-text);
+  max-width: 160px;
+}
+
+.ld-funnel-svg {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  display: block;
+  margin: 4px auto 2px;
+}
+
+.ld-funnel-stage {
+  cursor: pointer;
+}
+
+.ld-funnel-stage polygon {
+  transition: filter 0.1s ease;
+}
+
+.ld-funnel-stage:hover polygon {
+  filter: brightness(0.94);
+}
+
+.ld-funnel-stage:focus-visible polygon {
+  outline: none;
+  stroke: var(--ld-accent);
+  stroke-width: 2;
+}
+
+.ld-funnel-stage-value {
+  font-size: 26px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.ld-funnel-stage-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.ld-funnel-pill-bg {
+  fill: var(--ld-surface);
+  stroke: var(--ld-border-strong);
+  stroke-width: 1;
+}
+
+.ld-funnel-pill-text {
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--ld-text-muted);
+  pointer-events: none;
+}
+
+.ld-funnel-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  margin-top: 2px;
+  border-top: 1px solid var(--ld-border);
+}
+
+.ld-funnel-stat-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ld-funnel-stat-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ld-text-faint);
+  white-space: nowrap;
+}
+
+.ld-funnel-stat-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ld-text);
+  text-align: right;
+}
+
+.ld-funnel-stat-value-sm {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ld-text-muted);
+}
+
+.ld-funnel-stat-headline .ld-funnel-stat-value {
+  font-size: 17px;
+  color: var(--ld-accent);
+}
+
+.ld-funnel-cost-unrecorded {
+  font-size: 11px;
+  color: var(--ld-text-faint);
+  font-style: italic;
+  padding: 2px 0;
+}
+
+.ld-funnel-cost-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.ld-funnel-cost-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--ld-bg);
+  border-radius: var(--ld-radius-sm);
+  padding: 5px 6px;
+  min-width: 0;
+}
+
+.ld-funnel-cost-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ld-text-faint);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-funnel-cost-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ld-text);
+  white-space: nowrap;
+}
+
+.ld-funnel-cycle {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ld-funnel-cycle-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.ld-funnel-cycle-label {
+  color: var(--ld-text-muted);
+}
+
+.ld-funnel-cycle-value {
+  font-weight: 600;
+  color: var(--ld-text);
+  white-space: nowrap;
+}
+
+.ld-funnel-cycle-n {
+  color: var(--ld-text-faint);
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.ld-funnel-leaderboard {
+  background: var(--ld-surface);
+  border: 1px solid var(--ld-border);
+  border-radius: var(--ld-radius);
+  padding: 10px 14px 12px;
+}
+
+.ld-funnel-leaderboard-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ld-text);
+  margin-bottom: 6px;
+}
+
+.ld-funnel-leaderboard-empty {
+  font-size: 11.5px;
+  color: var(--ld-text-faint);
+  padding: 6px 0;
+}
+
+.ld-funnel-leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.ld-funnel-leaderboard-table th {
+  text-align: left;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ld-text-faint);
+  font-weight: 700;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--ld-border);
+  white-space: nowrap;
+}
+
+.ld-funnel-leaderboard-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--ld-border);
+  color: var(--ld-text);
+  white-space: nowrap;
+}
+
+.ld-funnel-leaderboard-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ld-funnel-leaderboard-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.ld-funnel-leaderboard-table td[data-best="true"] {
+  color: var(--ld-success);
+  font-weight: 700;
+  background: var(--ld-success-soft);
+  border-radius: 4px;
+}
+
+.ld-funnel-stage polygon {
+  stroke: var(--ld-surface, #fff);
+  stroke-width: 0;
+  transition: filter 120ms ease;
+}
+.ld-funnel-stage:hover polygon {
+  filter: brightness(1.06);
+}
+.ld-funnel-pill-bg {
+  filter: drop-shadow(0 1px 1.5px rgba(15, 23, 40, 0.12));
 }

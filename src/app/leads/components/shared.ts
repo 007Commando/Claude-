@@ -91,6 +91,16 @@ export function money(n: number): string {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 }
 
+/** Same as money() but with 2 decimals — used for small per-lead costs where whole dollars round away the signal. */
+export function moneyPrecise(n: number): string {
+  return n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/** Plain integer with thousands separators. */
+export function fmtInt(n: number): string {
+  return Math.round(n).toLocaleString("en-US");
+}
+
 const MS_DAY = 86_400_000;
 
 /** Whole days between `iso` and now, floored (never negative-displayed — callers decide phrasing). */

@@ -15,6 +15,7 @@ import TopBar from "./components/TopBar";
 import KpiStrip from "./components/KpiStrip";
 import Board from "./components/Board";
 import LeadTable from "./components/LeadTable";
+import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
 import { useLeadFilters, filterLeads } from "./components/useLeadFilters";
 import { apiUrl, STAGES } from "./components/shared";
@@ -120,6 +121,7 @@ export default function LeadDesk() {
       filters.from,
       filters.to,
       filters.ash,
+      filters.stage,
     ],
   );
 
@@ -203,6 +205,8 @@ export default function LeadDesk() {
         ) : data ? (
           filters.view === "board" ? (
             <Board leadsByStage={leadsByStage} filters={filters} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
+          ) : filters.view === "funnels" ? (
+            <FunnelView leads={effectiveLeads} filters={filters} />
           ) : (
             <LeadTable
               leads={filteredLeads}
