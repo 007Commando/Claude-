@@ -12,7 +12,7 @@
 
 import { useMemo, useState } from "react";
 import type { Lead, LeadSource, Stage } from "../../../lib/leads/model";
-import { dateWindow, type LeadFilters } from "./useLeadFilters";
+import { DATE_PRESET_OPTIONS, dateWindow, type LeadDatePreset, type LeadFilters } from "./useLeadFilters";
 import {
   applyTopBarFilters,
   resolveSpendRange,
@@ -22,6 +22,16 @@ import {
 } from "../../../lib/leads/funnel";
 import FunnelCard from "./FunnelCard";
 import SourceLeaderboard from "./SourceLeaderboard";
+
+const FUNNEL_PERIODS: { value: LeadDatePreset; short: string }[] = [
+  { value: "7d", short: "7 days" },
+  { value: "14d", short: "14 days" },
+  { value: "30d", short: "30 days" },
+  { value: "45d", short: "45 days" },
+  { value: "60d", short: "60 days" },
+  { value: "90d", short: "90 days" },
+  { value: "all", short: "All time" },
+];
 
 export default function FunnelView({ leads, filters }: { leads: Lead[]; filters: LeadFilters }) {
   const [leftKey, setLeftKey] = useState<FunnelSourceKey>(DEFAULT_LEFT_SOURCE);
@@ -45,6 +55,28 @@ export default function FunnelView({ leads, filters }: { leads: Lead[]; filters:
 
   return (
     <div className="ld-funnels">
+      <div className="ld-funnels-period">
+        <span className="ld-funnels-period-label">Leads created</span>
+        <div className="ld-view-switch" role="tablist" aria-label="Period">
+          {FUNNEL_PERIODS.map((p) => (
+            <button
+              key={p.value}
+              type="button"
+              role="tab"
+              aria-selected={filters.datePreset === p.value}
+              data-active={filters.datePreset === p.value}
+              onClick={() => filters.setDatePreset(p.value)}
+            >
+              {p.short}
+            </button>
+          ))}
+        </div>
+        {filters.datePreset === "custom" && (
+          <span className="ld-funnels-period-note">
+            {DATE_PRESET_OPTIONS.find((o) => o.value === "custom")?.label}: set dates in the top bar
+          </span>
+        )}
+      </div>
       <div className="ld-funnels-grid">
         <FunnelCard cohort={cohort} selectedKey={leftKey} onChangeKey={setLeftKey} rangeStart={start} rangeEnd={end} onStageClick={onStageClick} />
         <FunnelCard cohort={cohort} selectedKey={rightKey} onChangeKey={setRightKey} rangeStart={start} rangeEnd={end} onStageClick={onStageClick} />
