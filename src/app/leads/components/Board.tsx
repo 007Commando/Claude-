@@ -18,10 +18,17 @@ const EXPANDED_KEY = "leadDesk.accountExpanded.v1";
  * when it is expanded (Stefano, 2026-09-30). A lead sits in every milestone
  * it has reached, so the same person can appear in several columns.
  */
-const ACTIVATION_SUBCOLUMNS: { key: string; title: string; color: string; test: (l: Lead) => boolean }[] = [
-  { key: "vendor", title: "Vendor email", color: "#eab308", test: (l) => l.activation.vendorEmailSent },
-  { key: "scan", title: "First scan", color: "#16a34a", test: (l) => Boolean(l.activation.firstScanAt) },
-  { key: "database", title: "Database", color: "#2563eb", test: (l) => l.activation.databaseProducts > 0 },
+const ACTIVATION_SUBCOLUMNS: {
+  key: string;
+  title: string;
+  color: string;
+  /** Which board stages feed the column. The vendor email usually goes out before sign-up, so it also takes Leads. */
+  stages: Stage[];
+  test: (l: Lead) => boolean;
+}[] = [
+  { key: "vendor", title: "Vendor email", color: "#eab308", stages: ["lead", "registered"], test: (l) => l.activation.vendorEmailSent },
+  { key: "scan", title: "First scan", color: "#16a34a", stages: ["registered"], test: (l) => Boolean(l.activation.firstScanAt) },
+  { key: "database", title: "Database", color: "#2563eb", stages: ["registered"], test: (l) => l.activation.databaseProducts > 0 },
 ];
 
 function loadColumnOrder(): Stage[] {
@@ -160,7 +167,11 @@ export default function Board({
                     stage="registered"
                     subTitle={sub.title}
                     subColor={sub.color}
-                    leads={sortedByStage.registered.filter(sub.test)}
+                    leads={sortBoardColumn(
+                      sub.stages.flatMap((st) => leadsByStage[st] ?? []).filter(sub.test),
+                      "lead",
+                      filters.boardSort.registered,
+                    )}
                     sortKey={filters.boardSort.registered}
                     onSetSort={filters.setBoardSort}
                     selectedLeadId={selectedLeadId}
