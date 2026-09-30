@@ -12,7 +12,7 @@ import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
-export type ViewMode = "board" | "table";
+export type ViewMode = "board" | "table" | "funnels";
 export type LeadDatePreset = "7d" | "14d" | "30d" | "60d" | "90d" | "all" | "custom";
 export type BoardSortKey = "newest" | "oldest" | "az" | "lastOutreach";
 export type SortDir = "asc" | "desc";
@@ -51,6 +51,8 @@ export interface LeadFilters {
   from: string;
   to: string;
   ash: boolean;
+  /** Single-stage filter, set by clicking a Funnels stage — see goToStageInTable. Not shown as a top-bar control. */
+  stage: Stage | null;
   boardSort: Partial<Record<Stage, BoardSortKey>>;
   tableSort: TableSort | null;
   activeFilterCount: number;
@@ -61,6 +63,9 @@ export interface LeadFilters {
   setDatePreset: (v: LeadDatePreset) => void;
   setCustomRange: (from: string, to: string) => void;
   setAsh: (v: boolean) => void;
+  setStage: (v: Stage | null) => void;
+  /** Jumps to the Table view pre-filtered to one source group and one stage — used by a Funnels stage click. One combined URL update so the three params land together instead of stomping each other. */
+  goToStageInTable: (sources: LeadSource[], stage: Stage) => void;
   setBoardSort: (stage: Stage, key: BoardSortKey | null) => void;
   setTableSort: (sort: TableSort | null) => void;
   clearAll: () => void;
@@ -117,7 +122,8 @@ export function useLeadFilters(): LeadFilters {
     [router, pathname, searchString],
   );
 
-  const view: ViewMode = searchParams.get("view") === "table" ? "table" : "board";
+  const viewParam = searchParams.get("view");
+  const view: ViewMode = viewParam === "table" ? "table" : viewParam === "funnels" ? "funnels" : "board";
   const source = useMemo(() => searchParams.get("source")?.split(",").filter(Boolean) as LeadSource[] | undefined, [searchParams]) ?? [];
   const sellerType =
     useMemo(() => searchParams.get("sellerType")?.split(",").filter(Boolean) as SellerType[] | undefined, [searchParams]) ?? [];
@@ -125,6 +131,8 @@ export function useLeadFilters(): LeadFilters {
   const datePreset: LeadDatePreset = (DATE_PRESETS as string[]).includes(datePresetRaw ?? "") ? (datePresetRaw as LeadDatePreset) : "all";
   const boardSort = useMemo(() => parseBoardSort(searchParams.get("bsort")), [searchParams]);
   const tableSort = useMemo(() => parseTableSort(searchParams.get("tsort")), [searchParams]);
+  const stageParam = searchParams.get("stage");
+  const stage: Stage | null = (STAGES as string[]).includes(stageParam ?? "") ? (stageParam as Stage) : null;
 
   return {
     view,
@@ -135,9 +143,11 @@ export function useLeadFilters(): LeadFilters {
     from: searchParams.get("from") ?? "",
     to: searchParams.get("to") ?? "",
     ash: searchParams.get("ash") === "1",
+    stage,
     boardSort,
     tableSort,
-    activeFilterCount: source.length + sellerType.length + (datePreset !== "all" ? 1 : 0) + (searchParams.get("ash") === "1" ? 1 : 0),
+    activeFilterCount:
+      source.length + sellerType.length + (datePreset !== "all" ? 1 : 0) + (searchParams.get("ash") === "1" ? 1 : 0) + (stage ? 1 : 0),
     setView: (v) => setParams({ view: v === "board" ? null : v }),
     setQuery: (q) => setParams({ q: q || null }),
     setSource: (v) => setParams({ source: v }),
@@ -145,10 +155,12 @@ export function useLeadFilters(): LeadFilters {
     setDatePreset: (v) => setParams(v === "custom" ? { date: v } : { date: v === "all" ? null : v, from: null, to: null }),
     setCustomRange: (from, to) => setParams({ date: "custom", from: from || null, to: to || null }),
     setAsh: (v) => setParams({ ash: v ? "1" : null }),
+    setStage: (v) => setParams({ stage: v }),
+    goToStageInTable: (sources, targetStage) => setParams({ view: "table", source: sources, stage: targetStage }),
     setBoardSort: (stage, key) => setParams({ bsort: encodeBoardSort({ ...boardSort, [stage]: key ?? undefined }) }),
     setTableSort: (sort) => setParams({ tsort: sort ? `${sort.columnId}.${sort.dir}` : null }),
     clearAll: () =>
-      setParams({ source: null, sellerType: null, date: null, from: null, to: null, ash: null, q: null }),
+      setParams({ source: null, sellerType: null, date: null, from: null, to: null, ash: null, q: null, stage: null }),
   };
 }
 
@@ -181,6 +193,7 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     if (l.source === "ash" && !f.ash) return false;
     if (f.source.length && !f.source.includes(l.source)) return false;
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
+    if (f.stage && l.stage !== f.stage) return false;
     if (window.from && l.leadAt < window.from) return false;
     if (window.to && l.leadAt > window.to) return false;
     if (q) {
