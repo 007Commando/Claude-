@@ -193,17 +193,17 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
 
 const DATE_FIELD: Record<Stage, keyof Lead> = {
   lead: "leadAt",
-  registered: "leadAt",
-  trial: "trialEndsAt",
+  registered: "registeredAt",
+  trial: "trialStartedAt",
   customer: "customerSince",
   churned: "churnedAt",
 };
 
-/** "Newest first" for lead/registered, "soonest end first" for trial. */
+/** Every column runs newest to oldest by its own stage date (Stefano, 2026-09-29). */
 const DEFAULT_BOARD_SORT: Record<Stage, BoardSortKey> = {
   lead: "newest",
   registered: "newest",
-  trial: "oldest",
+  trial: "newest",
   customer: "newest",
   churned: "newest",
 };
@@ -221,13 +221,10 @@ function sortByDateField(leads: Lead[], field: keyof Lead, dir: 1 | -1): Lead[] 
 
 /**
  * Orders one board column's cards. With no explicit `key` (the column's menu
- * hasn't been touched) this is Aliza's work order per column, including
- * floating PrimeWell to the top of Leads/Accounts — see the module doc.
- * Picking an option from the column's own sort menu overrides that with a
- * plain sort on the option's field.
+ * hasn't been touched) every column is newest to oldest by its own stage
+ * date; the column's sort menu overrides that.
  */
 export function sortBoardColumn(leads: Lead[], stage: Stage, key: BoardSortKey | undefined): Lead[] {
-  const isDefault = key == null;
   const effective = key ?? DEFAULT_BOARD_SORT[stage];
 
   let sorted: Lead[];
@@ -241,8 +238,5 @@ export function sortBoardColumn(leads: Lead[], stage: Stage, key: BoardSortKey |
     sorted = sortByDateField(leads, DATE_FIELD[stage], effective === "newest" ? -1 : 1);
   }
 
-  if (isDefault && (stage === "lead" || stage === "registered")) {
-    sorted = [...sorted].sort((a, b) => (a.source === "primewell" ? 0 : 1) - (b.source === "primewell" ? 0 : 1));
-  }
   return sorted;
 }
