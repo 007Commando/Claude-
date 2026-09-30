@@ -1379,8 +1379,10 @@
 .ld-source-logo svg {
   width: 16px;
   height: 16px;
-  border-radius: 4px;
   display: block;
+}
+.ld-source-logo img {
+  object-fit: contain;
 }
 .ld-source-sub {
   font-size: 10px;
