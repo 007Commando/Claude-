@@ -1366,3 +1366,25 @@
   border-radius: var(--ld-radius-sm);
   background: var(--ld-bg);
 }
+
+/* Source brand marks on board cards */
+.ld-source-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  line-height: 0;
+}
+.ld-source-logo img,
+.ld-source-logo svg {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: block;
+}
+.ld-source-sub {
+  font-size: 10px;
+  line-height: 1;
+  color: var(--ld-text-muted, #6b7280);
+  letter-spacing: 0.01em;
+}

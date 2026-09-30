@@ -5,7 +5,6 @@ import type { Lead } from "../../../lib/leads/model";
 import { activationTier } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
-  SOURCE_ABBR,
   SELLER_TYPE_LABELS,
   daysInStageLabel,
   fmtDateShort,
@@ -15,6 +14,7 @@ import {
   stageColorVar,
   trialEndLabel,
 } from "./shared";
+import SourceLogo from "./SourceLogo";
 
 interface LeadCardProps {
   lead: Lead;
@@ -75,7 +75,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       {isRecentLead(lead) && <span className="ld-card-new-dot" style={{ background: stageColorVar(lead.stage) }} />}
       <div className="ld-card-line1">
         <span className="ld-card-name">{identity}</span>
-        <span className="ld-tag">{SOURCE_ABBR[lead.source]}</span>
+        <SourceLogo source={lead.source} />
         {lead.sellerType !== "unknown" && <span className="ld-tag">{SELLER_TYPE_LABELS[lead.sellerType]}</span>}
       </div>
       <div className="ld-card-line2">{line2Parts.join(" · ")}</div>
