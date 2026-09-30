@@ -7,6 +7,7 @@ import type { Lead, Stage } from "../../../lib/leads/model";
 import { BOARD_SORT_OPTIONS, type BoardSortKey } from "./useLeadFilters";
 import { STAGE_SHORT_LABELS, stageColorVar } from "./shared";
 import LeadCard from "./LeadCard";
+import SourceSplit from "./SourceSplit";
 
 const CARD_HEIGHT = 52;
 
@@ -199,6 +200,7 @@ export default function BoardColumn({
           <SortMenu stage={stage} sortKey={sortKey} onSetSort={onSetSort} />
         </div>
       </div>
+      <SourceSplit leads={leads} />
 
       <div
         className="ld-board-list"
