@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, RefreshCw, Search, X } from "lucide-react";
+import { ChevronDown, RefreshCw, Search, UserPlus, X } from "lucide-react";
 import type { LeadSource, SellerType } from "../../../lib/leads/model";
 import { ALL_SELLER_TYPES, ALL_SOURCES, SELLER_TYPE_LABELS, SOURCE_LABELS } from "./shared";
 import { DATE_PRESET_OPTIONS, type LeadFilters } from "./useLeadFilters";
@@ -123,15 +123,90 @@ function DateDropdown({ filters }: { filters: LeadFilters }) {
   );
 }
 
+/** Lead Desk's own invite link — invitees still need their Google account added to LEAD_DESK_ALLOWED_EMAILS before they can sign in. */
+const LEAD_DESK_URL = "https://www.apexapplications.io/leads";
+
+function InvitePopover({ allowedEmails }: { allowedEmails: string[] }) {
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState("");
+  const [copied, setCopied] = useState(false);
+  const ref = useOutsideClose(() => setOpen(false));
+
+  const inviteMessage = () => {
+    const to = address.trim();
+    return `You're invited to Apex's Lead Desk. Sign in with your Google account here: ${LEAD_DESK_URL}${
+      to ? ` (as ${to})` : ""
+    }. If it doesn't let you in, ask Stefano to add your Google email to the invite list first.`;
+  };
+
+  const copyInvite = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteMessage());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard API can be unavailable (older browsers, non-HTTPS) — the mailto link below still works.
+    }
+  };
+
+  const mailtoHref = `mailto:${encodeURIComponent(address.trim())}?subject=${encodeURIComponent(
+    "Lead Desk access",
+  )}&body=${encodeURIComponent(inviteMessage())}`;
+
+  return (
+    <div className="ld-popover-anchor" ref={ref}>
+      <button type="button" className="ld-dd-btn" onClick={() => setOpen((o) => !o)}>
+        <UserPlus size={12} />
+        Invite
+      </button>
+      {open && (
+        <div className="ld-popover ld-popover-right ld-invite-popover">
+          <div className="ld-popover-section-title">Currently invited</div>
+          <div className="ld-invite-list">
+            {allowedEmails.map((email) => (
+              <div key={email} className="ld-invite-list-item">
+                {email}
+              </div>
+            ))}
+          </div>
+          <div className="ld-popover-divider" />
+          <input
+            type="email"
+            className="ld-popover-input"
+            placeholder="colleague@email.com"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          <div className="ld-invite-note" style={{ marginTop: 8 }}>
+            Adding an address to the list is done in the site settings by Stefano.
+          </div>
+          <div className="ld-popover-footer">
+            <a className="ld-btn" href={mailtoHref}>
+              Email invite
+            </a>
+            <button type="button" className="ld-btn ld-btn-primary" onClick={copyInvite}>
+              {copied ? "Copied" : "Copy invite email"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function TopBar({
   filters,
   loggedInAs,
+  isOwner,
+  allowedEmails,
   loading,
   onRefresh,
   searchInputRef,
 }: {
   filters: LeadFilters;
   loggedInAs: string | null;
+  isOwner: boolean;
+  allowedEmails: string[];
   loading: boolean;
   onRefresh: () => void;
   searchInputRef: React.RefObject<HTMLInputElement | null>;
@@ -191,6 +266,12 @@ export default function TopBar({
           <RefreshCw size={13} />
         </button>
         {loggedInAs && <span className="ld-signed-in">{loggedInAs}</span>}
+        {loggedInAs && (
+          <a href="/leads/sign-out" className="ld-signout-link">
+            Sign out
+          </a>
+        )}
+        {isOwner && <InvitePopover allowedEmails={allowedEmails} />}
         <a href="/dashboard" className="ld-dd-btn">
           Dashboard
         </a>

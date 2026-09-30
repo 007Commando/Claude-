@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findLead } from "../../../../lib/leads/build";
 import { addGhlTags, addGhlNote, GhlNotConfigured } from "../../../../lib/ghlLead";
+import { auth } from "../../../../auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,22 +13,22 @@ interface ActionBody {
   by?: string;
 }
 
-/** The basic-auth username off the Authorization header — middleware has already validated the credentials by the time a request reaches here. */
-function usernameFromAuth(req: NextRequest): string | null {
+function todayInNewYork(): string {
+  // en-CA formats as YYYY-MM-DD, which is exactly the outreach:YYYY-MM-DD tag format.
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+}
+
+/** Username from a Basic Authorization header, for the pre-Google fallback gate. */
+function basicAuthUser(req: Request): string | null {
   const header = req.headers.get("authorization");
   if (!header?.startsWith("Basic ")) return null;
   try {
     const decoded = Buffer.from(header.slice(6), "base64").toString("utf-8");
-    const separatorIndex = decoded.indexOf(":");
-    return separatorIndex === -1 ? decoded : decoded.slice(0, separatorIndex);
+    const i = decoded.indexOf(":");
+    return i > 0 ? decoded.slice(0, i) : null;
   } catch {
     return null;
   }
-}
-
-function todayInNewYork(): string {
-  // en-CA formats as YYYY-MM-DD, which is exactly the outreach:YYYY-MM-DD tag format.
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
 }
 
 export async function POST(req: NextRequest) {
@@ -46,7 +47,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "note text is required for the note action" }, { status: 400 });
   }
 
-  const by = usernameFromAuth(req) || body.by || "unknown";
+  const session = await auth();
+  const by = session?.user?.email || session?.user?.name || basicAuthUser(req) || body.by || "unknown";
 
   const lead = await findLead(leadId);
   if (!lead) {

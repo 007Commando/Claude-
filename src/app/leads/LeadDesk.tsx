@@ -28,6 +28,8 @@ interface LeadsResponse {
   loggedInAs: string | null;
   goalTrials: number;
   goalMonth: string;
+  allowedEmails: string[];
+  isOwner: boolean;
 }
 
 function SkeletonBoard() {
@@ -177,7 +179,15 @@ export default function LeadDesk() {
 
   return (
     <section className="lead-desk">
-      <TopBar filters={filters} loggedInAs={data?.loggedInAs ?? null} loading={loading} onRefresh={() => load(true)} searchInputRef={searchInputRef} />
+      <TopBar
+        filters={filters}
+        loggedInAs={data?.loggedInAs ?? null}
+        isOwner={data?.isOwner ?? false}
+        allowedEmails={data?.allowedEmails ?? []}
+        loading={loading}
+        onRefresh={() => load(true)}
+        searchInputRef={searchInputRef}
+      />
 
       {error && <div className="ld-banner ld-banner-error">{error}</div>}
       {actionError && <div className="ld-banner ld-banner-error">{actionError}</div>}

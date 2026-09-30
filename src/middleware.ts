@@ -1,11 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "./auth";
 
 function withNoIndex(res: NextResponse): NextResponse {
   res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   return res;
 }
 
-export function middleware(req: NextRequest) {
+/**
+ * /leads and /api/leads/** are gated by Google sign-in (Auth.js) instead of
+ * Basic Auth — see ./auth for the provider/allow-list config. /leads/sign-in
+ * itself must stay reachable while signed out, or nobody could ever sign in.
+ * /api/auth/** never reaches this function at all: it is not in `matcher`
+ * below, on purpose, so the Auth.js route handler always gets the request.
+ */
+function isLeadDeskPath(pathname: string): boolean {
+  return pathname === "/leads" || pathname.startsWith("/leads/") || pathname.startsWith("/api/leads/") || pathname === "/api/leads";
+}
+
+async function leadDeskGate(req: NextRequest): Promise<NextResponse> {
+  const { pathname } = req.nextUrl;
+  const isApi = pathname.startsWith("/api/leads");
+
+  if (pathname === "/leads/sign-in") {
+    return withNoIndex(NextResponse.next());
+  }
+
+  const session = await auth();
+  if (session?.user) {
+    return withNoIndex(NextResponse.next());
+  }
+
+  if (isApi) {
+    return withNoIndex(NextResponse.json({ error: "Authentication required" }, { status: 401 }));
+  }
+
+  const signInUrl = req.nextUrl.clone();
+  signInUrl.pathname = "/leads/sign-in";
+  signInUrl.search = "";
+  signInUrl.searchParams.set("callbackUrl", `${pathname}${req.nextUrl.search}`);
+  return withNoIndex(NextResponse.redirect(signInUrl));
+}
+
+export async function middleware(req: NextRequest) {
   /**
    * Lowercase alias for the enterprise grocery page. This lives here and not
    * in next.config redirects because those match case-insensitively: a
@@ -18,6 +54,14 @@ export function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/GroceryCommerce";
     return NextResponse.redirect(url, 308);
+  }
+
+  // Until the Google OAuth client exists (AUTH_GOOGLE_ID/SECRET), Lead Desk
+  // stays behind the same Basic Auth as the dashboard, so nobody is locked
+  // out while the sign-in is being set up.
+  const googleConfigured = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
+  if (isLeadDeskPath(pathname) && googleConfigured) {
+    return leadDeskGate(req);
   }
 
   const user = process.env.DASHBOARD_USER;
