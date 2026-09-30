@@ -15,6 +15,7 @@ import TopBar from "./components/TopBar";
 import KpiStrip from "./components/KpiStrip";
 import Board from "./components/Board";
 import LeadTable from "./components/LeadTable";
+import { STAGE_LABELS } from "./components/shared";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
 import { useLeadFilters, filterLeads } from "./components/useLeadFilters";
@@ -208,6 +209,15 @@ export default function LeadDesk() {
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : (
+            <>
+            {filters.stage && (
+              <div className="ld-stage-note">
+                Showing only <strong>{STAGE_LABELS[filters.stage]}</strong>
+                <button type="button" onClick={() => filters.setStage(null)}>
+                  Show all stages
+                </button>
+              </div>
+            )}
             <LeadTable
               leads={filteredLeads}
               tableSort={filters.tableSort}
@@ -217,6 +227,7 @@ export default function LeadDesk() {
               onBulkMarkContacted={bulkMarkContacted}
               bulkPending={bulkPending}
             />
+            </>
           )
         ) : null}
 

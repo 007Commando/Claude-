@@ -13,7 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
 export type ViewMode = "board" | "table" | "funnels";
-export type LeadDatePreset = "7d" | "14d" | "30d" | "60d" | "90d" | "all" | "custom";
+export type LeadDatePreset = "7d" | "14d" | "30d" | "45d" | "60d" | "90d" | "all" | "custom";
 export type BoardSortKey = "newest" | "oldest" | "az" | "lastOutreach";
 export type SortDir = "asc" | "desc";
 
@@ -33,6 +33,7 @@ export const DATE_PRESET_OPTIONS: { value: LeadDatePreset; label: string }[] = [
   { value: "7d", label: "Last 7 days" },
   { value: "14d", label: "Last 14 days" },
   { value: "30d", label: "Last 30 days" },
+  { value: "45d", label: "Last 45 days" },
   { value: "60d", label: "Last 60 days" },
   { value: "90d", label: "Last 90 days" },
   { value: "all", label: "All time" },
@@ -40,7 +41,7 @@ export const DATE_PRESET_OPTIONS: { value: LeadDatePreset; label: string }[] = [
 ];
 
 const BOARD_SORT_KEYS: BoardSortKey[] = ["newest", "oldest", "az", "lastOutreach"];
-const DATE_PRESETS: LeadDatePreset[] = ["7d", "14d", "30d", "60d", "90d", "all", "custom"];
+const DATE_PRESETS: LeadDatePreset[] = ["7d", "14d", "30d", "45d", "60d", "90d", "all", "custom"];
 
 export interface LeadFilters {
   view: ViewMode;
@@ -148,7 +149,7 @@ export function useLeadFilters(): LeadFilters {
     tableSort,
     activeFilterCount:
       source.length + sellerType.length + (datePreset !== "all" ? 1 : 0) + (searchParams.get("ash") === "1" ? 1 : 0) + (stage ? 1 : 0),
-    setView: (v) => setParams({ view: v === "board" ? null : v }),
+    setView: (v) => setParams({ view: v === "board" ? null : v, stage: v === "table" ? stage : null }),
     setQuery: (q) => setParams({ q: q || null }),
     setSource: (v) => setParams({ source: v }),
     setSellerType: (v) => setParams({ sellerType: v }),
@@ -177,6 +178,8 @@ export function dateWindow(preset: LeadDatePreset, from: string, to: string): { 
       return { from: new Date(now - 14 * MS_DAY).toISOString(), to: null };
     case "30d":
       return { from: new Date(now - 30 * MS_DAY).toISOString(), to: null };
+    case "45d":
+      return { from: new Date(now - 45 * MS_DAY).toISOString(), to: null };
     case "60d":
       return { from: new Date(now - 60 * MS_DAY).toISOString(), to: null };
     case "90d":
@@ -193,7 +196,8 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     if (l.source === "ash" && !f.ash) return false;
     if (f.source.length && !f.source.includes(l.source)) return false;
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
-    if (f.stage && l.stage !== f.stage) return false;
+    // The single-stage filter only means something in the Table; the Board is split by stage already.
+    if (f.stage && f.view === "table" && l.stage !== f.stage) return false;
     if (window.from && l.leadAt < window.from) return false;
     if (window.to && l.leadAt > window.to) return false;
     if (q) {
