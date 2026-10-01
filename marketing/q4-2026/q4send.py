@@ -81,7 +81,7 @@ def opens_by_email(tag, days_back=5):
     """email -> total opens for messages carrying this Mandrill tag."""
     out = {}
     date_from = (datetime.now(timezone.utc) - timedelta(days=days_back)).strftime("%Y-%m-%d")
-    res = mandrill("messages/search.json", {"query": f"tags:{tag}", "date_from": date_from, "limit": 1000})
+    res = mandrill("messages/search.json", {"query": f'tags:"{tag}"', "date_from": date_from, "limit": 1000})
     for m in res:
         e = m["email"].lower()
         out[e] = out.get(e, 0) + (m.get("opens") or 0)
