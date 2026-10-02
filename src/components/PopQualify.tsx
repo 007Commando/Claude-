@@ -260,7 +260,10 @@ function obstacleScene(obstacle: string) {
   switch (obstacle) {
     case "Find profitable products":
       return (
-        <Scene title="We scan the whole catalog against real Amazon fees." body="Every line comes back with landed cost, fees, margin and how many sell a month. Most of a catalog does not work. This finds the part that does.">
+        <Scene
+          title="We give you suppliers' catalogs + the best system to find every profitable opportunity."
+          body="Every line is checked against real Amazon fees and comes back with landed cost, margin and how many sell a month. Most of a catalog does not work. Apex finds the part that does."
+        >
           <ScanScene />
         </Scene>
       );
