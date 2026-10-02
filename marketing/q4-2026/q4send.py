@@ -38,6 +38,21 @@ FOOTER = (
     "Apex Applications, 8 The Green, Dover, DE 19901, USA</div>"
 )
 
+# Same bull + wordmark as the site nav. The wordmark is live text so the
+# header still reads "APEX Applications" when images are blocked.
+LOGO_URL = "https://www.apexapplications.io/__l5e/assets-v1/e479ef22-740f-4404-857c-695c92a87214/apex-bull-logo.png"
+HEADER = (
+    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" '
+    'style="margin:0 0 24px;padding:0 0 16px;border-bottom:1px solid #e5e7eb;width:100%;max-width:560px;"><tr>'
+    '<td style="vertical-align:middle;padding:0 8px 0 0;width:66px;">'
+    f'<a href="https://www.apexapplications.io" style="text-decoration:none;"><img src="{LOGO_URL}" width="66" height="40" '
+    'alt="Apex" style="display:block;border:0;width:66px;height:40px;"></a></td>'
+    '<td style="vertical-align:middle;font-family:-apple-system,Helvetica,Arial,sans-serif;">'
+    '<a href="https://www.apexapplications.io" style="text-decoration:none;color:#0f172a;font-size:20px;font-weight:700;letter-spacing:-0.3px;">APEX'
+    '<sup style="color:#2563eb;font-size:9px;font-weight:900;letter-spacing:-0.2px;text-transform:uppercase;margin-left:3px;">Applications</sup>'
+    '</a></td></tr></table>'
+)
+
 DAYS = {"day1": "Q4_1", "day2": "Q4_2", "day3": "Q4_3"}
 
 def mandrill(path, body):
@@ -66,7 +81,12 @@ def stripe_active_emails():
     return out
 
 def email_parts(eid, variant):
-    html = open(os.path.join(HERE, "out", f"{eid}_{variant}.html")).read() + FOOTER
+    html = open(os.path.join(HERE, "out", f"{eid}_{variant}.html")).read()
+    # After the hidden preheader, so the inbox preview line is unchanged. The
+    # invisible padding stops clients pulling "APEX" from the header into it.
+    pre_close = html.index("</div>")
+    pad = "&#847;&zwnj;&nbsp;" * 90
+    html = html[:pre_close] + pad + "</div>" + HEADER + html[pre_close + len("</div>"):] + FOOTER
     subj, pre = open(os.path.join(HERE, "out", f"{eid}_{variant}.subject.txt")).read().strip().split("\n")
     return subj, html
 
