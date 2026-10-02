@@ -179,6 +179,16 @@ export default function Checkout() {
                     in {week.plan} is unlocked.
                   </p>
                 </li>
+                {/* The 48-hour email from pubsubs/dollarWeek in the backend. */}
+                <li>
+                  <p className="text-sm font-black text-slate-900">
+                    In two days
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    We email you a link to book your onboarding call with
+                    Stefano.
+                  </p>
+                </li>
                 <li>
                   <p className="text-sm font-black text-slate-900">
                     Any day before {week.endsOn}
@@ -193,8 +203,7 @@ export default function Checkout() {
                     {week.endsOn}
                   </p>
                   <p className="text-sm text-slate-500">
-                    {week.plan} continues at ${week.thenPrice}/month. We email
-                    you the day before.
+                    {week.plan} continues at ${week.thenPrice}/month.
                   </p>
                 </li>
               </ol>
