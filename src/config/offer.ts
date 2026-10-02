@@ -109,21 +109,23 @@ export const TRIAL_REQUIRES_CARD = true;
  * the week silently gets Plus's seven free days instead, so the site must not
  * promise it: `live` stays false until that id and this switch flip together.
  *
- * `thenPrice` is what live Plus monthly charges today (price_1Sxxsl09vRtiSO1RibrTmCUg,
- * $199). Stripe's own checkout text reads the price from Stripe; this copy of
- * the number is for the pages before checkout and must match it.
+ * Live since 2026-10-02: the week is price_1UMFEG09vRtiSO1RDxceQ7v8 and the
+ * schedule then rolls onto Plus at $149/month (price_1UMFMj09vRtiSO1RaM1DIvNM,
+ * the backend's thenPriceId), not the $199 regular Plus charges. `thenPrice`
+ * is that $149. Stripe's own checkout text reads the price from Stripe; this
+ * copy of the number is for the pages before checkout and must match it.
  *
  * Preview before launch with ?dollarweek=1 on /apex-pop/start.
  */
 export const DOLLAR_WEEK = {
-  live: false,
+  live: true,
   plan: "plus" as const,
   planLabel: "Plus",
   period: "monthly" as const,
   offer: "paid-trial" as const,
   days: 7,
   price: 1,
-  thenPrice: 199,
+  thenPrice: 149,
 };
 
 /**

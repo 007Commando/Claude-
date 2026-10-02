@@ -659,26 +659,29 @@ export default function PopQualify() {
                 transition={{ duration: 0.35, ease }}
                 className="mb-5 rounded-2xl border border-blue-100 bg-blue-50/60 p-5"
               >
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">What you need help with most</p>
-                <p className="mt-1 text-sm font-semibold text-slate-500">{obstacles.find((o) => o.value === obstacle)?.title ?? obstacle}</p>
-                <h3 className="mt-3 text-lg font-bold leading-snug text-slate-900 sm:text-xl">{SOLUTIONS[obstacle].headline}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{SOLUTIONS[obstacle].sub}</p>
+                {!dollarWeek && (
+                  <>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">What you need help with most</p>
+                    <p className="mt-1 text-sm font-semibold text-slate-500">{obstacles.find((o) => o.value === obstacle)?.title ?? obstacle}</p>
+                  </>
+                )}
+                <h3 className={`${dollarWeek ? "" : "mt-3 "}text-lg font-bold leading-snug text-slate-900 sm:text-xl`}>{SOLUTIONS[obstacle].headline}</h3>
+                {!dollarWeek && <p className="mt-2 text-sm leading-relaxed text-slate-600">{SOLUTIONS[obstacle].sub}</p>}
               </motion.div>
             )}
             {dollarWeek && (
-              <div className="mb-5">
-                <p className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black tracking-tight text-slate-900">${DOLLAR_WEEK.price}</span>
-                  <span className="text-base font-semibold text-slate-600">for your first {DOLLAR_WEEK.days} days of Apex {DOLLAR_WEEK.planLabel}</span>
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 text-center">
+                <p className="text-5xl font-black tracking-tight text-slate-900">${DOLLAR_WEEK.price}</p>
+                <p className="mt-1 text-base font-semibold text-slate-700">
+                  {DOLLAR_WEEK.days} days of Apex {DOLLAR_WEEK.planLabel}
                 </p>
-                <p className="mt-1 text-sm text-slate-500">
-                  Then ${DOLLAR_WEEK.thenPrice}/month. Cancel before day {DOLLAR_WEEK.days} and we refund your ${DOLLAR_WEEK.price}.
-                </p>
-                <p className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800">
-                  Not for you? Cancel from your dashboard by day {DOLLAR_WEEK.days} and your dollar comes back.
+                <p className="mt-3 text-sm text-slate-500">
+                  Then ${DOLLAR_WEEK.thenPrice}/month. Not happy? Cancel by day {DOLLAR_WEEK.days} and get your ${DOLLAR_WEEK.price} back.
                 </p>
               </div>
             )}
+            {!dollarWeek && (
+            <>
             <p className="text-base font-semibold leading-relaxed text-slate-900">
               We will send you into our platform, where you can watch how Apex grows Amazon businesses and book your demo from there.
             </p>
@@ -696,12 +699,14 @@ export default function PopQualify() {
                 </li>
               ))}
             </ul>
+            </>
+            )}
             {error && step === 3 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
             <div className="mt-6">
               <button type="button" disabled={busy} onClick={finish} className="w-full rounded-xl bg-blue-600 px-6 py-4 text-base font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
-                {busy ? "One moment" : dollarWeek ? `Create my account and start for $${DOLLAR_WEEK.price}` : "Create my Apex account"}
+                {busy ? "One moment" : dollarWeek ? `Start my $${DOLLAR_WEEK.price} week` : "Create my Apex account"}
               </button>
-              {dollarWeek && <p className="mt-2 text-center text-xs text-slate-500">Two quick steps: your account, then the ${DOLLAR_WEEK.price} checkout.</p>}
+              {dollarWeek && <p className="mt-2 text-center text-xs text-slate-500">Your account, then a quick checkout. We text you to set up your demo.</p>}
             </div>
           </StepCard>
         </div>
