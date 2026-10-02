@@ -20,7 +20,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
-import { DOLLAR_WEEK } from "../config/offer";
+import { DOLLAR_WEEK, TAX_SUFFIX } from "../config/offer";
 
 /**
  * The website arm of the Apex Pop A/B, in the PrimeWell application's shape:
@@ -539,8 +539,22 @@ export default function PopQualify() {
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">Apex POP</p>
           <h1 className="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">Your free demo and setup, built around you</h1>
           <p className="mx-auto mt-3 max-w-xl text-base text-slate-600">
-            Three short steps so the setup fits where you are. Then a free Apex account, and we text you to book the demo.
+            {dollarWeek
+              ? "Three short steps so the setup fits where you are. Then your Apex account, and we text you to book the demo."
+              : "Three short steps so the setup fits where you are. Then a free Apex account, and we text you to book the demo."}
           </p>
+          {dollarWeek && (
+            <div className="mt-4 flex flex-col items-center gap-1.5">
+              <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-[13.5px] font-semibold leading-snug text-emerald-800 [text-wrap:balance]">
+                <b className="font-extrabold text-emerald-900">${DOLLAR_WEEK.price} trial.</b> 100% refund if you&rsquo;re not satisfied within{" "}
+                {DOLLAR_WEEK.days} days.
+              </p>
+              <p className="max-w-md text-xs text-slate-500">
+                Apex {DOLLAR_WEEK.planLabel} is ${DOLLAR_WEEK.price} for your first {DOLLAR_WEEK.days} days, then ${DOLLAR_WEEK.thenPrice}/month
+                {TAX_SUFFIX}. Cancel from your dashboard before day {DOLLAR_WEEK.days} and we refund your ${DOLLAR_WEEK.price} automatically.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="space-y-5">

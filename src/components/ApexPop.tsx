@@ -59,6 +59,7 @@ import {
 import "./apex-surface.css";
 import "./apex-pop.css";
 import TrustpilotBadge, { type TrustpilotFigures } from "./TrustpilotBadge";
+import { DOLLAR_WEEK, TAX_SUFFIX } from "../config/offer";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -337,6 +338,40 @@ function SupplierShowcase({
   );
 }
 
+/**
+ * The button while the $1 week is on. "Try Apex free" beside a $1 note is
+ * the mismatch the page exists to avoid, so the opening is swapped and the
+ * rest of the page's label kept.
+ */
+const dollarLabel = (label: string) =>
+  label.replace(/^Try Apex free/, `Start Apex for $${DOLLAR_WEEK.price}`);
+
+/** What the button promises while the $1 week is on. */
+const dollarSub = `$${DOLLAR_WEEK.price} for your first ${DOLLAR_WEEK.days} days. Scan a supplier catalog and build a purchase order in it.`;
+
+/**
+ * The $1 week, said once beside each button: the offer in one line, the
+ * terms under it in small print. The refund is automatic on any cancel
+ * inside the week (services/stripe/dollarWeek.ts), which is what lets this
+ * say 100%.
+ */
+function DollarWeekNote() {
+  const { price, days, planLabel, thenPrice } = DOLLAR_WEEK;
+  return (
+    <div className="pop-dollar">
+      <p className="pop-dollar-line">
+        <b>${price} trial.</b>{" "}
+        100% refund if you&rsquo;re not satisfied within {days} days.
+      </p>
+      <p className="pop-dollar-fine">
+        Apex {planLabel} is ${price} for your first {days} days, then $
+        {thenPrice}/month{TAX_SUFFIX}. Cancel from your dashboard before day{" "}
+        {days} and we refund your ${price} automatically.
+      </p>
+    </div>
+  );
+}
+
 const FAQS: readonly (readonly [string, string])[] = [
   [
     "Is Apex POP a course?",
@@ -397,6 +432,7 @@ export default function ApexPop({
   hide = [],
   software,
   showcase,
+  dollarWeek: offersDollarWeek = false,
   form,
 }: {
   chrome?: "own" | "site";
@@ -428,6 +464,13 @@ export default function ApexPop({
    */
   showcase?: { video: { id: string; title: string; length: string } };
   /**
+   * The page sends people into the funnel that sells the $1 week, so it may
+   * mention it beside the buttons. Shown only while DOLLAR_WEEK.live is on
+   * (or with ?dollarweek=1 to preview), because the qualifier only sells the
+   * week then, and a page must not promise a refund on a dollar nobody pays.
+   */
+  dollarWeek?: boolean;
+  /**
    * A lead form shown in the hero instead of the big button. The header and
    * closing buttons then scroll back up to it rather than leaving the page,
    * so the page asks for the details before anything else.
@@ -435,6 +478,21 @@ export default function ApexPop({
   form?: ReactNode;
 }) {
   const hidden = new Set(hide);
+  // Read after mount so the server render and the first client render agree.
+  const [dollarPreview, setDollarPreview] = useState(false);
+  useEffect(() => {
+    setDollarPreview(
+      new URLSearchParams(window.location.search).get("dollarweek") === "1",
+    );
+  }, []);
+  const showDollar = offersDollarWeek && (DOLLAR_WEEK.live || dollarPreview);
+  const dollarNote = showDollar ? <DollarWeekNote /> : null;
+  // A preview has to reach the qualifier's $1 step too, or the click-through
+  // lands on the free version and the preview tells you nothing.
+  const carry = (href: string) =>
+    showDollar && !DOLLAR_WEEK.live && href.includes("/apex-pop/start")
+      ? `${href}${href.includes("?") ? "&" : "?"}dollarweek=1`
+      : href;
   const BOOK_URL = `${BOOK_BASE}?utm_term=${encodeURIComponent(utmTerm)}`;
   const primary = cta ?? {
     label: "Build my first or next PO",
@@ -513,18 +571,18 @@ export default function ApexPop({
               <div className="pop-hero-actions">
                 <a
                   className={`pop-cta pop-cta-lg ${heroSheen.className}`}
-                  href={primary.href}
+                  href={carry(primary.href)}
                   ref={heroSheen.ref}
                 >
                   <span className="pop-cta-row">
-                    {primary.label}
+                    {showDollar ? dollarLabel(primary.label) : primary.label}
                     <ArrowRight
                       size={19}
                       strokeWidth={2.4}
                       aria-hidden="true"
                     />
                   </span>
-                  <small>{primary.sub}</small>
+                  <small>{showDollar ? dollarSub : primary.sub}</small>
                 </a>
                 {(!cta || cta.secondaryLabel) && (
                   <a
@@ -536,6 +594,8 @@ export default function ApexPop({
                 )}
               </div>
             )}
+
+            {dollarNote}
 
             {trustpilot && <TrustpilotBadge {...trustpilot} />}
 
@@ -1030,21 +1090,22 @@ export default function ApexPop({
               <div className="pop-hero-actions">
                 <a
                   className={`pop-cta pop-cta-lg ${closeSheen.className}`}
-                  href={primaryHref}
+                  href={carry(primaryHref)}
                   ref={closeSheen.ref}
                 >
                   <span className="pop-cta-row">
-                    {primary.label}
+                    {showDollar ? dollarLabel(primary.label) : primary.label}
                     <ArrowRight
                       size={19}
                       strokeWidth={2.4}
                       aria-hidden="true"
                     />
                   </span>
-                  <small>{primary.sub}</small>
+                  <small>{showDollar ? dollarSub : primary.sub}</small>
                 </a>
               </div>
-              <p className="pop-close-fine">
+              {dollarNote}
+              <p className="pop-close-fine" hidden={showDollar}>
                 {cta
                   ? "Free account. Nothing to buy to get started."
                   : "A conversation about your order. No obligation to buy anything on the call."}

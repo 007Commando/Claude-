@@ -577,6 +577,22 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 .pop-close .pop-hero-actions { margin-top: 34px; }
 .pop-close-fine { margin-top: 22px; font-size: 13.5px; color: var(--faint); }
 
+/* The $1 week beside a button: one plain line and its small print. */
+.pop-page .pop-dollar { margin-top: 18px; display: grid; gap: 6px; justify-items: center; text-align: center; }
+.pop-page .pop-dollar-line {
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #ecfdf3;
+  border: 1px solid #b7ebcb;
+  color: #166534;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+.pop-page .pop-dollar-line b { font-weight: 800; color: #14532d; }
+.pop-page .pop-dollar-fine { max-width: 46ch; font-size: 12px; line-height: 1.5; color: var(--faint); }
+
 /* --------------------------------------------------------------- footer */
 
 .pop-footer { border-top: 1px solid var(--line); padding: 42px 0 48px; background: #fff; }
