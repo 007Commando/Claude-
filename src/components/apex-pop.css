@@ -592,6 +592,193 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 
 /* ----------------------------------------------------------- responsive */
 
+/* --------------------------------------------- supplier showcase */
+
+.pop-page .pop-sup { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+
+/* The Vendors screen with the products spilling round it. It is the one
+   image on the page that shows what a supplier actually sells, so it gets
+   the full width and no browser chrome around it. */
+.pop-page .pop-sup-hero {
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 100%);
+  box-shadow: 0 30px 70px -36px rgba(37, 99, 235, .45);
+}
+.pop-page .pop-sup-hero img { width: 100%; height: auto; }
+
+.pop-page .pop-sup-drop-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+}
+.pop-page .pop-sup-net { font-size: 15px; color: var(--body); }
+.pop-page .pop-sup-net b { color: var(--ink-strong); font-weight: 800; }
+
+.pop-page .pop-sup-cards {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.pop-page .pop-sup-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px 18px 22px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 14px 30px -22px rgba(15, 23, 42, .3);
+}
+.pop-page .pop-sup-card-top { display: flex; align-items: center; justify-content: space-between; }
+.pop-page .pop-sup-ico {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.pop-page .pop-sup-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.pop-page .pop-sup-cat {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--ink-strong);
+  line-height: 1.25;
+}
+.pop-page .pop-sup-name { margin-top: 10px; display: grid; gap: 6px; }
+.pop-page .pop-sup-blur {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  filter: blur(5px);
+  user-select: none;
+}
+.pop-page .pop-sup-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue);
+}
+.pop-page .pop-sup-perks {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-2);
+  display: grid;
+  gap: 8px;
+}
+.pop-page .pop-sup-perks li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--body);
+}
+.pop-page .pop-sup-perks svg { flex-shrink: 0; margin-top: 1px; color: #16a34a; }
+
+.pop-page .pop-sup-more {
+  justify-content: center;
+  align-items: flex-start;
+  border-style: dashed;
+  border-color: #bfd0fb;
+  background: var(--blue-soft);
+  box-shadow: none;
+}
+.pop-page .pop-sup-plus {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--blue);
+}
+.pop-page .pop-sup-more .pop-sup-cat { margin-top: 10px; }
+.pop-page .pop-sup-more-copy { margin-top: 6px; font-size: 14px; line-height: 1.5; }
+
+.pop-page .pop-sup-video {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 56px;
+  align-items: center;
+  border-radius: 26px;
+  padding: 44px 48px;
+  background: radial-gradient(120% 90% at 100% 0%, #e3ecff 0%, #f7f9ff 55%, #fff 100%);
+  border: 1px solid #e3e9f7;
+}
+.pop-page .pop-sup-video-copy h3 {
+  margin-top: 14px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+}
+.pop-page .pop-sup-video-copy > p { margin-top: 14px; font-size: 16px; line-height: 1.62; }
+
+/* A phone, because the video is a Short: framed 9:16 it reads as the app on
+   a screen, not as a strip between black bars. */
+.pop-page .pop-sup-phone {
+  width: 100%;
+  max-width: 320px;
+  justify-self: center;
+  aspect-ratio: 9 / 16;
+  border-radius: 34px;
+  padding: 9px;
+  background: #0f172a;
+  box-shadow: 0 34px 70px -28px rgba(15, 23, 42, .55);
+}
+.pop-page .pop-sup-phone iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 26px;
+  background: #0f172a;
+}
+
+@media (max-width: 1040px) {
+  .pop-page .pop-sup-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .pop-page .pop-sup-video { grid-template-columns: 1fr; gap: 32px; padding: 32px 24px; }
+}
+
+/* On a phone the drop becomes a row you swipe through, a card and a bit at a
+   time, so the next supplier peeking in from the edge says there is more. */
+@media (max-width: 680px) {
+  .pop-page .pop-sup { margin-top: 34px; gap: 44px; }
+  .pop-page .pop-sup-hero { margin: 0 -20px; border-radius: 0; }
+  .pop-page .pop-sup-cards {
+    display: flex;
+    gap: 12px;
+    margin: 16px -20px 0;
+    padding: 4px 20px 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    scrollbar-width: none;
+  }
+  .pop-page .pop-sup-cards::-webkit-scrollbar { display: none; }
+  .pop-page .pop-sup-card { flex: 0 0 76%; scroll-snap-align: start; }
+  .pop-page .pop-sup-video { margin: 0 -20px; border-radius: 0; border-left: 0; border-right: 0; padding: 34px 20px 38px; }
+  .pop-page .pop-sup-video-copy h3 { font-size: 25px; }
+  .pop-page .pop-sup-phone { max-width: 290px; }
+}
+
 @media (max-width: 1040px) {
   .pop-step { grid-template-columns: 52px 1fr; }
   .pop-step-aside {

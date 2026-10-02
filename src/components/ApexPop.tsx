@@ -42,10 +42,15 @@ import {
   ArrowRight,
   Boxes,
   Building2,
+  Candy,
+  Check,
   ClipboardCheck,
   ClipboardList,
   FileSpreadsheet,
   GraduationCap,
+  HeartPulse,
+  Lock,
+  PawPrint,
   ScanBarcode,
   Users,
   Wallet,
@@ -198,6 +203,140 @@ const DELIVERABLES = [
   },
 ] as const;
 
+/**
+ * What a first supplier drop looks like, for the pages that lead with the
+ * suppliers. Categories are three of the network's real ones; the names stay
+ * blurred because they are what signing up unlocks, the same rule the app's
+ * distributor map follows for locked pins. Network counts are the roster in
+ * src/data/distributors.ts.
+ */
+const DROP = [
+  {
+    Icon: HeartPulse,
+    category: "Health & Supplements",
+    blur: "Northfield Health Supply",
+  },
+  { Icon: Candy, category: "Candy & Snacks", blur: "Brightway Confections" },
+  { Icon: PawPrint, category: "Pet Supplies", blur: "Coastal Pet Wholesale" },
+] as const;
+const DROP_PERKS = [
+  "Sells to Amazon resellers",
+  "Named contact who approves you",
+  "Full catalog, ready to scan",
+] as const;
+const NETWORK = { distributors: 389, categories: 14 } as const;
+
+/**
+ * The suppliers made visible: the real Vendors screen with the products it
+ * holds, the drop itself as cards, and the purchase order Short playing in a
+ * phone frame. Replaces a block of text that told a phone visitor what they
+ * get without ever showing it.
+ */
+function SupplierShowcase({
+  video,
+}: {
+  video: { id: string; title: string; length: string };
+}) {
+  // Lazy, muted and looping: it starts as it scrolls into view and costs
+  // nothing for anyone who never gets this far down.
+  const embed = `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=1&rel=0&modestbranding=1&playsinline=1`;
+
+  return (
+    <div className="pop-sup">
+      <figure className="pop-sup-hero">
+        <img
+          src={SHOT.vendors}
+          alt="The Apex Vendors screen listing wholesale suppliers, surrounded by the kind of name-brand products they carry: Colgate, Tide, Dove, Pampers, Huggies, Bounty, LEGO and Purina."
+          loading="lazy"
+        />
+      </figure>
+
+      <div className="pop-sup-drop">
+        <div className="pop-sup-drop-head">
+          <p className="pop-label">Your first drop</p>
+          <p className="pop-sup-net">
+            From a network of <b>{NETWORK.distributors}</b> US distributors
+            across <b>{NETWORK.categories}</b> categories
+          </p>
+        </div>
+        <ol className="pop-sup-cards">
+          {DROP.map(({ Icon, category, blur }, i) => (
+            <li className="pop-sup-card" key={category}>
+              <div className="pop-sup-card-top">
+                <span className="pop-sup-ico" aria-hidden="true">
+                  <Icon size={20} strokeWidth={2.2} />
+                </span>
+                <span className="pop-sup-num">Supplier {i + 1}</span>
+              </div>
+              <p className="pop-sup-cat">{category}</p>
+              <p className="pop-sup-name">
+                <span className="pop-sup-blur" aria-hidden="true">
+                  {blur}
+                </span>
+                <span className="pop-sup-lock">
+                  <Lock size={12} strokeWidth={2.6} aria-hidden="true" />
+                  Unlocks when you sign up
+                </span>
+              </p>
+              <ul className="pop-sup-perks">
+                {DROP_PERKS.map((p) => (
+                  <li key={p}>
+                    <Check size={15} strokeWidth={3} aria-hidden="true" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+          <li className="pop-sup-card pop-sup-more">
+            <span className="pop-sup-plus">+3</span>
+            <p className="pop-sup-cat">More next month</p>
+            <p className="pop-sup-more-copy">
+              A new drop lands every month you&rsquo;re with us.
+            </p>
+          </li>
+        </ol>
+      </div>
+
+      <div className="pop-sup-video">
+        <div className="pop-sup-video-copy">
+          <p className="pop-label">Watch it work · {video.length}</p>
+          <h3>From a supplier&rsquo;s catalog to a purchase order.</h3>
+          <p>
+            A real price list goes into Apex, the products that still make money
+            after Amazon&rsquo;s fees float to the top, and the order gets built
+            from them. Start to finish in under two minutes.
+          </p>
+          <ul className="pop-shot-list">
+            <li>
+              <span aria-hidden="true">→</span> Every line checked against real
+              Amazon fees
+            </li>
+            <li>
+              <span aria-hidden="true">→</span> Profit, ROI and margin on each
+              product
+            </li>
+            <li>
+              <span aria-hidden="true">→</span> The purchase order totals before
+              you send it
+            </li>
+          </ul>
+        </div>
+        <div className="pop-sup-phone">
+          <iframe
+            src={embed}
+            title={video.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const FAQS: readonly (readonly [string, string])[] = [
   [
     "Is Apex POP a course?",
@@ -257,6 +396,7 @@ export default function ApexPop({
   trustpilot,
   hide = [],
   software,
+  showcase,
   form,
 }: {
   chrome?: "own" | "site";
@@ -280,6 +420,13 @@ export default function ApexPop({
   hide?: PopSection[];
   /** Replaces the label, heading and lede of the software section. */
   software?: { label?: ReactNode; title?: ReactNode; lede?: ReactNode };
+  /**
+   * Leads the software section with the suppliers themselves: the Vendors
+   * screen with its products, the first drop as cards, and the purchase
+   * order video. The Vendors walkthrough below it is then dropped, since
+   * the showcase already shows that screen.
+   */
+  showcase?: { video: { id: string; title: string; length: string } };
   /**
    * A lead form shown in the hero instead of the big button. The header and
    * closing buttons then scroll back up to it rather than leaving the page,
@@ -609,47 +756,51 @@ export default function ApexPop({
                 </p>
               </div>
 
+              {showcase && <SupplierShowcase video={showcase.video} />}
+
               <div className="pop-shots">
-                <article className="pop-shot">
-                  <div className="pop-shot-copy">
-                    <p className="pop-label">Step 01 · Vendors</p>
-                    <h3>Your suppliers in one table.</h3>
-                    <p>
-                      Accounts, contacts, lead times, payment method and catalog
-                      status for every supplier you deal with, instead of a
-                      spreadsheet that stopped being accurate in March.
-                    </p>
-                    <ul className="pop-shot-list">
-                      <li>
-                        <span aria-hidden="true">→</span> Account numbers,
-                        logins and contacts held per supplier
-                      </li>
-                      <li>
-                        <span aria-hidden="true">→</span> Lead times and terms
-                        recorded as you learn them
-                      </li>
-                      <li>
-                        <span aria-hidden="true">→</span> Spend by vendor once
-                        orders start landing
-                      </li>
-                    </ul>
-                  </div>
-                  <figure className="pop-frame glow-edge">
-                    <div className="pop-frame-bar">
-                      <span className="pop-dots" aria-hidden="true">
-                        <i />
-                        <i />
-                        <i />
-                      </span>
-                      <span className="pop-frame-title">Apex · Vendors</span>
+                {!showcase && (
+                  <article className="pop-shot">
+                    <div className="pop-shot-copy">
+                      <p className="pop-label">Step 01 · Vendors</p>
+                      <h3>Your suppliers in one table.</h3>
+                      <p>
+                        Accounts, contacts, lead times, payment method and
+                        catalog status for every supplier you deal with, instead
+                        of a spreadsheet that stopped being accurate in March.
+                      </p>
+                      <ul className="pop-shot-list">
+                        <li>
+                          <span aria-hidden="true">→</span> Account numbers,
+                          logins and contacts held per supplier
+                        </li>
+                        <li>
+                          <span aria-hidden="true">→</span> Lead times and terms
+                          recorded as you learn them
+                        </li>
+                        <li>
+                          <span aria-hidden="true">→</span> Spend by vendor once
+                          orders start landing
+                        </li>
+                      </ul>
                     </div>
-                    <img
-                      src={SHOT.vendors}
-                      alt="The Apex Vendors screen listing suppliers with their websites, account details, lead times and payment methods, alongside a vendor spend breakdown."
-                      loading="lazy"
-                    />
-                  </figure>
-                </article>
+                    <figure className="pop-frame glow-edge">
+                      <div className="pop-frame-bar">
+                        <span className="pop-dots" aria-hidden="true">
+                          <i />
+                          <i />
+                          <i />
+                        </span>
+                        <span className="pop-frame-title">Apex · Vendors</span>
+                      </div>
+                      <img
+                        src={SHOT.vendors}
+                        alt="The Apex Vendors screen listing suppliers with their websites, account details, lead times and payment methods, alongside a vendor spend breakdown."
+                        loading="lazy"
+                      />
+                    </figure>
+                  </article>
+                )}
 
                 <article className="pop-shot">
                   <div className="pop-shot-copy">

@@ -66,7 +66,15 @@ export default function Page() {
             <span className="pop-blue">+ Every month!</span>
           </>
         ),
-        lede: "Your free account comes with three vetted US wholesale distributors, each with the contact who approves resellers, and three more every month. These are the screens you scan their catalogs and build the order in.",
+        lede: "Sign up and we send you three vetted US wholesale distributors, each with the person who approves new resellers. Then three more every month.",
+      }}
+      showcase={{
+        // The purchase order Short from /watch, 1:44 long.
+        video: {
+          id: "EClM6RcJ628",
+          title: "Apex Applications: building an Amazon FBA purchase order",
+          length: "1:44",
+        },
       }}
     />
   );
