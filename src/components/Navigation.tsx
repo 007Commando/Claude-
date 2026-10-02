@@ -1,6 +1,7 @@
 "use client";
 
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
+import { DOLLAR_WEEK } from "../config/offer";
 import { motion, AnimatePresence } from "motion/react";
 import {
   BarChart,
@@ -182,7 +183,8 @@ export default function Navigation() {
                 href={leanSignupHref}
                 className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
               >
-                SIGN UP FREE
+                {/* The Facebook page sells the $1 week once it is on; "free" beside it is the mismatch. */}
+                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "SIGN UP FREE"}
               </Link>
             </div>
           </div>

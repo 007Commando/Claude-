@@ -1083,7 +1083,9 @@ export default function ApexPop({
                 Start <mark>building the order.</mark>
               </h2>
               <p className="pop-lede" style={{ marginInline: "auto" }}>
-                {cta
+                {showDollar
+                  ? `Start your $${DOLLAR_WEEK.price} week and build the order in the software. Bring what you have, even if that is nothing but the intention to buy, and start at step one.`
+                  : cta
                   ? "Open your free Apex account and build the order in the software. Bring what you have, even if that is nothing but the intention to buy, and start at step one."
                   : "Book a working session with the Apex team. Bring what you have, even if that is nothing but the intention to buy, and we will start at step one."}
               </p>

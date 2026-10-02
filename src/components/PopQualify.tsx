@@ -15,8 +15,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { type ReactNode, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
@@ -221,6 +221,14 @@ const TRIAL_ITEMS = ["Apex University, all modules", "Ungating Roadmap", "First 
 const TRIAL_BODY = "All of it opens the moment you start the trial. Nothing to pay today, and the community is there for your questions.";
 
 /**
+ * The same two panels while the $1 week is on. "Free trial" and "nothing to
+ * pay today" one screen before a step that asks for $1 is the contradiction
+ * the funnel map flagged, so the copy follows the offer.
+ */
+const TODAY_BODY_DOLLAR = `Start your $${DOLLAR_WEEK.price} week and explore all of our resources, and join our community where you can ask questions. Your demo opens up as soon as your week starts.`;
+const TRIAL_BODY_DOLLAR = `All of it opens the moment your $${DOLLAR_WEEK.price} week starts, and the community is there for your questions.`;
+
+/**
  * Step 3 opens by naming what they said they need most and telling them the
  * solution is on the other side of the account. Stefano: "making them feel
  * they are in the right steps".
@@ -256,7 +264,7 @@ const SOLUTIONS: Record<string, { headline: string; sub: string }> = {
   },
 };
 
-function obstacleScene(obstacle: string) {
+function obstacleScene(obstacle: string, dollarWeek: boolean) {
   switch (obstacle) {
     case "Find profitable products":
       return (
@@ -290,9 +298,15 @@ function obstacleScene(obstacle: string) {
       );
     case "Getting started":
     case "Knowing the right steps":
-      return <OfferScene heading="What we give you today" items={TODAY_ITEMS} body={TODAY_BODY} />;
+      return <OfferScene heading="What we give you today" items={TODAY_ITEMS} body={dollarWeek ? TODAY_BODY_DOLLAR : TODAY_BODY} />;
     case STARTER_KIT:
-      return <OfferScene heading="What you get just for starting the trial" items={TRIAL_ITEMS} body={TRIAL_BODY} />;
+      return (
+        <OfferScene
+          heading={dollarWeek ? `What opens with your $${DOLLAR_WEEK.price} week` : "What you get just for starting the trial"}
+          items={TRIAL_ITEMS}
+          body={dollarWeek ? TRIAL_BODY_DOLLAR : TRIAL_BODY}
+        />
+      );
     default:
       return null;
   }
@@ -426,6 +440,30 @@ function ChoiceCard({ card, selected, onPick, compact = false }: { card: Card; s
 export default function PopQualify() {
   const params = useSearchParams();
   const [step, setStep] = useState(1);
+  /**
+   * Bring Continue into view after an answer is tapped. The scene or panel
+   * opens under the cards and pushed the button 1,000 to 1,300px below a
+   * phone screen, with nothing to say it was there. Scroll the least that
+   * shows the button, but never past the top of the scene.
+   */
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const continueRef = useRef<HTMLButtonElement>(null);
+  const [scrollNonce, setScrollNonce] = useState(0);
+  const reduceMotion = useReducedMotion();
+  useEffect(() => {
+    if (!scrollNonce) return;
+    // After the previous scene's exit and this one's entrance have settled.
+    const t = setTimeout(() => {
+      const scene = sceneRef.current;
+      const button = continueRef.current;
+      if (!scene || !button) return;
+      const sceneTop = scene.getBoundingClientRect().top + window.scrollY;
+      const buttonBottom = button.getBoundingClientRect().bottom + window.scrollY;
+      const target = Math.min(sceneTop - 130, buttonBottom - window.innerHeight + 24);
+      if (target > window.scrollY + 8) window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
+    }, 450);
+    return () => clearTimeout(t);
+  }, [scrollNonce, reduceMotion]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -543,7 +581,7 @@ export default function PopQualify() {
       <section className="mx-auto w-full max-w-3xl px-4 pb-16 pt-12 sm:px-6">
         <div className="mb-8 text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">Apex POP</p>
-          <h1 className="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">Your free demo and setup, built around you</h1>
+          <h1 className="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">{dollarWeek ? "Your demo and setup, built around you" : "Your free demo and setup, built around you"}</h1>
           <p className="mx-auto mt-3 max-w-xl text-base text-slate-600">
             {dollarWeek
               ? "Three short steps so the setup fits where you are. Then your Apex account, and we text you to book the demo."
@@ -630,6 +668,7 @@ export default function PopQualify() {
                         selected={obstacle === o.value}
                         onPick={() => {
                           setObstacle(o.value);
+                          setScrollNonce((n) => n + 1);
                           // Field and tag land now, so the follow-up can speak to this obstacle.
                           post({ stage: "obstacle", sellsOnAmazon: sells, obstacle: o.value }).catch(() => {});
                         }}
@@ -637,14 +676,16 @@ export default function PopQualify() {
                       />
                     ))}
                   </div>
-                  <AnimatePresence mode="wait">{obstacle && obstacleScene(obstacle)}</AnimatePresence>
+                  <div ref={sceneRef}>
+                    <AnimatePresence mode="wait">{obstacle && obstacleScene(obstacle, dollarWeek)}</AnimatePresence>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {error && step === 2 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
             <div className="mt-6 flex justify-end">
-              <button type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
+              <button ref={continueRef} type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
                 Continue
               </button>
             </div>
