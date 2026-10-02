@@ -131,7 +131,7 @@ function SuppliersScene() {
         </motion.div>
       ))}
       <motion.div className="pq-card pq-card-ghost" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
-        <span className="pq-card-name">+3 more next month</span>
+        <span className="pq-card-name">+3 every month</span>
       </motion.div>
     </div>
   );
@@ -232,7 +232,7 @@ const SOLUTIONS: Record<string, { headline: string; sub: string }> = {
   },
   "Find more suppliers": {
     headline: "Finding more suppliers is what Apex does best.",
-    sub: "Three vetted US distributors are waiting inside your account, each with the named contact who approves resellers, and three more arrive every month.",
+    sub: "Your directory of 389+ verified suppliers comes with your software, three are sent to you every month, and you get the outreach prep that gets them to approve you.",
   },
   "Going brand direct": {
     headline: "Going brand direct is the right move, and you are about to get the map.",
@@ -269,7 +269,10 @@ function obstacleScene(obstacle: string) {
       );
     case "Find more suppliers":
       return (
-        <Scene title="Three vetted US distributors on sign-up. Three more every month." body="Each with the named contact who approves resellers, so you are not cold-emailing an inbox that never answers.">
+        <Scene
+          title="A proven FBA directory of 389+ verified suppliers, vetted for 2026."
+          body="Three are sent to you every month with your software, along with how to prepare your outreach so they say yes to you."
+        >
           <SuppliersScene />
         </Scene>
       );
