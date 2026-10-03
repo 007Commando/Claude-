@@ -48,6 +48,7 @@ export default function Page() {
       }}
       trustpilot={TRUSTPILOT}
       dollarWeek
+      bare
       hero={{
         eyebrow: "For Amazon wholesale sellers",
         title: (

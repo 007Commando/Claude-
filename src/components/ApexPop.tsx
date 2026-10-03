@@ -469,6 +469,7 @@ export default function ApexPop({
   showcase,
   dollarWeek: offersDollarWeek = false,
   hero,
+  bare = false,
   form,
 }: {
   chrome?: "own" | "site";
@@ -513,6 +514,8 @@ export default function ApexPop({
    * program, and 63 of the first 66 Facebook visitors left from it.
    */
   hero?: { eyebrow: ReactNode; title: ReactNode; sub: ReactNode };
+  /** No site header above the page (Navigation renders none for it), so no room is kept for one. */
+  bare?: boolean;
   /**
    * A lead form shown in the hero instead of the big button. The header and
    * closing buttons then scroll back up to it rather than leaving the page,
@@ -559,7 +562,7 @@ export default function ApexPop({
   const artOpacity = useTransform(scrollYProgress, [0, 0.55], [0, 1]);
 
   return (
-    <div className={"apex-surface pop-page" + (sited ? " pop-page-sited" : "")}>
+    <div className={"apex-surface pop-page" + (sited ? " pop-page-sited" : "") + (bare ? " pop-page-bare" : "")}>
       {!sited && (
         <header className="pop-header">
           <div className="pop-header-in">

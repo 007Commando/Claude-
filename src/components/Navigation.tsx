@@ -151,6 +151,9 @@ export default function Navigation() {
   };
 
   if (hasOwnHeader || isInternalToolPage) return null;
+  // The Facebook ad page has no bar at all (Stefano, 2026-10-03): the hero
+  // opens the screen and its own button is the way in.
+  if (isPopWebJourney) return null;
 
   if (isLeanHeaderPage) {
     return (
