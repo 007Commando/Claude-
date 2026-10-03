@@ -880,6 +880,9 @@ export default function Auth() {
     }
   };
 
+  const googleBelow = prefilled && mode === "signup";
+  const googleLabel = `${mode === "signup" ? "Sign up" : "Log in"} with Google`;
+
   const handleGoogleSignIn = async () => {
     setError(null);
     setInfo(null);
@@ -1293,44 +1296,21 @@ export default function Auth() {
                     </div>
                   )}
 
-                  {mode !== "forgot" && (
+                  {/*
+                    Google sits under the form when the qualifier or the
+                    PrimeWell form has already filled in the name and email:
+                    a Google account on another address splits the new
+                    account from the lead in GoHighLevel, so the typed
+                    email should be the easy path there.
+                  */}
+                  {mode !== "forgot" && !googleBelow && (
                     <>
-                      <button
-                        type="button"
+                      <GoogleButton
                         onClick={handleGoogleSignIn}
                         disabled={googleLoading || loading}
-                        className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3.5 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-60"
-                      >
-                        {googleLoading ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <svg
-                            viewBox="0 0 24 24"
-                            className="w-4 h-4"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill="#4285F4"
-                              d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
-                            />
-                            <path
-                              fill="#34A853"
-                              d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11C3.24 21.3 7.29 24 12 24Z"
-                            />
-                            <path
-                              fill="#FBBC05"
-                              d="M5.27 14.28A7.2 7.2 0 0 1 4.9 12c0-.79.14-1.56.37-2.28V6.61H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.11Z"
-                            />
-                            <path
-                              fill="#EA4335"
-                              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.61l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
-                            />
-                          </svg>
-                        )}
-                        {googleLoading
-                          ? "Please wait…"
-                          : `${mode === "signup" ? "Sign up" : "Log in"} with Google`}
-                      </button>
+                        busy={googleLoading}
+                        label={googleLabel}
+                      />
 
                       <div className="flex items-center gap-3 my-6">
                         <div className="h-px flex-1 bg-slate-200" />
@@ -1567,6 +1547,25 @@ export default function Auth() {
                     </button>
                   </form>
 
+                  {mode !== "forgot" && googleBelow && (
+                    <>
+                      <div className="flex items-center gap-3 my-6">
+                        <div className="h-px flex-1 bg-slate-200" />
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                          or
+                        </span>
+                        <div className="h-px flex-1 bg-slate-200" />
+                      </div>
+
+                      <GoogleButton
+                        onClick={handleGoogleSignIn}
+                        disabled={googleLoading || loading}
+                        busy={googleLoading}
+                        label={googleLabel}
+                      />
+                    </>
+                  )}
+
                   <p className="text-center text-sm text-slate-500 mt-6">
                     {mode === "signup" ? (
                       <>
@@ -1615,5 +1614,58 @@ export default function Auth() {
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The Google button, in one place because the sign-up form shows it in one
+ * of two positions (see the Auth render).
+ */
+function GoogleButton({
+  onClick,
+  disabled,
+  busy,
+  label,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  busy: boolean;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3.5 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-60"
+    >
+      {busy ? (
+        <Loader2 className="w-4 h-4 animate-spin" />
+      ) : (
+        <svg
+          viewBox="0 0 24 24"
+          className="w-4 h-4"
+          aria-hidden="true"
+        >
+          <path
+            fill="#4285F4"
+            d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
+          />
+          <path
+            fill="#34A853"
+            d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11C3.24 21.3 7.29 24 12 24Z"
+          />
+          <path
+            fill="#FBBC05"
+            d="M5.27 14.28A7.2 7.2 0 0 1 4.9 12c0-.79.14-1.56.37-2.28V6.61H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.11Z"
+          />
+          <path
+            fill="#EA4335"
+            d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.61l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
+          />
+        </svg>
+      )}
+      {busy ? "Please wait…" : label}
+    </button>
   );
 }

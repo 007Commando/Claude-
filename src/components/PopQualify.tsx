@@ -20,7 +20,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
-import { DOLLAR_WEEK, TAX_SUFFIX } from "../config/offer";
+import { DOLLAR_WEEK } from "../config/offer";
 import { liveIdentify, liveStep } from "../lib/live/client";
 
 /**
@@ -418,18 +418,19 @@ function ChoiceCard({ card, selected, onPick, compact = false }: { card: Card; s
       type="button"
       onClick={onPick}
       aria-pressed={selected}
-      className={`relative w-full rounded-2xl border-2 p-4 text-left transition-all sm:p-5 ${selected ? "border-amber-700 bg-blue-50/40 shadow-md" : "border-slate-200 bg-white hover:border-slate-300"}`}
+      className={`relative w-full rounded-2xl border-2 text-left transition-all ${compact ? "px-3.5 py-3 sm:p-4" : "p-4 sm:p-5"} ${selected ? "border-amber-700 bg-blue-50/40 shadow-md" : "border-slate-200 bg-white hover:border-slate-300"}`}
     >
-      <span className={`absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full border-2 ${selected ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300"}`}>
+      <span className={`absolute right-4 ${compact ? "top-1/2 -translate-y-1/2" : "top-4"} flex h-6 w-6 items-center justify-center rounded-full border-2 ${selected ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300"}`}>
         {selected && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
       </span>
-      <span className={`flex ${compact ? "flex-col gap-3" : "items-start gap-4"}`}>
-        <span className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl ${selected ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
-          <Icon className="h-6 w-6" aria-hidden="true" />
+      {/* Compact: icon beside the text, so four answers fit on a phone screen. */}
+      <span className={`flex ${compact ? "items-center gap-3" : "items-start gap-4"}`}>
+        <span className={`flex ${compact ? "h-10 w-10" : "h-14 w-14"} flex-shrink-0 items-center justify-center rounded-xl ${selected ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
+          <Icon className={compact ? "h-5 w-5" : "h-6 w-6"} aria-hidden="true" />
         </span>
         <span className="min-w-0 pr-6">
-          <span className="block text-lg font-bold leading-snug text-slate-900">{card.title}</span>
-          <span className="mt-1 block text-sm text-slate-500">{card.body}</span>
+          <span className={`block font-bold leading-snug text-slate-900 ${compact ? "text-base" : "text-lg"}`}>{card.title}</span>
+          <span className={`block text-slate-500 ${compact ? "mt-0.5 text-[13px]" : "mt-1 text-sm"}`}>{card.body}</span>
         </span>
       </span>
     </button>
@@ -575,33 +576,30 @@ export default function PopQualify() {
    * reads 100% on this page: that happens when the account exists.
    */
   const typed = [name, email, phone].filter((v) => v.trim().length > 1).length;
-  const progress = busy && step === 3 ? 0.95 : step === 1 ? typed * 0.08 : step === 2 ? 0.3 + (sells ? 0.15 : 0) + (obstacle ? 0.15 : 0) : 0.8;
+  const progress = busy && step === 3 ? 0.95 : step === 1 ? 0.1 + typed * 0.05 : step === 2 ? 0.3 + (sells ? 0.15 : 0) + (obstacle ? 0.15 : 0) : 0.8;
   const progressLabel =
     progress < 0.3 ? "About 2 minutes" : progress < 0.6 ? "About 1 minute" : progress < 0.8 ? "Under a minute" : "Almost there";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-[81px]">
       <ProgressLine fraction={progress} label={progressLabel} />
-      <section className="mx-auto w-full max-w-3xl px-4 pb-16 pt-12 sm:px-6">
-        <div className="mb-8 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-600">Apex POP</p>
-          <h1 className="mt-2 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">{dollarWeek ? "Your demo and setup, built around you" : "Your free demo and setup, built around you"}</h1>
-          <p className="mx-auto mt-3 max-w-xl text-base text-slate-600">
-            {dollarWeek
-              ? "Three short steps so the setup fits where you are. Then your Apex account, and we text you to book the demo."
-              : "Three short steps so the setup fits where you are. Then a free Apex account, and we text you to book the demo."}
-          </p>
-          {dollarWeek && (
-            <div className="mt-4 flex flex-col items-center gap-1.5">
-              <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-[13.5px] font-semibold leading-snug text-emerald-800 [text-wrap:balance]">
-                <b className="font-extrabold text-emerald-900">${DOLLAR_WEEK.price} trial.</b> 100% refund if you&rsquo;re not satisfied within{" "}
-                {DOLLAR_WEEK.days} days.
-              </p>
-              <p className="max-w-md text-xs text-slate-500">
-                Apex {DOLLAR_WEEK.planLabel} is ${DOLLAR_WEEK.price} for your first {DOLLAR_WEEK.days} days, then ${DOLLAR_WEEK.thenPrice}/month
-                {TAX_SUFFIX}. Cancel from your dashboard before day {DOLLAR_WEEK.days} and we refund your ${DOLLAR_WEEK.price} automatically.
-              </p>
-            </div>
+      <section className="mx-auto w-full max-w-3xl px-4 pb-16 pt-7 sm:px-6 sm:pt-12">
+        {/*
+          One line and the $1 tag, so the fields and Continue make a phone's
+          first screen. It used to spend that screen on a headline, two
+          lines of explanation and the $1 small print the landing page had
+          just shown; the full terms are on step 3, sign-up and checkout.
+        */}
+        <div className="mb-5 text-center">
+          <h1 className="text-2xl font-bold leading-tight text-slate-900 [text-wrap:balance] sm:text-3xl">
+            3 quick questions, then your suppliers
+          </h1>
+          {dollarWeek ? (
+            <p className="mt-2.5 inline-block rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[13px] font-semibold text-emerald-800">
+              <b className="font-extrabold text-emerald-900">${DOLLAR_WEEK.price} trial.</b> 100% refund if you&rsquo;re not satisfied within {DOLLAR_WEEK.days} days.
+            </p>
+          ) : (
+            <p className="mx-auto mt-2 max-w-xl text-sm text-slate-600">Then a free Apex account, and we text you to book the demo.</p>
           )}
         </div>
 
@@ -618,7 +616,9 @@ export default function PopQualify() {
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-base outline-none focus:border-blue-500" />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-sm font-semibold text-slate-700">Phone</span>
+                <span className="mb-1.5 block text-sm font-semibold text-slate-700">
+                  Mobile <span className="font-normal text-slate-500">(we text you to set up your demo)</span>
+                </span>
                 <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" required minLength={7} className="w-full rounded-xl border-2 border-slate-200 px-4 py-3 text-base outline-none focus:border-blue-500" />
               </label>
               {error && step === 1 && <p className="text-sm font-medium text-red-600 sm:col-span-2">{error}</p>}
