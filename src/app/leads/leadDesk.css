@@ -2074,3 +2074,23 @@
 @media (max-width: 1100px) {
   .ld-live { grid-template-columns: 1fr; }
 }
+
+.ld-live-card-wide { grid-column: 1 / -1; }
+.ld-live-funnel-step { grid-template-columns: 10px 1fr auto 104px; }
+.ld-live-funnel-step small em { font-style: normal; font-weight: 700; color: var(--ld-text-muted); }
+.ld-live-drops { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ld-live-drops div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--ld-border);
+}
+.ld-live-drops div[data-bounce="signup"] { background: color-mix(in srgb, #8b5cf6 7%, white); border-color: color-mix(in srgb, #8b5cf6 25%, white); }
+.ld-live-drops div[data-bounce="checkout"] { background: color-mix(in srgb, #f97316 7%, white); border-color: color-mix(in srgb, #f97316 25%, white); }
+.ld-live-drops span { font-size: 12px; font-weight: 700; color: var(--ld-text); }
+.ld-live-drops b { font-size: 22px; font-weight: 800; color: var(--ld-text); line-height: 1.2; }
+.ld-live-drops small { font-size: 11px; color: var(--ld-text-muted); }
+.ld-live-bounce[data-bounce="signup"] { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; }
+.ld-live-bounce[data-bounce="checkout"] { color: #c2410c; background: #fff7ed; border-color: #fed7aa; }

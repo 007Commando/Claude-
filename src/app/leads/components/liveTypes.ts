@@ -36,7 +36,12 @@ export interface LiveSnapshot {
   day: string;
   active: LiveSession[];
   today: LiveSession[];
-  totals: Partial<Record<"sessions" | "returning" | "leads" | "form" | "signup" | "checkout" | "paid", number>>;
+  totals: Partial<
+    Record<
+      "sessions" | "returning" | "leads" | "form" | "signup" | "checkout" | "paid" | "signupPassed" | "checkoutPassed",
+      number
+    >
+  >;
 }
 
 export const LIVE_STAGE_LABELS: Record<LiveStage, string> = {
@@ -59,6 +64,30 @@ export function liveSource(s: Pick<LiveSession, "source" | "medium" | "referrer"
   if (source.includes("chatgpt") || source.includes("openai")) return "chatgpt";
   if (!source || source === "direct") return "direct";
   return "other";
+}
+
+/**
+ * Where a session that has ended stopped, for the two drop-off points
+ * Stefano wants measured (2026-10-02): reached sign-up and went no further,
+ * or reached checkout and did not pay.
+ */
+export type Bounce = "signup" | "checkout";
+export function bounceOf(s: LiveSession, active: boolean): Bounce | null {
+  if (active) return null;
+  if (s.maxStage === "signup") return "signup";
+  if (s.maxStage === "checkout") return "checkout";
+  return null;
+}
+export const BOUNCE_LABELS: Record<Bounce, string> = {
+  signup: "Bounced at sign-up",
+  checkout: "Bounced at checkout",
+};
+
+/** "12.5%", or a dash when there is nothing to divide by. */
+export function pct(part: number, whole: number): string {
+  if (!whole) return "—";
+  const value = (part / whole) * 100;
+  return `${value >= 10 || value === 0 ? value.toFixed(0) : value.toFixed(1)}%`;
 }
 
 /** "4m 12s", "1h 05m": how long a session has lasted. */

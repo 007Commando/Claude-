@@ -6,7 +6,10 @@ import LiveMap, { STAGE_COLORS } from "./LiveMap";
 import SourceLogo from "./SourceLogo";
 import { SOURCE_LABELS } from "./shared";
 import {
+  BOUNCE_LABELS,
+  bounceOf,
   fmtDuration,
+  pct,
   LIVE_STAGE_LABELS,
   liveSource,
   pageLabel,
@@ -87,6 +90,11 @@ function FeedRow({
       </span>
       <StagePill s={s} />
       <span className="ld-live-row-meta">
+        {bounceOf(s, live) && (
+          <span className="ld-live-tag ld-live-bounce" data-bounce={bounceOf(s, live)}>
+            {BOUNCE_LABELS[bounceOf(s, live)!]}
+          </span>
+        )}
         {s.device === "mobile" ? <Smartphone size={13} aria-label="Phone" /> : <Monitor size={13} aria-label="Computer" />}
         {s.returning && <span className="ld-live-tag">Returning</span>}
       </span>
@@ -151,6 +159,14 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
   const sourceMax = Math.max(1, ...bySource.map(([, n]) => n));
 
   const sessions = totals.sessions ?? 0;
+  const paid = totals.paid ?? 0;
+  // Bounces: reached the step, went no further, and is not still on it now.
+  const stillAtSignup = active.filter((s) => s.maxStage === "signup").length;
+  const stillAtCheckout = active.filter((s) => s.maxStage === "checkout").length;
+  const signups = totals.signup ?? 0;
+  const checkouts = totals.checkout ?? 0;
+  const bouncedSignup = Math.max(0, signups - (totals.signupPassed ?? 0) - stillAtSignup);
+  const bouncedCheckout = Math.max(0, checkouts - (totals.checkoutPassed ?? 0) - stillAtCheckout);
   const returning = totals.returning ?? 0;
   const ago = fetchedAt ? Math.round((now - fetchedAt) / 1000) : null;
 
@@ -184,7 +200,30 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
             <b>{totals.leads ?? 0}</b>
             <small>email captured</small>
           </div>
+          <div className="ld-live-card ld-live-card-wide">
+            <span>Conversion rate</span>
+            <b>{pct(paid, sessions)}</b>
+            <small>
+              {sessions} visitor{sessions === 1 ? "" : "s"} → {paid} purchase{paid === 1 ? "" : "s"} today
+            </small>
+          </div>
         </div>
+
+        <section className="ld-live-block">
+          <h3>Drop-off · today</h3>
+          <div className="ld-live-drops">
+            <div data-bounce="signup">
+              <span>Bounced at sign-up</span>
+              <b>{bouncedSignup}</b>
+              <small>{pct(bouncedSignup, signups)} of {signups} who reached sign-up</small>
+            </div>
+            <div data-bounce="checkout">
+              <span>Bounced at checkout</span>
+              <b>{bouncedCheckout}</b>
+              <small>{pct(bouncedCheckout, checkouts)} of {checkouts} who reached checkout</small>
+            </div>
+          </div>
+        </section>
 
         <section className="ld-live-block">
           <h3>Visitor behavior</h3>
@@ -194,7 +233,10 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
                 <span className="ld-live-funnel-dot" style={{ background: STAGE_COLORS[stage] }} />
                 <span className="ld-live-funnel-label">{LIVE_STAGE_LABELS[stage]}</span>
                 <b>{liveByStage[stage]}</b>
-                <small>{totals[TOTAL_KEY[stage]] ?? 0} today</small>
+                <small>
+                  {totals[TOTAL_KEY[stage]] ?? 0} today
+                  {stage !== "browsing" && <em> · {pct(totals[TOTAL_KEY[stage]] ?? 0, sessions)}</em>}
+                </small>
               </div>
             ))}
           </div>
