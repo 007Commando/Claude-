@@ -393,6 +393,66 @@ function HeroScan() {
 }
 
 /**
+ * Whole days from today (New York) until a calendar date, never below zero.
+ */
+function daysUntil(year: number, month: number, day: number) {
+  const ny = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const [y, m, d] = ny.split("-").map(Number);
+  const today = Date.UTC(y, m - 1, d);
+  return Math.max(0, Math.round((Date.UTC(year, month - 1, day) - today) / 86_400_000));
+}
+
+/**
+ * The Q4 countdown strip (Stefano, 2026-10-03), pinned to the top of the
+ * Facebook page and scrolling sideways: real days left in the quarter and
+ * to Black Friday, to make the decision feel due without inventing a
+ * deadline. Counted in New York time after mount, so the server render and
+ * the visitor's clock never disagree. The whole strip is the way in.
+ */
+function Q4Ticker({ href }: { href: string }) {
+  const [days, setDays] = useState<{ q4: number; bf: number } | null>(null);
+  useEffect(() => {
+    const now = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+    const year = Number(now.slice(0, 4));
+    // Q4 runs to 31 Dec; Black Friday 2026 is 27 Nov.
+    setDays({ q4: daysUntil(year, 12, 31) + 1, bf: daysUntil(year, 11, 27) });
+  }, []);
+  if (!days) return <div className="pop-ticker" aria-hidden="true" />;
+  const items = [
+    <>
+      <b>{days.q4} days</b> left in Q4
+    </>,
+    days.bf > 0 ? (
+      <>
+        <b>{days.bf} days</b> to Black Friday
+      </>
+    ) : (
+      <>Black Friday is here</>
+    ),
+    <>Get your inventory in before the rush</>,
+    <>
+      Start for <b>${DOLLAR_WEEK.price}</b>
+      {" · "}100% refund if you&rsquo;re not happy
+    </>,
+  ];
+  const run = (copy: number) =>
+    items.map((item, i) => (
+      <span className="pop-ticker-item" key={`${copy}-${i}`} aria-hidden={copy > 0 || undefined}>
+        <span>{item}</span>
+        <i aria-hidden="true">•</i>
+      </span>
+    ));
+  return (
+    <a className="pop-ticker" href={href} aria-label={`${days.q4} days left in Q4. Start for $${DOLLAR_WEEK.price}.`}>
+      <span className="pop-ticker-track">
+        {run(0)}
+        {run(1)}
+      </span>
+    </a>
+  );
+}
+
+/**
  * A second way in, straight under the hero video (Stefano, 2026-10-03):
  * someone who has just watched the order get built should not have to
  * scroll back up for the button. It glows softly all the time and gives a
@@ -683,6 +743,7 @@ export default function ApexPop({
   dollarWeek: offersDollarWeek = false,
   hero,
   bare = false,
+  q4Ticker = false,
   form,
 }: {
   chrome?: "own" | "site";
@@ -729,6 +790,8 @@ export default function ApexPop({
   hero?: { eyebrow: ReactNode; title: ReactNode; sub: ReactNode };
   /** No site header above the page (Navigation renders none for it), so no room is kept for one. */
   bare?: boolean;
+  /** The moving Q4 countdown strip pinned to the top of the page. */
+  q4Ticker?: boolean;
   /**
    * A lead form shown in the hero instead of the big button. The header and
    * closing buttons then scroll back up to it rather than leaving the page,
@@ -776,6 +839,7 @@ export default function ApexPop({
 
   return (
     <div className={"apex-surface pop-page" + (sited ? " pop-page-sited" : "") + (bare ? " pop-page-bare" : "")}>
+      {q4Ticker && <Q4Ticker href={carry(primaryHref)} />}
       {!sited && (
         <header className="pop-header">
           <div className="pop-header-in">

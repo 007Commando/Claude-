@@ -719,6 +719,36 @@ body:has(.pop-page) { margin: 0; background: #fff; }
   .pop-page .pop-cta-glow, .pop-page .pop-cta-glow.is-shaking { animation: none; box-shadow: 0 0 22px 4px rgba(37, 99, 235, .25); }
 }
 
+/* The Q4 countdown strip: pinned to the top, text moving right to left. */
+.pop-page .pop-ticker {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: block;
+  height: 38px;
+  overflow: hidden;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.pop-page .pop-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  animation: pop-ticker 26s linear infinite;
+}
+.pop-page .pop-ticker:hover .pop-ticker-track { animation-play-state: paused; }
+.pop-page .pop-ticker-item { display: inline-flex; align-items: center; gap: 22px; padding-right: 22px; }
+.pop-page .pop-ticker-item b { color: #fbbf24; font-weight: 800; }
+.pop-page .pop-ticker-item i { font-style: normal; color: #475569; }
+@keyframes pop-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pop-page .pop-ticker-track { animation: none; }
+}
+
 /* ------------------------------------------------- all in one (suite) */
 
 .pop-page .pop-suite { margin-top: 30px; }
