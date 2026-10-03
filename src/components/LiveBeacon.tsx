@@ -93,6 +93,9 @@ export default function LiveBeacon() {
     if (!current) return;
 
     const payload = (left = false) => {
+      // The URL first: on the landing beat the attribution component may not
+      // have stored this visit's UTMs yet, and a Facebook click would read as direct.
+      const params = new URLSearchParams(window.location.search);
       const attribution = readStoredAttribution();
       const live = liveState();
       const stored = storedIdentity();
@@ -106,9 +109,9 @@ export default function LiveBeacon() {
         step,
         email: live.email ?? stored.email,
         name: live.name ?? stored.name,
-        source: attribution?.utmSource || attribution?.source,
-        medium: attribution?.utmMedium,
-        campaign: attribution?.utmCampaign,
+        source: params.get("utm_source") || attribution?.utmSource || attribution?.source,
+        medium: params.get("utm_medium") || attribution?.utmMedium,
+        campaign: params.get("utm_campaign") || attribution?.utmCampaign,
         referrer: document.referrer || undefined,
         left,
       });
