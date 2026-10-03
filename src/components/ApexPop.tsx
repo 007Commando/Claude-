@@ -407,6 +407,123 @@ function DollarWeekNote() {
   );
 }
 
+/**
+ * Every tool in the app, grouped the way its Tools menu groups them, for
+ * the "all in one" block (Stefano, 2026-10-03). Rebuilt as markup rather
+ * than a screenshot of the menu: five columns of small type are unreadable
+ * on a phone, and the menu screenshot carried a customer's dashboard.
+ */
+const SUITE = [
+  {
+    module: "Apex Black",
+    area: "Your business",
+    bull: "/__l5e/assets-v1/a0c4a52b-a77b-4b9a-b0ab-bc2869ea2c95/bull-black.png",
+    tools: [
+      ["Dashboard", "Your Amazon business at a glance"],
+      ["Review Booster", "Review requests on every order"],
+      ["Apex University", "The wholesale blueprint"],
+      ["Authorized FBA Distributors", "Vetted US wholesalers and who to contact"],
+      ["Rewards & Benefits", "Prep centers, playbooks and perks"],
+    ],
+  },
+  {
+    module: "Apex Blue",
+    area: "Operations",
+    bull: "/__l5e/assets-v1/b3e15893-18f1-44d2-aebb-f3ab4aaf9bcd/bull-blue.png",
+    tools: [
+      ["Analytics", "Financials and restock planning"],
+      ["Vendors", "Every supplier organized"],
+      ["Databases", "Market data for your listings"],
+      ["Ungating", "Brands worth getting approved for"],
+      ["Purchase Orders", "Build and track every order"],
+      ["Opex", "Your operating expenses"],
+    ],
+  },
+  {
+    module: "Apex Green",
+    area: "Sourcing",
+    bull: "/__l5e/assets-v1/92204b1e-f18c-4fa0-a40f-8765b8f8778e/bull-green.png",
+    tools: [
+      ["Master Catalog", "All your vendors' catalogs in one"],
+      ["UPC Scanner", "Match a price list to Amazon listings"],
+      ["Brands", "Every brand on Amazon"],
+      ["Products", "New listings and opportunities"],
+    ],
+  },
+  {
+    module: "Apex Red",
+    area: "Logistics",
+    bull: "/__l5e/assets-v1/496a6fdc-4714-4c12-a2e2-39a484ee8a80/apex-red-bull.png",
+    tools: [
+      ["Shipments", "Create and track shipments"],
+      ["Warehouses", "Ship-from addresses and prep centers"],
+      ["Inventory", "What is in each warehouse"],
+      ["Prep Chat", "Live chat with your prep center"],
+      ["Prep Billing", "Your prep center bills"],
+    ],
+  },
+  {
+    module: "Apex Gold",
+    area: "Repricing",
+    bull: "/__l5e/assets-v1/49e2659a-0879-4cda-8766-39fb1497383d/apex-gold-bull.png",
+    tools: [
+      ["Listings", "Repricing rules on live listings"],
+      ["Strategy", "Build repricing strategies"],
+      ["Price Activity", "Every price change it made"],
+    ],
+  },
+] as const;
+const SUITE_TOOL_COUNT = SUITE.reduce((n, group) => n + group.tools.length, 0);
+
+function AllInOne() {
+  return (
+    <article className="pop-suite">
+      <div className="pop-suite-copy">
+        <p className="pop-label">All in one</p>
+        <h3>
+          {SUITE_TOOL_COUNT} tools. <span className="pop-blue">One login.</span>
+        </h3>
+        <p>
+          From the first supplier to the repricer: sourcing, purchase orders, inventory, prep and repricing in one place,
+          instead of a stack of separate subscriptions that never talk to each other.
+        </p>
+      </div>
+      <figure className="pop-frame glow-edge pop-suite-frame">
+        <div className="pop-frame-bar">
+          <span className="pop-dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="pop-frame-title">Apex · Tools</span>
+        </div>
+        <div className="pop-suite-grid">
+          {SUITE.map((group) => (
+            <section key={group.module} className="pop-suite-col" aria-label={`${group.module}, ${group.area}`}>
+              <header>
+                <img src={group.bull} alt="" width={36} height={22} loading="lazy" />
+                <span>
+                  <b>{group.module}</b>
+                  <small>{group.area}</small>
+                </span>
+              </header>
+              <ul>
+                {group.tools.map(([name, line]) => (
+                  <li key={name}>
+                    <b>{name}</b>
+                    <small>{line}</small>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </figure>
+      <p className="pop-suite-note">Some tools depend on your plan: the repricer (Apex Gold) is on Pro.</p>
+    </article>
+  );
+}
+
 const FAQS: readonly (readonly [string, string])[] = [
   [
     "Is Apex POP a course?",
@@ -958,6 +1075,9 @@ export default function ApexPop({
                   </figure>
                 </article>
 
+                {showcase ? (
+                  <AllInOne />
+                ) : (
                 <article className="pop-shot">
                   <div className="pop-shot-copy">
                     <p className="pop-label">
@@ -1003,6 +1123,7 @@ export default function ApexPop({
                     />
                   </figure>
                 </article>
+                )}
               </div>
 
               <p className="pop-fineprint">

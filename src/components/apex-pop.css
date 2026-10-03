@@ -671,6 +671,55 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 
 /* ----------------------------------------------------------- responsive */
 
+/* ------------------------------------------------- all in one (suite) */
+
+.pop-page .pop-suite { margin-top: 30px; }
+.pop-page .pop-suite-copy { max-width: 640px; }
+.pop-page .pop-suite-copy h3 { margin-top: 14px; font-size: 30px; font-weight: 800; letter-spacing: -.03em; line-height: 1.15; }
+.pop-page .pop-suite-copy h3 .pop-blue { color: var(--blue); }
+.pop-page .pop-suite-copy > p { margin-top: 12px; font-size: 16px; line-height: 1.62; }
+.pop-page .pop-suite-frame { margin-top: 24px; }
+.pop-page .pop-suite-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  background: #fff;
+}
+.pop-page .pop-suite-col { padding: 18px 16px 20px; border-left: 1px solid var(--line-2); }
+.pop-page .pop-suite-col:first-child { border-left: 0; }
+.pop-page .pop-suite-col header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line-2);
+}
+.pop-page .pop-suite-col header img { width: 36px; height: auto; flex-shrink: 0; }
+.pop-page .pop-suite-col header span { display: flex; flex-direction: column; line-height: 1.2; }
+.pop-page .pop-suite-col header b { font-size: 14px; font-weight: 800; color: var(--ink-strong); }
+.pop-page .pop-suite-col header small { font-size: 12px; color: var(--faint); }
+.pop-page .pop-suite-col ul { display: grid; gap: 11px; }
+.pop-page .pop-suite-col li { display: flex; flex-direction: column; line-height: 1.3; }
+.pop-page .pop-suite-col li b { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+.pop-page .pop-suite-col li small { font-size: 12px; color: var(--body); }
+.pop-page .pop-suite-note { margin-top: 12px; font-size: 12.5px; color: var(--faint); }
+
+@media (max-width: 1040px) {
+  .pop-page .pop-suite-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pop-page .pop-suite-col { border-left: 0; border-top: 1px solid var(--line-2); }
+}
+/* A phone gets two columns and names only, so the whole suite reads in about a screen. */
+@media (max-width: 680px) {
+  .pop-page .pop-suite-copy h3 { font-size: 25px; }
+  .pop-page .pop-suite-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pop-page .pop-suite-col { padding: 14px 12px 16px; }
+  .pop-page .pop-suite-col:nth-child(odd) { border-right: 1px solid var(--line-2); }
+  .pop-page .pop-suite-col li small { display: none; }
+  .pop-page .pop-suite-col ul { gap: 7px; }
+  .pop-page .pop-suite-col li b { font-size: 13px; font-weight: 600; }
+}
+
 /* --------------------------------------------- supplier showcase */
 
 .pop-page .pop-sup { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
