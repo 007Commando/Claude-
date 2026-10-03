@@ -150,7 +150,7 @@ export default function AgentBus({
       const r = el.getBoundingClientRect();
       W = r.width;
       mobile = W < 720;
-      H = mobile ? 800 : Math.max(560, Math.min(680, W * 0.5));
+      H = mobile ? 780 : Math.max(500, Math.min(580, W * 0.44));
       el.style.height = `${H}px`;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       cv.width = Math.round(W * dpr);
@@ -168,10 +168,10 @@ export default function AgentBus({
         core = { x: W / 2, y: H * 0.43 };
         dests.forEach((n, i) => (pos[n.id] = { x: W * (0.2 + 0.3 * (i % 3)), y: H * (i < 3 ? 0.72 : 0.9) }));
       } else {
-        nodeSize = 66;
+        nodeSize = H < 560 ? 54 : 62;
         agents.forEach((n, i) => (pos[n.id] = { x: W * 0.1, y: H * (0.17 + (0.66 / 3) * i) }));
         core = { x: W * 0.5, y: H * 0.5 };
-        dests.forEach((n, i) => (pos[n.id] = { x: W * 0.9, y: H * (0.14 + (0.74 / 5) * i) }));
+        dests.forEach((n, i) => (pos[n.id] = { x: W * 0.9, y: H * (0.13 + (0.76 / 5) * i) }));
       }
       edges = [];
       const mk = (from: string, to: string, a: Pt, b: Pt, planned: boolean) => {
@@ -321,6 +321,17 @@ export default function AgentBus({
         ctx.stroke();
       }
       ctx.restore();
+
+      /* scan beam */
+      {
+        const bx = ((t * 0.12) % 1.4 - 0.2) * W;
+        const bg = ctx.createLinearGradient(bx - 90, 0, bx + 90, 0);
+        bg.addColorStop(0, "rgba(56,189,248,0)");
+        bg.addColorStop(0.5, "rgba(56,189,248,0.07)");
+        bg.addColorStop(1, "rgba(56,189,248,0)");
+        ctx.fillStyle = bg;
+        ctx.fillRect(bx - 90, 0, 180, H);
+      }
 
       /* server racks behind the destinations */
       ctx.save();
