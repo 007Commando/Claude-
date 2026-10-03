@@ -12,6 +12,7 @@ type Entry = {
 const ENTRIES: Entry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/ai", changeFrequency: "monthly", priority: 0.7 },
   { path: "/fba-starter-bundle", changeFrequency: "weekly", priority: 0.9 },
   { path: "/apex-elite", changeFrequency: "weekly", priority: 0.9 },
   { path: "/premium-membership", changeFrequency: "weekly", priority: 0.9 },
