@@ -5,6 +5,7 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import HashScrollHandler from "../components/HashScrollHandler";
 import LeadAttribution from "../components/LeadAttribution";
+import LiveBeacon from "../components/LiveBeacon";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { SITE_URL } from "../config/site";
 import "../index.css";
@@ -187,6 +188,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navigation />
           <HashScrollHandler />
           <LeadAttribution />
+          <LiveBeacon />
           <main>{children}</main>
           <Footer />
         </div>

@@ -21,6 +21,7 @@ import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 import { DOLLAR_WEEK, TAX_SUFFIX } from "../config/offer";
+import { liveIdentify, liveStep } from "../lib/live/client";
 
 /**
  * The website arm of the Apex Pop A/B, in the PrimeWell application's shape:
@@ -440,6 +441,7 @@ function ChoiceCard({ card, selected, onPick, compact = false }: { card: Card; s
 export default function PopQualify() {
   const params = useSearchParams();
   const [step, setStep] = useState(1);
+  useEffect(() => liveStep(step), [step]);
   /**
    * Bring Continue into view after an answer is tapped. The scene or panel
    * opens under the cards and pushed the button 1,000 to 1,300px below a
@@ -507,6 +509,8 @@ export default function PopQualify() {
     setError(null);
     try {
       await post({ stage: "details" });
+      // Lead Desk's Live tab: this visitor now has a name and an email.
+      liveIdentify(email, name);
       setStep(2);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
