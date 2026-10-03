@@ -238,6 +238,68 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 
 .pop-hero-in { position: relative; z-index: 1; text-align: center; }
 
+/* The ad-traffic hero: shorter headline and one line under it, so the
+   button and the scan card sit on the first screen of a phone. */
+.pop-hero h1.pop-hero-h1-tight { max-width: 17ch; font-size: clamp(36px, 5.4vw, 64px); }
+.pop-page .pop-hero-sub-tight { margin: 20px auto 0; max-width: 46ch; }
+
+.pop-page .pop-scan {
+  margin: 22px auto 0;
+  max-width: 420px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px 10px;
+  box-shadow: 0 18px 40px -26px rgba(15, 23, 42, .35);
+}
+.pop-page .pop-scan-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--ink);
+}
+.pop-scan-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, .18);
+}
+.pop-page .pop-scan ul { margin-top: 8px; display: grid; gap: 6px; }
+.pop-page .pop-scan li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--body);
+  background: var(--surface);
+  opacity: 0;
+  animation: pop-scan-in .45s ease-out forwards;
+}
+.pop-page .pop-scan li b { font-size: 12.5px; font-weight: 800; color: var(--faint); white-space: nowrap; }
+.pop-page .pop-scan li[data-keep="true"] { background: #ecfdf3; color: #14532d; }
+.pop-page .pop-scan li[data-keep="true"] b { color: #15803d; }
+.pop-page .pop-scan-note { margin-top: 8px; font-size: 11px; color: var(--faint); }
+@keyframes pop-scan-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-page .pop-scan li { opacity: 1; animation: none; }
+}
+@media (max-width: 680px) {
+  .pop-hero h1.pop-hero-h1-tight { font-size: clamp(31px, 8.6vw, 40px); }
+  .pop-page .pop-hero-sub-tight { font-size: 16px; line-height: 1.5; margin: 14px auto 0; }
+  .pop-page .pop-hero-sub-tight + .pop-hero-actions { margin-top: 20px; }
+}
+
 .pop-eyebrow { display: block; }
 
 .pop-hero h1 {

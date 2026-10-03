@@ -48,6 +48,16 @@ export default function Page() {
       }}
       trustpilot={TRUSTPILOT}
       dollarWeek
+      hero={{
+        eyebrow: "For Amazon wholesale sellers",
+        title: (
+          <>
+            Wholesale suppliers + the system that finds{" "}
+            <mark>every profitable product.</mark>
+          </>
+        ),
+        sub: "Three vetted US distributors when you sign up. Upload any price list and Apex checks every line against real Amazon fees in minutes.",
+      }}
       hide={[
         "denial",
         "problem",

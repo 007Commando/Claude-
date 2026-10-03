@@ -346,6 +346,41 @@ function SupplierShowcase({
 const dollarLabel = (label: string) =>
   label.replace(/^Try Apex free/, `Start Apex for $${DOLLAR_WEEK.price}`);
 
+/**
+ * What a scan looks like, small enough to sit under the hero button: four
+ * lines of a supplier catalog coming back profitable or not. Example rows,
+ * labelled as such; the real thing is the UPC Scanner further down.
+ */
+const SCAN_ROWS = [
+  { name: "Pet supply, 12 pack", roi: "+38% ROI", keep: true },
+  { name: "Snack variety box", roi: "Skip", keep: false },
+  { name: "Vitamin D3, 2 ct", roi: "+27% ROI", keep: true },
+  { name: "Kitchen towel set", roi: "Skip", keep: false },
+] as const;
+
+function HeroScan() {
+  return (
+    <figure className="pop-scan" aria-label="Example catalog scan">
+      <figcaption className="pop-scan-head">
+        <span className="pop-scan-dot" aria-hidden="true" />
+        Catalog scan · checked against Amazon fees
+      </figcaption>
+      <ul>
+        {SCAN_ROWS.map((row, i) => (
+          <li key={row.name} data-keep={row.keep} style={{ animationDelay: `${0.25 + i * 0.22}s` }}>
+            <span>{row.name}</span>
+            <b>{row.roi}</b>
+          </li>
+        ))}
+      </ul>
+      <p className="pop-scan-note">Example rows. Your scan uses your supplier&rsquo;s real prices.</p>
+    </figure>
+  );
+}
+
+/** The same, in one line, for the ad hero where every line of the first screen counts. */
+const dollarSubShort = `Your first ${DOLLAR_WEEK.days} days for $${DOLLAR_WEEK.price}`;
+
 /** What the button promises while the $1 week is on. */
 const dollarSub = `$${DOLLAR_WEEK.price} for your first ${DOLLAR_WEEK.days} days. Scan a supplier catalog and build a purchase order in it.`;
 
@@ -433,6 +468,7 @@ export default function ApexPop({
   software,
   showcase,
   dollarWeek: offersDollarWeek = false,
+  hero,
   form,
 }: {
   chrome?: "own" | "site";
@@ -470,6 +506,13 @@ export default function ApexPop({
    * week then, and a page must not promise a refund on a dollar nobody pays.
    */
   dollarWeek?: boolean;
+  /**
+   * Replaces the hero's eyebrow, headline and paragraph, and adds the small
+   * catalog-scan card under the button. For cold ad traffic on a phone: the
+   * default hero spent the whole first screen on two paragraphs about the
+   * program, and 63 of the first 66 Facebook visitors left from it.
+   */
+  hero?: { eyebrow: ReactNode; title: ReactNode; sub: ReactNode };
   /**
    * A lead form shown in the hero instead of the big button. The header and
    * closing buttons then scroll back up to it rather than leaving the page,
@@ -549,18 +592,21 @@ export default function ApexPop({
         <section className="pop-hero mesh-bg" ref={heroRef}>
           <div className="pop-shell pop-hero-in">
             <p className="pop-label pop-eyebrow">
-              Apex POP · Purchase Order Program
+              {hero?.eyebrow ?? "Apex POP · Purchase Order Program"}
             </p>
 
-            <h1>
-              Build your first or next Amazon wholesale{" "}
-              <mark>purchase order</mark> with Apex.
+            <h1 className={hero ? "pop-hero-h1-tight" : undefined}>
+              {hero?.title ?? (
+                <>
+                  Build your first or next Amazon wholesale{" "}
+                  <mark>purchase order</mark> with Apex.
+                </>
+              )}
             </h1>
 
-            <p className="pop-hero-sub">
-              You have researched enough. POP is a working process with our team
-              that takes you from suppliers and catalogs to a purchase order
-              built around the capital you actually have.
+            <p className={hero ? "pop-hero-sub pop-hero-sub-tight" : "pop-hero-sub"}>
+              {hero?.sub ??
+                "You have researched enough. POP is a working process with our team that takes you from suppliers and catalogs to a purchase order built around the capital you actually have."}
             </p>
 
             {form ? (
@@ -582,7 +628,7 @@ export default function ApexPop({
                       aria-hidden="true"
                     />
                   </span>
-                  <small>{showDollar ? dollarSub : primary.sub}</small>
+                  <small>{showDollar ? (hero ? dollarSubShort : dollarSub) : primary.sub}</small>
                 </a>
                 {(!cta || cta.secondaryLabel) && (
                   <a
@@ -594,6 +640,9 @@ export default function ApexPop({
                 )}
               </div>
             )}
+
+            {/* On the ad hero the proof comes before the small print, so it makes the first screen. */}
+            {hero && <HeroScan />}
 
             {dollarNote}
 
