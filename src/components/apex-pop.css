@@ -671,6 +671,24 @@ body:has(.pop-page) { margin: 0; background: #fff; }
 
 /* ----------------------------------------------------------- responsive */
 
+/* ------------------------------------------- ad hero: refund + video */
+
+.pop-page .pop-guarantee { margin: 18px auto 0; max-width: 460px; text-align: center; }
+.pop-page .pop-guarantee-big {
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1;
+  color: #15803d;
+}
+.pop-page .pop-guarantee-line { margin-top: 6px; font-size: 17px; font-weight: 700; color: var(--ink-strong); }
+.pop-page .pop-guarantee .pop-dollar-fine { margin: 8px auto 0; }
+.pop-page .pop-hero-video { margin: 44px auto 0; max-width: 1000px; text-align: left; }
+@media (max-width: 680px) {
+  .pop-page .pop-hero-video { margin-top: 32px; }
+  .pop-page .pop-hero-video .pop-sup-video { margin: 0 -20px; }
+}
+
 /* ------------------------------------------------- all in one (suite) */
 
 .pop-page .pop-suite { margin-top: 30px; }

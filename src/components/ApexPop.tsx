@@ -235,12 +235,12 @@ const NETWORK = { distributors: 389, categories: 14 } as const;
  */
 function SupplierShowcase({
   video,
+  withVideo = true,
 }: {
   video: { id: string; title: string; length: string };
+  /** False when the hero already plays it. */
+  withVideo?: boolean;
 }) {
-  // Lazy, muted and looping: it starts as it scrolls into view and costs
-  // nothing for anyone who never gets this far down.
-  const embed = `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=1&rel=0&modestbranding=1&playsinline=1`;
 
   return (
     <div className="pop-sup">
@@ -299,40 +299,54 @@ function SupplierShowcase({
         </ol>
       </div>
 
-      <div className="pop-sup-video">
-        <div className="pop-sup-video-copy">
-          <p className="pop-label">Watch it work · {video.length}</p>
-          <h3>From a supplier&rsquo;s catalog to a purchase order.</h3>
-          <p>
-            A real price list goes into Apex, the products that still make money
-            after Amazon&rsquo;s fees float to the top, and the order gets built
-            from them. Start to finish in under two minutes.
-          </p>
-          <ul className="pop-shot-list">
-            <li>
-              <span aria-hidden="true">→</span> Every line checked against real
-              Amazon fees
-            </li>
-            <li>
-              <span aria-hidden="true">→</span> Profit, ROI and margin on each
-              product
-            </li>
-            <li>
-              <span aria-hidden="true">→</span> The purchase order totals before
-              you send it
-            </li>
-          </ul>
-        </div>
-        <div className="pop-sup-phone">
-          <iframe
-            src={embed}
-            title={video.title}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          />
-        </div>
+      {withVideo && <WatchItWork video={video} />}
+    </div>
+  );
+}
+
+/**
+ * The purchase order Short beside its copy. On the Facebook page it is the
+ * hero's picture (Stefano, 2026-10-03: "just have straight the video"),
+ * anywhere else it closes the supplier showcase.
+ */
+function WatchItWork({ video }: { video: { id: string; title: string; length: string } }) {
+  // Lazy, muted and looping: it starts as it scrolls into view and costs
+  // nothing for anyone who never gets this far down.
+  const embed = `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=1&rel=0&modestbranding=1&playsinline=1`;
+  return (
+    <div className="pop-sup-video">
+      <div className="pop-sup-video-copy">
+        <p className="pop-label">Watch it work · {video.length}</p>
+        <h3>From a supplier&rsquo;s catalog to a purchase order.</h3>
+        <p>
+          A real price list goes into Apex, the products that still make money
+          after Amazon&rsquo;s fees float to the top, and the order gets built
+          from them. Start to finish in under two minutes.
+        </p>
+        <ul className="pop-shot-list">
+          <li>
+            <span aria-hidden="true">→</span> Every line checked against real
+            Amazon fees
+          </li>
+          <li>
+            <span aria-hidden="true">→</span> Profit, ROI and margin on each
+            product
+          </li>
+          <li>
+            <span aria-hidden="true">→</span> The purchase order totals before
+            you send it
+          </li>
+        </ul>
+      </div>
+      <div className="pop-sup-phone">
+        <iframe
+          src={embed}
+          title={video.title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
       </div>
     </div>
   );
@@ -378,8 +392,26 @@ function HeroScan() {
   );
 }
 
-/** The same, in one line, for the ad hero where every line of the first screen counts. */
-const dollarSubShort = `Your first ${DOLLAR_WEEK.days} days for $${DOLLAR_WEEK.price}`;
+/**
+ * The refund, said loud, straight under the ad hero's button (Stefano,
+ * 2026-10-03: "100% refund, or we'll give you the dollar back if you're not
+ * happy"). The plan terms stay with it in small print.
+ */
+function DollarGuarantee() {
+  const { price, days, planLabel, thenPrice } = DOLLAR_WEEK;
+  return (
+    <div className="pop-guarantee">
+      <p className="pop-guarantee-big">100% refund</p>
+      <p className="pop-guarantee-line">
+        Not happy with Apex? We&rsquo;ll give you your ${price} back.
+      </p>
+      <p className="pop-dollar-fine">
+        Apex {planLabel} is ${price} for your first {days} days, then ${thenPrice}/month{TAX_SUFFIX}. Cancel from your
+        dashboard before day {days} and the refund is automatic.
+      </p>
+    </div>
+  );
+}
 
 /** What the button promises while the $1 week is on. */
 const dollarSub = `$${DOLLAR_WEEK.price} for your first ${DOLLAR_WEEK.days} days. Scan a supplier catalog and build a purchase order in it.`;
@@ -741,14 +773,18 @@ export default function ApexPop({
                   ref={heroSheen.ref}
                 >
                   <span className="pop-cta-row">
-                    {showDollar ? dollarLabel(primary.label) : primary.label}
+                    {showDollar
+                      ? hero
+                        ? `Start for $${DOLLAR_WEEK.price} and build your next order`
+                        : dollarLabel(primary.label)
+                      : primary.label}
                     <ArrowRight
                       size={19}
                       strokeWidth={2.4}
                       aria-hidden="true"
                     />
                   </span>
-                  <small>{showDollar ? (hero ? dollarSubShort : dollarSub) : primary.sub}</small>
+                  {!(showDollar && hero) && <small>{showDollar ? dollarSub : primary.sub}</small>}
                 </a>
                 {(!cta || cta.secondaryLabel) && (
                   <a
@@ -761,10 +797,10 @@ export default function ApexPop({
               </div>
             )}
 
-            {/* On the ad hero the proof comes before the small print, so it makes the first screen. */}
-            {hero && <HeroScan />}
+            {/* The ad hero: the refund straight under the button, then the scan card. */}
+            {hero && showDollar ? <DollarGuarantee /> : dollarNote}
 
-            {dollarNote}
+            {hero && <HeroScan />}
 
             {trustpilot && <TrustpilotBadge {...trustpilot} />}
 
@@ -774,6 +810,11 @@ export default function ApexPop({
               </p>
             )}
 
+            {hero && showcase ? (
+              <div className="pop-hero-video">
+                <WatchItWork video={showcase.video} />
+              </div>
+            ) : (
             <motion.div
               className="pop-hero-art"
               style={
@@ -804,6 +845,7 @@ export default function ApexPop({
                 from the product, not a forecast of results.
               </p>
             </motion.div>
+            )}
           </div>
         </section>
 
@@ -985,7 +1027,7 @@ export default function ApexPop({
                 </p>
               </div>
 
-              {showcase && <SupplierShowcase video={showcase.video} />}
+              {showcase && <SupplierShowcase video={showcase.video} withVideo={!hero} />}
 
               <div className="pop-shots">
                 {!showcase && (
