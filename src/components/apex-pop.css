@@ -689,6 +689,36 @@ body:has(.pop-page) { margin: 0; background: #fff; }
   .pop-page .pop-hero-video .pop-sup-video { margin: 0 -20px; }
 }
 
+/* The second button, under the hero video: a soft glow, a shake on scroll. */
+.pop-page .pop-shake-wrap { margin: 34px auto 0; max-width: 520px; text-align: center; }
+.pop-page .pop-cta-glow {
+  display: inline-flex;
+  justify-content: center;
+  animation: pop-cta-glow 2.4s ease-in-out infinite;
+}
+.pop-page .pop-cta-glow.is-shaking {
+  animation: pop-cta-shake .65s cubic-bezier(.36, .07, .19, .97) both, pop-cta-glow 2.4s ease-in-out infinite;
+}
+.pop-page .pop-shake-note { margin-top: 12px; font-size: 15px; color: var(--ink); }
+.pop-page .pop-shake-note b { color: #15803d; font-weight: 800; }
+@keyframes pop-cta-glow {
+  0%, 100% { box-shadow: 0 10px 28px -10px rgba(37, 99, 235, .55), 0 0 0 0 rgba(37, 99, 235, .0); }
+  50% { box-shadow: 0 10px 34px -8px rgba(37, 99, 235, .7), 0 0 26px 6px rgba(37, 99, 235, .28); }
+}
+@keyframes pop-cta-shake {
+  10%, 90% { transform: translateX(-2px) rotate(-.5deg); }
+  20%, 80% { transform: translateX(4px) rotate(.6deg); }
+  30%, 50%, 70% { transform: translateX(-6px) rotate(-.8deg); }
+  40%, 60% { transform: translateX(6px) rotate(.8deg); }
+}
+@media (max-width: 680px) {
+  .pop-page .pop-shake-wrap { margin-top: 26px; }
+  .pop-page .pop-cta-glow { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-page .pop-cta-glow, .pop-page .pop-cta-glow.is-shaking { animation: none; box-shadow: 0 0 22px 4px rgba(37, 99, 235, .25); }
+}
+
 /* ------------------------------------------------- all in one (suite) */
 
 .pop-page .pop-suite { margin-top: 30px; }

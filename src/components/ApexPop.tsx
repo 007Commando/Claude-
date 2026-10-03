@@ -393,6 +393,70 @@ function HeroScan() {
 }
 
 /**
+ * A second way in, straight under the hero video (Stefano, 2026-10-03):
+ * someone who has just watched the order get built should not have to
+ * scroll back up for the button. It glows softly all the time and gives a
+ * short shake when it scrolls into view, and again at most every few
+ * seconds while the visitor keeps scrolling past it. Reduced motion keeps
+ * the glow and drops the shake.
+ */
+function ShakeCta({ href, label }: { href: string; label: string }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const [shaking, setShaking] = useState(false);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduce) return;
+    let visible = false;
+    let last = 0;
+    let timer: number | undefined;
+    const shake = () => {
+      const now = Date.now();
+      if (now - last < 3500) return;
+      last = now;
+      setShaking(false);
+      // Next frame, so the class change restarts the animation.
+      requestAnimationFrame(() => setShaking(true));
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setShaking(false), 700);
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const nowVisible = entry.isIntersecting && entry.intersectionRatio > 0.6;
+        if (nowVisible && !visible) shake();
+        visible = nowVisible;
+      },
+      { threshold: [0, 0.6, 1] },
+    );
+    io.observe(el);
+    const onScroll = () => {
+      if (visible) shake();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(timer);
+    };
+  }, [reduce]);
+
+  return (
+    <div className="pop-shake-wrap">
+      <a ref={ref} href={href} className={`pop-cta pop-cta-lg pop-cta-glow${shaking ? " is-shaking" : ""}`}>
+        <span className="pop-cta-row">
+          {label}
+          <ArrowRight size={19} strokeWidth={2.4} aria-hidden="true" />
+        </span>
+      </a>
+      <p className="pop-shake-note">
+        <b>100% refund.</b> Not happy? We&rsquo;ll give you your ${DOLLAR_WEEK.price} back.
+      </p>
+    </div>
+  );
+}
+
+/**
  * The refund, said loud, straight under the ad hero's button (Stefano,
  * 2026-10-03: "100% refund, or we'll give you the dollar back if you're not
  * happy"). The plan terms stay with it in small print.
@@ -813,6 +877,12 @@ export default function ApexPop({
             {hero && showcase ? (
               <div className="pop-hero-video">
                 <WatchItWork video={showcase.video} />
+                {showDollar && (
+                  <ShakeCta
+                    href={carry(primary.href)}
+                    label={`Start for $${DOLLAR_WEEK.price} and build your next order`}
+                  />
+                )}
               </div>
             ) : (
             <motion.div
