@@ -3,23 +3,25 @@
 import { useEffect, useState } from "react";
 import AppLiveView from "./AppLiveView";
 import LiveView from "./LiveView";
+import TrafficView from "./TrafficView";
 
 /**
  * The Live tab's three views (Stefano, 2026-10-04): only the Facebook funnel,
  * the whole website, or signed-in users inside the app. The choice is kept
  * in the URL (?live=) so a refresh or a shared link opens the same view.
  */
-type Mode = "funnel" | "site" | "app";
+type Mode = "funnel" | "site" | "app" | "traffic";
 const MODES: { id: Mode; label: string }[] = [
   { id: "funnel", label: "Facebook funnel" },
   { id: "site", label: "Whole website" },
   { id: "app", label: "In the app" },
+  { id: "traffic", label: "Sources & times" },
 ];
 
 function readMode(): Mode {
   if (typeof window === "undefined") return "funnel";
   const value = new URLSearchParams(window.location.search).get("live");
-  return value === "site" || value === "app" ? value : "funnel";
+  return value === "site" || value === "app" || value === "traffic" ? value : "funnel";
 }
 
 export default function LivePanel() {
@@ -42,7 +44,13 @@ export default function LivePanel() {
           </button>
         ))}
       </div>
-      {mode === "app" ? <AppLiveView /> : <LiveView key={mode} scope={mode} />}
+      {mode === "app" ? (
+        <AppLiveView />
+      ) : mode === "traffic" ? (
+        <TrafficView />
+      ) : (
+        <LiveView key={mode} scope={mode} />
+      )}
     </div>
   );
 }

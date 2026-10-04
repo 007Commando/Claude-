@@ -14,7 +14,10 @@ const LIVE_URL = process.env.APEX_LIVE_URL || "https://us-central1-apex-apps-par
 
 export async function GET(req: NextRequest) {
   // ?view=app reads the signed-in app users instead of website visitors.
-  const path = req.nextUrl.searchParams.get("view") === "app" ? "/app-snapshot" : "/snapshot";
+  // ?view=traffic&days=N reads the per-platform and per-hour day counters.
+  const view = req.nextUrl.searchParams.get("view");
+  const days = Math.min(Math.max(Number(req.nextUrl.searchParams.get("days")) || 30, 1), 120);
+  const path = view === "app" ? "/app-snapshot" : view === "traffic" ? `/traffic?days=${days}` : "/snapshot";
   const key = process.env.APEX_INTERNAL_API_KEY;
   if (!key) return NextResponse.json({ error: "Live View is not configured" }, { status: 503 });
   try {
