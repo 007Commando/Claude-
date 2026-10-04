@@ -748,7 +748,7 @@ DSA_DESCRIPTIONS = [
 # Pro only (5 listings on the $149 plan, none on Starter), and an ad must not
 # promise what the product withholds.
 SITELINKS = [
-    ("Compare The Tools", "19 honest comparisons.", "Including where we lose.", "/compare"),
+    ("Compare The Tools", "18 honest comparisons.", "Including where we lose.", "/compare"),
     ("See Pricing", "Starter $149/mo, Pro $299.", "Seven days free to try.", "/pricing"),
     ("The Repricer", "Floors from your real cost.", "With dry-run previews.", "/features/gold"),
     ("The Scanner", "Whole price lists at once.", "Ends in a purchase order.", "/features/green"),
