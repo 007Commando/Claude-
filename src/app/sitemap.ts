@@ -44,6 +44,7 @@ const ENTRIES: Entry[] = [
   { path: "/amazon-wholesale-suppliers", changeFrequency: "monthly", priority: 0.6 },
   { path: "/amazon-fba-prep-centers", changeFrequency: "monthly", priority: 0.6 },
   { path: "/tools/amazon-profit-calculator", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/tools/fba-calculator", changeFrequency: "weekly", priority: 0.8 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },

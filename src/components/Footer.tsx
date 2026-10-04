@@ -332,6 +332,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/tools/fba-calculator"
+                  className="hover:text-brand transition-colors"
+                >
+                  Free FBA Calculator
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/tools/amazon-profit-calculator"
                   className="hover:text-brand transition-colors"
                 >
