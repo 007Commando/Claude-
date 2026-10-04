@@ -422,7 +422,7 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
       )}
 
       {/* The year at a glance */}
-      <SeasonHeatmap category={product.category} />
+      <SeasonHeatmap category={product.category} rank={product.rank.avg30 ?? product.rank.current ?? product.rank.avg90} />
 
       {/* History */}
       <div className="grid gap-6 lg:grid-cols-2">

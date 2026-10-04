@@ -14,6 +14,7 @@
  */
 
 const DAY = 86_400_000;
+const MONTH_NAMES = Array.from({ length: 12 });
 
 export type SeasonLevel = 0 | 1 | 2 | 3 | 4;
 
@@ -141,6 +142,8 @@ export interface SeasonDay {
   weekday: number;
   level: SeasonLevel;
   label: string;
+  /** Projected sales rank that day, or null when the product has no rank to anchor on. */
+  rank: number | null;
 }
 
 export interface SeasonYear {
@@ -153,10 +156,26 @@ export interface SeasonYear {
   monthColumns: number[];
   /** Index of today in `days`. */
   todayIndex: number;
+  /** Average projected rank for each month, or null without an anchor rank. */
+  monthRanks: (number | null)[];
 }
 
-/** The year's calendar for a category, with today marked. */
-export const seasonYear = (category: string | null, now: Date): SeasonYear => {
+/**
+ * Sales follow rank roughly as units ~ rank^-0.75 (the same curve the sales
+ * estimate uses), so a day that sells `s` times as fast as today ranks
+ * (1 / s)^(1 / 0.75) times today's rank.
+ */
+const RANK_EXPONENT = 1 / 0.75;
+
+/**
+ * The year's calendar for a category, with today marked.
+ *
+ * `anchorRank` is the product's recent rank. Today's modelled demand is pinned
+ * to it and every other day's rank follows from how much faster or slower the
+ * seasonal pattern says that day sells, so the numbers are a projection from
+ * the product's own rank, not recorded history.
+ */
+export const seasonYear = (category: string | null, now: Date, anchorRank: number | null = null): SeasonYear => {
   const year = now.getFullYear();
   const todayTime = utc(year, now.getMonth(), now.getDate());
   const text = (category ?? "").toLowerCase();
@@ -191,6 +210,9 @@ export const seasonYear = (category: string | null, now: Date): SeasonYear => {
   const max = Math.max(...raw.map((r) => r.value));
   const span = max - min || 1;
 
+  const todayIndex = Math.round((todayTime - start) / DAY);
+  const todayValue = raw[Math.min(Math.max(todayIndex, 0), total - 1)].value;
+
   const days: SeasonDay[] = raw.map((entry, i) => {
     const time = start + i * DAY;
     const date = new Date(time);
@@ -201,7 +223,17 @@ export const seasonYear = (category: string | null, now: Date): SeasonYear => {
       weekday: date.getUTCDay(),
       level: Math.min(4, Math.floor(((entry.value - min) / span) * 5)) as SeasonLevel,
       label: entry.label,
+      rank:
+        anchorRank && anchorRank > 0
+          ? Math.max(1, Math.round(anchorRank * Math.pow(todayValue / entry.value, RANK_EXPONENT)))
+          : null,
     };
+  });
+
+  const monthRanks = MONTH_NAMES.map((_, month) => {
+    const ranks = days.filter((d) => d.month === month).map((d) => d.rank);
+    if (ranks.some((r) => r === null)) return null;
+    return Math.round((ranks as number[]).reduce((sum, r) => sum + r, 0) / ranks.length);
   });
 
   const offset = new Date(start).getUTCDay();
@@ -216,7 +248,8 @@ export const seasonYear = (category: string | null, now: Date): SeasonYear => {
     offset,
     columns: Math.ceil((offset + total) / 7),
     monthColumns,
-    todayIndex: Math.round((todayTime - start) / DAY),
+    todayIndex,
+    monthRanks,
   };
 };
 

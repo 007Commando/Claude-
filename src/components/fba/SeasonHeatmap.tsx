@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { LEVEL_NAMES, nextPeak, seasonYear, type SeasonDay } from "../../lib/fba/seasonality";
-import { Panel } from "./parts";
+import { Panel, whole } from "./parts";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -15,14 +15,29 @@ const GAP = 3;
 
 const readDate = (day: SeasonDay) => `${WEEKDAYS[day.weekday]}, ${MONTHS[day.month]} ${day.day}`;
 
-export default function SeasonHeatmap({ category }: { category: string | null }) {
+/** Short enough to sit under a month name: #2,318, then 12.3k, then 123k. */
+const compactRank = (rank: number) =>
+  rank < 10_000 ? `#${whole(rank)}` : rank < 100_000 ? `#${(rank / 1000).toFixed(1)}k` : `#${Math.round(rank / 1000)}k`;
+
+interface Hover {
+  day: SeasonDay;
+  /** Position of the square inside the chart, in pixels. */
+  left: number;
+  top: number;
+  size: number;
+  column: number;
+  row: number;
+}
+
+export default function SeasonHeatmap({ category, rank }: { category: string | null; rank: number | null }) {
   // The calendar is built on the visitor's own clock, so "today" is theirs.
-  const calendar = useMemo(() => seasonYear(category, new Date()), [category]);
-  const [hover, setHover] = useState<SeasonDay | null>(null);
+  const calendar = useMemo(() => seasonYear(category, new Date(), rank), [category, rank]);
+  const [hover, setHover] = useState<Hover | null>(null);
 
   const today = calendar.days[calendar.todayIndex];
   const peak = nextPeak(calendar);
-  const shown = hover ?? today;
+  const shown = hover?.day ?? today;
+  const hasRank = today.rank !== null;
 
   // One slot per weekday row, so the grid can fill column by column.
   const slots = useMemo(() => {
@@ -38,24 +53,34 @@ export default function SeasonHeatmap({ category }: { category: string | null })
     <Panel eyebrow="Seasonality" title="When this kind of product sells fastest">
       <style>{`
         @keyframes season-pop { from { opacity: 0; transform: scale(0.35); } to { opacity: 1; transform: scale(1); } }
-        .season-cell { animation: season-pop 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .season-cell { animation: season-pop 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; transition: transform 0.12s ease; }
+        .season-cell:hover { transform: scale(1.35); position: relative; z-index: 2; }
         @media (prefers-reduced-motion: reduce) { .season-cell { animation: none; } }
       `}</style>
 
       <p className="-mt-2 mb-5 max-w-2xl text-sm leading-relaxed text-slate-500">
         Every square is one day of {calendar.year}. The darker the square, the faster sales tend to run, which is when sales rank
-        drops lowest. The red line is today, so you can see what is coming.
+        drops lowest.{" "}
+        {hasRank && "Hover a square for its projected rank, and read each month's average rank under its name. "}The red line is today,
+        so you can see what is coming.
       </p>
 
       <div className="overflow-x-auto pb-2">
         <div className="min-w-[680px]">
           <div className="grid grid-cols-[2rem_1fr] gap-x-2">
             <div />
-            {/* Month labels sit over the column each month starts in. */}
-            <div className="relative mb-2 h-4 text-[11px] font-bold text-slate-400">
+            {/* Month names and average rank sit over the column each month starts in. */}
+            <div className={`relative mb-2 ${hasRank ? "h-9" : "h-4"}`}>
               {calendar.monthColumns.map((column, month) => (
-                <span key={MONTHS[month]} className="absolute" style={{ left: `${(column / calendar.columns) * 100}%` }}>
-                  {MONTHS[month]}
+                <span
+                  key={MONTHS[month]}
+                  className="absolute flex flex-col leading-tight"
+                  style={{ left: `${(column / calendar.columns) * 100}%` }}
+                >
+                  <span className="text-[11px] font-bold text-slate-400">{MONTHS[month]}</span>
+                  {hasRank && calendar.monthRanks[month] !== null && (
+                    <span className="text-[10px] font-black tabular-nums text-slate-700">{compactRank(calendar.monthRanks[month] as number)}</span>
+                  )}
                 </span>
               ))}
             </div>
@@ -83,13 +108,23 @@ export default function SeasonHeatmap({ category }: { category: string | null })
                 }}
                 onMouseLeave={() => setHover(null)}
               >
-                {slots.map((day, index) =>
-                  day ? (
+                {slots.map((day, index) => {
+                  if (!day) return <div key={`blank-${index}`} aria-hidden />;
+                  const select = (el: HTMLElement) =>
+                    setHover({
+                      day,
+                      left: el.offsetLeft,
+                      top: el.offsetTop,
+                      size: el.offsetWidth,
+                      column: Math.floor(index / 7),
+                      row: index % 7,
+                    });
+                  return (
                     <div
                       key={day.time}
                       className="season-cell rounded-[4px]"
-                      onMouseEnter={() => setHover(day)}
-                      onClick={() => setHover(day)}
+                      onMouseEnter={(event) => select(event.currentTarget)}
+                      onClick={(event) => select(event.currentTarget)}
                       style={{
                         aspectRatio: "1 / 1",
                         background: SHADES[day.level],
@@ -99,10 +134,8 @@ export default function SeasonHeatmap({ category }: { category: string | null })
                         outlineOffset: 1,
                       }}
                     />
-                  ) : (
-                    <div key={`blank-${index}`} aria-hidden />
-                  ),
-                )}
+                  );
+                })}
               </div>
 
               {/* Today */}
@@ -118,6 +151,29 @@ export default function SeasonHeatmap({ category }: { category: string | null })
                   Today
                 </span>
               </motion.div>
+
+              {/* Hover card: opens below the top rows so it is never clipped, above the rest. */}
+              {hover && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute z-10 whitespace-nowrap rounded-xl bg-slate-950 px-3 py-2 text-xs text-white shadow-xl"
+                  style={{
+                    left: hover.left + hover.size / 2,
+                    top: hover.row < 3 ? hover.top + hover.size + 8 : hover.top - 8,
+                    transform: `translate(${hover.column < 6 ? "-12%" : hover.column > calendar.columns - 7 ? "-88%" : "-50%"}, ${
+                      hover.row < 3 ? "0" : "-100%"
+                    })`,
+                  }}
+                >
+                  <div className="font-black">{readDate(hover.day)}</div>
+                  {hover.day.rank !== null && (
+                    <div className="mt-0.5 text-sm font-black tabular-nums text-cyan-300">Rank #{whole(hover.day.rank)}</div>
+                  )}
+                  <div className="mt-0.5 text-slate-300">
+                    {hover.day.label} / {LEVEL_NAMES[hover.day.level]} sales
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -126,6 +182,12 @@ export default function SeasonHeatmap({ category }: { category: string | null })
       <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
         <p className="min-h-5 text-sm text-slate-600" aria-live="polite">
           <b className="font-black text-slate-900">{readDate(shown)}</b>
+          {shown.rank !== null && (
+            <>
+              <span className="mx-2 text-slate-300">/</span>
+              <b className="font-black tabular-nums text-slate-900">Rank #{whole(shown.rank)}</b>
+            </>
+          )}
           <span className="mx-2 text-slate-300">/</span>
           {shown.label}
           <span className="mx-2 text-slate-300">/</span>
@@ -144,14 +206,16 @@ export default function SeasonHeatmap({ category }: { category: string | null })
         Today falls in a <b className="text-slate-900">{LEVEL_NAMES[today.level].toLowerCase()}</b> stretch.{" "}
         {peak ? (
           <>
-            The next fastest stretch is <b className="text-slate-900">{peak.label}</b>, {peak.daysAway} days away. Stock takes
-            weeks to ship and check in, so send it well before the red line reaches it.
+            The next fastest stretch is <b className="text-slate-900">{peak.label}</b>, {peak.daysAway} days away. Stock takes weeks to ship
+            and check in, so send it well before the red line reaches it.
           </>
         ) : (
           <>The fastest stretch of the year has passed, so plan ahead for the next one.</>
         )}{" "}
         <span className="text-slate-400">
-          Modelled from typical shopping seasons for {category ?? "this category"}, not this product&apos;s own daily history.
+          {hasRank
+            ? `Ranks are projected from this product's recent rank and the typical shopping seasons for ${category ?? "this category"}. They are not recorded history.`
+            : `Modelled from typical shopping seasons for ${category ?? "this category"}, not this product's own daily history.`}
         </span>
       </p>
     </Panel>
