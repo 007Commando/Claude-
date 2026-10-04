@@ -36,10 +36,10 @@ const SIZE_TIER: Record<NonNullable<FbaProduct["sizeTier"]>, string> = {
 };
 
 const PLANS: { value: SplitPlan; label: string; note: string }[] = [
-  { value: "optimized", label: "Amazon-optimized", note: "Amazon splits it. No placement fee." },
+  { value: "optimized", label: "Amazon-optimized", note: "Amazon splits it. No placement fee if you send five or more identical cartons per item." },
   { value: "minimal", label: "1 location", note: "One warehouse. You pay a placement fee." },
-  { value: "partial2", label: "2 locations", note: "Split across two warehouses." },
-  { value: "partial3", label: "3 locations", note: "Split across three warehouses." },
+  { value: "partial2", label: "2 locations", note: "Split across two warehouses. Bulky products only." },
+  { value: "partial3", label: "3 locations", note: "Split across three warehouses. Bulky products only." },
 ];
 
 const REGIONS: { value: Region; label: string }[] = [
@@ -245,6 +245,13 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
   const [region, setRegion] = useState<Region>("us-central");
   const [fbaOverride, setFbaOverride] = useState("");
   const [placementOverride, setPlacementOverride] = useState("");
+
+  // Amazon offers partial splits on bulky products only.
+  const bulky = product.sizeTier === "small_oversize" || product.sizeTier === "large_oversize";
+  const planOptions = PLANS.filter((p) => bulky || (p.value !== "partial2" && p.value !== "partial3")).map((p) => ({
+    value: p.value,
+    label: p.label,
+  }));
 
   const sellPrice = num(price);
   const haveCost = cogs.trim() !== "" && num(cogs) > 0;
@@ -602,14 +609,14 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
                 <Layers size={15} className="text-slate-400" />
                 <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">Inbound placement</span>
               </div>
-              <Segmented options={PLANS.map((p) => ({ value: p.value, label: p.label }))} value={plan} onChange={setPlan} label="Shipment split" />
+              <Segmented options={planOptions} value={plan} onChange={setPlan} label="Shipment split" />
               <p className="text-[11px] text-slate-400">{PLANS.find((p) => p.value === plan)?.note}</p>
               {plan !== "optimized" && (
                 <>
                   <Segmented options={REGIONS} value={region} onChange={setRegion} label="Inbound region" />
                   <p className="text-[11px] text-slate-400">
                     {looked === null
-                      ? "We do not have a weight for this product, so enter the placement fee below."
+                      ? "We do not have the size or weight for this product, so enter the placement fee below."
                       : `Estimated ${money(looked)} per unit for this size, weight and region.`}
                   </p>
                 </>

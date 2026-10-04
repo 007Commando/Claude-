@@ -4,15 +4,19 @@ import type { FbaProduct } from "./types";
  * Inbound placement fees: what it costs per unit to send stock into Amazon in
  * fewer than the number of warehouses Amazon would choose.
  *
- * The table is the one Apex uses inside the product, in the same order:
- * [size tier, heaviest weight in pounds, fees]. A row with no size tier
- * applies to any tier. The nine fees run one location (East, Central, West),
- * then two locations (East, Central, West), then three (East, Central, West).
- * That order is confirmed against Amazon's published ranges: the West figure of
- * each group is the top of Amazon's range for that option.
+ * Amazon's 2026 schedule (in force for shipping plans created on or after
+ * 15 January 2026, from its "FBA inbound placement service fee" help page).
+ * Amazon publishes a range per size tier and weight band, not a price per
+ * region, and says the West costs the most. So East is the bottom of each
+ * published range, West the top and Central the midpoint: close, not exact.
+ * The exact figure for a plan is the one Send to Amazon and the Revenue
+ * Calculator quote.
  *
- * "Amazon optimised" splits carry no placement fee, which is why that choice
- * has no entry here.
+ * Rows are [size tier, heaviest weight in pounds, fees]. The nine fees run
+ * one location (East, Central, West), then two locations, then three. Amazon
+ * prices "two or three locations" as one partial-split option, and only for
+ * bulky products, so standard-size rows repeat the one-location fee. Extra-large
+ * products and Amazon-optimised splits carry no fee.
  */
 export type Region = "us-east" | "us-central" | "us-west";
 export type SplitPlan = "minimal" | "partial2" | "partial3" | "optimized";
@@ -20,22 +24,32 @@ export type SplitPlan = "minimal" | "partial2" | "partial3" | "optimized";
 type Row = readonly [FbaProduct["sizeTier"], number, readonly number[]];
 
 const ROWS: readonly Row[] = [
-  ["standard_small", 1, [0.16, 0.26, 0.3, 0.15, 0.21, 0.21, 0.15, 0.15, 0.21]],
-  ["standard_large", 0.75, [0.18, 0.28, 0.34, 0.17, 0.23, 0.24, 0.16, 0.16, 0.24]],
-  ["standard_large", 1.5, [0.22, 0.33, 0.41, 0.21, 0.26, 0.28, 0.19, 0.19, 0.28]],
-  ["standard_large", 3, [0.27, 0.38, 0.49, 0.24, 0.31, 0.34, 0.22, 0.22, 0.34]],
-  ["standard_large", 20, [0.37, 0.51, 0.68, 0.32, 0.42, 0.48, 0.29, 0.29, 0.48]],
-  [null, 5, [2.16, 2.4, 2.67, 0.77, 1.21, 1.48, 1.11, 1.11, 1.48]],
-  [null, 12, [2.55, 2.9, 3.15, 1, 1.5, 1.75, 1.22, 1.22, 1.75]],
-  [null, 28, [3.19, 3.45, 3.95, 1.1, 1.8, 2.19, 1.3, 1.3, 2.19]],
-  [null, 42, [4.13, 4.5, 5.11, 1.5, 2.3, 2.83, 2, 2, 2.83]],
-  [null, 50, [4.85, 5.3, 6, 2, 2.9, 3.32, 2.5, 2.5, 3.32]],
+  ["standard_small", 0.5, [0.14, 0.23, 0.32, 0.14, 0.23, 0.32, 0.14, 0.23, 0.32]],
+  ["standard_small", 1, [0.16, 0.24, 0.32, 0.16, 0.24, 0.32, 0.16, 0.24, 0.32]],
+  ["standard_large", 0.75, [0.2, 0.3, 0.4, 0.2, 0.3, 0.4, 0.2, 0.3, 0.4]],
+  ["standard_large", 1.5, [0.24, 0.37, 0.5, 0.24, 0.37, 0.5, 0.24, 0.37, 0.5]],
+  ["standard_large", 3, [0.34, 0.47, 0.6, 0.34, 0.47, 0.6, 0.34, 0.47, 0.6]],
+  ["standard_large", 5, [0.38, 0.57, 0.76, 0.38, 0.57, 0.76, 0.38, 0.57, 0.76]],
+  ["standard_large", 7, [0.4, 0.69, 0.98, 0.4, 0.69, 0.98, 0.4, 0.69, 0.98]],
+  ["standard_large", 10, [0.42, 0.81, 1.2, 0.42, 0.81, 1.2, 0.42, 0.81, 1.2]],
+  ["standard_large", 15, [0.44, 0.97, 1.5, 0.44, 0.97, 1.5, 0.44, 0.97, 1.5]],
+  ["standard_large", 20, [0.55, 1.23, 1.9, 0.55, 1.23, 1.9, 0.55, 1.23, 1.9]],
+  ["small_oversize", 5, [1.1, 1.35, 1.6, 0.55, 0.83, 1.1, 0.55, 0.83, 1.1]],
+  ["small_oversize", 12, [1.75, 2.08, 2.4, 0.65, 1.2, 1.75, 0.65, 1.2, 1.75]],
+  ["small_oversize", 28, [2.74, 3.12, 3.5, 0.81, 1.5, 2.19, 0.81, 1.5, 2.19]],
+  ["small_oversize", 42, [3.95, 4.45, 4.95, 1.05, 1.94, 2.83, 1.05, 1.94, 2.83]],
+  ["small_oversize", 50, [4.8, 5.38, 5.95, 1.23, 2.28, 3.32, 1.23, 2.28, 3.32]],
+  ["large_oversize", 5, [1.3, 1.55, 1.8, 0.55, 0.9, 1.25, 0.55, 0.9, 1.25]],
+  ["large_oversize", 12, [2.1, 2.5, 2.9, 0.65, 1.23, 1.8, 0.65, 1.23, 1.8]],
+  ["large_oversize", 28, [3.4, 3.75, 4.1, 0.81, 1.56, 2.3, 0.81, 1.56, 2.3]],
+  ["large_oversize", 42, [4.7, 5.15, 5.6, 1.05, 2, 2.95, 1.05, 2, 2.95]],
+  ["large_oversize", 50, [5.5, 6, 6.5, 1.23, 2.37, 3.5, 1.23, 2.37, 3.5]],
 ];
 
 const REGIONS: Region[] = ["us-east", "us-central", "us-west"];
 const SPLITS: Record<Exclude<SplitPlan, "optimized">, number> = { minimal: 0, partial2: 1, partial3: 2 };
 
-/** Per-unit placement fee, or null when the product's size or weight is unknown. */
+/** Per-unit placement fee, or null when the product's size tier or weight is unknown. */
 export const placementFee = (
   weightPounds: number | null,
   sizeTier: FbaProduct["sizeTier"],
@@ -43,9 +57,9 @@ export const placementFee = (
   plan: SplitPlan,
 ): number | null => {
   if (plan === "optimized") return 0;
-  if (weightPounds === null || !Number.isFinite(weightPounds)) return null;
+  if (weightPounds === null || !Number.isFinite(weightPounds) || sizeTier === null) return null;
   const row = ROWS.find(([tier, maxWeight]) => (tier && sizeTier !== tier ? false : weightPounds <= maxWeight));
-  // Heavier than the table covers (extra-large items): Amazon charges none.
+  // Heavier or larger than the table covers (extra-large items): Amazon charges none.
   if (!row) return 0;
   return row[2][SPLITS[plan] * 3 + REGIONS.indexOf(region)];
 };
