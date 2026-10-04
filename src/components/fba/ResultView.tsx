@@ -25,6 +25,7 @@ import { fulfillmentFee, referralFee } from "../../lib/fba/fees";
 import { placementFee, type Region, type SplitPlan } from "../../lib/fba/placement";
 import type { FbaProduct } from "../../lib/fba/types";
 import { AnimatedNumber, Chip, money, Panel, percent, whole } from "./parts";
+import SeasonHeatmap from "./SeasonHeatmap";
 
 const SIZE_TIER: Record<NonNullable<FbaProduct["sizeTier"]>, string> = {
   standard_small: "Small standard",
@@ -412,6 +413,9 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
           calculator to work out profit.
         </div>
       )}
+
+      {/* The year at a glance */}
+      <SeasonHeatmap category={product.category} />
 
       {/* History */}
       <div className="grid gap-6 lg:grid-cols-2">

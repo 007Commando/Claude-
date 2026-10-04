@@ -6,8 +6,10 @@ import type { FbaProduct } from "./types";
  *
  * The table is the one Apex uses inside the product, in the same order:
  * [size tier, heaviest weight in pounds, fees]. A row with no size tier
- * applies to any tier. The nine fees are East, Central and West, each for one,
- * two and three locations.
+ * applies to any tier. The nine fees run one location (East, Central, West),
+ * then two locations (East, Central, West), then three (East, Central, West).
+ * That order is confirmed against Amazon's published ranges: the West figure of
+ * each group is the top of Amazon's range for that option.
  *
  * "Amazon optimised" splits carry no placement fee, which is why that choice
  * has no entry here.
@@ -45,5 +47,5 @@ export const placementFee = (
   const row = ROWS.find(([tier, maxWeight]) => (tier && sizeTier !== tier ? false : weightPounds <= maxWeight));
   // Heavier than the table covers (extra-large items): Amazon charges none.
   if (!row) return 0;
-  return row[2][REGIONS.indexOf(region) * 3 + SPLITS[plan]];
+  return row[2][SPLITS[plan] * 3 + REGIONS.indexOf(region)];
 };
