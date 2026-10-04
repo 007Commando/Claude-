@@ -3,7 +3,7 @@ export default function PrivacyPolicy() {
     <div className="bg-white py-32 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold text-slate-900 mb-3">Privacy Policy</h1>
-        <p className="text-slate-500 mb-4">Effective Date: 2025-02-24</p>
+        <p className="text-slate-500 mb-4">Effective Date: 2025-02-24 · Last updated: 2026-10-04</p>
         <p className="text-sm text-slate-500 mb-10 italic">
           This page is maintained by Apex Applications to answer common privacy questions about Apex Applications.
         </p>
@@ -154,6 +154,27 @@ export default function PrivacyPolicy() {
           </p>
           <p>
             You may opt out of SMS communications at any time by replying STOP to any message. Reply HELP for assistance. Message and data rates may apply. Message frequency may vary.
+          </p>
+
+          <h2 id="chrome-extension" className="text-2xl font-semibold text-slate-900 mt-10 mb-4">APEX FOR CHROME (BROWSER EXTENSION)</h2>
+          <p>
+            Apex for Chrome is an optional browser extension that shows your Apex numbers on Amazon.com and, only if you switch it on for a site, on supplier websites. This section explains exactly what it reads, what it sends to Apex, and what it never touches.
+          </p>
+          <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">What the extension reads.</h3>
+          <p>
+            On Amazon.com product, search and category pages, the extension reads the product identifiers (ASINs), the displayed price, the seller shown as &ldquo;Sold by&rdquo;, and Amazon&rsquo;s public &ldquo;bought in past month&rdquo; figure. On a supplier website you have switched on from the extension&rsquo;s menu, it reads barcodes (UPC, EAN and GTIN numbers) shown on the page. It does not read any other website, and it does not read form fields, passwords, payment details, messages, or your browsing history.
+          </p>
+          <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">What the extension sends to Apex.</h3>
+          <p>
+            Those product identifiers, prices and barcodes are sent to Apex&rsquo;s servers so Apex can return your profit, fees, sales estimate, eligibility and supplier information for them. Amazon&rsquo;s public &ldquo;bought in past month&rdquo; figures are stored with the product identifier only, to improve sales estimates for all Apex users; they are not linked to you or your account. The extension does not send the addresses of the pages you visit.
+          </p>
+          <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">Sign-in.</h3>
+          <p>
+            When you sign in, the extension stores an Apex sign-in token in your browser&rsquo;s extension storage so it can make requests on your behalf. Signing out from the extension&rsquo;s menu removes it. The extension acts with the same permissions you have in Apex.
+          </p>
+          <h3 className="text-lg font-semibold text-slate-900 mt-6 mb-2">Limited use.</h3>
+          <p>
+            Information the extension collects is used only to provide and improve the extension&rsquo;s features. We do not sell it, we do not use or transfer it for advertising, creditworthiness or lending purposes, and we do not allow humans to read it except with your permission, for security, to comply with law, or as part of aggregated, anonymous data. The use of information received from the extension adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements.
           </p>
 
           <h2 className="text-2xl font-semibold text-slate-900 mt-10 mb-4">TARGETED ADVERTISING</h2>
