@@ -308,6 +308,17 @@ export function forwardToApp(
   auth.redirectToApp(fallbackPath);
 }
 
+/**
+ * A page on this site to go back to after signing in, from ?next=. The free
+ * FBA calculator sends people here once its free lookups run out, and they
+ * should land back on their product, not in the app. Only /tools/ pages are
+ * accepted, so the parameter cannot be used to bounce someone elsewhere.
+ */
+export function returnPath(): string | null {
+  const next = new URL(window.location.href).searchParams.get("next");
+  return next && /^\/tools\/[a-z0-9-]+(\?[A-Za-z0-9=&%_.-]*)?$/.test(next) ? next : null;
+}
+
 export function waitForApexAuth(
   timeoutMs = 8000,
 ): Promise<NonNullable<Window["ApexAuth"]>> {
@@ -647,6 +658,11 @@ export default function Auth() {
             // Arrived here specifically to change accounts: never auto-forward
             // on the session we are in the middle of clearing.
             if (suppressForwardRef.current) return;
+            const back = returnPath();
+            if (back) {
+              window.location.assign(back);
+              return;
+            }
             const userEmail = getAuthUserEmail(user);
             const sendToApp = () => forwardToApp(auth);
 
@@ -837,11 +853,16 @@ export default function Auth() {
          * the app has them, the session id is gone from the URL and the
          * charge has nowhere to land.
          */
+        const back = isPrepaid ? null : returnPath();
         await withAuthRetry(() =>
           auth.signIn(parsed.data.email, parsed.data.password, {
-            redirect: !isPrepaid,
+            redirect: !isPrepaid && !back,
           }),
         );
+        if (back) {
+          window.location.assign(back);
+          return;
+        }
         if (isPrepaid) {
           const status = (await auth.adoptPrepaidCheckout?.()) ?? null;
           if (status === "duplicate") {

@@ -33,9 +33,17 @@ export interface FbaProduct {
   referralFeeAtBuyBox: number | null;
 }
 
+/** What the visitor has left: unlimited with a plan, otherwise a count of free lookups. */
+export interface LookupAccess {
+  plan: boolean;
+  remaining: number | null;
+}
+
 export type LookupResult =
-  | { status: "found"; product: FbaProduct }
-  | { status: "not-found" }
+  | { status: "found"; product: FbaProduct; access: LookupAccess }
+  | { status: "not-found"; access?: LookupAccess }
+  | { status: "signin-required" }
+  | { status: "plan-required" }
   | { status: "invalid" }
   | { status: "busy" }
   | { status: "error" };

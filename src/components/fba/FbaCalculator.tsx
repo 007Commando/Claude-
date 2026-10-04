@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Loader2,
+  Lock,
   PackageSearch,
   Receipt,
   Search,
@@ -19,7 +20,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { extractAsin } from "../../lib/fba/asin";
 import { FBA_FAQ } from "../../lib/fba/faq";
-import type { FbaProduct, LookupResult } from "../../lib/fba/types";
+import { sessionToken, warmSession } from "../../lib/fba/session";
+import type { FbaProduct, LookupAccess, LookupResult } from "../../lib/fba/types";
 import ResultView from "./ResultView";
 
 const SAMPLES: { asin: string; label: string }[] = [
@@ -30,10 +32,15 @@ const SAMPLES: { asin: string; label: string }[] = [
 ];
 
 const SIGNUP = "/auth?mode=signup&utm_source=apex-site&utm_medium=free-tool&utm_campaign=fba-calculator";
+const TRIAL =
+  "/auth?mode=signup&plan=starter&period=monthly&utm_source=apex-site&utm_medium=free-tool&utm_campaign=fba-calculator&utm_content=gate";
+
+type Gate = "signin-required" | "plan-required";
+type Problem = Exclude<LookupResult["status"], "found" | Gate>;
 
 const STEPS = ["Finding the listing", "Reading price and rank history", "Pricing the Amazon fees"];
 
-const MESSAGES: Record<Exclude<LookupResult["status"], "found">, string> = {
+const MESSAGES: Record<Problem, string> = {
   "not-found":
     "We do not have this product in our database yet. Check the ASIN against the Amazon listing, or try another one. Apex Green can pull any product you scan.",
   invalid: "That does not look like an ASIN. An ASIN is ten letters and numbers, like B01M5H13WQ. You can also paste a full Amazon product link.",
@@ -112,6 +119,69 @@ function Loading({ step }: { step: number }) {
   );
 }
 
+/** Shown in place of a result once the free lookups are used up. */
+function GateCard({ gate, asin }: { gate: Gate; asin: string }) {
+  const back = `/tools/fba-calculator${asin ? `?asin=${asin}` : ""}`;
+  const signedIn = gate === "plan-required";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="relative mx-auto max-w-3xl overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-10 text-center text-white sm:px-12"
+    >
+      <div aria-hidden className="absolute -left-16 -top-20 h-64 w-64 rounded-full bg-blue-600/40 blur-3xl" />
+      <div aria-hidden className="absolute -bottom-24 -right-10 h-64 w-64 rounded-full bg-cyan-500/25 blur-3xl" />
+      <div className="relative">
+        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+          <Lock size={22} className="text-cyan-300" />
+        </span>
+        <h2 className="mt-5 text-balance text-2xl font-black tracking-tight sm:text-3xl">
+          You&apos;ve used your 3 free lookups
+        </h2>
+        <p className="mx-auto mt-3 max-w-lg text-balance text-sm leading-relaxed text-slate-300">
+          {signedIn
+            ? "You're signed in, but your account doesn't have an active plan yet. Start one, including a trial, and look up as many products as you like."
+            : "Sign in to your Apex account to keep going. Any active plan, including a trial, unlocks unlimited lookups."}
+        </p>
+        <ul className="mx-auto mt-6 grid max-w-xl gap-2 text-left text-sm text-slate-200 sm:grid-cols-3">
+          {["Unlimited product lookups", "Check a whole supplier price list", "Build the purchase order"].map((item) => (
+            <li key={item} className="flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2.5 ring-1 ring-white/10">
+              <CheckCircle2 size={15} className="shrink-0 text-cyan-300" />
+              {item}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          {signedIn ? (
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-black uppercase tracking-wide text-slate-950 transition-transform hover:scale-[1.03]"
+            >
+              Choose a plan <ArrowRight size={16} />
+            </Link>
+          ) : (
+            <>
+              <Link
+                href={`/auth?next=${encodeURIComponent(back)}`}
+                className="inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-black uppercase tracking-wide text-slate-950 transition-transform hover:scale-[1.03]"
+              >
+                Sign in <ArrowRight size={16} />
+              </Link>
+              <Link
+                href={TRIAL}
+                className="inline-flex items-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-black uppercase tracking-wide text-white ring-1 ring-white/25 transition-colors hover:bg-white/10"
+              >
+                Start your trial
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
@@ -145,8 +215,13 @@ function Faq() {
 export default function FbaCalculator() {
   const [input, setInput] = useState("");
   const [state, setState] = useState<
-    { kind: "idle" } | { kind: "loading"; asin: string } | { kind: "found"; product: FbaProduct } | { kind: "problem"; status: Exclude<LookupResult["status"], "found"> }
+    | { kind: "idle" }
+    | { kind: "loading"; asin: string }
+    | { kind: "found"; product: FbaProduct }
+    | { kind: "problem"; status: Problem }
+    | { kind: "gate"; gate: Gate; asin: string }
   >({ kind: "idle" });
+  const [access, setAccess] = useState<LookupAccess | null>(null);
   const [step, setStep] = useState(0);
   const resultRef = useRef<HTMLDivElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -156,6 +231,7 @@ export default function FbaCalculator() {
     timers.current = [];
   };
   useEffect(() => clearTimers, []);
+  useEffect(() => warmSession(), []);
 
   const lookup = useCallback(async (raw: string) => {
     const asin = extractAsin(raw);
@@ -172,11 +248,25 @@ export default function FbaCalculator() {
     // Hold the last step for a beat so a fast cached answer still reads as work done.
     const minimum = new Promise((resolve) => setTimeout(resolve, 1300));
     try {
-      const [response] = await Promise.all([fetch(`/api/fba-calculator?asin=${asin}`), minimum]);
-      const body = (await response.json().catch(() => ({}))) as { status?: string; product?: FbaProduct };
+      // A plan holder sends their sign-in, so the server never counts them.
+      const token = await sessionToken();
+      const [response] = await Promise.all([
+        fetch(`/api/fba-calculator?asin=${asin}`, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined),
+        minimum,
+      ]);
+      const body = (await response.json().catch(() => ({}))) as {
+        status?: string;
+        product?: FbaProduct;
+        access?: LookupAccess;
+      };
       clearTimers();
+      if (body.access) setAccess(body.access);
       if (response.ok && body.status === "found" && body.product) {
         setState({ kind: "found", product: body.product });
+        setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+      } else if (body.status === "signin-required" || body.status === "plan-required") {
+        setAccess({ plan: false, remaining: 0 });
+        setState({ kind: "gate", gate: body.status, asin });
         setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
       } else if (response.status === 404) setState({ kind: "problem", status: "not-found" });
       else if (response.status === 400) setState({ kind: "problem", status: "invalid" });
@@ -222,7 +312,7 @@ export default function FbaCalculator() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-600" />
             </span>
-            Free tool, no account needed
+            3 free lookups, no account needed
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -285,6 +375,30 @@ export default function FbaCalculator() {
                 </button>
               ))}
             </div>
+            {access && (
+              <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500" aria-live="polite">
+                {access.plan ? (
+                  <>
+                    <CheckCircle2 size={14} className="text-emerald-500" /> Unlimited lookups with your Apex plan
+                  </>
+                ) : access.remaining ? (
+                  <>
+                    {access.remaining} of 3 free lookups left.{" "}
+                    <Link href={TRIAL} className="text-blue-600 hover:text-blue-700">
+                      Get unlimited
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Lock size={13} /> Free lookups used.{" "}
+                    <Link href="/auth?next=%2Ftools%2Ffba-calculator" className="text-blue-600 hover:text-blue-700">
+                      Sign in
+                    </Link>{" "}
+                    to keep going.
+                  </>
+                )}
+              </p>
+            )}
           </motion.form>
 
           {state.kind === "idle" && (
@@ -336,6 +450,11 @@ export default function FbaCalculator() {
               </div>
             </motion.div>
           )}
+          {state.kind === "gate" && (
+            <div key="gate" className="mx-auto max-w-6xl px-5 py-12">
+              <GateCard gate={state.gate} asin={state.asin} />
+            </div>
+          )}
           {state.kind === "found" && (
             <div key={state.product.asin} className="mx-auto max-w-6xl px-5 py-12">
               <ResultView product={state.product} onReset={reset} />
@@ -344,7 +463,8 @@ export default function FbaCalculator() {
         </AnimatePresence>
       </div>
 
-      {/* Sign-up band, directly under the research */}
+      {/* Sign-up band, directly under the research. Hidden behind the lookup gate, which already asks. */}
+      {state.kind !== "gate" && (
       <section className="px-5 pb-20 pt-4">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-14 text-center text-white sm:px-12">
           <div aria-hidden className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-blue-600/40 blur-3xl" />
@@ -370,6 +490,7 @@ export default function FbaCalculator() {
           </div>
         </div>
       </section>
+      )}
 
       {/* SEO: what the fees are */}
       <section className="border-t border-slate-200 bg-slate-50 px-5 py-20">

@@ -57,6 +57,7 @@ export default function Navigation() {
   const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
+  const isCalculatorActive = pathname === "/tools/fba-calculator";
   /**
    * Internal tools (the ops dashboard, Lead Desk) are gated behind Basic Auth
    * and noindexed — not pages a visitor lands on — so the public nav (Home /
@@ -243,7 +244,9 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Nav — centered */}
-          <div className="hidden lg:flex items-center gap-10 text-[13px] font-bold text-slate-600 absolute left-1/2 -translate-x-1/2">
+          {/* Centred from 1280px. Narrower, it sits between the logo and the buttons,
+              because five links centred on top of the row ran into the logo. */}
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10 whitespace-nowrap text-[13px] font-bold text-slate-600 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
             <Link
               href="/"
               className={`hover:text-brand transition-colors uppercase tracking-wider ${isHomeActive ? "text-brand" : ""}`}
@@ -711,10 +714,17 @@ export default function Navigation() {
               PRICING
             </Link>
             <Link
+              href="/tools/fba-calculator"
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${isCalculatorActive ? "text-brand" : ""}`}
+            >
+              FBA CALCULATOR
+            </Link>
+            <Link
               href="/rewards-benefits"
               className={`hover:text-brand transition-colors uppercase tracking-wider ${isRewardsActive ? "text-brand" : ""}`}
             >
-              REWARDS & BENEFITS
+              <span className="xl:hidden">REWARDS</span>
+              <span className="hidden xl:inline">REWARDS & BENEFITS</span>
             </Link>
           </div>
 
@@ -853,6 +863,13 @@ export default function Navigation() {
                 className="block text-slate-900 font-bold text-lg w-full text-left"
               >
                 Pricing
+              </Link>
+              <Link
+                href="/tools/fba-calculator"
+                onClick={() => setIsMenuOpen(false)}
+                className="block text-slate-900 font-bold text-lg w-full text-left"
+              >
+                Free FBA Calculator
               </Link>
               <Link
                 href="/rewards-benefits"
