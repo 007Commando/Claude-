@@ -743,24 +743,28 @@ DSA_DESCRIPTIONS = [
 # Assets
 # ---------------------------------------------------------------------------
 
+# Checked against the live site on 2026-10-04. "Included in every plan" went:
+# the site says the repricer is in every plan, but the app gives Apex Gold to
+# Pro only (5 listings on the $149 plan, none on Starter), and an ad must not
+# promise what the product withholds.
 SITELINKS = [
-    ("Compare The Tools", "Sixteen honest comparisons.", "Including where we lose.", "/compare"),
+    ("Compare The Tools", "19 honest comparisons.", "Including where we lose.", "/compare"),
     ("See Pricing", "Starter $149/mo, Pro $299.", "Seven days free to try.", "/pricing"),
-    ("The Repricer", "Floors from your real cost.", "Included in every plan.", "/features/gold"),
+    ("The Repricer", "Floors from your real cost.", "With dry-run previews.", "/features/gold"),
     ("The Scanner", "Whole price lists at once.", "Ends in a purchase order.", "/features/green"),
     ("Profit And P&L", "Real costs, fees and freight.", "By day, week or month.", "/features/blue"),
     ("Wholesale Suppliers", "Three vetted US distributors.", "Three more every month.", "/amazon-wholesale-suppliers"),
-    ("Get Ungated", "Check brands before you buy.", "Thousands of ASINs at once.", "/ungating-guide"),
-    ("Book A Walkthrough", "We will look at your catalogue.", "Thirty minutes, no pitch.", "/purchase-order-program"),
+    ("Get Ungated", "Check brands before you buy.", "Invoices Amazon accepts.", "/ungating-guide"),
+    ("Book A Walkthrough", "A working session with our team.", "We go through your setup.", "/purchase-order-program"),
 ]
 
 CALLOUTS = [
-    "Repricer in every plan",
+    "Break-even price floors",
     "Seven day free trial",
     "No charge for seven days",
     "3 distributors on sign up",
     "3 more every month",
-    "Bulk ungating checks",
+    "Ungating guide included",
     "Purchase orders built in",
     "Real landed cost margins",
     "Built for wholesale",
@@ -768,7 +772,7 @@ CALLOUTS = [
 ]
 
 SNIPPETS = [
-    ("Features", ["Catalog scanning", "Bulk ungating", "Purchase orders", "Repricing", "Profit and P&L", "Restock planning", "Review requests"]),
+    ("Features", ["Catalog scanning", "Ungating guide", "Purchase orders", "Repricing", "Profit and P&L", "Restock planning", "Review requests"]),
     ("Service catalog", ["Wholesale sourcing", "Supplier price lists", "Buy Box repricing", "Inventory restock", "Prep centre network"]),
 ]
 
