@@ -771,9 +771,14 @@ CALLOUTS = [
     "Cancel any time",
 ]
 
+# Google accepts only its fixed headers (Amenities, Brands, Courses, Degree
+# programs, Destinations, Featured hotels, Insurance coverage, Models,
+# Neighborhoods, Service catalog, Shows, Styles, Types). "Features" is not one,
+# so the tools go under Types. No restock values: the site has a restock
+# article, not a restock tool.
 SNIPPETS = [
-    ("Features", ["Catalog scanning", "Ungating guide", "Purchase orders", "Repricing", "Profit and P&L", "Restock planning", "Review requests"]),
-    ("Service catalog", ["Wholesale sourcing", "Supplier price lists", "Buy Box repricing", "Inventory restock", "Prep centre network"]),
+    ("Types", ["UPC scanner", "Repricer", "P&L dashboard", "Purchase order builder", "Review request tool"]),
+    ("Service catalog", ["Wholesale sourcing", "Supplier price lists", "Buy Box repricing", "Prep center network", "Review automation"]),
 ]
 
 # ---------------------------------------------------------------------------
