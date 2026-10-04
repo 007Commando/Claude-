@@ -1,20 +1,21 @@
 /**
- * A calendar of how fast a category tends to sell, day by day.
+ * How fast a category tends to sell, day by day, from a year ago to a year
+ * from now.
  *
- * Apex does not hold a year of daily rank for a single ASIN, so this is not
- * one product's history. It is the shape of the selling year for the
- * product's category: the shopping seasons that move Amazon demand (the holiday
- * rush, Black Friday to Cyber Monday, Prime events, back to school and so on)
- * plus the small weekday rhythm, weighted by how much each season matters to
- * that kind of product. The page says so under the chart, so nobody mistakes
- * it for measured sales.
+ * Apex does not hold daily rank history for a single ASIN (it only started
+ * recording in September 2026), so neither year here is recorded history. It
+ * is the shape of the selling year for the product's category: the shopping
+ * seasons that move Amazon demand (the holiday rush, Black Friday to Cyber
+ * Monday, Prime events, back to school and so on) plus a small weekday rhythm,
+ * weighted by how much each season matters to that kind of product. Pinned to
+ * the product's own recent rank, it projects a rank for every day. The page
+ * says all of this under the chart.
  *
  * Dates are built in UTC so a visitor's timezone can never push a day into the
  * wrong cell.
  */
 
 const DAY = 86_400_000;
-const MONTH_NAMES = Array.from({ length: 12 });
 
 export type SeasonLevel = 0 | 1 | 2 | 3 | 4;
 
@@ -134,32 +135,6 @@ const WEEKDAY = [1, 1.06, 1.03, 1, 0.98, 0.93, 0.9];
 
 const gauss = (distanceDays: number, spread: number) => Math.exp(-(distanceDays * distanceDays) / (2 * spread * spread));
 
-export interface SeasonDay {
-  /** UTC timestamp of the day. */
-  time: number;
-  month: number;
-  day: number;
-  weekday: number;
-  level: SeasonLevel;
-  label: string;
-  /** Projected sales rank that day, or null when the product has no rank to anchor on. */
-  rank: number | null;
-}
-
-export interface SeasonYear {
-  year: number;
-  days: SeasonDay[];
-  /** Weekday of 1 January, which sets the first column's offset. */
-  offset: number;
-  columns: number;
-  /** First column of each month. */
-  monthColumns: number[];
-  /** Index of today in `days`. */
-  todayIndex: number;
-  /** Average projected rank for each month, or null without an anchor rank. */
-  monthRanks: (number | null)[];
-}
-
 /**
  * Sales follow rank roughly as units ~ rank^-0.75 (the same curve the sales
  * estimate uses), so a day that sells `s` times as fast as today ranks
@@ -167,96 +142,176 @@ export interface SeasonYear {
  */
 const RANK_EXPONENT = 1 / 0.75;
 
+/** The days after Christmas pull demand down for every kind of product. */
+const LULL = -0.35;
+
 /**
- * The year's calendar for a category, with today marked.
- *
- * `anchorRank` is the product's recent rank. Today's modelled demand is pinned
- * to it and every other day's rank follows from how much faster or slower the
- * seasonal pattern says that day sells, so the numbers are a projection from
- * the product's own rank, not recorded history.
+ * Modelled demand on any date, relative to an ordinary day (1), and the
+ * season that moves it most. Seasons from the neighbouring years are summed
+ * too, so the holiday rush runs smoothly across New Year.
  */
-export const seasonYear = (category: string | null, now: Date, anchorRank: number | null = null): SeasonYear => {
-  const year = now.getFullYear();
-  const todayTime = utc(year, now.getMonth(), now.getDate());
+const demandModel = (category: string | null) => {
   const text = (category ?? "").toLowerCase();
   const weights = PROFILES.find((profile) => profile.match.test(text))?.weights ?? FALLBACK;
-  const events = bumps(year);
-  const lull = -0.35;
+  const cache = new Map<number, ReturnType<typeof bumps>>();
+  const eventsFor = (year: number) => {
+    let events = cache.get(year);
+    if (!events) {
+      events = bumps(year);
+      cache.set(year, events);
+    }
+    return events;
+  };
 
-  const start = utc(year, 0, 1);
-  const total = Math.round((utc(year + 1, 0, 1) - start) / DAY);
-
-  const raw: { value: number; label: string }[] = [];
-  for (let i = 0; i < total; i++) {
-    const time = start + i * DAY;
+  return (time: number): { value: number; label: string } => {
+    const date = new Date(time);
+    const year = date.getUTCFullYear();
     let value = 1;
     let best = 0;
     let label = "Everyday demand";
-    (Object.keys(events) as EventId[]).forEach((id) => {
-      const weight = id === "lull" ? lull : (weights[id] ?? 0);
-      if (!weight) return;
-      const lift = events[id].reduce((sum, [centre, spread, strength]) => sum + strength * gauss((time - centre) / DAY, spread), 0) * weight;
+    for (const id of Object.keys(LABELS) as EventId[]) {
+      const weight = id === "lull" ? LULL : (weights[id] ?? 0);
+      if (!weight) continue;
+      let lift = 0;
+      for (const y of [year - 1, year, year + 1]) {
+        for (const [centre, spread, strength] of eventsFor(y)[id]) lift += strength * gauss((time - centre) / DAY, spread);
+      }
+      lift *= weight;
       value += lift;
       if (Math.abs(lift) > Math.abs(best) && Math.abs(lift) >= 0.1) {
         best = lift;
         label = LABELS[id];
       }
-    });
-    const weekday = new Date(time).getUTCDay();
-    raw.push({ value: Math.max(0.3, value) * WEEKDAY[weekday], label });
-  }
+    }
+    return { value: Math.max(0.3, value) * WEEKDAY[date.getUTCDay()], label };
+  };
+};
+
+export interface SeasonDay {
+  /** UTC timestamp of the day. */
+  time: number;
+  year: number;
+  month: number;
+  day: number;
+  weekday: number;
+  level: SeasonLevel;
+  label: string;
+  /** Modelled demand, relative to an ordinary day. */
+  demand: number;
+  /** Projected sales rank that day, or null when the product has no rank to anchor on. */
+  rank: number | null;
+  past: boolean;
+}
+
+export interface SeasonMonth {
+  /** Column the month's label sits over. */
+  column: number;
+  month: number;
+  year: number;
+  /** Average projected rank across the month's days in the window. */
+  rank: number | null;
+}
+
+export interface SeasonWindow {
+  /** Whole weeks, Sunday first, from a year ago to a year from now. */
+  days: SeasonDay[];
+  columns: number;
+  todayIndex: number;
+  todayColumn: number;
+  months: SeasonMonth[];
+  /** Projected rank on any date, inside the window or not. */
+  rankOn: (time: number) => number | null;
+}
+
+/**
+ * The two-year calendar for a category, with today in the middle.
+ *
+ * `anchorRank` is the product's recent rank. Today's modelled demand is pinned
+ * to it and every other day's rank follows from how much faster or slower the
+ * seasonal pattern says that day sells.
+ */
+export const seasonWindow = (category: string | null, now: Date, anchorRank: number | null = null): SeasonWindow => {
+  const model = demandModel(category);
+  const today = utc(now.getFullYear(), now.getMonth(), now.getDate());
+  const from = today - 365 * DAY;
+  const to = today + 365 * DAY;
+  const start = from - new Date(from).getUTCDay() * DAY;
+  const end = to + (6 - new Date(to).getUTCDay()) * DAY;
+  const total = Math.round((end - start) / DAY) + 1;
+
+  const raw = Array.from({ length: total }, (_, i) => model(start + i * DAY));
+  const todayIndex = Math.round((today - start) / DAY);
+  const todayValue = raw[todayIndex].value;
+  const anchor = anchorRank !== null && anchorRank > 0 ? anchorRank : null;
+  const toRank = (value: number) =>
+    anchor === null ? null : Math.max(1, Math.round(anchor * Math.pow(todayValue / value, RANK_EXPONENT)));
 
   const min = Math.min(...raw.map((r) => r.value));
   const max = Math.max(...raw.map((r) => r.value));
   const span = max - min || 1;
-
-  const todayIndex = Math.round((todayTime - start) / DAY);
-  const todayValue = raw[Math.min(Math.max(todayIndex, 0), total - 1)].value;
 
   const days: SeasonDay[] = raw.map((entry, i) => {
     const time = start + i * DAY;
     const date = new Date(time);
     return {
       time,
+      year: date.getUTCFullYear(),
       month: date.getUTCMonth(),
       day: date.getUTCDate(),
       weekday: date.getUTCDay(),
       level: Math.min(4, Math.floor(((entry.value - min) / span) * 5)) as SeasonLevel,
       label: entry.label,
-      rank:
-        anchorRank && anchorRank > 0
-          ? Math.max(1, Math.round(anchorRank * Math.pow(todayValue / entry.value, RANK_EXPONENT)))
-          : null,
+      demand: entry.value,
+      rank: toRank(entry.value),
+      past: time < today,
     };
   });
 
-  const monthRanks = MONTH_NAMES.map((_, month) => {
-    const ranks = days.filter((d) => d.month === month).map((d) => d.rank);
-    if (ranks.some((r) => r === null)) return null;
-    return Math.round((ranks as number[]).reduce((sum, r) => sum + r, 0) / ranks.length);
-  });
-
-  const offset = new Date(start).getUTCDay();
-  const monthColumns: number[] = [];
+  // A label for every month with enough days in the window to carry one.
+  const groups = new Map<string, number[]>();
   days.forEach((d, i) => {
-    if (d.day === 1) monthColumns[d.month] = Math.floor((offset + i) / 7);
+    const key = `${d.year}-${d.month}`;
+    const list = groups.get(key) ?? [];
+    list.push(i);
+    groups.set(key, list);
+  });
+  const months: SeasonMonth[] = [];
+  groups.forEach((indices) => {
+    if (indices.length < 10) return;
+    const first = days[indices[0]];
+    const ranks = indices.map((i) => days[i].rank);
+    months.push({
+      column: Math.floor(indices[0] / 7),
+      month: first.month,
+      year: first.year,
+      rank: ranks.every((r) => r !== null)
+        ? Math.round((ranks as number[]).reduce((sum, r) => sum + r, 0) / ranks.length)
+        : null,
+    });
   });
 
   return {
-    year,
     days,
-    offset,
-    columns: Math.ceil((offset + total) / 7),
-    monthColumns,
+    columns: total / 7,
     todayIndex,
-    monthRanks,
+    todayColumn: Math.floor(todayIndex / 7),
+    months,
+    rankOn: (time: number) => toRank(model(time).value),
   };
 };
 
 /** The next stretch of the fastest level after today, for the plain-English read. */
-export const nextPeak = (calendar: SeasonYear): { label: string; daysAway: number } | null => {
-  for (let i = calendar.todayIndex + 1; i < calendar.days.length; i++) {
-    if (calendar.days[i].level === 4) return { label: calendar.days[i].label, daysAway: i - calendar.todayIndex };
+export const nextPeak = (window: SeasonWindow): { label: string; daysAway: number } | null => {
+  for (let i = window.todayIndex + 1; i < window.days.length; i++) {
+    if (window.days[i].level === 4) return { label: window.days[i].label, daysAway: i - window.todayIndex };
   }
   return null;
+};
+
+/** The fastest and slowest single days in the year ahead. */
+export const extremesAhead = (window: SeasonWindow): { fastest: SeasonDay; slowest: SeasonDay } => {
+  const ahead = window.days.slice(window.todayIndex + 1, window.todayIndex + 366);
+  const fastest = ahead.reduce((a, b) => (b.demand > a.demand ? b : a));
+  const slowest = ahead.reduce((a, b) => (b.demand < a.demand ? b : a));
+  return { fastest, slowest };
 };
