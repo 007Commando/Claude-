@@ -7,11 +7,15 @@ import { createHmac, timingSafeEqual } from "node:crypto";
  * in to an Apex account with a plan that grants access (active, trialing or
  * past due, the same rule the app applies), and a plan holder is never counted.
  *
- * The free allowance lives in a signed, HttpOnly cookie holding the ASINs
- * already looked up, so looking at one of them again costs nothing, and editing
- * the page or the cookie cannot raise the limit. Clearing cookies or opening a
- * private window does reset it, which is true of any allowance given without
- * an account; it is there to turn regular users into accounts, not to be a wall.
+ * The allowance is kept twice. Apex's database remembers the products each
+ * network has used (by a keyed hash of the IP, never the address), so clearing
+ * cookies, a private window or another browser does not reset it. A signed,
+ * HttpOnly cookie remembers them for the browser, so moving to another network
+ * does not reset it either. Whichever has seen more wins, and looking at a
+ * product already used costs nothing.
+ *
+ * The price of counting by network is that people behind one shared address
+ * (an office, some mobile carriers) share one allowance.
  */
 
 export const FREE_LOOKUPS = 3;
@@ -42,6 +46,36 @@ export function readFreeAsins(value: string | undefined): string[] {
 export function writeFreeAsins(asins: string[]): { value: string; maxAge: number } {
   const body = Buffer.from(JSON.stringify({ a: asins })).toString("base64url");
   return { value: `${body}.${sign(body)}`, maxAge: MAX_AGE };
+}
+
+/**
+ * The visitor's network, as a keyed hash Apex can store without holding an
+ * address. IPv6 is cut to its /64, because one home or phone is handed a whole
+ * /64 and can rotate through it at will.
+ */
+export function visitorHash(ip: string | null): string | null {
+  const network = normaliseIp(ip);
+  return network ? createHmac("sha256", `fba-visitor:${secret()}`).update(network).digest("hex") : null;
+}
+
+function normaliseIp(raw: string | null): string | null {
+  const ip = (raw ?? "").trim().toLowerCase();
+  if (!ip || ip === "unknown") return null;
+  const mapped = ip.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
+  if (mapped) return mapped[1];
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(ip)) return ip;
+  if (!ip.includes(":")) return null;
+  const [head, tail = ""] = ip.split("%")[0].split("::");
+  const left = head ? head.split(":") : [];
+  const right = ip.includes("::") && tail ? tail.split(":") : [];
+  const groups = ip.includes("::") ? [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill("0"), ...right] : left;
+  if (groups.length !== 8) return null;
+  return `${groups.slice(0, 4).map((g) => parseInt(g || "0", 16).toString(16)).join(":")}::/64`;
+}
+
+/** The address Vercel saw the request come from. */
+export function clientIp(headers: Headers): string | null {
+  return headers.get("x-real-ip") ?? headers.get("x-forwarded-for")?.split(",")[0].trim() ?? null;
 }
 
 /* ----------------------------- plan check ----------------------------- */
