@@ -26,6 +26,7 @@ import michaelRAsset from "../assets/michael-r-avatar.png.asset.json";
 import "./apex-surface.css";
 import { readStoredAttribution } from "./LeadAttribution";
 import { trackConversion } from "./GoogleTag";
+import { liveAccount } from "../lib/live/client";
 
 /**
  * Where this signup came from, for the account record. The app reads
@@ -372,10 +373,12 @@ const FREE_TIER = [
  * session id, which is the first moment a card is genuinely on file.
  */
 function reportPaidSignup(email?: string) {
+  liveAccount(email);
   trackConversion("checkout", { email });
 }
 
 export function reportFreeSignup(email?: string) {
+  liveAccount(email);
   trackConversion("freeAccount", { email });
   const eventId = `free-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   window.fbq?.(

@@ -29,6 +29,39 @@ export interface LiveSession {
   paidAt?: number;
   purchase?: string;
   left?: boolean;
+  /** "facebook" for Meta traffic and the Apex Pop funnel, else "other". Absent on sessions before 2026-10-04. */
+  channel?: "facebook" | "other";
+  landingPath?: string;
+  /** The last site pages visited, oldest first. */
+  trail?: { p: string; t: number }[];
+  accountAt?: number;
+  /** The site page that sent them to sign-up when they created an account. */
+  accountFrom?: string;
+  /** Map dot colour override (the app view colours by module). */
+  color?: string;
+}
+
+export type LiveCounterKey =
+  | "sessions"
+  | "returning"
+  | "leads"
+  | "form"
+  | "signup"
+  | "checkout"
+  | "paid"
+  | "signupPassed"
+  | "checkoutPassed"
+  | "accounts";
+export type LiveCounters = Partial<Record<LiveCounterKey, number>>;
+
+/** Which traffic the website views show. */
+export type LiveScope = "funnel" | "site";
+
+/** Meta traffic and the Apex Pop funnel: the "Facebook funnel" view. */
+export function isFunnelSession(s: LiveSession): boolean {
+  if (s.channel) return s.channel === "facebook";
+  const src = liveSource(s);
+  return src === "facebook-web" || src === "facebook-form" || (s.landingPath ?? s.path).startsWith("/apex-pop");
 }
 
 export interface LiveSnapshot {
@@ -36,12 +69,13 @@ export interface LiveSnapshot {
   day: string;
   active: LiveSession[];
   today: LiveSession[];
-  totals: Partial<
-    Record<
-      "sessions" | "returning" | "leads" | "form" | "signup" | "checkout" | "paid" | "signupPassed" | "checkoutPassed",
-      number
-    >
-  >;
+  totals: LiveCounters & {
+    fb?: LiveCounters;
+    pageViews?: Record<string, number>;
+    landings?: Record<string, number>;
+    accountFrom?: Record<string, number>;
+    accountLanding?: Record<string, number>;
+  };
 }
 
 export const LIVE_STAGE_LABELS: Record<LiveStage, string> = {
@@ -110,6 +144,11 @@ export function pageLabel(path: string): string {
   if (path.startsWith("/checkout")) return "Checkout";
   if (path === "/") return "Home";
   if (path.startsWith("/pricing")) return "Pricing";
+  if (path.startsWith("/blog/")) return `Blog: ${path.slice(6).replace(/-/g, " ")}`;
   if (path.startsWith("/blog")) return "Blog";
+  if (path.startsWith("/tools/fba-calculator")) return "FBA calculator";
+  if (path.startsWith("/how-apex-works")) return "Product guide";
+  if (path.startsWith("/ai")) return "Apex AI";
+  if (path.startsWith("/free-course") || path.startsWith("/zero-to-hero")) return "Free course";
   return path;
 }

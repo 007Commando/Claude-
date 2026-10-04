@@ -16,7 +16,7 @@ import KpiStrip from "./components/KpiStrip";
 import Board from "./components/Board";
 import LeadTable from "./components/LeadTable";
 import { STAGE_LABELS } from "./components/shared";
-import LiveView from "./components/LiveView";
+import LivePanel from "./components/LivePanel";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
 import { useLeadFilters, filterLeads } from "./components/useLeadFilters";
@@ -210,7 +210,7 @@ export default function LeadDesk() {
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
-            <LiveView />
+            <LivePanel />
           ) : (
             <>
             {filters.stage && (

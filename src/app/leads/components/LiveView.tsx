@@ -13,6 +13,9 @@ import {
   LIVE_STAGE_LABELS,
   liveSource,
   pageLabel,
+  isFunnelSession,
+  type LiveCounters,
+  type LiveScope,
   type LiveSession,
   type LiveSnapshot,
   type LiveStage,
@@ -30,7 +33,7 @@ import {
 
 const POLL_MS = 5000;
 const FUNNEL: LiveStage[] = ["browsing", "form", "signup", "checkout", "paid"];
-const TOTAL_KEY: Record<LiveStage, keyof LiveSnapshot["totals"]> = {
+const TOTAL_KEY: Record<LiveStage, keyof LiveCounters> = {
   browsing: "sessions",
   form: "form",
   signup: "signup",
@@ -84,8 +87,15 @@ function FeedRow({
       </span>
       <span className="ld-live-row-who">
         <strong>{person.title}</strong>
-        <small>
-          {[person.sub, pageLabel(s.path), s.email && place ? place : null].filter(Boolean).join(" · ")}
+        <small title={(s.trail ?? []).map((t) => pageLabel(t.p)).join(" → ") || undefined}>
+          {[
+            person.sub,
+            live ? `On ${pageLabel(s.path)}` : `Left from ${pageLabel(s.path)}`,
+            s.landingPath && s.landingPath !== s.path ? `came in on ${pageLabel(s.landingPath)}` : null,
+            s.email && place ? place : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
         </small>
       </span>
       <StagePill s={s} />
@@ -97,6 +107,11 @@ function FeedRow({
         )}
         {s.device === "mobile" ? <Smartphone size={13} aria-label="Phone" /> : <Monitor size={13} aria-label="Computer" />}
         {s.returning && <span className="ld-live-tag">Returning</span>}
+        {s.accountAt && (
+          <span className="ld-live-tag ld-live-tag-account" title={s.accountFrom ? `From ${pageLabel(s.accountFrom)}` : undefined}>
+            Created account
+          </span>
+        )}
       </span>
       <span className="ld-live-row-time" title={live ? "Time on site" : "Session length"}>
         {fmtDuration((live ? now : s.lastSeen) - s.startedAt)}
@@ -105,7 +120,43 @@ function FeedRow({
   );
 }
 
-export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: string }) {
+/** "Top N" rows from one of the day's page-count maps. */
+function topOf(map: Record<string, number> | undefined, n = 8): [string, number][] {
+  return Object.entries(map ?? {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n);
+}
+
+function PageList({ title, rows, empty }: { title: string; rows: [string, number][]; empty: string }) {
+  const max = Math.max(1, ...rows.map(([, n]) => n));
+  return (
+    <div className="ld-live-pages-col">
+      <h4>{title}</h4>
+      {rows.length === 0 ? (
+        <p className="ld-live-empty">{empty}</p>
+      ) : (
+        <ul className="ld-live-sources">
+          {rows.map(([path, n]) => (
+            <li key={path} title={path}>
+              <span className="ld-live-page-name">{pageLabel(path)}</span>
+              <i style={{ width: `${(n / max) * 100}%` }} />
+              <b>{n}</b>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default function LiveView({
+  endpoint = "/api/leads/live",
+  scope = "site",
+}: {
+  endpoint?: string;
+  /** "funnel": Facebook and Instagram traffic and the Apex Pop pages only. "site": everyone. */
+  scope?: LiveScope;
+}) {
   const [snap, setSnap] = useState<LiveSnapshot | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fetchedAt, setFetchedAt] = useState<number>(0);
@@ -137,10 +188,18 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
     };
   }, [load]);
 
-  const active = useMemo(() => snap?.active ?? [], [snap]);
+  const inScope = useCallback((s: LiveSession) => scope === "site" || isFunnelSession(s), [scope]);
+  const active = useMemo(() => (snap?.active ?? []).filter(inScope), [snap, inScope]);
+  const todayInScope = useMemo(() => (snap?.today ?? []).filter(inScope), [snap, inScope]);
   const activeSids = useMemo(() => new Set(active.map((s) => s.sid)), [active]);
-  const earlier = useMemo(() => (snap?.today ?? []).filter((s) => !activeSids.has(s.sid)), [snap, activeSids]);
-  const totals = snap?.totals ?? {};
+  const earlier = useMemo(() => todayInScope.filter((s) => !activeSids.has(s.sid)), [todayInScope, activeSids]);
+  // The funnel view reads the day's Meta-only counters, kept beside the totals since 2026-10-04.
+  const totals: LiveCounters = (scope === "funnel" ? snap?.totals.fb : snap?.totals) ?? {};
+  const rightNowPages = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const s of active) counts[s.path] = (counts[s.path] ?? 0) + 1;
+    return topOf(counts, 6);
+  }, [active]);
 
   const liveByStage = useMemo(() => {
     const counts: Record<LiveStage, number> = { browsing: 0, form: 0, signup: 0, checkout: 0, paid: 0 };
@@ -150,12 +209,12 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
 
   const bySource = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const s of snap?.today ?? []) {
+    for (const s of todayInScope) {
       const key = liveSource(s);
       counts.set(key, (counts.get(key) ?? 0) + 1);
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1]);
-  }, [snap]);
+  }, [todayInScope]);
   const sourceMax = Math.max(1, ...bySource.map(([, n]) => n));
 
   const sessions = totals.sessions ?? 0;
@@ -175,7 +234,7 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
       <aside className="ld-live-side">
         <div className="ld-live-head">
           <span className="ld-live-beacon" data-ok={!error} />
-          <strong>Live View</strong>
+          <strong>{scope === "funnel" ? "Facebook funnel" : "Whole website"}</strong>
           <span className="ld-live-ago">
             {error ? "Not updating" : ago === null ? "Connecting" : ago <= 2 ? "Just now" : `${ago}s ago`}
           </span>
@@ -199,6 +258,11 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
             <span>Leads today</span>
             <b>{totals.leads ?? 0}</b>
             <small>email captured</small>
+          </div>
+          <div className="ld-live-card">
+            <span>Accounts created today</span>
+            <b>{totals.accounts ?? 0}</b>
+            <small>{pct(totals.accounts ?? 0, sessions)} of visitors</small>
           </div>
           <div className="ld-live-card ld-live-card-wide">
             <span>Conversion rate</span>
@@ -284,6 +348,19 @@ export default function LiveView({ endpoint = "/api/leads/live" }: { endpoint?: 
             ))}
           </div>
         </div>
+
+        {scope === "site" && (
+          <section className="ld-live-pages">
+            <PageList title="On these pages right now" rows={rightNowPages} empty="Nobody on the site at the moment." />
+            <PageList title="Top pages today" rows={topOf(snap?.totals.pageViews)} empty="No page views yet today." />
+            <PageList title="Landing pages today" rows={topOf(snap?.totals.landings)} empty="No visits yet today." />
+            <PageList
+              title="Accounts created from"
+              rows={topOf(snap?.totals.accountFrom)}
+              empty="No accounts created yet today."
+            />
+          </section>
+        )}
 
         <section className="ld-live-feed">
           <h3>

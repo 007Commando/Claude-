@@ -113,6 +113,7 @@ export default function LiveBeacon() {
         medium: params.get("utm_medium") || attribution?.utmMedium,
         campaign: params.get("utm_campaign") || attribution?.utmCampaign,
         referrer: document.referrer || undefined,
+        account: live.account || undefined,
         left,
       });
     };

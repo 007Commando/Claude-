@@ -2094,3 +2094,23 @@
 .ld-live-drops small { font-size: 11px; color: var(--ld-text-muted); }
 .ld-live-bounce[data-bounce="signup"] { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; }
 .ld-live-bounce[data-bounce="checkout"] { color: #c2410c; background: #fff7ed; border-color: #fed7aa; }
+
+/* Live tab: Facebook funnel / Whole website / In the app (2026-10-04) */
+.ld-live-panel { display: flex; flex-direction: column; gap: 12px; }
+.ld-live-switch { display: inline-flex; align-self: flex-start; gap: 2px; padding: 3px; border-radius: 10px; background: var(--ld-bg); border: 1px solid var(--ld-border); }
+.ld-live-switch button { all: unset; cursor: pointer; font-size: 12.5px; font-weight: 700; color: var(--ld-text-muted); padding: 6px 12px; border-radius: 8px; }
+.ld-live-switch button[aria-selected="true"] { background: var(--ld-surface, #fff); color: var(--ld-text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12); }
+.ld-live-pages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; background: var(--ld-surface, #fff); border: 1px solid var(--ld-border); border-radius: 12px; padding: 14px; }
+.ld-live-pages-col h4 { margin: 0 0 8px; font-size: 12px; font-weight: 800; color: var(--ld-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.ld-live-pages .ld-live-sources li { grid-template-columns: 1fr auto; }
+.ld-live-page-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-live-tag-account { color: #067647; background: #ecfdf3; border-color: #abefc6; }
+@media (max-width: 1100px) { .ld-live-pages { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ld-app-plan { font-size: 10.5px; font-weight: 800; border-radius: 999px; padding: 2px 7px; background: var(--ld-bg); color: var(--ld-text-muted); border: 1px solid var(--ld-border); white-space: nowrap; }
+.ld-app-plan[data-plan="pro"], .ld-app-plan[data-plan="enterprise"] { background: #fef7e0; color: #a16207; border-color: #fde68a; }
+.ld-app-plan[data-plan="plus"] { background: #eef4ff; color: #1d4ed8; border-color: #c7d7fe; }
+.ld-app-plan[data-plan="starter"] { background: #ecfdf3; color: #067647; border-color: #abefc6; }
+.ld-app-table-wrap { overflow-x: auto; }
+.ld-app-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.ld-app-table th { text-align: left; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ld-text-faint); padding: 6px 8px; border-bottom: 1px solid var(--ld-border); }
+.ld-app-table td { padding: 7px 8px; border-bottom: 1px solid var(--ld-border); color: var(--ld-text); white-space: nowrap; font-variant-numeric: tabular-nums; }

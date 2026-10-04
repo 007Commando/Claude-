@@ -10,7 +10,7 @@
 
 type Listener = () => void;
 
-const state: { email?: string; name?: string; step?: number } = {};
+const state: { email?: string; name?: string; step?: number; account?: boolean } = {};
 const listeners = new Set<Listener>();
 
 export function liveState() {
@@ -38,5 +38,17 @@ export function liveIdentify(email: string, name?: string) {
 export function liveStep(step: number) {
   if (state.step === step) return;
   state.step = step;
+  changed();
+}
+
+/**
+ * The visitor just created an Apex account. Live View records it once per
+ * visit, with the site page that sent them to sign-up, for "accounts created
+ * from" (Stefano, 2026-10-04).
+ */
+export function liveAccount(email?: string) {
+  if (email && !state.email) state.email = email;
+  if (state.account) return;
+  state.account = true;
   changed();
 }

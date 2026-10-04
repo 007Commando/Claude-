@@ -92,7 +92,7 @@ export default function LiveMap({
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${sessions.length} visitors on the map right now`}>
         <path d={hexes} className="ld-live-hex" />
         {placed.map(({ s, x, y }) => {
-          const color = STAGE_COLORS[s.stage] ?? STAGE_COLORS.browsing;
+          const color = s.color ?? STAGE_COLORS[s.stage] ?? STAGE_COLORS.browsing;
           const focused = s.sid === focusedSid;
           return (
             <g

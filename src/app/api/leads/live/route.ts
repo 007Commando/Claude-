@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,11 +12,13 @@ export const runtime = "nodejs";
 
 const LIVE_URL = process.env.APEX_LIVE_URL || "https://us-central1-apex-apps-parent.cloudfunctions.net/live";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // ?view=app reads the signed-in app users instead of website visitors.
+  const path = req.nextUrl.searchParams.get("view") === "app" ? "/app-snapshot" : "/snapshot";
   const key = process.env.APEX_INTERNAL_API_KEY;
   if (!key) return NextResponse.json({ error: "Live View is not configured" }, { status: 503 });
   try {
-    const res = await fetch(`${LIVE_URL}/snapshot`, {
+    const res = await fetch(`${LIVE_URL}${path}`, {
       headers: { "x-apex-internal-key": key },
       cache: "no-store",
       signal: AbortSignal.timeout(8000),
