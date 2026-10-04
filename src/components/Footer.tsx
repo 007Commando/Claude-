@@ -260,6 +260,34 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+            {/* Free tools get their own heading so the calculator is easy to find. */}
+            <p className="font-semibold text-slate-900 mb-5 mt-8">Free Tools</p>
+            <ul className="space-y-3 text-slate-600">
+              <li>
+                <Link
+                  href="/tools/fba-calculator"
+                  className="inline-flex items-center gap-2 font-semibold text-brand hover:text-brand-dark transition-colors"
+                >
+                  Free FBA Fee Calculator
+                  <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                    Free
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tools/amazon-profit-calculator"
+                  className="hover:text-brand transition-colors"
+                >
+                  Profit &amp; ROI Calculator
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools" className="hover:text-brand transition-colors">
+                  All Free Tools
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Pricing */}
@@ -358,27 +386,6 @@ export default function Footer() {
               <li>
                 <Link href="/free-course" className="hover:text-brand transition-colors">
                   Free Wholesale Course
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tools/fba-calculator"
-                  className="hover:text-brand transition-colors"
-                >
-                  Free FBA Calculator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tools/amazon-profit-calculator"
-                  className="hover:text-brand transition-colors"
-                >
-                  Profit &amp; ROI Calculator
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools" className="hover:text-brand transition-colors">
-                  All Free Tools
                 </Link>
               </li>
               <li>
