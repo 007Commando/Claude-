@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../lib/seo";
 import LandingPage from "../components/LandingPage";
-import { absoluteUrl } from "../config/site";
 
 /**
  * The homepage had no metadata of its own and lived off the root layout's,
@@ -8,12 +8,12 @@ import { absoluteUrl } from "../config/site";
  * moved here, where it is a statement about one page rather than a default
  * applied to all of them.
  */
-export const metadata: Metadata = {
-  title: "Amazon Wholesale Seller Software | Apex",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Wholesale Software for Sellers | Apex",
   description:
-    "Research supplier catalogues, manage purchasing, understand profit and reprice your listings with Apex Applications. Start with the job you need today.",
-  alternates: { canonical: absoluteUrl("/") },
-};
+    "Research supplier catalogs, manage purchasing, understand profit and reprice your listings in one Amazon wholesale suite. Start with the job you need.",
+  path: "/",
+});
 
 export default function Page() {
   return <LandingPage />;

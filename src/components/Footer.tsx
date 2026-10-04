@@ -152,7 +152,7 @@ export default function Footer() {
 
           {/* Company */}
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-slate-900 mb-5">Company</h4>
+            <p className="font-semibold text-slate-900 mb-5">Company</p>
             <ul className="space-y-3 text-slate-600">
               <li>
                 <Link href="/" className="hover:text-brand transition-colors">
@@ -161,7 +161,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/features/black#review-booster"
+                  href="/review-booster"
                   className="hover:text-brand transition-colors"
                 >
                   Review Booster
@@ -185,6 +185,26 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/distributor-vault" className="hover:text-brand transition-colors">
+                  Distributor Vault
+                </Link>
+              </li>
+              <li>
+                <Link href="/prep-center-network" className="hover:text-brand transition-colors">
+                  Prep Center Network
+                </Link>
+              </li>
+              <li>
+                <Link href="/rewards-benefits" className="hover:text-brand transition-colors">
+                  Rewards &amp; Benefits
+                </Link>
+              </li>
+              <li>
+                <Link href="/ai" className="hover:text-brand transition-colors">
+                  Connect AI Agents
+                </Link>
+              </li>
+              <li>
                 <Link
                   href="/contact-us"
                   className="hover:text-brand transition-colors"
@@ -197,7 +217,7 @@ export default function Footer() {
 
           {/* Features */}
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-slate-900 mb-5">Features</h4>
+            <p className="font-semibold text-slate-900 mb-5">Features</p>
             <ul className="space-y-3 text-slate-600">
               <li>
                 <Link
@@ -244,7 +264,7 @@ export default function Footer() {
 
           {/* Pricing */}
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-slate-900 mb-5">Pricing</h4>
+            <p className="font-semibold text-slate-900 mb-5">Pricing</p>
             <ul className="space-y-3 text-slate-600">
               <li>
                 <Link
@@ -255,7 +275,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-            <h4 className="font-semibold text-slate-900 mb-5 mt-8">Compare</h4>
+            <p className="font-semibold text-slate-900 mb-5 mt-8">Compare</p>
             <ul className="space-y-3 text-slate-600">
               <li>
                 <Link
@@ -302,9 +322,9 @@ export default function Footer() {
 
           {/* How Amazon Wholesale Works */}
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-slate-900 mb-5">
+            <p className="font-semibold text-slate-900 mb-5">
               How Amazon Wholesale Works
-            </h4>
+            </p>
             <ul className="space-y-3 text-slate-600">
               <li>
                 <Link
@@ -331,6 +351,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/amazon-wholesale-software" className="hover:text-brand transition-colors">
+                  Amazon Wholesale Software
+                </Link>
+              </li>
+              <li>
+                <Link href="/free-course" className="hover:text-brand transition-colors">
+                  Free Wholesale Course
+                </Link>
+              </li>
+              <li>
                 <Link
                   href="/tools/fba-calculator"
                   className="hover:text-brand transition-colors"
@@ -344,6 +374,11 @@ export default function Footer() {
                   className="hover:text-brand transition-colors"
                 >
                   Profit &amp; ROI Calculator
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools" className="hover:text-brand transition-colors">
+                  All Free Tools
                 </Link>
               </li>
               <li>

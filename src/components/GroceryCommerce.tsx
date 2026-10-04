@@ -222,7 +222,7 @@ const GATE_POINTS = [
 
 export default function GroceryCommerce() {
   return (
-    <main className="bg-white">
+    <div className="bg-white">
       {/* ============ HERO ============ */}
       <section className="bg-slate-950 text-white pt-28 pb-16 relative overflow-hidden">
         <div
@@ -235,7 +235,7 @@ export default function GroceryCommerce() {
               <ShieldCheck size={14} /> Enterprise only · $1M+ monthly sales
             </span>
             <h1 className="text-4xl lg:text-6xl font-black tracking-tight leading-[1.04] mb-6">
-              The #1 software for{" "}
+              Operations software for{" "}
               <span className="text-amber-400">B2B Amazon &amp; ecommerce grocery</span>
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto mb-8">
@@ -415,6 +415,6 @@ export default function GroceryCommerce() {
           </motion.div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

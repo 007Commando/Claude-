@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   description:
     "Nine videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order. One payment of $29.",
   robots: { index: false, follow: true },
-  alternates: { canonical: "https://www.apexapplications.io/free-course" },
+  // No cross-canonical: Google ignores a canonical on a noindex page and reads
+  // the pair as contradictory. noindex alone keeps this ad variant out.
 };
 
 export default function Page() {

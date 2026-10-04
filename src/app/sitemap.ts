@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getSortedPosts } from "../lib/blog";
+import { getSortedPosts, postModified } from "../lib/blog";
 import { NOINDEX_ROUTES, SITE_URL } from "../config/site";
 import { COMPARISONS } from "../data/comparisons";
 
@@ -45,6 +45,8 @@ const ENTRIES: Entry[] = [
   { path: "/amazon-fba-prep-centers", changeFrequency: "monthly", priority: 0.6 },
   { path: "/tools/amazon-profit-calculator", changeFrequency: "monthly", priority: 0.7 },
   { path: "/tools/fba-calculator", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/tools", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/amazon-wholesale-software", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },
@@ -70,7 +72,6 @@ const ENTRIES: Entry[] = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
 
   /**
    * Enforced rather than trusted: the noindex list and the sitemap are edited
@@ -84,13 +85,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticEntries: MetadataRoute.Sitemap = indexable.map((entry) => ({
     url: `${SITE_URL}${entry.path}`,
-    lastModified,
+    // No lastModified: stamping every page with the build time told Google
+    // all 50 changed on every deploy, which teaches it to ignore the field.
+    // Blog posts below carry their real dates.
     changeFrequency: entry.changeFrequency,
     priority: entry.priority,
   }));
   const postEntries: MetadataRoute.Sitemap = getSortedPosts().map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post.publishedAt),
+    lastModified: new Date(postModified(post)),
     changeFrequency: "monthly",
     priority: 0.6,
   }));

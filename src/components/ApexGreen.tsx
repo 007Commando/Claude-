@@ -24,7 +24,7 @@ export default function ApexGreen() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <motion.div
-          initial="initial"
+          initial={false}
           animate="animate"
           variants={fadeIn}
           className="max-w-4xl mx-auto mb-8"
@@ -35,10 +35,11 @@ export default function ApexGreen() {
               Data Intelligence
             </div>
           </div>
-          <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-green-700">UPC scanner for Amazon wholesale</h1>
+          <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             HUNTING <br/>
             <span className="text-green-600 italic">ALGORITHMS.</span>
-          </h1>
+          </p>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Green is built for the hunt. Hand it a supplier's whole price list and it works through every row against the Amazon catalogue in the background, so the shortlist is waiting for you instead of you waiting for it.
           </p>

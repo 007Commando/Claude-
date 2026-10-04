@@ -70,17 +70,18 @@ export default function ApexGold() {
     <div className="pt-40 pb-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
-        <motion.div initial="initial" animate="animate" variants={fadeIn} className="max-w-4xl mx-auto mb-8">
+        <motion.div initial={false} animate="animate" variants={fadeIn} className="max-w-4xl mx-auto mb-8">
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <Zap size={14} className="stroke-[3]" />
               Repricing engine (beta)
             </div>
           </div>
-          <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-amber-700">Amazon repricer with break-even floors</h1>
+          <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             PRICING <br />
             <span className="text-amber-500 italic">REFLEXES.</span>
-          </h1>
+          </p>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Gold works out what every listing should sell for, anchored to true break-evens
             computed from your real Amazon fees, never a guess. Preview each move before it

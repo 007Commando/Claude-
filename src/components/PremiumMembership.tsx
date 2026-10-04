@@ -19,7 +19,7 @@ import {
 import dashboardHeroImage from "../assets/dashboard-hero.png.asset.json";
 import opexDashboardImage from "../assets/opex-dashboard.png.asset.json";
 import { prepCenters, projectToMapPercent } from "../data/prepCenters";
-import { distributors, categories } from "../data/distributors";
+import { DISTRIBUTOR_CATEGORIES, DISTRIBUTOR_COUNT } from "../data/distributorStats";
 import CheckoutLink from "./CheckoutLink";
 
 const CHECKOUT_URL = "https://buy.stripe.com/aFa3cn4YW9in5CO6eLdwc0c";
@@ -37,8 +37,8 @@ const coreIncludes = [
   },
   {
     icon: Database,
-    title: `All ${distributors.length} Suppliers in the Vault`,
-    body: `Every vetted wholesale distributor in the Apex Vault, unlocked. ${distributors.length} suppliers across ${categories.length} categories, from grocery and beauty to electronics and pet supplies, each with a real website and direct contact email. Normally reserved for Apex Annual members.`,
+    title: `All ${DISTRIBUTOR_COUNT} Suppliers in the Vault`,
+    body: `Every vetted wholesale distributor in the Apex Vault, unlocked. ${DISTRIBUTOR_COUNT} suppliers across ${DISTRIBUTOR_CATEGORIES.length} categories, from grocery and beauty to electronics and pet supplies, each with a real website and direct contact email. Normally reserved for Apex Annual members.`,
     vault: true,
   },
   {
@@ -57,7 +57,7 @@ const coreIncludes = [
 
 const valueStack: { label: string; value: number | null }[] = [
   { label: "2 Years of Apex Applications", value: 7176 },
-  { label: `All ${distributors.length} Suppliers in the Vault`, value: null },
+  { label: `All ${DISTRIBUTOR_COUNT} Suppliers in the Vault`, value: null },
   { label: "Full Prep Center Network Access", value: 200 },
   { label: "Membership Lifetime Discounts", value: null },
 ];
@@ -79,7 +79,7 @@ const faqs = [
   },
   {
     q: "How is this different from Apex Elite?",
-    a: `Apex Elite is a $297 one-time entry point: 90 days of software, 3 starting suppliers, and Prep Center Network access. Premium Membership is built for sellers ready to commit further: two full years of software, all ${distributors.length} suppliers in the vault, full prep center network access, and discount rates locked in for the life of your membership.`,
+    a: `Apex Elite is a $297 one-time entry point: 90 days of software, 3 starting suppliers, and Prep Center Network access. Premium Membership is built for sellers ready to commit further: two full years of software, all ${DISTRIBUTOR_COUNT} suppliers in the vault, full prep center network access, and discount rates locked in for the life of your membership.`,
   },
   {
     q: "Do I need any prior experience with Amazon or wholesale?",
@@ -119,14 +119,14 @@ function VaultPreview() {
     <div className="rounded-3xl border border-slate-200 shadow-sm bg-white p-6 sm:p-8">
       <div className="text-center mb-6">
         <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          {distributors.length}+
+          {DISTRIBUTOR_COUNT}+
         </div>
         <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
           Vetted Distributors, Fully Unlocked
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
-        {categories.map((category) => (
+        {DISTRIBUTOR_CATEGORIES.map((category) => (
           <span
             key={category}
             className="text-xs font-bold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5"

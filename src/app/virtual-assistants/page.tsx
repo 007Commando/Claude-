@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 
 import ApexVasPromo from "../../components/ApexVasPromo";
 
@@ -16,12 +17,12 @@ import ApexVasPromo from "../../components/ApexVasPromo";
  * or footer now, which is a deliberate trade: fewer exits from the page
  * against fewer internal links out of it.
  */
-export const metadata: Metadata = {
-  title: "14 days free with a professional Amazon VA | Apex Applications",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Virtual Assistant: 14 Days Free | Apex",
   description:
-    "Put a trained Amazon wholesale VA to work in your business free for 14 days. Account audits, product research, supplier management, restocking, repricing and more, with 20+ years of Amazon experience across the team.",
-  alternates: { canonical: "https://www.apexapplications.io/virtual-assistants" },
-};
+    "Put a trained Amazon wholesale VA to work free for 14 days: account audits, product research, supplier management, restocking and repricing, and more.",
+  path: "/virtual-assistants",
+});
 
 export default function Page() {
   return <ApexVasPromo />;

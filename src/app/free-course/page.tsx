@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 
 import CourseLanding from "../../components/CourseLanding";
 
@@ -10,12 +11,12 @@ import CourseLanding from "../../components/CourseLanding";
  * page worth finding in search — and it answers a query the site has nothing
  * else for.
  */
-export const metadata: Metadata = {
-  title: "Zero to Hero: Free Amazon Wholesale Course | Apex University",
+export const metadata: Metadata = pageMetadata({
+  title: "Free Amazon Wholesale Course: Zero to Hero | Apex",
   description:
-    "Nine free videos on Amazon wholesale: how the model works, how to open supplier accounts, how to research products and how to place your first order. Free with an Apex account, no card needed.",
-  alternates: { canonical: "https://www.apexapplications.io/free-course" },
-};
+    "Nine free videos on Amazon wholesale: how the model works, supplier accounts, product research and your first order. Free with an Apex account, no card.",
+  path: "/free-course",
+});
 
 export default function Page() {
   return <CourseLanding variant="free" />;

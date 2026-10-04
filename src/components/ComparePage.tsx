@@ -26,9 +26,9 @@ import {
  */
 export default function ComparePage({ data }: { data: Comparison }) {
   return (
-    <main className="pt-32 pb-24 bg-white">
+    <div className="pt-32 pb-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <motion.header {...fadeIn} className="text-center max-w-3xl mx-auto">
+        <motion.header {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">
             Honest comparison
           </p>
@@ -81,6 +81,6 @@ export default function ComparePage({ data }: { data: Comparison }) {
 
         <FactsFootnote rivalName={data.rival} sources={data.sources} />
       </div>
-    </main>
+    </div>
   );
 }

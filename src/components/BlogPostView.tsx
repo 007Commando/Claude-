@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import type { BlogPost } from "../lib/blog";
-import { getSortedPosts } from "../lib/blog";
+import { getRelatedPosts, postModified } from "../lib/blog";
 import BlogPostBody from "./BlogPostBody";
 import BlogCta from "./BlogCta";
 import BlogCtaBar from "./BlogCtaBar";
@@ -16,9 +16,8 @@ export default function BlogPostView({ post }: { post: BlogPost }) {
   const firstHalf = post.content.slice(0, midpoint);
   const secondHalf = post.content.slice(midpoint);
 
-  const related = getSortedPosts()
-    .filter((p) => p.slug !== post.slug)
-    .slice(0, 3);
+  const related = getRelatedPosts(post);
+  const modified = postModified(post);
 
   return (
     <div className="pt-28 sm:pt-32 pb-24 bg-white">
@@ -41,7 +40,13 @@ export default function BlogPostView({ post }: { post: BlogPost }) {
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-slate-400 font-semibold mb-8 pb-8 border-b border-slate-100">
           <span>Apex Applications Team</span>
           <span>·</span>
-          <span>{formatDate(post.publishedAt)}</span>
+          {modified !== post.publishedAt ? (
+            <span>
+              Updated <time dateTime={modified}>{formatDate(modified)}</time>
+            </span>
+          ) : (
+            <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+          )}
           <span>·</span>
           <span className="inline-flex items-center gap-1.5">
             <Clock size={12} />

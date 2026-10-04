@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ContentPage from "../../components/ContentPage";
-import { absoluteUrl } from "../../config/site";
 
-export const metadata: Metadata = {
-  title: "Amazon Wholesale Suppliers: How to Vet Them",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Wholesale Suppliers: How to Vet Them | Apex",
   description:
-    "A repeatable process for vetting Amazon wholesale suppliers. Identity, brand authorization, invoice requirements, channel terms and product eligibility, before you place an order.",
-  alternates: { canonical: absoluteUrl("/amazon-wholesale-suppliers") },
-};
+    "A repeatable process for vetting Amazon wholesale suppliers: identity, brand authorization, invoices, channel terms and eligibility, before you order.",
+  path: "/amazon-wholesale-suppliers",
+});
 
 export default function Page() {
   return (
     <ContentPage
       eyebrow="Suppliers"
-      h1="Build a supplier shortlist you can evaluate."
+      h1="Amazon wholesale suppliers: how to find and vet them."
       intro="Finding a supplier is the easy half. The half that costs money is finding out, after the pallet arrives, that they cannot give you the invoice Amazon will ask for, or that the brand does not permit the channel you are selling on. This is the process to run before you buy, in the order that fails cheapest first."
       sections={[
         {

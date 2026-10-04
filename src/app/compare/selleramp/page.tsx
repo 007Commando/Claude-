@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import ComparePage from "../../../components/ComparePage";
 import { comparisonBySlug } from "../../../data/comparisons";
-import { absoluteUrl } from "../../../config/site";
+import { pageMetadata } from "../../../lib/seo";
 
 const data = comparisonBySlug("selleramp");
 
-export const metadata: Metadata = {
-  title: data.title,
-  description: data.description,
-  alternates: { canonical: absoluteUrl("/compare/selleramp") },
-};
+export const metadata: Metadata = pageMetadata({ title: data.title, description: data.description, path: "/compare/selleramp" });
 
 export default function Page() {
   return <ComparePage data={data} />;

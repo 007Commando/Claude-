@@ -123,19 +123,26 @@ export default function ProfitCalculator() {
     setInput((previous) => ({ ...previous, [key]: value }));
 
   return (
-    <main className="pt-32 pb-24 bg-white">
+    <div className="pt-32 pb-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <motion.header {...fadeIn} className="text-center max-w-3xl mx-auto">
+        <motion.header {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">
             Free tool · no account needed
           </p>
           <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-[1.05] mb-6">
-            Check the economics before you place the order.
+            Amazon profit, ROI and break-even calculator
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
             Enter your price, product cost and fee assumptions to estimate contribution profit,
             margin, ROI and the price you break even at. Every number below is one you control,
             this does not look up Amazon&apos;s live fees, and it never asks who you are.
+          </p>
+          <p className="mt-3 text-sm text-slate-500">
+            Want the fees looked up for a real product?{" "}
+            <Link href="/tools/fba-calculator" className="font-bold text-blue-600 hover:underline">
+              Use the free FBA calculator
+            </Link>{" "}
+            with any ASIN.
           </p>
         </motion.header>
 
@@ -313,6 +320,6 @@ export default function ProfitCalculator() {
           </div>
         </motion.div>
       </div>
-    </main>
+    </div>
   );
 }

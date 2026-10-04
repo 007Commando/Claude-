@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 /**
  * The VA promotion moved to /virtual-assistants, which is the canonical VA
@@ -11,5 +11,6 @@ import { redirect } from "next/navigation";
  * redirect here does not match its children.
  */
 export default function Page() {
-  redirect("/virtual-assistants");
+  // Permanent (308): the move is for good, and a temporary redirect keeps the old URL in the index.
+  permanentRedirect("/virtual-assistants");
 }

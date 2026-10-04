@@ -33,7 +33,7 @@ import CheckoutLink from "./CheckoutLink";
 const includes = [
   {
     icon: Rocket,
-    title: "Extended Trial to the #1 Amazon Reselling Suite",
+    title: "Extended Trial to the Full Apex Suite",
     body: "Full access to Apex Black, Blue & Green, including sourcing, analytics, purchase orders, and more, on an extended trial, not the standard 7 days.",
     image: {
       src: apexSuiteOverviewImage,
@@ -175,7 +175,7 @@ export default function FbaStarterBundle() {
             <span className="text-brand">for Just $29</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            One bundle, everything to start: extended access to the #1 Amazon reselling suite, 3
+            One bundle, everything to start: extended access to the full Apex suite, 3
             free suppliers, lifetime review automation, the Keepa Playbook, and 9 core wholesale
             modules.
           </p>

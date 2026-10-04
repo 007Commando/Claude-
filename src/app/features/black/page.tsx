@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../../lib/seo";
 import ApexBlack from "../../../components/ApexBlack";
 
-export const metadata: Metadata = {
-  title: "Apex Black, Amazon Seller Dashboard & Review Automation",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Review Request Automation | Apex Black",
   description:
-    "The command center of the Apex Applications suite: your Amazon dashboard, automated Review Booster, and the Apex University education center.",
-  alternates: { canonical: "https://www.apexapplications.io/features/black" },
-};
+    "Send Amazon's Request a Review on every eligible order automatically, on a schedule, with a log of what was sent. Plus your dashboard and Apex University.",
+  path: "/features/black",
+});
 
 export default function Page() {
   return <ApexBlack />;

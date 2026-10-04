@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ContentPage from "../../components/ContentPage";
-import { absoluteUrl } from "../../config/site";
 
-export const metadata: Metadata = {
-  title: "Amazon Inventory Management & Restock Planning | Apex",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Inventory Management Software | Apex",
   description:
-    "Review stock needs, organize suppliers and prepare purchase orders with the context of your Amazon business beside you. What Apex actually does, and what it does not.",
-  alternates: { canonical: absoluteUrl("/amazon-inventory-management-software") },
-};
+    "Review stock needs, organize suppliers and prepare purchase orders with inventory, cost and profit on one row. What Apex does, and what it does not.",
+  path: "/amazon-inventory-management-software",
+});
 
 export default function Page() {
   return (
     <ContentPage
       eyebrow="Inventory and purchasing"
-      h1="Plan your next order with inventory and profit in view."
+      h1="Amazon inventory management: plan your next order with profit in view."
       intro="Restock decisions go wrong in the gap between two screens: what you have on hand lives in one place, what it costs and earns lives in another, and the order gets placed on a feeling. Apex keeps stock, cost and margin on the same row, and turns the decision straight into a purchase order."
       sections={[
         {

@@ -33,9 +33,13 @@ export type ContentBlock =
 export interface BlogPost {
   slug: string;
   title: string;
+  /** Optional shorter <title> for search results when `title` would run past about 60 characters. */
+  seoTitle?: string;
   description: string;
   category: string;
   publishedAt: string;
+  /** Set when a post is materially revised; feeds dateModified and the sitemap. */
+  updatedAt?: string;
   readingTime: string;
   content: ContentBlock[];
 }
@@ -60,8 +64,9 @@ export const posts: BlogPost[] = [
   {
     slug: "start-amazon-wholesale",
     title: "How to Start Amazon Wholesale in 2026: A Step-by-Step Guide",
+    seoTitle: "How to Start Amazon Wholesale in 2026: Step by Step",
     description:
-      "A practical, thorough walkthrough of starting an Amazon wholesale business in 2026, from picking your first supplier to placing your first purchase order, with real margin benchmarks and the mistakes that sink new sellers.",
+      "A practical guide to starting an Amazon wholesale business in 2026, from your first supplier to your first purchase order, with margin benchmarks.",
     category: "Getting Started",
     publishedAt: "2026-07-01",
     readingTime: "17 min read",
@@ -319,7 +324,7 @@ export const posts: BlogPost[] = [
     slug: "amazon-ungating-guide",
     title: "How to Get Ungated on Amazon Faster Without Guessing",
     description:
-      "Why Amazon gates certain categories, what actually gets an ungating application approved, why a 70 percent first attempt rejection rate is avoidable, and what sellers who breeze through this step do differently.",
+      "Why Amazon gates categories, what gets an ungating application approved, why a 70 percent first attempt rejection rate is avoidable, and what works.",
     category: "Ungating",
     publishedAt: "2026-07-08",
     readingTime: "13 min read",
@@ -498,8 +503,9 @@ export const posts: BlogPost[] = [
   {
     slug: "reading-keepa-charts",
     title: "Reading Keepa Charts for Wholesale: A Practical Framework",
+    seoTitle: "Reading Keepa Charts for Wholesale: A Framework",
     description:
-      "How to read a Keepa chart in under a minute and decide whether a product is actually worth a wholesale purchase order, what experienced sourcers check that beginners miss, and the mistakes that lead to bad purchase orders.",
+      "How to read a Keepa chart in under a minute and decide if a product is worth a wholesale purchase order, plus what experienced sourcers check first.",
     category: "Product Research",
     publishedAt: "2026-07-13",
     readingTime: "13 min read",
@@ -669,8 +675,9 @@ export const posts: BlogPost[] = [
   {
     slug: "purchase-order-workflow",
     title: "Amazon FBA Purchase Orders: The Complete Workflow Guide",
+    seoTitle: "Amazon FBA Purchase Order Workflow Guide",
     description:
-      "A repeatable purchase order workflow for Amazon wholesale sellers, from deciding order quantity to reconciling what actually landed against what you paid for, with a real landed cost example and what happens when this process breaks down.",
+      "A repeatable purchase order workflow for Amazon wholesale sellers, from deciding order quantity to reconciling what landed against what you paid for.",
     category: "Operations",
     publishedAt: "2026-07-16",
     readingTime: "14 min read",
@@ -846,7 +853,7 @@ export const posts: BlogPost[] = [
     slug: "automate-review-requests",
     title: "Automating Amazon Review Requests the Right Way",
     description:
-      "How to build review velocity for new listings using Amazon compliant automated requests, exactly what counts as compliant, what a listing with no reviews actually costs you, and the tactics that get accounts suspended.",
+      "How to build review velocity for new listings with Amazon compliant automated requests, what counts as compliant, and the tactics that get you suspended.",
     category: "Reviews & Feedback",
     publishedAt: "2026-07-20",
     readingTime: "12 min read",
@@ -984,8 +991,9 @@ export const posts: BlogPost[] = [
   {
     slug: "choosing-a-prep-center",
     title: "Choosing a Prep Center for Amazon FBA Wholesale: What Actually Matters",
+    seoTitle: "Choosing an Amazon FBA Prep Center: What Matters",
     description:
-      "The real evaluation checklist for picking an Amazon FBA prep center, what a bad choice actually costs you, and the questions experienced sellers ask that beginners forget.",
+      "The real checklist for picking an Amazon FBA prep center, what a bad choice costs you, and the questions experienced sellers ask that beginners forget.",
     category: "Logistics",
     publishedAt: "2026-07-24",
     readingTime: "12 min read",
@@ -1124,8 +1132,9 @@ export const posts: BlogPost[] = [
   {
     slug: "wholesale-profit-margins",
     title: "Amazon Wholesale Profit Margins in 2026: What's Actually Realistic",
+    seoTitle: "Amazon Wholesale Profit Margins in 2026",
     description:
-      "Real benchmarks for Amazon wholesale margins in 2026, what happens when you ignore your true margin, the margin killers nobody budgets for, and how top sellers protect margin as they scale.",
+      "Real benchmarks for Amazon wholesale profit margins in 2026, the margin killers nobody budgets for, and how top sellers protect margin as they scale.",
     category: "Profitability",
     publishedAt: "2026-07-27",
     readingTime: "13 min read",
@@ -1273,8 +1282,9 @@ export const posts: BlogPost[] = [
   {
     slug: "cost-to-start-wholesale",
     title: "How Much Does It Cost to Start an Amazon Wholesale Business in 2026",
+    seoTitle: "Cost to Start an Amazon Wholesale Business in 2026",
     description:
-      "A realistic startup budget for Amazon wholesale in 2026, what happens when you underfund the start, where new sellers typically overspend or underspend, and how disciplined sellers allocate their first budget.",
+      "A realistic startup budget for Amazon wholesale in 2026, where new sellers overspend or underspend, and how disciplined sellers spend their first dollars.",
     category: "Getting Started",
     publishedAt: "2026-07-27",
     readingTime: "11 min read",
@@ -1401,8 +1411,9 @@ export const posts: BlogPost[] = [
   {
     slug: "wholesale-vs-private-label",
     title: "Amazon Wholesale vs Private Label vs Retail Arbitrage: Which Business Model Fits You",
+    seoTitle: "Amazon Wholesale vs Private Label vs Arbitrage",
     description:
-      "An honest comparison of the three main ways to sell on Amazon, startup capital, time to first sale, margin, scalability, what happens when you pick the wrong model, and who each one actually fits.",
+      "An honest comparison of the three main ways to sell on Amazon: startup capital, time to first sale, margin, scalability, and who each model actually fits.",
     category: "Business Models",
     publishedAt: "2026-07-27",
     readingTime: "12 min read",
@@ -1514,7 +1525,7 @@ export const posts: BlogPost[] = [
     slug: "cost-of-seller-software",
     title: "The Real Cost of Stacking Amazon Seller Software",
     description:
-      "What a typical Amazon wholesale software stack actually costs in 2026, real current pricing for the tools sellers commonly combine, what happens when your tools do not talk to each other, and what none of them cover that Apex does.",
+      "What a typical Amazon wholesale software stack costs in 2026, real pricing for the tools sellers combine, and what none of them cover that Apex does.",
     category: "Software & Tools",
     publishedAt: "2026-07-27",
     readingTime: "13 min read",
@@ -1634,8 +1645,9 @@ export const posts: BlogPost[] = [
   {
     slug: "why-apex-applications",
     title: "Why We Built Apex Applications: One Suite Instead of Five Subscriptions",
+    seoTitle: "Why We Built Apex: One Suite, Not Five Subscriptions",
     description:
-      "The problem with the current Amazon seller software market, what Apex Applications actually includes, what we deliberately do not try to be, and the bet we are making.",
+      "The problem with the Amazon seller software market, what Apex Applications includes, what we deliberately do not try to be, and the bet we are making.",
     category: "Company",
     publishedAt: "2026-07-27",
     readingTime: "10 min read",
@@ -1744,32 +1756,207 @@ export const posts: BlogPost[] = [
   },
   {
     slug: "amazon-fba-fees-explained",
-    title: "Amazon FBA Fees Explained: The Complete 2026 Breakdown",
+    title: "Amazon FBA Fees 2026: Every Fee Explained",
+    seoTitle: "Amazon FBA Fees 2026: Every Fee Explained",
     description:
-      "Every fee Amazon charges an FBA wholesale seller, why fee blindness quietly destroys margin, and how successful sellers price with fees built in from the start instead of discovering them after the sale.",
+      "Amazon FBA fees for 2026 with real numbers: referral rates, fulfillment fees by size tier, inbound placement, storage and holiday peak fees. Free calculator.",
     category: "Operations",
     publishedAt: "2026-07-27",
-    readingTime: "12 min read",
+    updatedAt: "2026-10-04",
+    readingTime: "14 min read",
     content: [
       {
         type: "p",
-        text: "Amazon does not charge one fee. It charges a stack of them, and the stack is exactly why a product that looks profitable at a glance can turn out to be barely breaking even once every line item is counted. Understanding this stack in full, rather than roughly, is one of the highest leverage things a wholesale seller can do, because pricing decisions made on incomplete fee knowledge are the single most common source of margin that quietly disappears.",
+        text: "Amazon FBA fees in 2026 come in a stack: a referral fee on every sale (15 percent in most categories), a fulfillment fee set by the product's size tier, weight and price, a 3.5 percent fuel and logistics surcharge on that fulfillment fee, an inbound placement fee if you send stock to fewer warehouses than Amazon would choose, and monthly storage. On a typical $25 wholesale product those charges take roughly 35 to 40 percent of the sale price before you have paid for the product itself.",
+      },
+      {
+        type: "p",
+        text: "Every number below comes from Amazon's own 2026 US fee pages. If you would rather skip the arithmetic, paste any ASIN into our [free Amazon FBA calculator](/tools/fba-calculator) and it works out the referral, fulfillment and placement fees for that exact product, then your profit once you enter your cost.",
       },
       {
         type: "h2",
-        text: "The core fees every FBA seller pays",
+        text: "Amazon FBA fees in 2026 at a glance",
       },
       {
         type: "table",
-        headers: ["Fee", "What it covers", "Typical range"],
+        headers: ["Fee", "What it pays for", "2026 rate (US)"],
         rows: [
-          ["Referral fee", "Amazon's cut of the sale price, varies by category", "8 to 15% of sale price"],
-          ["FBA fulfillment fee", "Picking, packing, and shipping the order to the customer", "Varies by size and weight tier"],
-          ["Monthly storage fee", "Warehouse space for inventory sitting in FBA", "Seasonal, higher in Q4"],
-          ["Long term storage fee", "Additional charge on inventory over 365 days old", "Steep, calculated per cubic foot"],
-          ["Removal or disposal fee", "If you pull unsold inventory out of FBA", "Per unit, varies by size"],
-          ["Professional Seller subscription", "Required for wholesale level tools and bulk listing", "$39.99/month flat"],
+          ["Referral fee", "Amazon's commission on each sale", "8 to 15% in most categories, $0.30 minimum"],
+          ["FBA fulfillment fee", "Picking, packing and delivering the order", "$2.43 to $7.23+ for standard-size items"],
+          ["Fuel and logistics surcharge", "Added to the fulfillment fee since April 17, 2026", "3.5% of the fulfillment fee"],
+          ["Inbound placement fee", "Sending stock to fewer warehouses than Amazon chooses", "$0.14 to $1.90 per standard-size unit, $0 on Amazon-optimized splits"],
+          ["Monthly storage fee", "Space your inventory takes up", "Per cubic foot, higher October to December"],
+          ["Aged inventory surcharge", "Stock held in FBA for more than six months", "Rises with age; 12 to 15 month minimum is $0.30 per unit"],
+          ["Low-inventory-level fee", "Standard and bulky items under 28 days of supply", "Per unit shipped, now tracked by FNSKU"],
+          ["Professional selling plan", "Bulk listing, Buy Box eligibility, reports", "$39.99 per month"],
         ],
+      },
+      {
+        type: "h2",
+        text: "Referral fees by category in 2026",
+      },
+      {
+        type: "p",
+        text: "The referral fee is a percentage of the total sale price, including any shipping the buyer pays. Most categories charge 15 percent with a $0.30 minimum per unit, but several popular wholesale categories have tiers, and those tiers move your margin more than most sellers expect.",
+      },
+      {
+        type: "table",
+        headers: ["Category", "Referral fee"],
+        rows: [
+          ["Grocery and Gourmet", "8% up to $15, 15% above $15 (no minimum)"],
+          ["Beauty, Health and Personal Care", "8% up to $10, 15% above $10"],
+          ["Baby Products", "8% up to $10, 15% above $10"],
+          ["Home and Kitchen", "15%"],
+          ["Toys and Games", "15%"],
+          ["Sports and Outdoors", "15%"],
+          ["Pet Products", "15% (22% for veterinary diets)"],
+          ["Office Products", "15%"],
+          ["Tools and Home Improvement", "15%"],
+          ["Automotive and Powersports", "12%"],
+          ["Business, Industrial and Scientific", "12%"],
+          ["Consumer Electronics and Computers", "8%"],
+          ["Electronics Accessories", "15% up to $100, 8% on the portion above"],
+          ["Clothing and Accessories", "5% up to $15, 10% from $15 to $20, 17% above $20"],
+          ["Everything Else", "15%"],
+        ],
+      },
+      {
+        type: "p",
+        text: "The tiered categories reward pricing awareness. A grocery item selling at $14.99 pays 8 percent; the same item at $15.49 pays 15 percent on the whole price, so the extra 50 cents of revenue costs you about a dollar in fees. Check where your price sits against these thresholds before you set it.",
+      },
+      {
+        type: "h2",
+        text: "FBA fulfillment fees by size tier in 2026",
+      },
+      {
+        type: "p",
+        text: "The fulfillment fee depends on three things: the product's size tier, its shipping weight and its price. Amazon charges three rates for every weight band: one below $10, one from $10 to $50 and one above $50. Small standard items are weighed by unit weight; every other tier uses the greater of unit weight and dimensional weight, so a light but bulky box can be billed as if it were heavier.",
+      },
+      {
+        type: "table",
+        headers: ["Size tier and shipping weight", "Under $10", "$10 to $50", "Over $50"],
+        rows: [
+          ["Small standard, 2 oz or less", "$2.43", "$3.32", "$3.58"],
+          ["Small standard, 6 to 8 oz", "$2.66", "$3.54", "$3.80"],
+          ["Small standard, 14 to 16 oz", "$2.95", "$3.96", "$4.22"],
+          ["Large standard, 4 oz or less", "$2.91", "$3.73", "$3.99"],
+          ["Large standard, 12 to 16 oz", "$3.78", "$4.60", "$4.86"],
+          ["Large standard, 1.25 to 1.5 lb", "$4.60", "$5.42", "$5.68"],
+          ["Large standard, 2.75 to 3 lb", "$5.85", "$6.67", "$6.93"],
+          ["Large standard, 3 to 20 lb", "$6.15 + $0.08 per 4 oz over 3 lb", "$6.97 + $0.08 per 4 oz", "$7.23 + $0.08 per 4 oz"],
+          ["Small bulky, up to 50 lb", "$6.78 + $0.38 per lb over 1 lb", "$7.55 + $0.38 per lb", "$7.55 + $0.38 per lb"],
+          ["Large bulky, up to 50 lb", "$8.58 + $0.38 per lb over 1 lb", "$9.35 + $0.38 per lb", "$9.35 + $0.38 per lb"],
+        ],
+      },
+      {
+        type: "p",
+        text: "These are the non-peak 2026 rates for non-apparel products (January 15 to October 14, 2026), before the 3.5 percent surcharge. Apparel has its own slightly higher table. Compared with 2025, standard-size items priced $10 to $50 rose by about $0.08 per unit on average, items over $50 by about $0.31, and the discount for items under $10 grew to about $0.86 per unit.",
+      },
+      {
+        type: "h2",
+        text: "Holiday peak fees: October 15, 2026 to January 14, 2027",
+      },
+      {
+        type: "p",
+        text: "Every year Amazon raises fulfillment fees for the holiday rush. For 2026 the peak rates run from October 15, 2026 to January 14, 2027, and the fuel surcharge applies on top. Build them into any Q4 buy, because a product that clears your margin target in September can miss it in November on fees alone.",
+      },
+      {
+        type: "table",
+        headers: ["Example", "Non-peak ($10 to $50)", "Peak ($10 to $50)"],
+        rows: [
+          ["Small standard, 2 oz or less", "$3.32", "$3.51"],
+          ["Large standard, 1 to 1.25 lb", "$5.04", "$5.34"],
+          ["Large standard, 3 to 20 lb (base)", "$6.97", "$7.51"],
+          ["Large bulky (base)", "$9.35", "$10.39"],
+        ],
+      },
+      {
+        type: "h2",
+        text: "The 3.5% fuel and logistics surcharge",
+      },
+      {
+        type: "p",
+        text: "Since April 17, 2026, Amazon adds a 3.5 percent fuel and logistics surcharge to FBA fulfillment fees in the US. It is not shown in the rate tables above, so multiply the fulfillment fee by 1.035 when you model a product. On a $5.42 fee that is about 19 cents per unit, which is small on one sale and real money across a full purchase order.",
+      },
+      {
+        type: "h2",
+        text: "Low-price FBA rates for products under $10",
+      },
+      {
+        type: "p",
+        text: "Products priced under $10 automatically get the lower Low-Price FBA rates, which in 2026 average $0.86 less than the standard rate. There is nothing to enroll in. Keep in mind that the referral fee minimum of $0.30 and the fulfillment fee together still take a large share of a cheap item's price, so low-priced wholesale products need either a very low unit cost or a multi-pack listing to work.",
+      },
+      {
+        type: "h2",
+        text: "Inbound placement fees",
+      },
+      {
+        type: "p",
+        text: "When you create a shipment you choose how it is split. Amazon-optimized splits send your stock to several warehouses and cost nothing in placement fees, but you need at least five identical cartons per item to qualify. Minimal splits send everything to one location for a per-unit fee. Partial splits (two or three locations) are available for bulky products only. Amazon publishes the fee as a range, and the exact figure depends on the destination region; the West sits at the top of each range.",
+      },
+      {
+        type: "table",
+        headers: ["Size tier and weight", "Minimal split (one location)", "Amazon-optimized"],
+        rows: [
+          ["Small standard, 8 oz or less", "$0.14 to $0.32", "$0"],
+          ["Large standard, 12 oz to 1.5 lb", "$0.24 to $0.50", "$0"],
+          ["Large standard, 3 to 5 lb", "$0.38 to $0.76", "$0"],
+          ["Large standard, 15 to 20 lb", "$0.55 to $1.90", "$0"],
+          ["Small bulky, 5 lb or less", "$1.10 to $1.60 (partial split $0.55 to $1.10)", "$0"],
+          ["Large bulky, 42 to 50 lb", "$5.50 to $6.50 (partial split $1.23 to $3.50)", "$0"],
+        ],
+      },
+      {
+        type: "p",
+        text: "The fee is charged 45 days after your shipment is received. New sellers who send their first shipment within 90 days of listing get $400 in placement fee credits. Our [FBA calculator](/tools/fba-calculator) has a placement switch for East, Central and West so you can see the difference for a specific product.",
+      },
+      {
+        type: "h2",
+        text: "Monthly storage fees and the storage utilization surcharge",
+      },
+      {
+        type: "p",
+        text: "Storage is charged monthly on the average cubic feet your inventory occupies each day, at a higher rate from October to December, and billed between the 7th and 15th of the following month. On top of that, a storage utilization surcharge applies only if all four of these are true: you have a Professional account, your first US shipment was more than a year ago, you average at least 25 cubic feet in that size tier, and your storage utilization ratio (inventory stored divided by inventory shipped, over 13 weeks) is above 22 weeks. In that case the surcharge applies to stock older than 30 days. Amazon updates the per-cubic-foot rates often, so check its monthly storage fee page for the current figures.",
+      },
+      {
+        type: "h2",
+        text: "Other FBA charges worth knowing",
+      },
+      {
+        type: "ul",
+        items: [
+          "Aged inventory surcharge: applies to stock that has sat in FBA for more than six months and climbs with age. In 2026 the minimum for items 12 to 15 months old rose by $0.15 to $0.30 per unit.",
+          "Low-inventory-level fee: charged on standard and bulky units when you have under 28 days of supply. From 2026 it is measured per FNSKU rather than per parent ASIN, and grocery is exempt.",
+          "Inbound defect fee: shipments that arrive late, go to the wrong location or never arrive now carry a single defect fee of about $0.60 per unit on average, instead of being charged both a placement fee and a defect fee.",
+          "Refund administration fee: when you refund a buyer, Amazon returns your referral fee minus the lesser of $5 or 20 percent of that fee.",
+          "Removal and disposal fees: charged per unit when you pull unsold stock out of FBA.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Worked example: what Amazon takes from a $25 product",
+      },
+      {
+        type: "p",
+        text: "Take a $25 Home and Kitchen item in the large standard tier with a shipping weight of 1.4 lb, sent to a single warehouse, and a wholesale cost of $10.",
+      },
+      {
+        type: "table",
+        headers: ["Line", "Amount"],
+        rows: [
+          ["Sale price", "$25.00"],
+          ["Referral fee (15%)", "$3.75"],
+          ["Fulfillment fee (1.25 to 1.5 lb, $10 to $50)", "$5.42"],
+          ["Fuel and logistics surcharge (3.5%)", "$0.19"],
+          ["Inbound placement (minimal split)", "$0.24 to $0.50"],
+          ["Amazon fees in total", "about $9.60 to $9.86 (38 to 39%)"],
+          ["Product cost", "$10.00"],
+          ["Profit before storage, prep and inbound freight", "about $5.14 to $5.40"],
+        ],
+      },
+      {
+        type: "p",
+        text: "That is about a 21 percent margin and a return of just over 50 percent on the $10 product cost, before storage, prep and inbound freight. The same item in Q4 pays the peak fulfillment fee instead, which trims about 30 cents more. Run your own numbers for any ASIN in the [free FBA calculator](/tools/fba-calculator), or use the [profit and ROI calculator](/tools/amazon-profit-calculator) if you want to type every figure yourself.",
       },
       {
         type: "h2",
@@ -1777,7 +1964,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Most new sellers price a product by looking at unit cost and the current sale price and assuming the gap between them is profit. It is not. Referral fees and fulfillment fees alone routinely consume 20 to 35 percent of the sale price before storage or shipping is even considered, and a seller who has not internalized that number will consistently overestimate how healthy a product actually is. This is not a rare beginner mistake. It is close to universal among sellers in their first few months, and it is the single most common reason a business that looks profitable on the Seller Central dashboard is actually barely breaking even once every real cost is counted honestly.",
+        text: "Most new sellers price a product by looking at unit cost and the current sale price and assuming the gap between them is profit. It is not. Referral and fulfillment fees alone routinely take 25 to 40 percent of the sale price before storage or shipping is considered, and a seller who has not internalized that number will consistently overestimate how healthy a product is. It is the most common reason a business that looks profitable on the Seller Central dashboard is barely breaking even once every real cost is counted.",
       },
       {
         type: "h2",
@@ -1785,7 +1972,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Experienced sellers do not calculate fees after they have already decided a product looks good. They build the full fee stack into the very first pass of evaluating a product, right alongside the Keepa check, so a product never even reaches the purchase order stage without the real margin already known. This single habit, treating fees as part of the initial filter rather than a final subtraction, is what prevents the slow, invisible margin erosion that catches sellers who only do the full math after inventory has already landed.",
+        text: "Experienced sellers do not calculate fees after they have decided a product looks good. They build the full fee stack into the very first pass, right alongside the Keepa check, so a product never reaches the purchase order stage without its real margin already known. Treating fees as part of the first filter rather than the final subtraction is what prevents the slow margin erosion that catches sellers who only do the math after inventory has landed. Our [profit margins guide](/blog/wholesale-profit-margins) covers how to turn this into landed cost.",
       },
       {
         type: "image",
@@ -1794,36 +1981,8 @@ export const posts: BlogPost[] = [
         caption: "Fees calculated automatically alongside cost of goods, so margin is known before the order goes out",
       },
       {
-        type: "h2",
-        text: "Storage fees: the cost that punishes slow movers",
-      },
-      {
         type: "p",
-        text: "Monthly storage fees are modest for fast moving inventory but climb sharply during Q4, and the long term storage fee that kicks in after 365 days is severe enough to turn a mediocre product deeply unprofitable if it is left sitting. This is precisely why the reorder discipline covered in our [purchase order workflow guide](/blog/purchase-order-workflow) matters as much for slow movers as it does for reordering fast ones. Getting stagnant inventory out, whether through a price adjustment or a removal, before it crosses the long term storage threshold protects margin that a seller who is not watching the calendar will simply lose.",
-      },
-      {
-        type: "h2",
-        text: "What this means for how you evaluate a product",
-      },
-      {
-        type: "p",
-        text: "Every fee in this breakdown should be part of the same landed cost calculation covered in our [profit margins guide](/blog/wholesale-profit-margins). A product is not worth a purchase order because the sale price looks good next to the wholesale cost. It is worth a purchase order once referral fees, fulfillment fees, and a realistic assumption about storage time are all subtracted and a real margin, not an estimated one, remains.",
-      },
-      {
-        type: "h2",
-        text: "How referral fees vary by category",
-      },
-      {
-        type: "p",
-        text: "The commonly cited 8 to 15 percent referral fee range hides significant variation by category, and checking the exact rate for your category before pricing a product matters. Categories like Consumer Electronics tend to sit at the lower end, while categories like Grocery and Beauty often sit in the middle to upper end of that range. Amazon publishes an official referral fee schedule by category, and it is worth checking directly rather than assuming a flat percentage across every product in your catalog, since even a few percentage points of difference changes the real margin calculation meaningfully at scale.",
-      },
-      {
-        type: "h2",
-        text: "FBA fulfillment fee tiers explained",
-      },
-      {
-        type: "p",
-        text: "The FBA fulfillment fee is based on a product's size and weight tier, not its price, which means two products with very different sale prices but similar dimensions can carry the same fulfillment fee. This is why lightweight, compact products with a higher price point tend to produce stronger wholesale margins than bulky, low priced items, even when both look similar on a simple markup basis. Checking the exact size tier a candidate product falls into, rather than estimating, is a habit worth building into the same product evaluation pass as the Keepa check.",
+        text: "Apex does this at catalog scale: upload a supplier's price list and every row comes back with the referral fee, fulfillment fee, placement fee and margin already worked out, so you only build purchase orders for products that clear your target. See how the [UPC scanner](/features/green) handles a whole price list.",
       },
       {
         type: "h2",
@@ -1831,35 +1990,60 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h3",
-        text: "What percentage of the sale price do Amazon fees typically take?",
+        text: "How much does Amazon FBA cost in 2026?",
       },
       {
         type: "p",
-        text: "Combined referral and fulfillment fees typically consume 20 to 35 percent of the sale price for a wholesale product, though this varies by category, size, and weight. Building this range into your initial margin estimate, rather than discovering the real number after a purchase order, is the single habit covered throughout this guide.",
+        text: "For a typical standard-size wholesale product priced between $10 and $50, expect a referral fee of 8 to 15 percent plus a fulfillment fee of about $3.30 to $7 depending on size and weight, plus a 3.5 percent surcharge on that fulfillment fee, plus placement and storage. Together that usually comes to 30 to 40 percent of the sale price. The Professional selling plan adds $39.99 a month.",
       },
       {
         type: "h3",
-        text: "Do Amazon FBA fees change seasonally?",
+        text: "What percentage does Amazon take from FBA sales?",
       },
       {
         type: "p",
-        text: "Storage fees specifically increase during the Q4 peak season, reflecting higher demand for Amazon's warehouse space. Referral and fulfillment fees are generally stable year round, though Amazon does periodically update its full fee schedule, which is why checking current rates rather than relying on last year's numbers matters for any seller pricing new inventory.",
+        text: "The referral fee alone is 15 percent in most categories (8 percent in some, and tiered in grocery, beauty, baby and clothing). Add the fulfillment fee and the total Amazon share is commonly 30 to 40 percent of a $15 to $30 product, falling as a share of price on more expensive items.",
       },
       {
         type: "h3",
-        text: "How can I reduce Amazon FBA fees as a wholesale seller?",
+        text: "What are the FBA size tiers?",
       },
       {
         type: "p",
-        text: "The most effective lever most sellers underuse is choosing products with favorable size and weight tiers relative to their price point during the sourcing stage, rather than trying to reduce fees after a product is already committed to. Beyond that, keeping inventory turning quickly avoids long term storage fees entirely, and bundling compatible products where appropriate can improve the fee to revenue ratio on individual units.",
+        text: "Small standard (up to 15 x 12 x 0.75 inches and 16 oz), large standard (up to 18 x 14 x 8 inches and 20 lb), small bulky, large bulky and extra-large. Small standard is weighed by unit weight; the larger tiers use the greater of unit weight or dimensional weight.",
+      },
+      {
+        type: "h3",
+        text: "Do Amazon FBA fees go up in Q4?",
+      },
+      {
+        type: "p",
+        text: "Yes. Holiday peak fulfillment fees apply from October 15, 2026 to January 14, 2027, and monthly storage costs more from October to December. Referral fees stay the same.",
+      },
+      {
+        type: "h3",
+        text: "How can I lower my FBA fees as a wholesale seller?",
+      },
+      {
+        type: "p",
+        text: "Choose products whose size tier and weight are favorable for their price while you are sourcing, ship Amazon-optimized splits when you can pack five identical cartons per item, keep inventory turning so it never reaches the aged inventory surcharge, and watch the price thresholds in tiered referral categories.",
+      },
+      {
+        type: "h3",
+        text: "Is there a free Amazon FBA fee calculator?",
+      },
+      {
+        type: "p",
+        text: "Yes. Amazon's Revenue Calculator in Seller Central gives exact fees for one product at a time. The [Apex FBA calculator](/tools/fba-calculator) is free without an account for three lookups and adds price history, sales rank and inbound placement by region, and Apex itself calculates fees for every product in a supplier price list.",
       },
     ],
   },
   {
     slug: "find-wholesale-suppliers",
     title: "How to Find Amazon Wholesale Suppliers: 10 Real Methods",
+    seoTitle: "How to Find Amazon Wholesale Suppliers: 10 Methods",
     description:
-      "Ten real ways to find authorized Amazon wholesale distributors in 2026, ranked by how fast they actually work, and what separates sellers who build a real supplier base from sellers stuck with one unreliable contact.",
+      "Ten real ways to find authorized Amazon wholesale distributors in 2026, ranked by how fast they work, and what separates sellers with a real supplier base.",
     category: "Sourcing",
     publishedAt: "2026-07-27",
     readingTime: "13 min read",
@@ -2007,8 +2191,9 @@ export const posts: BlogPost[] = [
   {
     slug: "amazon-account-suspension",
     title: "Amazon Account Suspension: Causes and Prevention for Wholesale Sellers",
+    seoTitle: "Amazon Account Suspension: Causes and Prevention",
     description:
-      "The real causes of Amazon seller account suspension for wholesale sellers, what happens during a suspension, and the habits that keep experienced sellers off Amazon's radar entirely.",
+      "The real causes of Amazon account suspension for wholesale sellers, what happens during a suspension, and the habits that keep you off Amazon's radar.",
     category: "Compliance",
     publishedAt: "2026-07-27",
     readingTime: "12 min read",
@@ -2114,8 +2299,9 @@ export const posts: BlogPost[] = [
   {
     slug: "negotiate-with-distributors",
     title: "How to Negotiate With Wholesale Distributors",
+    seoTitle: "How to Negotiate With Wholesale Distributors",
     description:
-      "Practical negotiation tactics for Amazon wholesale sellers dealing with distributors, what successful negotiators ask for beyond price, and what happens to sellers who never negotiate at all.",
+      "How to negotiate with wholesale distributors as an Amazon seller, what negotiators ask for beyond price, and what happens if you never ask.",
     category: "Sourcing",
     publishedAt: "2026-07-27",
     readingTime: "11 min read",
@@ -2220,7 +2406,7 @@ export const posts: BlogPost[] = [
     slug: "best-wholesale-categories",
     title: "Best Product Categories for Amazon Wholesale in 2026",
     description:
-      "Which Amazon categories offer the best combination of demand, margin, and competition for wholesale sellers in 2026, and what the sellers who pick winning categories consistently do differently.",
+      "Which Amazon categories offer the best mix of demand, margin and competition for wholesale sellers in 2026, and what winning sellers do differently.",
     category: "Product Research",
     publishedAt: "2026-07-27",
     readingTime: "11 min read",
@@ -2343,8 +2529,9 @@ export const posts: BlogPost[] = [
   {
     slug: "online-arbitrage-vs-retail-arbitrage",
     title: "Online Arbitrage vs Retail Arbitrage: The Complete Comparison for Amazon Sellers",
+    seoTitle: "Online vs Retail Arbitrage for Amazon Sellers",
     description:
-      "Online arbitrage and retail arbitrage are often lumped together, but they behave very differently as Amazon businesses. A full comparison of sourcing method, time investment, scalability, risk, and which one actually fits your situation in 2026.",
+      "Online arbitrage and retail arbitrage behave very differently as Amazon businesses. Compare sourcing, time, scalability and risk, and which fits you.",
     category: "Business Models",
     publishedAt: "2026-07-28",
     readingTime: "13 min read",
@@ -2470,8 +2657,9 @@ export const posts: BlogPost[] = [
   {
     slug: "why-wholesale-wins-long-term",
     title: "Why Amazon Wholesale Is the Method for True Long Term Business Growth",
+    seoTitle: "Why Amazon Wholesale Wins for Long Term Growth",
     description:
-      "Arbitrage and private label both have a role, but wholesale is structurally the only Amazon business model built to compound. Here is exactly why, with the mechanics that make it repeatable in a way the other models are not.",
+      "Arbitrage and private label both have a role, but wholesale is the Amazon business model built to compound. Here is why, and what makes it repeatable.",
     category: "Business Models",
     publishedAt: "2026-07-29",
     readingTime: "14 min read",
@@ -2579,8 +2767,9 @@ export const posts: BlogPost[] = [
   {
     slug: "challenges-of-amazon-wholesale",
     title: "The Real Challenges of Amazon Wholesale in 2026 (and How to Solve Each One)",
+    seoTitle: "The Real Challenges of Amazon Wholesale in 2026",
     description:
-      "Wholesale is not effortless. Here is an honest look at the real operational challenges that trip up new and scaling Amazon wholesale sellers, and exactly how a connected system solves each one.",
+      "An honest look at the operational challenges that trip up new and scaling Amazon wholesale sellers, and how a connected system solves each one.",
     category: "Operations",
     publishedAt: "2026-07-30",
     readingTime: "14 min read",
@@ -2706,8 +2895,9 @@ export const posts: BlogPost[] = [
   {
     slug: "everything-apex-gives-you",
     title: "Everything You Get When You Start Your Apex Trial: Tools, Automation, Prep Network, Suppliers, and Support",
+    seoTitle: "Everything Included in Your Apex Trial",
     description:
-      "A complete, honest inventory of what is actually included in an Apex Applications account: the software suite, the automation, the prep center network, the free suppliers, the education library, and the support behind it.",
+      "An honest inventory of what an Apex Applications account includes: software suite, automation, prep center network, free suppliers, education and support.",
     category: "Company",
     publishedAt: "2026-07-31",
     readingTime: "13 min read",
@@ -2829,8 +3019,9 @@ export const posts: BlogPost[] = [
   {
     slug: "amazon-section-3-violations",
     title: "Amazon Section 3 Violations Explained: Causes, Consequences, and Prevention",
+    seoTitle: "Amazon Section 3 Violations: Causes and Prevention",
     description:
-      "Section 3 of Amazon's Business Solutions Agreement covers a wide range of listing and account integrity violations. What actually falls under it, what happens when it is triggered, and how wholesale sellers avoid it entirely.",
+      "Section 3 of Amazon's Business Solutions Agreement covers listing and account integrity violations. What falls under it, what triggers it, how to avoid it.",
     category: "Compliance",
     publishedAt: "2026-08-01",
     readingTime: "12 min read",
@@ -2932,8 +3123,9 @@ export const posts: BlogPost[] = [
   {
     slug: "amazon-suspended-what-to-do",
     title: "Amazon Account Suspended? The Exact Steps to Take Today",
+    seoTitle: "Amazon Account Suspended? Exact Steps to Take Today",
     description:
-      "A calm, step by step action plan for what to actually do in the first 24 hours after an Amazon seller account suspension, from reading the notification correctly to writing a plan of action that gets results.",
+      "A calm, step by step plan for the first 24 hours after an Amazon seller account suspension, from reading the notification to writing a plan of action.",
     category: "Compliance",
     publishedAt: "2026-08-02",
     readingTime: "12 min read",
@@ -3031,8 +3223,9 @@ export const posts: BlogPost[] = [
   {
     slug: "prevent-amazon-suspension",
     title: "How to Prevent Amazon Seller Account Suspension: The Complete Checklist",
+    seoTitle: "Prevent Amazon Seller Account Suspension: Checklist",
     description:
-      "A practical, checklist style guide to the exact habits that keep an Amazon wholesale account off Amazon's radar entirely. Sourcing documentation, review compliance, account health monitoring, and the systems that make prevention automatic.",
+      "A practical checklist of habits that keep an Amazon wholesale account off Amazon's radar: sourcing documentation, review compliance and account health.",
     category: "Compliance",
     publishedAt: "2026-08-03",
     readingTime: "12 min read",
@@ -3136,8 +3329,9 @@ export const posts: BlogPost[] = [
   {
     slug: "amazon-seller-community",
     title: "Why Amazon Wholesale Sellers Who Aren't Alone Scale Faster",
+    seoTitle: "Why Amazon Wholesale Sellers Scale Faster Together",
     description:
-      "Amazon wholesale can be run solo, but the sellers who scale fastest almost never build it in isolation. Why support, mentorship, and a real network of relationships change the trajectory of a wholesale business.",
+      "Amazon wholesale can be run solo, but the sellers who scale fastest rarely build alone. Why support, mentorship and a real network change the trajectory.",
     category: "Growth",
     publishedAt: "2026-08-04",
     readingTime: "10 min read",
@@ -3234,8 +3428,9 @@ export const posts: BlogPost[] = [
   {
     slug: "amazon-wholesale-automation",
     title: "Amazon Wholesale Automation: Every Process You Should Stop Doing by Hand",
+    seoTitle: "Amazon Wholesale Automation: What to Stop Doing",
     description:
-      "A practical map of every part of an Amazon wholesale operation that can and should be automated in 2026, from review requests to margin tracking to restock alerts, and what has to stay a human decision.",
+      "A practical map of every part of an Amazon wholesale operation you can automate in 2026, from review requests to margin tracking to restock alerts.",
     category: "Software & Tools",
     publishedAt: "2026-08-05",
     readingTime: "12 min read",
@@ -3342,8 +3537,9 @@ export const posts: BlogPost[] = [
   {
     slug: "seven-figure-wholesale-sellers",
     title: "What Separates Seven Figure Amazon Wholesale Sellers From Everyone Else",
+    seoTitle: "What Separates Seven Figure Amazon Wholesale Sellers",
     description:
-      "Not talent, and not luck. The specific, repeatable operational habits that separate Amazon wholesale sellers running real seven figure businesses from sellers who stall out well below that level.",
+      "Not talent, and not luck. The repeatable habits that separate Amazon wholesale sellers running seven figure businesses from those who stall out.",
     category: "Growth",
     publishedAt: "2026-08-06",
     readingTime: "12 min read",
@@ -3464,6 +3660,55 @@ export function getAllSlugs(): string[] {
 
 export function getSortedPosts(): BlogPost[] {
   return [...posts].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+}
+
+/** The date a post last changed, for dateModified, the sitemap and the byline. */
+export function postModified(post: BlogPost): string {
+  return post.updatedAt ?? post.publishedAt;
+}
+
+/** Strips the inline "[label](url)" link syntax, for plain-text uses like structured data. */
+export function plainText(text: string): string {
+  return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+}
+
+/**
+ * The question and answer pairs under a post's "Frequently asked questions"
+ * heading: each h3 and the paragraphs that follow it, until the next heading.
+ * The visible FAQ and the FAQPage structured data come from the same blocks,
+ * so they cannot disagree.
+ */
+export function getFaq(content: ContentBlock[]): { question: string; answer: string }[] {
+  const start = content.findIndex((b) => b.type === "h2" && /frequently asked questions/i.test(b.text));
+  if (start === -1) return [];
+  const faq: { question: string; answer: string }[] = [];
+  for (let i = start + 1; i < content.length; i++) {
+    const block = content[i];
+    if (block.type === "h2") break;
+    if (block.type === "h3") faq.push({ question: block.text, answer: "" });
+    else if (block.type === "p" && faq.length) {
+      const last = faq[faq.length - 1];
+      last.answer = [last.answer, plainText(block.text)].filter(Boolean).join(" ");
+    }
+  }
+  return faq.filter((item) => item.answer);
+}
+
+/** The first image in a post, for its social card and structured data. */
+export function getLeadImage(content: ContentBlock[]): string | null {
+  const image = content.find((b): b is Extract<ContentBlock, { type: "image" }> => b.type === "image");
+  return image?.src ?? null;
+}
+
+/**
+ * Posts to read next: the same category first, then the newest, so a post
+ * links to its neighbours rather than every post linking to the same three.
+ */
+export function getRelatedPosts(post: BlogPost, count = 3): BlogPost[] {
+  const others = getSortedPosts().filter((p) => p.slug !== post.slug);
+  const same = others.filter((p) => p.category === post.category);
+  const rest = others.filter((p) => p.category !== post.category);
+  return [...same, ...rest].slice(0, count);
 }
 
 export function slugifyHeading(text: string): string {

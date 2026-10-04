@@ -325,7 +325,7 @@ export default function CourseLanding({ variant = "free" }: { variant?: CourseVa
         </a>
       </header>
 
-      <main>
+      <div>
         <section className="hero">
           <p className="eyebrow">{copy.eyebrow}</p>
           <h1>
@@ -699,7 +699,7 @@ export default function CourseLanding({ variant = "free" }: { variant?: CourseVa
           </div>
         </section>
         )}
-      </main>
+      </div>
 
       <footer className="footer">
         <a className="brand" href={origin}>

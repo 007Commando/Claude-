@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { absoluteUrl } from "../config/site";
 import { ArrowRight, Check } from "lucide-react";
 import { fadeIn } from "./CompareShared";
 
@@ -51,10 +53,40 @@ export default function ContentPage({
   ctaHref?: string;
   related: { label: string; href: string }[];
 }) {
+  const pathname = usePathname();
+  // The FAQ and breadcrumb markup are built from the same props the page
+  // renders, so they cannot drift from what a reader sees.
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+      { "@type": "ListItem", position: 2, name: h1, item: absoluteUrl(pathname || "/") },
+    ],
+  };
   return (
-    <main className="pt-32 pb-24 bg-white">
+    <div className="pt-32 pb-24 bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }}
+      />
+      {faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
+        />
+      )}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <motion.header {...fadeIn}>
+        <motion.header {...fadeIn} initial={false}>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">
             {eyebrow}
           </p>
@@ -139,6 +171,6 @@ export default function ContentPage({
           </ul>
         </motion.nav>
       </div>
-    </main>
+    </div>
   );
 }

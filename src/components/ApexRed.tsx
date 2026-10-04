@@ -50,10 +50,11 @@ export default function ApexRed() {
             </div>
           </div>
 
-          <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-[1.02]">
+          <h1 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-red-700">FBA shipment and prep center software</h1>
+          <p className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-[1.02]">
             Help shape the next Apex{" "}
             <span className="text-red-600">fulfillment workflow</span>.
-          </h1>
+          </p>
 
           <p className="text-lg text-slate-600 leading-relaxed mb-4 max-w-2xl mx-auto">
             Apex Red brings shipments, warehouses, prep centres and their billing into the same

@@ -5,7 +5,7 @@ import { FBA_FAQ } from "../../../lib/fba/faq";
 
 const TITLE = "Free Amazon FBA Calculator | Apex";
 const DESCRIPTION =
-  "Paste an ASIN to see the Buy Box price, 30, 60 and 90 day averages, sales rank and every Amazon FBA fee. Enter your cost to find your profit, margin and ROI. Free, no account needed.";
+  "Paste an ASIN to see the Buy Box price, 30, 60 and 90 day averages, sales rank and FBA fees. Add your cost for profit, margin and ROI. Free, no account.";
 
 export const metadata: Metadata = {
   title: TITLE,

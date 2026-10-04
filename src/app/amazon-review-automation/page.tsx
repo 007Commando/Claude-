@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ContentPage from "../../components/ContentPage";
-import { absoluteUrl } from "../../config/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Amazon Review Request Automation | Apex ReviewBooster",
   description:
-    "Apex ReviewBooster sends Amazon's own standardized review request on eligible orders, on a schedule, with a log of what was sent. No custom messages, no selecting happy customers.",
-  alternates: { canonical: absoluteUrl("/amazon-review-automation") },
-};
+    "Apex ReviewBooster sends Amazon's own standardized review request on eligible orders, on a schedule, with a log. No custom messages, no cherry-picking.",
+  path: "/amazon-review-automation",
+});
 
 export default function Page() {
   return (
     <ContentPage
       eyebrow="Reviews and feedback"
-      h1="Make eligible review requests part of your routine."
+      h1="Amazon review request automation that stays inside the rules."
       intro="Amazon already has a Request a Review button. The problem is that nobody clicks it on every order, every day, forever. Apex ReviewBooster carries out exactly that request, on the orders that are eligible, on a schedule, and keeps a record of which orders it sent and when."
       sections={[
         {

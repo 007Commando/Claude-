@@ -86,9 +86,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Dedicated repricer",
     frame:
       "A focused repricing platform with its own automation and analytics. The question is whether you want repricing as a product, or repricing as one step of the buying loop.",
-    title: "Apex vs Aura (2026): Repricer Alone, or the Whole Loop | Apex Applications",
+    title: "Apex vs Aura (2026): Repricer Comparison",
     description:
-      "Aura is a dedicated repricing platform with automation, analytics and integrations. Apex Gold reprices from break-even floors inside a full wholesale suite. Current pricing, checked September 2026.",
+      "Aura is a dedicated repricing platform with automation, analytics and integrations. Apex Gold reprices from break-even floors inside a wholesale suite.",
     h1: "Apex Applications vs Aura",
     intro:
       "Aura is a dedicated repricing platform with automation, analytics and integrations, and a seller who wants a focused repricing workflow should evaluate it on its own terms. Apex Gold is a repricer that sits inside the suite that produced the numbers it prices against: floors computed from your real fees, connected to the purchase orders and P&L those prices feed.",
@@ -140,9 +140,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Tiered repricer",
     frame:
       "Tiered repricing with both AI and rule-based capacity, starting well below a suite subscription. If repricing is the only gap, the entry tier is worth pricing out.",
-    title: "Apex vs BQool (2026): Cheaper Repricing, or Fewer Tools | Apex Applications",
+    title: "Apex vs BQool (2026): Repricing Compared",
     description:
-      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite at $149. Current pricing, checked September 2026.",
+      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite at $149.",
     h1: "Apex Applications vs BQool",
     intro:
       "BQool offers tiered repricing with both AI and rule-based capacity, and its lower entry price may suit a seller who needs exactly that function and nothing else. Apex Gold is a repricer inside a wholesale suite, priced as part of it. Read the entry tiers carefully: BQool's lowest tier distinguishes how many listings it will reprice with AI from how many it will reprice by rule.",
@@ -195,9 +195,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Flat-rate repricer",
     frame:
       "Automated repricing on one flat monthly price, with no user or listing limits published. A clean offer if repricing is the whole job.",
-    title: "Apex vs Informed Repricer (2026): Flat-Rate Repricing Compared | Apex Applications",
+    title: "Apex vs Informed Repricer (2026): Pricing Compared",
     description:
-      "Informed Repricer is $199/month flat with a 14-day no-card trial and no published listing limits. Apex Gold reprices from break-even floors inside a $149 suite. Checked September 2026.",
+      "Informed Repricer is $199/month flat with a 14-day no-card trial, no published listing limits. Apex Gold reprices from break-even floors in a $149 suite.",
     h1: "Apex Applications vs Informed Repricer",
     intro:
       "Informed emphasises automated repricing on a flat monthly offer, and its pricing page lists no user or listing limits, a genuinely simple proposition if repricing is what you are buying. Validate the supported marketplaces and features against your own operation. Apex Gold prices from break-even floors computed inside the suite that holds your costs.",
@@ -250,9 +250,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Multichannel repricer",
     frame:
       "Tiered, multichannel repricing. If you sell across more than Amazon, this is a different and legitimate shape of problem to the one Apex solves.",
-    title: "Apex vs Repricer.com (2026): Multichannel or Amazon Depth | Apex Applications",
+    title: "Apex vs Repricer.com (2026): Repricer Comparison",
     description:
-      "Repricer.com runs $99/$299/$499 with a 14-day no-card trial and a multichannel focus. Apex Gold reprices Amazon from break-even floors inside a full suite. Checked September 2026.",
+      "Repricer.com runs $99/$299/$499 with a 14-day no-card trial and a multichannel focus. Apex Gold reprices Amazon from break-even floors inside a full suite.",
     h1: "Apex Applications vs Repricer.com",
     intro:
       "Repricer.com supports a multichannel focus with tiered automation, and if you sell beyond Amazon that breadth is the argument. Check which tier you actually need for net-margin features, reporting, channels and integrations. The pricing cards and the tier detail do not always describe the limits in the same words, so confirm the tier before you buy. Apex is Amazon-deep rather than channel-wide.",
@@ -304,9 +304,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Sourcing research",
     frame:
       "Product research across mobile, browser extension and web. Apex does not replace a phone scanner. If that is how you source, test before you switch.",
-    title: "Apex vs SellerAmp (2026): Product Checks vs the Buying Workflow | Apex Applications",
+    title: "Apex vs SellerAmp (2026): Product Checks Compared",
     description:
-      "SellerAmp SAS runs $19.95/$29.95/$49.95 with mobile, extension and web product research. Apex Green scans whole wholesale catalogs. An honest comparison, checked September 2026.",
+      "SellerAmp SAS runs $19.95/$29.95/$49.95 with mobile, extension and web product research. Apex Green scans whole wholesale catalogs. An honest comparison.",
     h1: "Apex Applications vs SellerAmp",
     intro:
       "SellerAmp SAS supports product research through its mobile app, browser extension and web formats, and if you source by scanning items in front of you, that is a workflow Apex does not replicate. Apex Green starts from the other end: a supplier's whole price list, matched against the marketplace in bulk, and carried through to a purchase order. Test your own requirements before switching; do not assume Apex replaces a mobile scanner or an extension.",
@@ -357,9 +357,9 @@ export const COMPARISONS: Comparison[] = [
     category: "All-in-one sourcing",
     frame:
       "Already spans sourcing, price-list analysis, purchasing and repricing. This is the comparison where 'all in one' proves nothing: the detail has to.",
-    title: "Apex vs Seller Assistant (2026): Two All-in-Ones Compared | Apex Applications",
+    title: "Apex vs Seller Assistant (2026): All-in-Ones Compared",
     description:
-      "Seller Assistant spans sourcing, price-list analysis, purchasing and repricing at $29.99 to $189.99. So does Apex. A comparison that goes past the words 'all in one'. Checked September 2026.",
+      "Seller Assistant spans sourcing, price-list analysis, purchasing and repricing at $29.99 to $189.99. So does Apex. A comparison past 'all in one'.",
     h1: "Apex Applications vs Seller Assistant",
     intro:
       "Seller Assistant already spans sourcing, price-list analysis, purchasing and repricing, which means calling Apex an all-in-one proves nothing here. The useful comparison is narrower: which specific tasks each one does for the way you buy, what the plans allow, and what you would still do by hand. Its allowances for repricing and trials vary by plan and billing interval, so compare the tier you would actually be on.",
@@ -414,9 +414,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Bulk catalog scanning",
     frame:
       "A focused bulk-scanning workflow with a genuinely free entry tier. If scanning is the only job you need doing, this is the honest cheaper answer.",
-    title: "Apex vs Scan Unlimited (2026): Scanning Alone, or What Follows | Apex Applications",
+    title: "Apex vs Scan Unlimited (2026): Scanner Comparison",
     description:
-      "Scan Unlimited offers a free tier of one 10,000-product file a month and Unlimited at $70. Apex Green scans and carries results into purchase orders. Checked September 2026.",
+      "Scan Unlimited offers a free tier of one 10,000-product file a month and Unlimited at $70. Apex Green scans and carries results into purchase orders.",
     h1: "Apex Applications vs Scan Unlimited",
     intro:
       "Scan Unlimited offers a focused bulk analysis workflow and a free entry tier, and when scanning really is the only job you need, that is a sensible fit and a cheaper one. The difference is what happens to the results: Apex Green scans a supplier's catalog and then carries the profitable lines into a purchase order, a prep plan and a profit report.",
@@ -467,9 +467,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Scanner and identifier tools",
     frame:
       "Catalog analysis plus useful identifier tools, with free and low-cost scanner plans. A scanner-only buyer may not need a suite subscription at all.",
-    title: "Apex vs Rocket Source (2026): Scanner Plans Compared | Apex Applications",
+    title: "Apex vs Rocket Source (2026): Scanner Plans Compared",
     description:
-      "Rocket Source offers a free weekly 50,000-product scan plus Growth $49 and Scale $69. Apex Green scans and carries results into buying and prep. Checked September 2026.",
+      "Rocket Source offers a free weekly 50,000-product scan plus Growth $49 and Scale $69. Apex Green scans and carries results into buying and prep.",
     h1: "Apex Applications vs Rocket Source",
     intro:
       "Rocket Source offers catalog analysis and useful identifier tools, with a free weekly scan and low-cost paid plans. A buyer who needs a scanner and nothing else may genuinely not need the broader Apex subscription, and that is worth saying plainly. What Apex adds is everything after the scan: the purchase order, the prep plan, the repricing floor and the profit report.",
@@ -520,9 +520,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Profit analytics",
     frame:
       "Detailed profit analytics, now extending into purchasing and repricing. Anyone still telling you sellerboard has no repricer is working from old notes.",
-    title: "Apex vs sellerboard (2026): Profit Analytics Compared | Apex Applications",
+    title: "Apex vs sellerboard (2026): Profit Analytics Compared",
     description:
-      "sellerboard provides detailed profit analytics and announced a repricer in September 2026. Apex Blue reports profit inside the suite that buys and prices the stock. Checked September 2026.",
+      "sellerboard provides detailed profit analytics and announced a repricer. Apex Blue reports profit inside the suite that buys and prices your stock.",
     h1: "Apex Applications vs sellerboard",
     intro:
       "sellerboard provides detailed profit analytics and has been expanding into purchasing and repricing. Its September 2026 repricer announcement means any comparison claiming it has no repricing is simply out of date, including ones you may still find elsewhere. The real difference is direction of travel: sellerboard reports on the business and is adding operations; Apex operates the business and reports from the same data.",
@@ -568,9 +568,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Listing, shipping and accounting",
     frame:
       "Now part of the Threecolts Seller 365 bundle. Compare the bundle you would actually buy, not the legacy product people remember.",
-    title: "Apex vs InventoryLab / Seller 365 (2026): Bundles Compared | Apex Applications",
+    title: "Apex vs InventoryLab / Seller 365 (2026): Compared",
     description:
-      "InventoryLab is now inside Threecolts Seller 365 at $69/month. Apex Red is in beta. An honest comparison of two bundles, checked September 2026.",
+      "InventoryLab is now inside Threecolts Seller 365 at $69/month. Apex Red is in beta. An honest comparison of two bundles for Amazon wholesale sellers.",
     h1: "Apex Applications vs InventoryLab / Seller 365",
     intro:
       "InventoryLab is now presented within Threecolts Seller 365, so the thing you would buy is the bundle rather than the standalone product people remember. Compare the current bundle's listing and shipment functions and its accounting workflow, not the legacy description. On our side, be clear about state too: Apex Red, which covers the shipment and prep workflow, is in beta.",
@@ -625,9 +625,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Listing and shipment prep",
     frame:
       "Focused on listing and shipment preparation, with a clear step-by-step demonstration. Apex Red covers this ground and is still in beta.",
-    title: "Apex vs Boxem (2026): Shipment Prep Compared, Honestly | Apex Applications",
+    title: "Apex vs Boxem (2026): Shipment Prep Compared",
     description:
-      "Boxem is $49.99/month with a 14-day trial, focused on listing and shipment preparation. Apex Red covers the same ground and is in beta. Checked September 2026.",
+      "Boxem is $49.99/month with a 14-day trial, focused on listing and shipment preparation. Apex Red covers the same ground and is in beta. Compared honestly.",
     h1: "Apex Applications vs Boxem",
     intro:
       "Boxem focuses on listing and shipment preparation and demonstrates it step by step, which makes it easy to evaluate against your own process. The honest position on our side: Apex Red is the module that competes here, and it is in beta. We are not going to advertise matching shipment functionality from a roadmap, so treat this as a comparison of a shipping product against a shipping beta plus a working wholesale suite.",
@@ -676,9 +676,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Operations and shipping economics",
     frame:
       "Operational workflows, labels and shipping economics. Carrier savings and 2D barcode support are specific claims that have to be checked one by one.",
-    title: "Apex vs 2D Workflow (2026): Labels, Carriers and Scope | Apex Applications",
+    title: "Apex vs 2D Workflow (2026): Labels and Scope Compared",
     description:
-      "2D Workflow displayed $97/month, focused on operational workflows, labels and shipping economics. Apex Red is in beta. An honest scope comparison, checked September 2026.",
+      "2D Workflow displayed $97/month, focused on operational workflows, labels and shipping economics. Apex Red is in beta. An honest scope comparison.",
     h1: "Apex Applications vs 2D Workflow",
     intro:
       "2D Workflow emphasises operational workflows, labels and shipping economics. Two cautions before you compare numbers: carrier savings and 2D barcode support are specific capabilities that have to be verified individually rather than assumed on either side, and their own copy gave conflicting trial lengths when we checked, so confirm the current offer on their site rather than trusting a figure here. Apex Red, which covers this ground, is in beta.",
@@ -738,9 +738,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Amazon wholesale platform",
     frame:
       "The closest thing on this page to what Apex is: supplier leads, UPC scanning, purchase orders, restocking and ungated-brand checks. The comparison comes down to what prices the item afterwards, and to what their tiers allow.",
-    title: "Apex vs Third-Party Profits (2026): The Same Loop Compared | Apex Applications",
+    title: "Apex vs Third-Party Profits (2026): Compared",
     description:
-      "Third-Party Profits runs supplier leads, UPC scanning, purchase orders, restocking and ungated-brand checks at $67 to $197 a month. So does Apex, with the repricer included at $149. Checked September 2026.",
+      "Third-Party Profits runs supplier leads, UPC scanning, purchase orders, restocking and ungated-brand checks at $67 to $197 a month. So does Apex, at $149.",
     h1: "Apex Applications vs Third-Party Profits",
     intro:
       "This is the closest comparison on the site, and pretending otherwise would waste your time. Third-Party Profits builds a supplier pipeline, scans supplier catalogues by UPC, turns what clears into purchase orders, plans the restock and finds the brands your account is already ungated for. That is the same loop Apex runs. Two things separate them and both are worth checking on your own numbers: their site does not mention repricing anywhere, and their tiers are named Limited and Unlimited, so what the limit is matters more here than the entry price does.",
@@ -794,9 +794,9 @@ export const COMPARISONS: Comparison[] = [
     category: "Multi-source product research",
     frame:
       "Scans over 1,400 retail sites, plus reverse search, books and Amazon flips. A wider net for finding stock than ours, and now sold mainly inside the Threecolts Seller 365 bundle.",
-    title: "Apex vs Tactical Arbitrage (2026): Two Ways to Find Stock | Apex Applications",
+    title: "Apex vs Tactical Arbitrage (2026): Sourcing Compared",
     description:
-      "Tactical Arbitrage scans retail sites, supplier catalogues, books and Amazon flips, standalone at $59 to $159 or inside Seller 365 from $69. Apex buys wholesale and carries it through to a purchase order. Checked September 2026.",
+      "Tactical Arbitrage scans retail sites, supplier catalogs and Amazon flips from $59 to $159. Apex buys wholesale and carries it through to a purchase order.",
     h1: "Apex Applications vs Tactical Arbitrage",
     intro:
       "Tactical Arbitrage searches more places for stock than Apex does, and that is the honest headline. Product Search scans over 1,400 retail sites, Reverse Search starts from an Amazon category instead of a retailer, and there is book scouting and Amazon flips besides. Apex does none of that. One of their six modes overlaps with ours: Wholesale Search takes a supplier catalogue and runs matching and profit analysis across the list, which is what Apex Green does. The difference is what happens next. Theirs ends at a profitable shortlist; ours ends at a purchase order, a price floor built from that order and a P&L that reads from both. Worth knowing where it is sold, too: tacticalarbitrage.com now redirects to Threecolts Seller 365, which our InventoryLab page also covers.",

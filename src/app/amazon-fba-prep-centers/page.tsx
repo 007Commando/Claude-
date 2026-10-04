@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ContentPage from "../../components/ContentPage";
-import { absoluteUrl } from "../../config/site";
 
-export const metadata: Metadata = {
-  title: "How to Choose an FBA Prep Center | Apex Applications",
+export const metadata: Metadata = pageMetadata({
+  title: "FBA Prep Center: How to Choose One | Apex",
   description:
-    "Compare service scope, location, intake rules and the full cost structure before choosing an FBA prep center. A per-unit rate is not a quote, here is what else to price.",
-  alternates: { canonical: absoluteUrl("/amazon-fba-prep-centers") },
-};
+    "Compare service scope, location, intake rules and the full cost structure before choosing an FBA prep center. A per-unit rate is not a quote.",
+  path: "/amazon-fba-prep-centers",
+});
 
 export default function Page() {
   return (
     <ContentPage
       eyebrow="Prep and fulfillment"
-      h1="Find a prep partner that fits your operation."
+      h1="Amazon FBA prep centers: how to choose the right one."
       intro="Prep centers are usually chosen on the per-unit rate, which is the one number that tells you least. The total cost of a prep relationship is receiving, storage, exceptions and forwarding, and the difference between a cheap rate and a cheap invoice is where most of the money moves."
       sections={[
         {

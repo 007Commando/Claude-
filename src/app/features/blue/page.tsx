@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../../lib/seo";
 import ApexBlue from "../../../components/ApexBlue";
+import RelatedComparisons from "../../../components/RelatedComparisons";
 
-export const metadata: Metadata = {
-  title: "Apex Blue, Amazon Profit Tracker & Seller Analytics",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Purchase Order & P&L Software | Apex Blue",
   description:
-    "Financial analytics, vendor management, market intelligence databases, purchase orders, and Opex tracking for Amazon wholesale sellers.",
-  alternates: { canonical: "https://www.apexapplications.io/features/blue" },
-};
+    "Purchase orders, supplier management, an inventory database and a P&L by day, week or month for Amazon wholesale sellers, with real landed costs and fees.",
+  path: "/features/blue",
+});
 
 export default function Page() {
-  return <ApexBlue />;
+  return (
+    <>
+      <ApexBlue />
+      <RelatedComparisons module="Apex Blue" slugs={["sellerboard", "third-party-profits", "inventorylab"]} />
+    </>
+  );
 }

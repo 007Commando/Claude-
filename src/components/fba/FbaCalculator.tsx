@@ -298,7 +298,7 @@ export default function FbaCalculator() {
   const busy = state.kind === "loading";
 
   return (
-    <main className="bg-white text-slate-900">
+    <div className="bg-white text-slate-900">
       {/* Hero and search */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-slate-50 via-white to-white pb-16 pt-32 sm:pt-36">
         <Backdrop />
@@ -568,6 +568,6 @@ export default function FbaCalculator() {
           </p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

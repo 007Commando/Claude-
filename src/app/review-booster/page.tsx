@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ReviewBooster from "../../components/ReviewBooster";
 
-export const metadata: Metadata = {
-  title: "Review Booster, Amazon Review Request Automation",
+export const metadata: Metadata = pageMetadata({
+  title: "Review Booster: Free Amazon Review Request Tool",
   description:
-    "Apex Black's free-for-life Review Booster automates order review requests and seller feedback for your Amazon listings.",
-  alternates: { canonical: "https://www.apexapplications.io/review-booster" },
-};
+    "Review Booster is Apex Black's free-for-life tool that automates order review requests and seller feedback for your Amazon listings.",
+  path: "/review-booster",
+});
 
 export default function Page() {
   return <ReviewBooster />;

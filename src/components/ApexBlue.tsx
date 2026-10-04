@@ -39,7 +39,7 @@ export default function ApexBlue() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <motion.div
-          initial="initial"
+          initial={false}
           animate="animate"
           variants={fadeIn}
           className="max-w-4xl mx-auto mb-8"
@@ -50,10 +50,11 @@ export default function ApexBlue() {
               Enterprise Logistics
             </div>
           </div>
-          <h1 className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-blue-700">Purchase orders and P&L for Amazon sellers</h1>
+          <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             OPERATIONAL <br/>
             <span className="text-blue-600 italic">DOMINANCE.</span>
-          </h1>
+          </p>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Blue is the engine room of your enterprise. Built specifically for wholesale high-volume operations, automating the complex financial and logistical workflows.
           </p>

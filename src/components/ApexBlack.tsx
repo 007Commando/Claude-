@@ -25,7 +25,7 @@ export default function ApexBlack() {
     <div className="pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial="initial"
+          initial={false}
           animate="animate"
           variants={fadeIn}
           className="max-w-4xl mx-auto mb-8"
@@ -36,10 +36,11 @@ export default function ApexBlack() {
               Core Infrastructure
             </div>
           </div>
-          <h1 className="text-6xl lg:text-7xl font-black text-slate-900 mb-8 tracking-tighter text-center leading-[0.9]">
+          <h1 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-slate-600 text-center">Amazon review request automation and seller dashboard</h1>
+          <p className="text-6xl lg:text-7xl font-black text-slate-900 mb-8 tracking-tighter text-center leading-[0.9]">
             THE OMNISPECTIVE <br/>
             <span className="text-slate-400">COMMAND CENTER</span>
-          </h1>
+          </p>
           <p className="text-2xl text-slate-600 leading-relaxed text-center font-medium">
             Apex Black is the heart of your wholesale operations. It provides the high-level visibility and educational foundation needed to scale from a single account to a multi-brand empire.
           </p>

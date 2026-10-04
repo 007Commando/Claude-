@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import localFont from "next/font/local";
 import GoogleTag from "../components/GoogleTag";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -9,9 +10,6 @@ import LiveBeacon from "../components/LiveBeacon";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { SITE_URL } from "../config/site";
 import "../index.css";
-
-const OG_IMAGE =
-  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/72d97ab6-3399-4642-9df9-825e9c60a21b/id-preview-bdd3505f--6faac52a-fe63-48e8-95e5-619fb0da6fb7.lovable.app-1782857715383.png";
 
 export const metadata: Metadata = {
   /**
@@ -42,21 +40,21 @@ export const metadata: Metadata = {
    * not to index it at all. The homepage sets its own in app/page.tsx; a page
    * that forgets now simply self-canonicalises, which is the right default.
    */
+  /**
+   * Only what is true of every page. This block used to carry the homepage's
+   * title, description and URL, and Next hands a layout's openGraph to every
+   * page that does not set its own, so 49 pages told social networks they were
+   * the homepage (with an og:url contradicting their canonical). Pages set
+   * their own title and description; the card image comes from
+   * app/opengraph-image.tsx unless a page draws its own.
+   */
   openGraph: {
     type: "website",
     siteName: "Apex Applications",
-    title: "Apex Applications | Amazon Wholesale Software Suite",
-    description:
-      "Sourcing, vendors, P&L, purchase orders, and review automation, all in one Amazon wholesale suite.",
-    url: "https://www.apexapplications.io/",
-    images: [OG_IMAGE],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apex Applications | Amazon Wholesale Software Suite",
-    description:
-      "Sourcing, vendors, P&L, purchase orders, and review automation, all in one Amazon wholesale suite.",
-    images: [OG_IMAGE],
   },
 };
 
@@ -81,6 +79,14 @@ const organizationJsonLd = {
   logo: `${SITE_URL}${apexBullLogo.url}`,
   description:
     "All-in-one Amazon wholesale software suite for sourcing, analytics, purchase orders, and review automation.",
+  // Profiles that verifiably belong to Apex; add others (LinkedIn, YouTube) as they are confirmed.
+  sameAs: ["https://www.trustpilot.com/review/apexapplications.io"],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: "support@apexapplications.io",
+    url: `${SITE_URL}/contact-us`,
+  },
 };
 
 const websiteJsonLd = {
@@ -110,9 +116,20 @@ const websiteJsonLd = {
  * invented five-star score would fix the warning and be a lie.
  */
 
+// Self-hosted from the repo (Google's latin variable files, OFL), so a build
+// never depends on reaching Google Fonts and the page makes no font request
+// to another origin.
+const inter = localFont({ src: "./fonts/inter-latin.woff2", weight: "400 700", display: "swap", variable: "--font-inter" });
+const jetbrainsMono = localFont({
+  src: "./fonts/jetbrains-mono-latin.woff2",
+  weight: "400 500",
+  display: "swap",
+  variable: "--font-jbmono",
+});
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         {/*
           Signing in touches four origins in sequence — the auth script, the
@@ -155,7 +172,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script
           src="https://link.msgsndr.com/js/external-tracking.js"
           data-tracking-id="tk_38b71d0c9c964a29938c819ffce85afa"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         {/*
           Outside the IS_PRODUCTION gate below on purpose. That gate exists so
@@ -168,7 +185,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {IS_PRODUCTION && (
           <>
             <Script id="oaiq-pixel" strategy="afterInteractive">
-              {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:true});`}
+              {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:false});`}
             </Script>
             <Script id="meta-pixel" strategy="afterInteractive">
               {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2587560145358706');fbq('track','PageView');`}

@@ -102,7 +102,7 @@ function BookButton({ children }: { children: React.ReactNode }) {
 
 export default function ApexVasPromo() {
   return (
-    <main className="bg-white">
+    <div className="bg-white">
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-12 text-center">
         <motion.p
           {...fadeIn}
@@ -291,6 +291,6 @@ export default function ApexVasPromo() {
           </p>
         </motion.div>
       </section>
-    </main>
+    </div>
   );
 }

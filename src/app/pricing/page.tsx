@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import PickPlan from "../../components/PickPlan";
 import { PLANS_SHOWN, TRIAL_DAYS } from "../../config/offer";
 import { absoluteUrl, SITE_URL } from "../../config/site";
 
-export const metadata: Metadata = {
-  title: `Apex Applications Pricing & ${TRIAL_DAYS}-Day Trial`,
+export const metadata: Metadata = pageMetadata({
+  title: `Apex Pricing: Plans and ${TRIAL_DAYS}-Day Trial`,
   description:
-    "Compare the workflows, capacity and team access included in Starter and Pro. Both plans include the repricer, and both start with a seven-day trial.",
-  alternates: { canonical: absoluteUrl("/pricing") },
-};
+    "Compare the workflows, capacity and team access included in the Starter and Pro plans from Apex Applications. Both plans start with a seven-day trial.",
+  path: "/pricing",
+});
 
 /**
  * The suite's product listing, on the one page that describes what it costs.

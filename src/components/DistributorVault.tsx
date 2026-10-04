@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Lock, Mail, ExternalLink, ShieldCheck, X, UserPlus } from "lucide-react";
 import { useSession } from "../hooks/useSession";
-import { distributors, categories } from "../data/distributors";
+import { DISTRIBUTOR_CATEGORIES as categories } from "../data/distributorStats";
+
+/** What the public page may know about a distributor: never its contacts. */
+export type PublicDistributor = { name: string; category: string; contacts: number };
 
 /**
  * TODO: `isAnnualMember` is a placeholder. The ApexAuth session object's shape
@@ -20,7 +23,7 @@ function isAnnualMember(session: unknown): boolean {
   return false;
 }
 
-export default function DistributorVault() {
+export default function DistributorVault({ distributors }: { distributors: PublicDistributor[] }) {
   const router = useRouter();
   const { session, loading } = useSession();
   const unlocked = isAnnualMember(session);
@@ -119,25 +122,18 @@ export default function DistributorVault() {
                   {d.category}
                 </div>
                 <h3 className="text-base font-bold text-slate-900 mb-3 leading-snug">{d.name}</h3>
-                <div className="mt-auto space-y-1.5 text-sm">
-                  <a
-                    href={d.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-slate-500 hover:text-brand transition-colors truncate"
-                  >
+                {/* Websites and emails stay on the server: this page only knows
+                    how many contacts there are, so nothing is in the HTML. */}
+                <div className="mt-auto space-y-1.5 text-sm" aria-label="Contact details for members">
+                  <span className="flex items-center gap-1.5 text-slate-400">
                     <ExternalLink size={13} className="shrink-0" />
-                    <span className="truncate">{d.website.replace(/^https?:\/\//, "")}</span>
-                  </a>
-                  {d.emails.map((email) => (
-                    <a
-                      key={email}
-                      href={`mailto:${email}`}
-                      className="flex items-center gap-1.5 text-slate-500 hover:text-brand transition-colors truncate"
-                    >
+                    <span className="truncate">website for members</span>
+                  </span>
+                  {Array.from({ length: d.contacts }, (_, n) => (
+                    <span key={n} className="flex items-center gap-1.5 text-slate-400">
                       <Mail size={13} className="shrink-0" />
-                      <span className="truncate">{email}</span>
-                    </a>
+                      <span className="truncate">contact email for members</span>
+                    </span>
                   ))}
                 </div>
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "motion/react";
 import {
   Tag,
@@ -169,7 +169,6 @@ const fadeInItem = {
 };
 
 export default function SuiteMap() {
-  const router = useRouter();
 
   return (
     <section className="py-24 bg-white overflow-hidden">
@@ -212,11 +211,11 @@ export default function SuiteMap() {
                   </div>
 
                   <div className={imageLeft ? "lg:order-1" : "lg:order-2"}>
-                    <button
-                      onClick={() => router.push(s.route)}
+                    <Link
+                      href={s.route}
                       className={`group w-full flex flex-col items-center justify-center gap-5 bg-slate-50/70 border border-slate-100 rounded-[32px] py-16 px-8 ring-1 ring-transparent transition-all hover:bg-white hover:shadow-[0_20px_50px_-20px_rgba(15,23,42,0.15)] ${s.ring}`}
                     >
-                      <img src={s.bull} alt={`${s.label} ${s.labelAccent}`} className="h-16 w-auto object-contain group-hover:scale-105 transition-transform" />
+                      <img src={s.bull} alt={`${s.label} ${s.labelAccent}`} loading="lazy" decoding="async" className="h-16 w-auto object-contain group-hover:scale-105 transition-transform" />
                       <div className="text-center">
                         <div className="text-lg font-black tracking-[0.15em] text-slate-900">
                           {s.label} <span className={s.accent}>{s.labelAccent}</span>
@@ -228,7 +227,7 @@ export default function SuiteMap() {
                           </div>
                         )}
                       </div>
-                    </button>
+                    </Link>
                   </div>
 
                   <motion.div
@@ -257,12 +256,12 @@ export default function SuiteMap() {
                         );
                       })}
                     </div>
-                    <button
-                      onClick={() => router.push(s.route)}
+                    <Link
+                      href={s.route}
                       className={`inline-flex items-center gap-2 text-sm font-bold ${s.accent} hover:gap-3 transition-all`}
                     >
                       Explore {s.label} {s.labelAccent} <ArrowRight size={16} />
-                    </button>
+                    </Link>
                   </motion.div>
                 </motion.div>
               );

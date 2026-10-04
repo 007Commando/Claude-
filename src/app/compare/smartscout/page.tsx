@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../../lib/seo";
 import CompareSmartScout from "../../../components/CompareSmartScout";
 
-export const metadata: Metadata = {
-  title: "Apex Applications vs SmartScout (2026), Honest Comparison | Apex Applications",
+export const metadata: Metadata = pageMetadata({
+  title: "Apex vs SmartScout (2026): Honest Comparison",
   description:
-    "SmartScout is Amazon research and analytics; Apex covers research plus execution. Purchase orders, repricing with break-even floors, P&L, and logistics. Prices, features, and who should pick which.",
-  alternates: { canonical: "https://www.apexapplications.io/compare/smartscout" },
-};
+    "SmartScout is Amazon research and analytics; Apex covers research plus execution: purchase orders, break-even repricing, P&L and logistics.",
+  path: "/compare/smartscout",
+});
 
 export default function Page() {
   return <CompareSmartScout />;

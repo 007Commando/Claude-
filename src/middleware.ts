@@ -55,6 +55,11 @@ export async function middleware(req: NextRequest) {
     url.pathname = "/GroceryCommerce";
     return NextResponse.redirect(url, 308);
   }
+  // The matcher compares case-insensitively, so the correctly cased page
+  // reaches this function too. It is a public page: let it through rather
+  // than falling into the dashboard's Basic Auth (it was answering 401 to
+  // Google and every visitor).
+  if (pathname === "/GroceryCommerce") return NextResponse.next();
 
   // Until the Google OAuth client exists (AUTH_GOOGLE_ID/SECRET), Lead Desk
   // stays behind the same Basic Auth as the dashboard, so nobody is locked

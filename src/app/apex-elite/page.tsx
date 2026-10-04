@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import ApexElite from "../../components/ApexElite";
 
-export const metadata: Metadata = {
-  title: "Apex Elite, Complete Amazon Wholesale System, $297",
+export const metadata: Metadata = pageMetadata({
+  title: "Apex Elite: Amazon Wholesale System, $297",
   description:
-    "Apex Elite is the complete Amazon wholesale system: 3 starting suppliers, full software suite access, complete logistics, premium community access, a 1-on-1 strategy call, and a dedicated account manager, for a one-time $297.",
-  alternates: { canonical: "https://www.apexapplications.io/apex-elite" },
-};
+    "Apex Elite is the complete Amazon wholesale system: 3 starting suppliers, full software access, logistics, community, a strategy call, an account manager.",
+  path: "/apex-elite",
+});
 
 export default function Page() {
   return <ApexElite />;

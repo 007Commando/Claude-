@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import FbaStarterBundle from "../../components/FbaStarterBundle";
 
-export const metadata: Metadata = {
-  title: "Amazon FBA Starter Bundle, $29 | Apex",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon FBA Starter Bundle for $29 | Apex",
   description:
-    "Get the Amazon FBA Starter Bundle for $29: an extended trial to the #1 Amazon reselling suite, 3 free suppliers, free lifetime Review Booster, the Keepa Playbook, and 9 core wholesale modules.",
-  alternates: { canonical: "https://www.apexapplications.io/fba-starter-bundle" },
-};
+    "Get the Amazon FBA Starter Bundle for $29: an extended trial of the Apex suite, 3 free suppliers, a free lifetime Review Booster and the Keepa Playbook.",
+  path: "/fba-starter-bundle",
+});
 
 export default function Page() {
   return <FbaStarterBundle />;

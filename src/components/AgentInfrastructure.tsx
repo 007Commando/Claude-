@@ -332,7 +332,7 @@ function SideNav() {
 
 export default function AgentInfrastructure() {
   return (
-    <main className="bg-white text-slate-900">
+    <div className="bg-white text-slate-900">
       {/* Hero */}
       <section className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white pb-16 pt-28 md:pt-32">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1fr_1.05fr]">
@@ -473,6 +473,6 @@ export default function AgentInfrastructure() {
           </CheckoutLink>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

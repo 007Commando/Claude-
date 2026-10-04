@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useAnimate } from "motion/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { 
   BarChart3, 
   Search, 
@@ -62,8 +62,11 @@ function SalesCounter() {
   return <span>${count.toLocaleString()}</span>;
 }
 
+// Real links rather than buttons that call router.push: crawlers follow
+// anchors, and people can open them in a new tab.
+const MotionLink = motion.create(Link);
+
 export default function LandingPage() {
-  const router = useRouter();
                 const paths: Record<string, string> = { blue: "/features/blue", green: "/features/green", black: "/features/black", gold: "/features/gold" };
                 return (
     <>
@@ -71,32 +74,34 @@ export default function LandingPage() {
       <section className="pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-[1fr_1.2fr] lg:gap-16 items-center">
+            {/* initial={false}: the headline is the largest thing on the first
+                screen, and starting it at opacity 0 hid it until scripts ran. */}
             <motion.div 
-              initial="initial"
+              initial={false}
               animate="animate"
               variants={fadeIn}
               className="max-w-2xl"
             >
               <h1 className="text-5xl lg:text-6xl font-black text-slate-900 leading-[1.05] mb-10 tracking-tight">
-                Build Your Amazon Wholesale Business. <br/>
+                The Amazon Wholesale Software to Build Your Business. <br/>
                 <span className="text-slate-300 italic">Scale It With Confidence.</span>
               </h1>
               <p className="text-2xl text-slate-500 mb-12 leading-relaxed font-medium">
                 Everything you need to source products, manage suppliers, build purchase orders, and grow your Amazon business from your first sale to your next million.
               </p>
               <div className="flex flex-col sm:flex-row gap-5">
-                <button
-                  onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}
+                <Link
+                  href="/auth?mode=signup&plan=starter&period=monthly"
                   className="bg-brand text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(249,115,22,0.3)] flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
                   Start Free Trial <ArrowRight size={18} />
-                </button>
-                <button
-                  onClick={() => router.push("/apex-elite")}
+                </Link>
+                <Link
+                  href="/apex-elite"
                   className="bg-slate-50 text-slate-900 border border-slate-200 px-10 py-5 rounded-2xl text-sm font-black hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
                   Get First Month LaunchPad
-                </button>
+                </Link>
               </div>
             </motion.div>
 
@@ -227,11 +232,11 @@ export default function LandingPage() {
                 view: 'blue'
               }
             ].map((feature, i) => (
-                <motion.div 
+                <MotionLink 
                   key={i}
+                  href={paths[feature.view]}
                   variants={fadeIn}
-                  onClick={() => router.push(paths[feature.view])}
-                  className="p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all group cursor-pointer"
+                  className="block p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all group cursor-pointer"
                 >
                 <div className="flex items-center justify-between mb-6">
                   <div className={`w-12 h-12 ${feature.color} text-white rounded-2xl flex items-center justify-center shadow-lg shadow-${feature.color.split('-')[1]}-500/20 group-hover:scale-110 transition-transform`}>
@@ -242,7 +247,7 @@ export default function LandingPage() {
                 <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
                 <p className="text-slate-600 leading-relaxed text-sm mb-6">{feature.desc}</p>
                 <div className="h-1 w-12 bg-slate-200 rounded-full group-hover:bg-brand group-hover:w-full transition-all duration-500" />
-              </motion.div>
+              </MotionLink>
             ))}
           </motion.div>
         </div>
@@ -349,12 +354,12 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="shrink-0 w-full lg:w-auto">
-              <button
-                onClick={() => router.push("/features/black#apex-university")}
+              <Link
+                href="/features/black#apex-university"
                 className="w-full lg:w-auto bg-brand hover:bg-brand-dark text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] flex items-center justify-center gap-3 uppercase tracking-widest"
               >
                 Enroll In Free Course <ArrowRight size={18} />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -371,12 +376,12 @@ export default function LandingPage() {
             Join hundreds of wholesale experts using Apex to automate their sourcing, save hours on POs, and maximize profit.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => router.push("/pricing")}
+            <Link 
+              href="/pricing"
               className="bg-white text-brand px-10 py-5 rounded-2xl text-xl font-black hover:scale-105 transition-all shadow-2xl"
             >
               Start Your 7-Day Free Trial
-            </button>
+            </Link>
           </div>
         </div>
       </section>

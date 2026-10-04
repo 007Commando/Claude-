@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 import BlogIndex from "../../components/BlogIndex";
 import { getSortedPosts } from "../../lib/blog";
 
-export const metadata: Metadata = {
-  title: "Amazon Wholesale Guides & Seller Resources",
+export const metadata: Metadata = pageMetadata({
+  title: "Amazon Wholesale Guides & Seller Resources | Apex",
   description:
-    "Practical, step-by-step guides on Amazon wholesale sourcing, ungating, purchase orders, reviews, and logistics from the Apex Applications team.",
-  alternates: { canonical: "https://www.apexapplications.io/blog" },
-};
+    "Practical, step-by-step guides on Amazon wholesale sourcing, ungating, purchase orders, reviews and logistics from the Apex Applications team.",
+  path: "/blog",
+});
 
 export default function Page() {
   const posts = getSortedPosts();

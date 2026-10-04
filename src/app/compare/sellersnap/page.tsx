@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../../lib/seo";
 import CompareSellerSnap from "../../../components/CompareSellerSnap";
 
-export const metadata: Metadata = {
-  title: "Apex Applications vs Seller Snap (2026), Repricer Comparison | Apex Applications",
+export const metadata: Metadata = pageMetadata({
+  title: "Apex vs Seller Snap (2026): Repricer Comparison",
   description:
-    "Seller Snap is a dedicated game-theory AI repricer; Apex Gold reprices with true break-even floors inside a full wholesale suite. Prices, features, and who should pick which.",
-  alternates: { canonical: "https://www.apexapplications.io/compare/sellersnap" },
-};
+    "Seller Snap is a game-theory AI repricer. Apex Gold reprices with true break-even floors inside a wholesale suite. Prices, features, who should pick which.",
+  path: "/compare/sellersnap",
+});
 
 export default function Page() {
   return <CompareSellerSnap />;
