@@ -424,3 +424,22 @@ body:has(.docs-page) { margin: 0; background: #fff; }
   html:has(.docs-page) { scroll-behavior: auto; }
   .docs-page *, .docs-page *::before, .docs-page *::after { transition: none !important; animation: none !important; }
 }
+
+/* ------------------------------------------------------- video walkthroughs */
+.docs-videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 18px; }
+.docs-video-card { display: flex; align-items: center; gap: 11px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; text-align: left; cursor: pointer; transition: border-color .14s ease, box-shadow .14s ease; font: inherit; }
+.docs-video-card:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(16, 24, 40, .06); }
+.docs-video-card b { display: block; font-size: 14px; font-weight: 650; color: var(--ink); }
+.docs-video-card small { display: block; font-size: 12px; color: var(--faint); }
+.docs-video-ico { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; background: var(--accent); }
+.docs-watch { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 0; border: 0; background: none; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--accent, var(--ink)); cursor: pointer; }
+.docs-watch:hover { text-decoration: underline; }
+.docs-video-overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(16, 24, 40, .6); }
+.docs-video-box { width: min(960px, 100%); background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 20px 50px rgba(16, 24, 40, .3); }
+.docs-video-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.docs-video-head h4 { flex: 1; font-size: 16px; font-weight: 650; color: var(--ink); }
+.docs-video-lang { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--line-2); }
+.docs-video-lang button { padding: 5px 12px; border: 0; border-radius: 999px; background: none; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--body); cursor: pointer; }
+.docs-video-lang button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(16, 24, 40, .1); }
+.docs-video-close { border: 0; background: none; color: var(--faint); cursor: pointer; padding: 4px; display: flex; }
+.docs-video-box video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; background: #000; }

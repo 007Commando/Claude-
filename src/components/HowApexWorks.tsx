@@ -56,6 +56,7 @@ import {
   MessageSquare,
   Package,
   PackageCheck,
+  PlayCircle,
   Receipt,
   ScanBarcode,
   Search,
@@ -73,6 +74,108 @@ import {
 import "./apex-docs.css";
 
 const ORIGIN = "https://www.apexapplications.io";
+
+/* ---------------------------------------------------------- walkthroughs
+ * The feature walkthrough videos, in English and Spanish. Same files the app's
+ * "Watch Video" button plays (public bucket, walkthroughs/<key>-<lang>.mp4), in
+ * suite order. Opened through one modal so every link on the page behaves the
+ * same way.
+ */
+type VideoLang = "en" | "es";
+const VIDEOS: readonly { key: string; title: string; module: "black" | "blue" | "green"; route: string }[] = [
+  { key: "dashboard", title: "Dashboard", module: "black", route: "/dashboard" },
+  { key: "review-booster", title: "Review Booster", module: "black", route: "/review-booster" },
+  { key: "university", title: "Apex University", module: "black", route: "/university" },
+  { key: "vendors", title: "Vendors", module: "blue", route: "/vendors" },
+  { key: "databases", title: "Database", module: "blue", route: "/databases" },
+  { key: "purchase-orders", title: "Purchase Orders", module: "blue", route: "/purchase-orders" },
+  { key: "opex", title: "Opex", module: "blue", route: "/opex" },
+  { key: "ungating", title: "Ungating", module: "blue", route: "/ungating" },
+  { key: "analytics", title: "Analytics", module: "blue", route: "/analytics" },
+  { key: "upc-scanner", title: "UPC Scanner", module: "green", route: "/upc-scanner" },
+];
+const videoUrl = (key: string, lang: VideoLang) =>
+  `https://storage.googleapis.com/apex-apps-public/walkthroughs/${key}-${lang}.mp4`;
+const videoForRoutes = (routes: string[]) => VIDEOS.find((v) => routes.includes(v.route));
+const openVideo = (key: string) => window.dispatchEvent(new CustomEvent("apex-docs-video", { detail: key }));
+const LANG_KEY = "apex.walkthrough.lang";
+function initialLang(): VideoLang {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "en" || saved === "es") return saved;
+  } catch {
+    /* storage blocked */
+  }
+  return navigator.language?.toLowerCase().startsWith("es") ? "es" : "en";
+}
+
+/** The one player on the page. Listens for openVideo() from anywhere. */
+function VideoModal() {
+  const [video, setVideo] = useState<string | null>(null);
+  const [lang, setLang] = useState<VideoLang>("en");
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      setLang(initialLang());
+      setVideo((e as CustomEvent<string>).detail);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setVideo(null);
+    window.addEventListener("apex-docs-video", onOpen);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("apex-docs-video", onOpen);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
+  if (!video) return null;
+  const v = VIDEOS.find((x) => x.key === video);
+  const pick = (l: VideoLang) => {
+    setLang(l);
+    try {
+      localStorage.setItem(LANG_KEY, l);
+    } catch {
+      /* not remembered */
+    }
+  };
+  return (
+    <div className="docs-video-overlay" role="dialog" aria-modal="true" aria-label={`${v?.title} walkthrough`} onClick={() => setVideo(null)}>
+      <div className="docs-video-box" onClick={(e) => e.stopPropagation()}>
+        <div className="docs-video-head">
+          <h4>{v?.title} walkthrough</h4>
+          <div className="docs-video-lang" role="group" aria-label="Video language">
+            {(["en", "es"] as const).map((l) => (
+              <button key={l} type="button" className={lang === l ? "on" : ""} onClick={() => pick(l)}>
+                {l === "en" ? "English" : "Español"}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="docs-video-close" aria-label="Close video" onClick={() => setVideo(null)}>
+            <X size={18} />
+          </button>
+        </div>
+        <video key={lang} src={videoUrl(video, lang)} controls autoPlay playsInline />
+      </div>
+    </div>
+  );
+}
+
+/** All ten walkthroughs as cards, for the Video walkthroughs section. */
+function VideoLibrary() {
+  return (
+    <div className="docs-videos">
+      {VIDEOS.map((v) => (
+        <button key={v.key} type="button" className="docs-video-card" style={accentVars(v.module)} onClick={() => openVideo(v.key)}>
+          <span className="docs-video-ico" aria-hidden="true">
+            <PlayCircle size={18} strokeWidth={2} />
+          </span>
+          <span>
+            <b>{v.title}</b>
+            <small>Apex {v.module[0].toUpperCase() + v.module.slice(1)}</small>
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
 const APP_URL = "https://app.apexapplications.io";
 
 /** Real Apex screens, from the asset paths the product pages already use. */
@@ -406,6 +509,7 @@ const NAV: readonly { title: string; items: readonly NavItem[] }[] = [
     title: "Getting oriented",
     items: [
       { id: "find", label: "Where do I find…?", dot: "#5c6470" },
+      { id: "videos", label: "Video walkthroughs", dot: "#5c6470" },
       { id: "suite", label: "The five modules", dot: "#5c6470" },
       { id: "flow", label: "The order of work", dot: "#5c6470" },
       { id: "connect", label: "Connecting Amazon", dot: "#5c6470" },
@@ -544,6 +648,12 @@ function ScreenTable({ screens }: { screens: Screen[] }) {
                 <OpenInApp key={r} route={r} label={name} />
               ))}
             </span>
+            {videoForRoutes(routes) && (
+              <button type="button" className="docs-watch" onClick={() => openVideo(videoForRoutes(routes)!.key)}>
+                <PlayCircle size={13} strokeWidth={2.2} aria-hidden="true" />
+                Watch video
+              </button>
+            )}
           </div>
         </div>
       ))}
@@ -672,6 +782,7 @@ export default function HowApexWorks() {
 
   return (
     <div className="docs-page">
+      <VideoModal />
       <header className="docs-header">
         <div className="docs-header-in">
           <a className="docs-brand" href={ORIGIN} aria-label="Apex Applications home">
@@ -842,6 +953,22 @@ export default function HowApexWorks() {
                 </div>
               ))}
             </div>
+          </section>
+
+          {/* ------------------------------------------------- video walkthroughs */}
+          <section className="docs-section" id="videos">
+            <div className="docs-eyebrow">
+              <span className="docs-eyebrow-dot" style={{ background: "#5c6470" }} />
+              <span style={{ color: "#5c6470" }}>Watch</span>
+            </div>
+            <h2>
+              Video walkthroughs <Anchor id="videos" />
+            </h2>
+            <p className="docs-lede">
+              A short video for each tool, in English or Spanish. Pick one to watch it here, or use
+              the <strong>Watch video</strong> link next to a screen further down.
+            </p>
+            <VideoLibrary />
           </section>
 
           {/* ------------------------------------------------------- the suite */}
