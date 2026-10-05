@@ -51,7 +51,7 @@ export default function TrialTimeline({
   const trialEnd = new Date();
   trialEnd.setDate(trialEnd.getDate() + TRIAL_DAYS);
 
-  const planId = (["starter", "plus", "pro", "enterprise"] as const).includes(
+  const planId = (["beginner", "starter", "plus", "pro"] as const).includes(
     plan as Plan["id"],
   )
     ? (plan as Plan["id"])

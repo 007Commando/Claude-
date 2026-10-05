@@ -141,7 +141,7 @@ export const DOLLAR_WEEK = {
 export const GOLD_INCLUDED_IN_EVERY_PLAN = true;
 
 export interface Plan {
-  id: "starter" | "plus" | "pro";
+  id: "beginner" | "starter" | "plus" | "pro";
   name: string;
   /** PUBLISHED — monthly price in USD. Must match the live Stripe Price. */
   monthly: number;
@@ -172,6 +172,19 @@ export interface Plan {
  * price is a page that cannot be trusted on the ones that matter.
  */
 export const PLANS: Plan[] = [
+  /**
+   * Beginner, $49.99 a month, monthly only (Stefano, 2026-10-05): for sellers
+   * under $5,000 a month in Amazon sales. Live Price
+   * `price_1UNLED09vRtiSO1RLRpFJvqm` (`unit_amount: 4999`, tax exclusive).
+   * Seven free days like the other plans.
+   */
+  {
+    id: "beginner",
+    name: "Beginner",
+    monthly: 49.99,
+    fitsWho: "New sellers under $5,000 a month in Amazon sales.",
+    href: "/pricing",
+  },
   {
     id: "starter",
     name: "Starter",
@@ -265,7 +278,7 @@ export const trialCta = trialCtaFor("starter");
  * error on this site, because it is the number a buyer checks.
  */
 export const entryPrice = (): string =>
-  `${formatPrice(planById("starter").monthly)}/mo`;
+  `${formatPrice(planById("beginner").monthly)}/mo`;
 
 /**
  * PUBLISHED — the limits the billing system actually enforces.
@@ -324,6 +337,26 @@ export interface PlanLimits {
  * this together.
  */
 export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
+  /**
+   * Beginner, from the backend's own table (services/plans/entitlements.ts and
+   * subscriptionLimits in services/stripe/check.ts), 2026-10-05. Two months in
+   * a row over $5,000 moves the account to Starter.
+   */
+  beginner: {
+    monthlySales: 5_000,
+    marketplaces: 1,
+    housedAsins: 500,
+    brandSearchesPerMonth: 10,
+    priorityOnboarding: false,
+    prepCenterConnections: 1,
+    authorizedUsers: 1,
+    reviewRequestsPerMonth: 20,
+    upcScansPerMonth: 2,
+    upcSkusPerMonth: 20_000,
+    purchaseOrderDiscrepancy: false,
+    exports: false,
+    historicalBuyBoxAverages: false,
+  },
   starter: {
     monthlySales: 10_000,
     marketplaces: 1,

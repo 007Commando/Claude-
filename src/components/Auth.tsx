@@ -87,7 +87,7 @@ declare global {
         name: string;
         email: string;
         password: string;
-        plan?: "starter" | "plus" | "pro" | "enterprise";
+        plan?: "beginner" | "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         offer?: string;
         /** Hold the redirect so the code screen can run first. */
@@ -119,7 +119,7 @@ declare global {
         newEmail: string;
       }) => Promise<{ email: string; ticket: string; cooldownMs: number }>;
       signInWithGoogle?: (opts?: {
-        plan?: "starter" | "plus" | "pro" | "enterprise";
+        plan?: "beginner" | "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         offer?: string;
         acquisition?: {
@@ -424,9 +424,10 @@ export function reportFreeSignup(email?: string) {
   );
 }
 
-const PLAN_TIERS = ["starter", "plus", "pro", "enterprise"] as const;
+const PLAN_TIERS = ["beginner", "starter", "plus", "pro", "enterprise"] as const;
 const PERIODS = ["monthly", "yearly"] as const;
 const PLAN_TIER_LABELS: Record<(typeof PLAN_TIERS)[number], string> = {
+  beginner: "Beginner",
   starter: "Starter",
   plus: "Plus",
   pro: "Pro",
@@ -473,7 +474,10 @@ export default function Auth() {
   const offerOpt = isDollarWeek ? { offer: DOLLAR_WEEK.offer } : {};
   const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "starter";
   const periodParam = params.get("period");
-  const period = PERIODS.find((p) => p === periodParam) ?? "monthly";
+  // Beginner is sold monthly only; a yearly link for it would reach a price
+  // that does not exist.
+  const period =
+    planTier === "beginner" ? "monthly" : (PERIODS.find((p) => p === periodParam) ?? "monthly");
 
   /**
    * The card-first arrival.

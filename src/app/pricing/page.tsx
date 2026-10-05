@@ -7,7 +7,7 @@ import { absoluteUrl, SITE_URL } from "../../config/site";
 export const metadata: Metadata = pageMetadata({
   title: `Apex Pricing: Plans and ${TRIAL_DAYS}-Day Trial`,
   description:
-    "Compare the workflows, capacity and team access included in the Starter and Pro plans from Apex Applications. Both plans start with a seven-day trial.",
+    "Compare the workflows, capacity and team access included in the Beginner, Starter and Pro plans from Apex Applications. Every plan starts with a seven-day trial.",
   path: "/pricing",
 });
 

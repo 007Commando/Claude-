@@ -40,9 +40,15 @@ import {
 type Row = {
   label: string;
   icon?: React.ReactNode;
+  /** Beginner's value; left out where Beginner matches Starter. */
+  beginner?: React.ReactNode;
   limited: React.ReactNode;
   unlimited: React.ReactNode;
 };
+
+const B = PLAN_LIMITS.beginner;
+/** The table's columns: label, Beginner, Starter, Pro. */
+const COLS = "grid grid-cols-[1fr_190px_210px_230px] lg:grid-cols-[1fr_240px_260px_280px]";
 
 type Section = {
   title: string;
@@ -62,7 +68,7 @@ const sections: Section[] = [
        * of monthly sales against an enforced $10K, and crossing the real figure
        * moves the account onto Plus rather than warning about it.
        */
-      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: salesCeilingLabel("starter"), unlimited: salesCeilingLabel("pro") },
+      { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, beginner: `Under $${(B.monthlySales! / 1000).toFixed(0)}K/mo in revenue`, limited: salesCeilingLabel("starter"), unlimited: salesCeilingLabel("pro") },
       { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: String(PLAN_LIMITS.starter.marketplaces), unlimited: String(PLAN_LIMITS.pro.marketplaces) },
       { label: "Listings", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
     ],
@@ -71,15 +77,15 @@ const sections: Section[] = [
     title: "Apex Black",
     rows: [
       { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Review Booster", icon: <Star className="w-4 h-4" />, limited: limitLabel(PLAN_LIMITS.starter.reviewRequestsPerMonth), unlimited: limitLabel(PLAN_LIMITS.pro.reviewRequestsPerMonth) },
+      { label: "Review Booster", icon: <Star className="w-4 h-4" />, beginner: `${limitLabel(B.reviewRequestsPerMonth)}/month`, limited: limitLabel(PLAN_LIMITS.starter.reviewRequestsPerMonth), unlimited: limitLabel(PLAN_LIMITS.pro.reviewRequestsPerMonth) },
     ],
   },
   {
     title: "Apex Green",
     rows: [
       { label: "Master Catalog", icon: <Layers className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "UPC Scanner", icon: <Barcode className="w-4 h-4" />, limited: `${PLAN_LIMITS.starter.upcScansPerMonth} scans/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcScansPerMonth) },
-      { label: "Brand Searches", limited: `${limitLabel(PLAN_LIMITS.starter.brandSearchesPerMonth)}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.brandSearchesPerMonth) },
+      { label: "UPC Scanner", icon: <Barcode className="w-4 h-4" />, beginner: `${B.upcScansPerMonth} scans/month`, limited: `${PLAN_LIMITS.starter.upcScansPerMonth} scans/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcScansPerMonth) },
+      { label: "Brand Searches", beginner: `${limitLabel(B.brandSearchesPerMonth)}/month`, limited: `${limitLabel(PLAN_LIMITS.starter.brandSearchesPerMonth)}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.brandSearchesPerMonth) },
     ],
   },
   {
@@ -89,7 +95,7 @@ const sections: Section[] = [
       { label: "Restock Management", limited: yes, unlimited: yes },
       { label: "Vendors", icon: <Globe className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Database", icon: <Database className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Listings Monitored", limited: countLabel(PLAN_LIMITS.starter.housedAsins, "listings"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "listings") },
+      { label: "Listings Monitored", beginner: countLabel(B.housedAsins, "listings"), limited: countLabel(PLAN_LIMITS.starter.housedAsins, "listings"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "listings") },
       { label: "Prep Centre Connections", limited: String(PLAN_LIMITS.starter.prepCenterConnections), unlimited: String(PLAN_LIMITS.pro.prepCenterConnections) },
       { label: "Purchase Orders", icon: <FileText className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Purchase Order Discrepancy", limited: PLAN_LIMITS.starter.purchaseOrderDiscrepancy ? yes : no, unlimited: PLAN_LIMITS.pro.purchaseOrderDiscrepancy ? yes : no },
@@ -105,7 +111,7 @@ const sections: Section[] = [
   {
     title: "Apex Gold",
     rows: [
-      { label: "Repricer", icon: <Tag className="w-4 h-4" />, limited: yes, unlimited: yes },
+      { label: "Repricer", icon: <Tag className="w-4 h-4" />, beginner: "1 listing", limited: yes, unlimited: yes },
       { label: "Break-Even Floors", limited: yes, unlimited: yes },
       { label: "Repricing Strategies", limited: yes, unlimited: yes },
       { label: "Dry-Run Previews & Activity Log", limited: yes, unlimited: yes },
@@ -144,7 +150,11 @@ const sections: Section[] = [
 const faqs = [
   {
     question: "How much does Apex Applications cost?",
-    answer: `The Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Paying annually saves ${ANNUAL_DISCOUNT_PERCENT}% on either plan.`,
+    answer: `The Beginner Plan is ${formatPrice(planById("beginner").monthly)}/month, the Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Paying annually saves ${ANNUAL_DISCOUNT_PERCENT}% on Starter and Pro; Beginner is monthly only.`,
+  },
+  {
+    question: "Who is the Beginner plan for?",
+    answer: `New sellers doing under $${(B.monthlySales! / 1000).toFixed(0)},000 a month in Amazon sales. It includes ${B.housedAsins.toLocaleString("en-US")} monitored listings, ${B.upcScansPerMonth} UPC scans, ${B.brandSearchesPerMonth} brand searches and ${B.reviewRequestsPerMonth} review requests a month, and one listing on the repricer. Once your sales stay above $${(B.monthlySales! / 1000).toFixed(0)},000 a month for two months in a row, you move up to Starter.`,
   },
   {
     question: "How does the trial work?",
@@ -155,7 +165,7 @@ const faqs = [
      */
     answer: PAID_TRIALS.starter
       ? `Starter starts at ${formatPrice(PAID_TRIALS.starter.price)} for your first ${PAID_TRIALS.starter.days} days, then ${formatPrice(planById("starter").monthly)} a month. Pro includes a ${TRIAL_DAYS}-day free trial. Either way we take a card when you start so billing can continue automatically, every trial comes with 3 free authorized US wholesale suppliers, and you can cancel before the first monthly charge.`
-      : `Yes. Every plan, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
+      : `Yes. Every plan, Beginner, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
   },
   {
     question: "Is the repricer included?",
@@ -198,8 +208,11 @@ export default function PickPlan() {
     : PRICE_UNLIMITED_M.toString();
   const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
-  const handleStart = (plan: "starter" | "pro") =>
-    router.push(`/auth?mode=signup&plan=${plan}&period=${isAnnual ? "yearly" : "monthly"}`);
+  // Beginner is sold monthly only, so it ignores the annual toggle.
+  const handleStart = (plan: "beginner" | "starter" | "pro") =>
+    router.push(
+      `/auth?mode=signup&plan=${plan}&period=${isAnnual && plan !== "beginner" ? "yearly" : "monthly"}`,
+    );
 
   return (
     <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen pt-24 pb-24 text-slate-900">
@@ -268,11 +281,38 @@ export default function PickPlan() {
         {/* Unified comparison container */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
-        <div className="min-w-[680px]">
+        <div className="min-w-[900px]">
           {/* Sticky plan headers */}
           <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
-            <div className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px]">
+            <div className={COLS}>
               <div />
+              {/* Beginner Plan: monthly only, whatever the toggle says. */}
+              <div className="p-6 border-l border-slate-100">
+                <div className="text-sm font-bold text-slate-900">Beginner Plan</div>
+                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
+                  <span className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">{formatPrice(planById("beginner").monthly)}</span>
+                    <span className="text-xs text-slate-400 font-semibold">/month</span>
+                  </span>
+                  {isAnnual && (
+                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                      Monthly only
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] font-bold text-blue-600 mt-1">
+                  {TRIAL_DAYS}-Day Free Trial, Then {formatPrice(planById("beginner").monthly)}/month
+                </div>
+                <p className="text-[11px] text-slate-500 mt-2 leading-snug">
+                  For new sellers under $5,000 a month in Amazon sales.
+                </p>
+                <button
+                  onClick={() => handleStart("beginner")}
+                  className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
+                >
+                  Start Free Trial
+                </button>
+              </div>
               {/* Starter Plan */}
               <div className="p-6 border-l border-slate-100">
                 <div className="text-sm font-bold text-slate-900">Starter Plan</div>
@@ -345,11 +385,14 @@ export default function PickPlan() {
                 {section.rows.map((row, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px] border-t border-slate-100 hover:bg-slate-50/50 transition-colors"
+                    className={`${COLS} border-t border-slate-100 hover:bg-slate-50/50 transition-colors`}
                   >
                     <div className="px-6 lg:px-8 py-4 flex items-center gap-3 text-sm font-bold text-slate-900">
                       {row.icon && <span className="text-slate-500">{row.icon}</span>}
                       <span>{row.label}</span>
+                    </div>
+                    <div className="px-6 py-4 border-l border-slate-100 flex items-center justify-center text-center text-sm font-semibold text-slate-700">
+                      {row.beginner ?? row.limited}
                     </div>
                     <div className="px-6 py-4 border-l border-slate-100 flex items-center justify-center text-sm font-semibold text-slate-700">
                       {row.limited}
@@ -364,8 +407,16 @@ export default function PickPlan() {
           ))}
 
           {/* Bottom CTAs */}
-          <div className="grid grid-cols-[1fr_220px_240px] lg:grid-cols-[1fr_280px_300px] border-t border-slate-100 bg-slate-50/40">
+          <div className={`${COLS} border-t border-slate-100 bg-slate-50/40`}>
             <div />
+            <div className="p-6 border-l border-slate-100">
+              <button
+                onClick={() => handleStart("beginner")}
+                className="w-full py-3 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
+              >
+                Start Free Trial
+              </button>
+            </div>
             <div className="p-6 border-l border-slate-100">
               <button
                 onClick={() => handleStart("starter")}
