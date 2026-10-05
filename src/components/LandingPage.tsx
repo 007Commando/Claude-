@@ -148,18 +148,18 @@ export default function LandingPage() {
               </p>
               <ul className="space-y-4">
                 {[
-                  "Process millions of supplier data points in seconds",
-                  "Predictive BSR analysis to anticipate demand shifts",
-                  "Auto-filtering of suppressed buy-box or IP-claim brands",
-                  "Integrated 'Price-Match' checking against competitors"
-                ].map((item, i) => (
+                  ["Process millions of supplier data points in seconds", "Drop in a whole price list and see what's profitable right away."],
+                  ["Predictive BSR analysis to anticipate demand shifts", "See which products are picking up and which are slowing down."],
+                  ["Auto-filtering of suppressed buy-box or IP-claim brands", "Skip the brands that block resellers before you spend a dollar."],
+                  ["Integrated 'Price-Match' checking against competitors", "Know who's selling it and at what price before you buy."]
+                ].map(([item, detail], i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                       <CheckCircle2 className="text-brand w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-slate-800 font-bold block text-sm mb-0.5">{item.split(':')[0]}</span>
-                      <span className="text-slate-600 text-sm">Automated logic that keeps your capital safe.</span>
+                      <span className="text-slate-800 font-bold block text-sm mb-0.5">{item}</span>
+                      <span className="text-slate-600 text-sm">{detail}</span>
                     </div>
                   </li>
                 ))}

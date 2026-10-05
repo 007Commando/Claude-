@@ -62,7 +62,7 @@ const suites: Suite[] = [
     ring: "group-hover:ring-slate-900/15",
     iconText: "text-slate-800",
     items: [
-      { icon: LayoutGrid, title: "Dashboard", desc: "Your Omnicspective Amazon Dashboard" },
+      { icon: LayoutGrid, title: "Dashboard", desc: "Your whole Amazon business on one screen" },
       { icon: Star, title: "Review Booster", desc: "Automate Your Order Reviews & Boost Seller Feedback" },
       { icon: School, title: "Apex University", desc: "The Wholesale Blueprint Learning Center" },
       { icon: BookOpen, title: "Books & Resources", desc: "Recommended Reading & Resources" },
