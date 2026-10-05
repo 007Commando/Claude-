@@ -283,6 +283,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/tools#chrome-extension" className="hover:text-brand transition-colors">
+                  Chrome Extension
+                  <span className="block text-xs text-slate-400">Free when you finish Apex University</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools" className="hover:text-brand transition-colors">
                   All Free Tools
                 </Link>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Calculator, Search } from "lucide-react";
+import { ArrowRight, Calculator, Chrome, GraduationCap, Search } from "lucide-react";
 import { pageMetadata } from "../../lib/seo";
 import { absoluteUrl } from "../../config/site";
 
@@ -74,6 +74,42 @@ export default function Page() {
             </Link>
           ))}
         </div>
+
+        {/* The Chrome extension is the Apex University graduation gift: the
+          install link lives inside the course, so this page explains how to earn
+          it rather than linking to the store. */}
+        <section id="chrome-extension" className="mt-6 scroll-mt-28 rounded-3xl border border-slate-200 p-7">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+              <Chrome size={20} />
+            </span>
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-3">
+                <h2 className="text-xl font-black tracking-tight text-slate-900">Apex for Amazon Sellers, the Chrome extension</h2>
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Free for Apex University graduates</span>
+              </div>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Your profit, ROI, Amazon fees, monthly sales and eligibility right on every Amazon listing, a badge on every
+                search result, and the Amazon match for every barcode on a supplier&apos;s price list.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                It isn&apos;t sold. Finish all nine lessons in Apex University, the course inside every Apex account, and the
+                install link unlocks at the end of the course.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a
+                  href="https://app.apexapplications.io/university"
+                  className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800"
+                >
+                  <GraduationCap size={16} /> Start Apex University
+                </a>
+                <Link href="/pricing" className="inline-flex items-center gap-2 text-sm font-black text-blue-600 hover:gap-3 transition-all">
+                  New to Apex? See plans <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section className="mt-16 rounded-3xl bg-slate-50 p-8">
           <h2 className="text-2xl font-black tracking-tight text-slate-900">Guides that go with them</h2>
