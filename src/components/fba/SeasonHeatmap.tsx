@@ -19,8 +19,11 @@ const DAY = 86_400_000;
 /** Light to dark Apex blue: the darker the square, the faster the sales. */
 const SHADES = ["#dbeafe", "#93c5fd", "#3b82f6", "#1d4ed8", "#0f1f5c"];
 
-/** Hatching for the past year, shared by the chart and its legend swatch. */
-const PAST_HATCH = "repeating-linear-gradient(135deg, rgba(100,116,139,0.10) 0 5px, transparent 5px 10px)";
+/**
+ * Hatching for the year ahead, shared by the chart and its legend swatch. The red line works like a radar
+ * sweep: what it has crossed is clear, and what it has not reached yet sits behind the screen.
+ */
+const AHEAD_SCREEN = "repeating-linear-gradient(135deg, rgba(100,116,139,0.10) 0 5px, transparent 5px 10px)";
 
 const GAP = 2;
 /** Narrowest column, in pixels, before the chart scrolls sideways instead of shrinking. */
@@ -257,7 +260,8 @@ export default function SeasonHeatmap({ category, rank }: { category: string | n
 
       <p className="-mt-2 mb-6 max-w-2xl text-sm leading-relaxed text-slate-500">
         Every square is one day, from a year ago to a year from now. The darker the square, the faster sales tend to run and
-        the lower the rank. The shaded side is the past year and the red line is today.{" "}
+        the lower the rank. The red line is today and sweeps forward like a radar: the days behind it are clear, and the shaded side ahead of it is the
+        year it has not reached yet.{" "}
         {hasRank
           ? "Hover or tap any day to see its projected rank against the same day a year earlier."
           : "Hover or tap any day to see how fast it tends to sell."}
@@ -331,11 +335,11 @@ export default function SeasonHeatmap({ category, rank }: { category: string | n
                 win.days[win.days.length - 1].time,
               )}. Today is in ${today.label}, a ${LEVEL_NAMES[today.level].toLowerCase()} stretch.`}
             >
-              {/* The past year, hatched */}
+              {/* The year ahead, screened: the line has not reached it yet */}
               <div
                 aria-hidden
-                className="absolute -bottom-1.5 -left-1.5 -top-1.5 rounded-l-xl border border-r-0 border-slate-200/80 bg-slate-50"
-                style={{ width: `calc(${linePercent}% + 6px)`, backgroundImage: PAST_HATCH }}
+                className="absolute -bottom-1.5 -right-1.5 -top-1.5 rounded-r-xl border border-l-0 border-slate-200/80 bg-slate-50"
+                style={{ width: `calc(${100 - linePercent}% + 6px)`, backgroundImage: AHEAD_SCREEN }}
               />
 
               <div
@@ -362,7 +366,7 @@ export default function SeasonHeatmap({ category, rank }: { category: string | n
                       style={
                         {
                           background: SHADES[day.level],
-                          "--o": day.past ? 0.5 : 1,
+                          "--o": day.past ? 1 : 0.7,
                           // A ripple outward from today.
                           animationDelay: `${Math.abs(column - win.todayColumn) * 11}ms`,
                           outline: isToday ? "2px solid #ef4444" : undefined,
@@ -400,8 +404,8 @@ export default function SeasonHeatmap({ category, rank }: { category: string | n
 
       <div className="mt-4 flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-xs font-bold text-slate-400">
         <span className="flex items-center gap-2">
-          <span className="h-3.5 w-5 rounded-[4px] border border-slate-200 bg-slate-50" style={{ backgroundImage: PAST_HATCH }} />
-          Past year
+          <span className="h-3.5 w-5 rounded-[4px] border border-slate-200 bg-slate-50" style={{ backgroundImage: AHEAD_SCREEN }} />
+          Not reached yet
         </span>
         <span className="flex items-center gap-2">
           <span className="h-3.5 w-0.5 rounded-full bg-red-500" />
