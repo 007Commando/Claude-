@@ -6,6 +6,7 @@ import {
   addGhlTags,
   normalisePhone,
   upsertGhlContact,
+  utmCustomFields,
 } from "../../../lib/ghlLead";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,8 @@ const leadSchema = z.object({
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
   utmCampaign: z.string().trim().max(120).optional(),
+  utmContent: z.string().trim().max(200).optional(),
+  utmTerm: z.string().trim().max(200).optional(),
   pageUrl: z.string().trim().max(2048).optional(),
 });
 
@@ -86,6 +89,7 @@ export async function POST(req: NextRequest) {
       email: lead.email,
       phone,
       source: "PrimeWell landing page",
+      customFields: utmCustomFields(lead),
     });
     contactId = contact.id;
     await addGhlTags(contactId, [LEAD_TAG]);

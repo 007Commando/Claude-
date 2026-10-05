@@ -11,8 +11,19 @@ export interface StoredAttribution {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
-  /** The general UTM content slot, e.g. the EMAIL_ID a nurture-v2 router click carried. */
+  /**
+   * The general UTM content slot: the ad on a Meta click ({{ad.name}}), or the
+   * EMAIL_ID a nurture-v2 router click carried.
+   */
   utmContent?: string;
+  /** The UTM term slot: the ad set on a Meta click ({{adset.name}}). */
+  utmTerm?: string;
+  /**
+   * Meta's click id in the format the Conversions API expects
+   * (fb.1.<ms>.<fbclid>). Last-touch like the Google click id: sent with the
+   * trial and purchase events so Meta can tie them to the ad that was clicked.
+   */
+  fbc?: string;
   /**
    * The Google click identifier, if this visitor arrived on a paid Google
    * click. Held separately from `source` because the two answer different
@@ -74,6 +85,13 @@ function sourceFromReferrer(referrer: string): string | null {
  */
 const CLICK_PARAMS = ["gclid", "wbraid", "gbraid"] as const;
 
+/**
+ * Whether this page load already recorded its landing. The layout keeps this
+ * component mounted across client navigation, and search params changing on
+ * an internal link re-run the effect below.
+ */
+let landed = false;
+
 function AttributionCapture() {
   const params = useSearchParams();
 
@@ -82,12 +100,47 @@ function AttributionCapture() {
     const utmSource = params.get("utm_source") ?? undefined;
     const utmMedium = params.get("utm_medium") ?? undefined;
     const utmCampaign = params.get("utm_campaign") ?? undefined;
+    const utmContent = params.get("utm_content") ?? undefined;
+    const utmTerm = params.get("utm_term") ?? undefined;
+    const fbclid = params.get("fbclid") ?? undefined;
+    const fbc = fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined;
     const referrer = document.referrer || undefined;
 
     const clickSource = CLICK_PARAMS.find((name) => params.get(name));
     const clickId = clickSource ? params.get(clickSource) ?? undefined : undefined;
 
     const existing = readStoredAttribution();
+
+    // Only a landing from outside the site sets attribution. Our own links
+    // carry fixed UTMs (the Facebook page's button sends
+    // utm_campaign=apex-pop-promotion-web to the qualifier), and treating
+    // those as a new campaign click overwrote the ad and ad set the visitor
+    // actually arrived on. Inside the site, only blanks are filled.
+    let sameSite = false;
+    try {
+      sameSite = Boolean(referrer) && new URL(referrer as string).host === window.location.host;
+    } catch {
+      // unreadable referrer: treat as external
+    }
+    if (existing && (landed || sameSite)) {
+      const filled: StoredAttribution = { ...existing };
+      let changed = false;
+      if (fbc && !existing.fbc?.endsWith(`.${fbclid}`)) {
+        filled.fbc = fbc;
+        changed = true;
+      }
+      if (!existing.utmContent && utmContent) {
+        filled.utmContent = utmContent;
+        changed = true;
+      }
+      if (!existing.utmTerm && utmTerm) {
+        filled.utmTerm = utmTerm;
+        changed = true;
+      }
+      if (changed) storeAttribution(filled);
+      return;
+    }
+    landed = true;
 
     // Explicit UTM/click-id params always win (a deliberate campaign click).
     // Otherwise, first-touch: keep whatever attribution we already captured.
@@ -100,10 +153,19 @@ function AttributionCapture() {
     // because it is what decides their walkthrough, and only the click id is
     // refreshed. Losing the click id would cost us the conversion upload;
     // overwriting the source would cost them the right onboarding.
+    // A Meta click id is refreshed the same way, for the same reason.
     if (!utmSource && !visitorId && existing) {
+      const refreshed: StoredAttribution = { ...existing };
+      let changed = false;
       if (clickId && existing.clickId !== clickId) {
-        storeAttribution({ ...existing, clickId, clickSource });
+        Object.assign(refreshed, { clickId, clickSource });
+        changed = true;
       }
+      if (fbclid && !existing.fbc?.endsWith(`.${fbclid}`)) {
+        refreshed.fbc = fbc;
+        changed = true;
+      }
+      if (changed) storeAttribution(refreshed);
       return;
     }
 
@@ -114,8 +176,12 @@ function AttributionCapture() {
       utmSource,
       utmMedium,
       utmCampaign,
+      utmContent,
+      utmTerm,
       clickId,
       clickSource,
+      // Keep an earlier Meta click id when this visit carries none.
+      fbc: fbc ?? existing?.fbc,
     };
     storeAttribution(attribution);
 
@@ -131,6 +197,7 @@ function AttributionCapture() {
         utmSource,
         utmMedium,
         utmCampaign,
+        utmContent,
         clickId,
         clickSource,
       }),

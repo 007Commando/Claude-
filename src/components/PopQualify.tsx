@@ -475,15 +475,23 @@ export default function PopQualify() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const utm = useMemo(
-    () => ({
-      utmSource: params.get("utm_source") ?? "facebook",
-      utmMedium: params.get("utm_medium") ?? "website",
-      utmCampaign: params.get("utm_campaign") ?? "apex-pop-promotion-web",
+  /**
+   * Where this lead came from. The landing record wins for the campaign, ad
+   * and ad set, because our own links to this page carry fixed UTMs that say
+   * nothing about the ad clicked; the URL still decides the arm (medium). A
+   * visit with no UTMs anywhere is "direct", not Facebook.
+   */
+  const utm = useMemo(() => {
+    const landing = readStoredAttribution();
+    return {
+      utmSource: landing?.utmSource ?? params.get("utm_source") ?? landing?.source ?? "direct",
+      utmMedium: params.get("utm_medium") ?? landing?.utmMedium ?? "website",
+      utmCampaign: landing?.utmCampaign ?? params.get("utm_campaign") ?? "",
+      utmContent: landing?.utmContent ?? params.get("utm_content") ?? "",
+      utmTerm: landing?.utmTerm ?? params.get("utm_term") ?? "",
       from: params.get("from") ?? "apex-pop",
-    }),
-    [params],
-  );
+    };
+  }, [params]);
 
   const obstacles = sells === "No" ? NEW_OBSTACLES : SELLER_OBSTACLES;
 

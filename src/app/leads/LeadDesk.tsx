@@ -9,7 +9,8 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { Lead, Stage } from "../../lib/leads/model";
+import { qualifiedScore } from "../../lib/leads/model";
+import type { Lead, LeadGrade, Stage } from "../../lib/leads/model";
 import type { LeadsTotals } from "../../lib/leads/build";
 import TopBar from "./components/TopBar";
 import KpiStrip from "./components/KpiStrip";
@@ -17,6 +18,7 @@ import Board from "./components/Board";
 import LeadTable from "./components/LeadTable";
 import { STAGE_LABELS } from "./components/shared";
 import LivePanel from "./components/LivePanel";
+import ExperimentsView from "./components/ExperimentsView";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
 import { useLeadFilters, filterLeads } from "./components/useLeadFilters";
@@ -58,6 +60,8 @@ export default function LeadDesk() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [overrides, setOverrides] = useState<Record<string, { lastOutreachAt: string; outreachCount: number }>>({});
+  // A grade set this session, shown before GHL confirms it. null means cleared.
+  const [gradeOverrides, setGradeOverrides] = useState<Record<string, LeadGrade | null>>({});
   const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
   const [actionError, setActionError] = useState<string | null>(null);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
@@ -104,10 +108,15 @@ export default function LeadDesk() {
     if (!data) return [];
     return data.leads.map((l) => {
       const override = overrides[l.id];
-      if (!override) return l;
-      return { ...l, lastOutreachAt: override.lastOutreachAt, outreachCount: override.outreachCount };
+      let out = override ? { ...l, lastOutreachAt: override.lastOutreachAt, outreachCount: override.outreachCount } : l;
+      if (l.id in gradeOverrides) {
+        const grade = gradeOverrides[l.id];
+        const withGrade = { ...out, grade, tags: [...out.tags.filter((t) => !/^grade:[abc]$/.test(t)), ...(grade ? [`grade:${grade.toLowerCase()}`] : [])] };
+        out = { ...withGrade, score: qualifiedScore(withGrade) };
+      }
+      return out;
     });
-  }, [data, overrides]);
+  }, [data, overrides, gradeOverrides]);
 
   const filteredLeads = useMemo(
     () => filterLeads(effectiveLeads, filters),
@@ -168,6 +177,33 @@ export default function LeadDesk() {
     [data?.loggedInAs],
   );
 
+  const setGrade = useCallback(
+    async (lead: Lead, grade: LeadGrade | null) => {
+      setActionError(null);
+      const hadOverride = lead.id in gradeOverrides;
+      const previous = gradeOverrides[lead.id];
+      setGradeOverrides((prev) => ({ ...prev, [lead.id]: grade }));
+      try {
+        const res = await fetch(apiUrl("/api/leads/action"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ leadId: lead.id, action: "grade", grade, by: data?.loggedInAs ?? "" }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || `Request failed: ${res.status}`);
+      } catch (err) {
+        setGradeOverrides((prev) => {
+          const next = { ...prev };
+          if (hadOverride) next[lead.id] = previous;
+          else delete next[lead.id];
+          return next;
+        });
+        setActionError(err instanceof Error ? err.message : "Failed to set grade");
+      }
+    },
+    [data?.loggedInAs, gradeOverrides],
+  );
+
   const bulkPending = pendingIds.size > 0;
   const bulkMarkContacted = useCallback(
     async (leads: Lead[]) => {
@@ -211,6 +247,8 @@ export default function LeadDesk() {
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
             <LivePanel />
+          ) : filters.view === "experiments" ? (
+            <ExperimentsView leads={effectiveLeads} />
           ) : (
             <>
             {filters.stage && (
@@ -238,6 +276,7 @@ export default function LeadDesk() {
           lead={selectedLead}
           onClose={() => setSelectedLeadId(null)}
           onMarkContacted={markContacted}
+          onSetGrade={setGrade}
           pending={selectedLead ? pendingIds.has(selectedLead.id) : false}
           error={actionError}
         />

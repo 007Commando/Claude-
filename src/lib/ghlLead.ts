@@ -57,6 +57,32 @@ export interface UpsertedContact {
   tags: string[];
 }
 
+/**
+ * The UTMs a lead arrived with, as the five contact fields created for the
+ * Experiments work on 2026-10-05 (utm_source ... utm_term). Content is the ad
+ * and term the ad set on a Meta click. Blank values are left out so a later
+ * form without UTMs never wipes what an earlier one wrote.
+ */
+export function utmCustomFields(u: {
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
+}): { key: string; value: string }[] {
+  return (
+    [
+      ["utm_source", u.utmSource],
+      ["utm_medium", u.utmMedium],
+      ["utm_campaign", u.utmCampaign],
+      ["utm_content", u.utmContent],
+      ["utm_term", u.utmTerm],
+    ] as const
+  )
+    .filter(([, v]) => v && v.trim())
+    .map(([key, v]) => ({ key, value: (v as string).trim().slice(0, 200) }));
+}
+
 export async function upsertGhlContact(fields: {
   firstName?: string;
   lastName?: string;
@@ -138,4 +164,25 @@ export async function addGhlNote(contactId: string, body: string, location: GhlL
     method: "POST",
     body: JSON.stringify({ body }),
   }).catch(() => undefined);
+}
+
+/**
+ * Takes tags off a contact in either GHL location. removeGhlTags above is
+ * Apex-only; Lead Desk writes against the location the lead lives in.
+ */
+export async function removeGhlContactTags(
+  contactId: string,
+  tags: string[],
+  location: GhlLocationName = "apex",
+): Promise<void> {
+  const token = tokenFor(location);
+  if (!token) throw new GhlNotConfigured("GHL is not configured");
+  const res = await ghl(`/contacts/${contactId}/tags`, token, {
+    method: "DELETE",
+    body: JSON.stringify({ tags }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`GHL untag failed: ${res.status} ${detail.slice(0, 300)}`);
+  }
 }

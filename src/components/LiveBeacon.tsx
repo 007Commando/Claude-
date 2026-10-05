@@ -112,6 +112,8 @@ export default function LiveBeacon() {
         source: params.get("utm_source") || attribution?.utmSource || attribution?.source,
         medium: params.get("utm_medium") || attribution?.utmMedium,
         campaign: params.get("utm_campaign") || attribution?.utmCampaign,
+        content: params.get("utm_content") || attribution?.utmContent,
+        term: params.get("utm_term") || attribution?.utmTerm,
         referrer: document.referrer || undefined,
         account: live.account || undefined,
         left,

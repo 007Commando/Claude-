@@ -136,6 +136,8 @@ export default function PrimewellLeadForm() {
       params.get("utm_medium") ?? attribution?.utmMedium ?? undefined;
     const utmCampaign =
       params.get("utm_campaign") ?? attribution?.utmCampaign ?? undefined;
+    const utmContent = attribution?.utmContent ?? params.get("utm_content") ?? undefined;
+    const utmTerm = attribution?.utmTerm ?? params.get("utm_term") ?? undefined;
 
     setSending(true);
     setError(null);
@@ -154,6 +156,8 @@ export default function PrimewellLeadForm() {
           utmSource,
           utmMedium,
           utmCampaign,
+          utmContent,
+          utmTerm,
           pageUrl: window.location.href,
         }),
       }).catch(() => null);

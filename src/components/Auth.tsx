@@ -36,15 +36,29 @@ import { liveAccount } from "../lib/live/client";
  */
 function acquisitionFromLanding() {
   const landed = readStoredAttribution();
-  return landed && landed.source && landed.source !== "direct"
-    ? {
-        acquisition: {
-          source: landed.source,
-          medium: landed.utmMedium,
-          campaign: landed.utmCampaign,
-        },
-      }
-    : {};
+  const fbp = readCookie("_fbp");
+  // A Meta click id or browser id is worth sending even on a "direct" visit:
+  // it is what lets Meta match the trial back to an ad.
+  if (!landed || (!landed.source && !landed.fbc)) return fbp ? { acquisition: { source: "direct", fbp } } : {};
+  if (landed.source === "direct" && !landed.fbc && !fbp) return {};
+  return {
+    acquisition: {
+      source: landed.source || "direct",
+      medium: landed.utmMedium,
+      campaign: landed.utmCampaign,
+      // The ad and ad set on a Meta click, for Lead Desk's Experiments tab.
+      content: landed.utmContent,
+      term: landed.utmTerm,
+      fbc: landed.fbc,
+      fbp,
+    },
+  };
+}
+
+function readCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const hit = document.cookie.split("; ").find((c) => c.startsWith(`${name}=`));
+  return hit ? decodeURIComponent(hit.slice(name.length + 1)) : undefined;
 }
 import {
   getAuthUserEmail,
@@ -79,7 +93,15 @@ declare global {
         /** Hold the redirect so the code screen can run first. */
         deferRedirect?: boolean;
         /** Where they came from, captured on landing; kept on the account. */
-        acquisition?: { source: string; medium?: string; campaign?: string };
+        acquisition?: {
+          source: string;
+          medium?: string;
+          campaign?: string;
+          content?: string;
+          term?: string;
+          fbc?: string;
+          fbp?: string;
+        };
       }) => Promise<SignupResult>;
       /** Replays the redirect signUp held back, once the code is accepted. */
       completeSignup?: (data: SignupResult) => boolean;
@@ -100,7 +122,15 @@ declare global {
         plan?: "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         offer?: string;
-        acquisition?: { source: string; medium?: string; campaign?: string };
+        acquisition?: {
+          source: string;
+          medium?: string;
+          campaign?: string;
+          content?: string;
+          term?: string;
+          fbc?: string;
+          fbp?: string;
+        };
       }) => Promise<{
         adoptionStatus?: "adopted" | "duplicate" | "ignored" | null;
       }>;

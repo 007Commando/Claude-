@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, removeGhlTags, upsertGhlContact } from "../../../lib/ghlLead";
+import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, removeGhlTags, upsertGhlContact, utmCustomFields } from "../../../lib/ghlLead";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -49,6 +49,9 @@ const schema = z.object({
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
   utmCampaign: z.string().trim().max(120).optional(),
+  /** The ad and ad set on a Meta click (utm_content / utm_term). */
+  utmContent: z.string().trim().max(200).optional(),
+  utmTerm: z.string().trim().max(200).optional(),
   /** "dollar-week" when step 3 sold the $1 week; tags pop-dollar-week. */
   offer: z.enum(["dollar-week"]).optional(),
 });
@@ -130,6 +133,7 @@ export async function POST(req: NextRequest) {
         email: lead.email.toLowerCase(),
         phone,
         source: "apex-pop-web",
+        customFields: utmCustomFields(lead),
       });
       await addGhlTags(contact.id, ["pop-web-started"]);
     } catch (err) {
@@ -218,6 +222,7 @@ export async function POST(req: NextRequest) {
         { key: "sells_on_amazon", value: lead.sellsOnAmazon },
         { key: isSeller ? "biggest_obstacle_seller" : "biggest_obstacle_new", value: lead.obstacle },
         ...(lead.demoTiming ? [{ key: "demo_timing", value: lead.demoTiming }] : []),
+        ...utmCustomFields(lead),
       ],
     });
     await dropOtherSide(contact.id, lead.sellsOnAmazon);

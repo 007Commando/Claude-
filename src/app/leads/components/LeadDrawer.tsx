@@ -3,7 +3,7 @@
 import { fmtDuration, spanMs } from "./shared";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, X } from "lucide-react";
-import type { ActivationTier, Lead, Stage } from "../../../lib/leads/model";
+import type { ActivationTier, Lead, LeadGrade, Stage } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
@@ -58,6 +58,8 @@ const ACTIVATION_ROWS: { tier: ActivationTier; label: string; reached: (l: Lead)
   },
 ];
 
+const GRADES: LeadGrade[] = ["A", "B", "C"];
+
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
   return (
@@ -85,12 +87,14 @@ export default function LeadDrawer({
   lead,
   onClose,
   onMarkContacted,
+  onSetGrade,
   pending,
   error,
 }: {
   lead: Lead | null;
   onClose: () => void;
   onMarkContacted: (lead: Lead, note: string) => Promise<void>;
+  onSetGrade: (lead: Lead, grade: LeadGrade | null) => Promise<void>;
   pending: boolean;
   error: string | null;
 }) {
@@ -177,6 +181,31 @@ export default function LeadDrawer({
                 </span>
               </div>
             )}
+          </div>
+
+          <div className="ld-drawer-section">
+            <div className="ld-drawer-field-row">
+              <span className="ld-drawer-field-label">Call grade</span>
+              <span className="ld-grade-row">
+                <span className="ld-grade-score">Score {lead.score}</span>
+                <span className="ld-view-switch" role="group" aria-label="Call grade">
+                  {GRADES.map((g) => (
+                    <button
+                      key={g}
+                      type="button"
+                      className="ld-grade-btn"
+                      data-active={lead.grade === g}
+                      aria-pressed={lead.grade === g}
+                      disabled={!lead.ghlContactId}
+                      onClick={() => onSetGrade(lead, lead.grade === g ? null : g)}
+                    >
+                      {g}
+                    </button>
+                  ))}
+                </span>
+              </span>
+            </div>
+            {!lead.ghlContactId && <p className="ld-grade-note">No GHL contact to write back to</p>}
           </div>
 
           {lead.tags.length > 0 && (

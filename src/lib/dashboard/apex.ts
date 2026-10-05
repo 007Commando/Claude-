@@ -20,7 +20,14 @@ export interface ApexMember {
   uid: string;
   accountId: string | null;
   createdAt: string | null;
-  acquisition: { source: string | null; medium: string | null; campaign: string | null };
+  acquisition: {
+    source: string | null;
+    medium: string | null;
+    campaign: string | null;
+    /** The ad (utm_content) and ad set (utm_term); absent on accounts made before they were kept. */
+    content?: string | null;
+    term?: string | null;
+  };
   /** The app's own gate: active, trialing or past_due. */
   hasAccess: boolean;
   subscription: {

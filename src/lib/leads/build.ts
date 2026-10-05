@@ -2,6 +2,7 @@ import { getPrimewellLeads, type PrimewellContact } from "../dashboard/ghlPrimew
 import { getFacebookLeads, type FacebookContact } from "../dashboard/ghlFacebook";
 import { getApexAccounts, type ApexMember } from "../dashboard/apex";
 import { getStripeMetrics } from "../dashboard/stripe";
+import { getCustomerValues } from "./stripeLtv";
 import { normalisePhone } from "../ghlLead";
 import { getCustomFieldKeyMap, decodeCustomFields } from "./ghlFields";
 import {
@@ -21,6 +22,9 @@ import {
   buildGhlUrl,
   toIso,
   deriveActivation,
+  gradeFromTags,
+  parseAngle,
+  qualifiedScore,
 } from "./model";
 
 /**
@@ -185,6 +189,15 @@ function buildLead(params: {
 
   const outreach = parseOutreach(tags);
 
+  // The ad that brought them: what the lead form wrote to GHL first, since it
+  // is captured at the moment of the lead, then the account's own record.
+  const utm = (field: string, fallback: string | null | undefined) =>
+    (fields[field] || fallback || "").trim().toLowerCase() || null;
+  const campaign = utm("utm_campaign", acquisition?.campaign);
+  const ad = utm("utm_content", acquisition?.content);
+  const adset = utm("utm_term", acquisition?.term);
+  const grade = gradeFromTags(tags);
+
   const ghlContactId = contact ? contact.ghlContactId : null;
   const ghlLocation = contact ? contact.ghlLocation : null;
 
@@ -215,18 +228,27 @@ function buildLead(params: {
     outreachCount: outreach.count,
     ghlUrl: buildGhlUrl(ghlLocation, ghlContactId),
     activation,
+    campaign,
+    ad,
+    adset,
+    angle: parseAngle(ad),
+    ltv: null,
+    grade,
+    score: qualifiedScore({ sellerType, demoTiming, stage, activation, grade }),
   };
 }
 
 async function build(): Promise<LeadsPayload> {
   const warnings: string[] = [];
 
-  const [primewellRaw, apexLocationRaw, apexAccounts, stripe] = await Promise.all([
+  const [primewellRaw, apexLocationRaw, apexAccounts, stripe, values] = await Promise.all([
     getPrimewellLeads(),
     getFacebookLeads(),
     getApexAccounts(),
     getStripeMetrics(),
+    getCustomerValues(),
   ]);
+  if (values.error) warnings.push(`Stripe payments: ${values.error} (lifetime value missing)`);
 
   if (!primewellRaw.connected) warnings.push(`PrimeWell GHL: ${primewellRaw.error ?? "not connected"}`);
   if (!apexLocationRaw.connected) warnings.push(`Apex GHL: ${apexLocationRaw.error ?? "not connected"}`);
@@ -345,6 +367,19 @@ async function build(): Promise<LeadsPayload> {
   }
 
   leads.sort((a, b) => (a.leadAt < b.leadAt ? 1 : -1));
+
+  for (const lead of leads) {
+    const value = lead.email ? values.byEmail.get(lead.email) : undefined;
+    if (value && value.totalPaid > 0) {
+      lead.ltv = {
+        totalPaid: value.totalPaid,
+        paid30: value.paid30,
+        paid90: value.paid90,
+        monthsPaid: value.monthsPaid,
+        firstPaidAt: value.firstPaidAt,
+      };
+    }
+  }
 
   // Amazon Success Hub webinar imports are real contacts but not sales leads
   // in any funnel sense — they're excluded from every aggregate (conversion,

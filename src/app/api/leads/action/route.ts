@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findLead } from "../../../../lib/leads/build";
-import { addGhlTags, addGhlNote, GhlNotConfigured } from "../../../../lib/ghlLead";
+import { addGhlTags, addGhlNote, removeGhlContactTags, GhlNotConfigured } from "../../../../lib/ghlLead";
 import { auth } from "../../../../auth";
 
 export const dynamic = "force-dynamic";
@@ -8,10 +8,13 @@ export const runtime = "nodejs";
 
 interface ActionBody {
   leadId: string;
-  action: "contacted" | "note";
+  action: "contacted" | "note" | "grade";
   note?: string;
+  grade?: "A" | "B" | "C" | null;
   by?: string;
 }
+
+const GRADE_TAGS = ["grade:a", "grade:b", "grade:c"];
 
 function todayInNewYork(): string {
   // en-CA formats as YYYY-MM-DD, which is exactly the outreach:YYYY-MM-DD tag format.
@@ -39,12 +42,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { leadId, action, note } = body;
-  if (!leadId || (action !== "contacted" && action !== "note")) {
+  const { leadId, action, note, grade } = body;
+  if (!leadId || (action !== "contacted" && action !== "note" && action !== "grade")) {
     return NextResponse.json({ error: "leadId and a valid action are required" }, { status: 400 });
   }
   if (action === "note" && !note?.trim()) {
     return NextResponse.json({ error: "note text is required for the note action" }, { status: 400 });
+  }
+
+  if (action === "grade" && grade !== null && grade !== "A" && grade !== "B" && grade !== "C") {
+    return NextResponse.json({ error: "grade must be A, B, C or null for the grade action" }, { status: 400 });
   }
 
   const session = await auth();
@@ -71,6 +78,25 @@ export async function POST(req: NextRequest) {
         : `Outreach by ${by} on ${today}`;
       await addGhlNote(lead.ghlContactId, noteBody, lead.ghlLocation);
       return NextResponse.json({ ok: true, outreachDate: today });
+    }
+
+    if (action === "grade") {
+      // Take the other grades off first so a failure never leaves two on the contact.
+      const stale = GRADE_TAGS.filter((t) => t !== (grade ? `grade:${grade.toLowerCase()}` : ""));
+      // A refusal here (tags the contact never had) must not block the new
+      // grade; the drawer reads the best grade if two ever coexist.
+      await removeGhlContactTags(lead.ghlContactId, stale, lead.ghlLocation).catch((err) =>
+        console.warn("Lead Desk grade: removing old grade tags failed", err),
+      );
+      if (grade) {
+        await addGhlTags(lead.ghlContactId, [`grade:${grade.toLowerCase()}`], lead.ghlLocation);
+      }
+      await addGhlNote(
+        lead.ghlContactId,
+        grade ? `Graded ${grade} by ${by} on ${today}` : `Grade cleared by ${by} on ${today}`,
+        lead.ghlLocation,
+      );
+      return NextResponse.json({ ok: true, grade: grade ?? null });
     }
 
     // action === "note"

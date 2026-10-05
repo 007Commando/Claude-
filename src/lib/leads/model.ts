@@ -67,6 +67,77 @@ export interface Lead {
   outreachCount: number;
   ghlUrl: string | null;
   activation: LeadActivation;
+  /** utm_campaign from the lead form, else the account's acquisition. Lowercased. */
+  campaign: string | null;
+  /** utm_content: the Meta ad name, angle_format_hook_v#. Lowercased. */
+  ad: string | null;
+  /** utm_term: the Meta ad set name, the audience. Lowercased. */
+  adset: string | null;
+  /** The angle part of the ad name (before the first underscore), when it follows the convention. */
+  angle: string | null;
+  /** What this person has actually paid, from Stripe's charge history. Null when they never paid. */
+  ltv: LeadValue | null;
+  /** Aliza's call grade, from a `grade:a|b|c` GHL tag. */
+  grade: LeadGrade | null;
+  /** 0 to 100: how qualified this lead looks, see qualifiedScore. */
+  score: number;
+}
+
+export type LeadGrade = "A" | "B" | "C";
+
+export interface LeadValue {
+  totalPaid: number;
+  paid30: number;
+  paid90: number;
+  monthsPaid: number;
+  firstPaidAt: string | null;
+}
+
+/** A score at or above this counts the lead as qualified in the Experiments tab. */
+export const QUALIFIED_SCORE = 50;
+
+const GRADE_TAG_RE = /^grade:([abc])$/;
+
+/** Aliza's grade from the contact's tags. If several are present, the best one wins. */
+export function gradeFromTags(tags: string[]): LeadGrade | null {
+  const found = tags.map((t) => t.match(GRADE_TAG_RE)?.[1]).filter(Boolean) as string[];
+  if (found.length === 0) return null;
+  return found.sort()[0].toUpperCase() as LeadGrade;
+}
+
+/**
+ * The angle from an ad named by the convention angle_format_hook_v#
+ * ("profit_video_spreadsheet_v2" is angle "profit"). Names that don't follow
+ * it (no underscore) have no angle rather than a guessed one.
+ */
+export function parseAngle(adName: string | null): string | null {
+  if (!adName) return null;
+  const i = adName.indexOf("_");
+  return i > 0 ? adName.slice(0, i) : null;
+}
+
+/**
+ * How qualified a lead looks, 0 to 100. What they told the qualifier (already
+ * selling on Amazon is the big one), how far they got into the app, and then
+ * Aliza's grade from talking to them, which overrides the guess:
+ * A is at least 85, B at least 55, C at most 25.
+ */
+export function qualifiedScore(lead: Pick<Lead, "sellerType" | "demoTiming" | "stage" | "activation" | "grade">): number {
+  let score = 0;
+  // An existing seller who starts a trial (30 + 10 + 15) clears the bar on its own.
+  if (lead.sellerType === "selling") score += 30;
+  else if (lead.sellerType === "beginner") score += 5;
+  if (lead.demoTiming) score += 5;
+  if (STAGE_RANK[lead.stage] >= STAGE_RANK.registered) score += 10;
+  if (STAGE_RANK[lead.stage] >= STAGE_RANK.trial) score += 15;
+  if (lead.activation.firstScanAt) score += 10;
+  if (lead.activation.databaseProducts > 0) score += 10;
+  if (lead.activation.amazonConnectedAt) score += 20;
+  score = Math.min(score, 100);
+  if (lead.grade === "A") return Math.max(score, 85);
+  if (lead.grade === "B") return Math.max(score, 55);
+  if (lead.grade === "C") return Math.min(score, 25);
+  return score;
 }
 
 export const STAGE_RANK: Record<Stage, number> = {
