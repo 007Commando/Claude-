@@ -19,7 +19,6 @@ import {
   Wallet,
   UserCheck,
   Mail,
-  Rocket,
   Hourglass,
   FileDown,
   Tag,
@@ -64,7 +63,7 @@ const sections: Section[] = [
        * moves the account onto Plus rather than warning about it.
        */
       { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, limited: salesCeilingLabel("starter"), unlimited: salesCeilingLabel("pro") },
-      { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: "2", unlimited: "3" },
+      { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: String(PLAN_LIMITS.starter.marketplaces), unlimited: String(PLAN_LIMITS.pro.marketplaces) },
       { label: "Listings", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
     ],
   },
@@ -72,7 +71,7 @@ const sections: Section[] = [
     title: "Apex Black",
     rows: [
       { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Review Booster", icon: <Star className="w-4 h-4" />, limited: `${PLAN_LIMITS.starter.reviewRequestsPerMonth}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.reviewRequestsPerMonth) },
+      { label: "Review Booster", icon: <Star className="w-4 h-4" />, limited: limitLabel(PLAN_LIMITS.starter.reviewRequestsPerMonth), unlimited: limitLabel(PLAN_LIMITS.pro.reviewRequestsPerMonth) },
     ],
   },
   {
@@ -80,8 +79,7 @@ const sections: Section[] = [
     rows: [
       { label: "Master Catalog", icon: <Layers className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "UPC Scanner", icon: <Barcode className="w-4 h-4" />, limited: `${PLAN_LIMITS.starter.upcScansPerMonth} scans/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcScansPerMonth) },
-      { label: "SKUs Scanned", icon: <Barcode className="w-4 h-4" />, limited: `${limitLabel(PLAN_LIMITS.starter.upcSkusPerMonth)}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.upcSkusPerMonth) },
-      { label: "Monthly UPC Scanned", limited: "Unlimited", unlimited: "Unlimited" },
+      { label: "Brand Searches", limited: `${limitLabel(PLAN_LIMITS.starter.brandSearchesPerMonth)}/month`, unlimited: limitLabel(PLAN_LIMITS.pro.brandSearchesPerMonth) },
     ],
   },
   {
@@ -91,7 +89,7 @@ const sections: Section[] = [
       { label: "Restock Management", limited: yes, unlimited: yes },
       { label: "Vendors", icon: <Globe className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Database", icon: <Database className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "ASINs in Your Database", limited: countLabel(PLAN_LIMITS.starter.housedAsins, "ASINs"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "ASINs") },
+      { label: "Listings Monitored", limited: countLabel(PLAN_LIMITS.starter.housedAsins, "listings"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "listings") },
       { label: "Prep Centre Connections", limited: String(PLAN_LIMITS.starter.prepCenterConnections), unlimited: String(PLAN_LIMITS.pro.prepCenterConnections) },
       { label: "Purchase Orders", icon: <FileText className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Purchase Order Discrepancy", limited: PLAN_LIMITS.starter.purchaseOrderDiscrepancy ? yes : no, unlimited: PLAN_LIMITS.pro.purchaseOrderDiscrepancy ? yes : no },
@@ -131,7 +129,6 @@ const sections: Section[] = [
       { label: "Authorized Users Included", icon: <UserCheck className="w-4 h-4" />, limited: String(PLAN_LIMITS.starter.authorizedUsers), unlimited: String(PLAN_LIMITS.pro.authorizedUsers) },
       { label: "Additional Seat $8.99 / Month", limited: yes, unlimited: yes },
       { label: "Email Support", icon: <Mail className="w-4 h-4" />, limited: yes, unlimited: yes },
-      { label: "Priority Onboarding", icon: <Rocket className="w-4 h-4" />, limited: no, unlimited: yes },
       { label: "30/60/90 Day Buy Box History", icon: <Hourglass className="w-4 h-4" />, limited: PLAN_LIMITS.starter.historicalBuyBoxAverages ? yes : no, unlimited: PLAN_LIMITS.pro.historicalBuyBoxAverages ? yes : no },
       { label: "Export Data", icon: <FileDown className="w-4 h-4" />, limited: PLAN_LIMITS.starter.exports ? yes : no, unlimited: PLAN_LIMITS.pro.exports ? yes : no },
     ],
@@ -171,7 +168,7 @@ const faqs = [
     // wrong figure in Google's answer too. Derived from PLAN_LIMITS for that
     // reason: this answer previously named the next tier up on both counts.
     answer:
-      `Starter covers up to $${(PLAN_LIMITS.starter.monthlySales! / 1000).toFixed(0)}K a month in sales, ${PLAN_LIMITS.starter.housedAsins.toLocaleString("en-US")} ASINs in your database and ${PLAN_LIMITS.starter.authorizedUsers} authorized user, with email support. Pro removes the sales ceiling and raises the database to ${PLAN_LIMITS.pro.housedAsins.toLocaleString("en-US")} ASINs and ${PLAN_LIMITS.pro.authorizedUsers} authorized users, adding priority onboarding. Extra seats can be added to either plan for $8.99 a month, and the repricer is included in both.`,
+      `Starter covers up to $${(PLAN_LIMITS.starter.monthlySales! / 1000).toFixed(0)}K a month in sales, ${PLAN_LIMITS.starter.housedAsins.toLocaleString("en-US")} monitored listings, ${PLAN_LIMITS.starter.marketplaces} marketplace and ${PLAN_LIMITS.starter.authorizedUsers} authorized user, with email support. Pro removes the sales ceiling and raises that to ${PLAN_LIMITS.pro.housedAsins.toLocaleString("en-US")} listings, ${PLAN_LIMITS.pro.marketplaces} marketplaces and ${PLAN_LIMITS.pro.authorizedUsers} authorized users, with unlimited UPC scans and brand searches. Extra seats can be added to either plan for $8.99 a month, and the repricer is included in both.`,
   },
   {
     question: "Can I cancel anytime?",

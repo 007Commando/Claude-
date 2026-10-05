@@ -62,7 +62,7 @@ export type Comparison = {
 const APEX_BAR = {
   label: "Apex Starter (whole suite)",
   price: 149,
-  caption: `Every module. ${salesCeilingLabel("starter")}, ${limitLabel(PLAN_LIMITS.starter.housedAsins)} ASINs`,
+  caption: `Every module. ${salesCeilingLabel("starter")}, ${limitLabel(PLAN_LIMITS.starter.housedAsins)} listings`,
   apex: true,
 };
 

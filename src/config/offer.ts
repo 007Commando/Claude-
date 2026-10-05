@@ -280,17 +280,21 @@ export const entryPrice = (): string =>
  * an enforced $10K, and crossing the enforced figure does not warn, it moves
  * the customer onto Plus.
  *
- * Two things are deliberately not here. `plus` and `enterprise` exist in
- * billing but the site does not sell them, for the reason given above PLANS.
- * And no marketplace limit appears anywhere in the billing code, so the
- * "2 / 3 marketplaces" row on the pricing page is unverified — it needs a
- * product answer, not a guess.
+ * `plus` and `enterprise` exist in billing but the site does not sell them,
+ * for the reason given above PLANS. The marketplace limit has no enforcement
+ * in the billing code; it is the figure the app's own plan table states.
  */
 export interface PlanLimits {
   /** Trailing monthly sales, in USD. `null` means no enforced ceiling. */
   monthlySales: number | null;
-  /** ASINs the account may hold in its database. */
+  /** Amazon marketplaces the account may connect. */
+  marketplaces: number;
+  /** Listings Apex monitors (the app's "Listings Being Monitored"). */
   housedAsins: number;
+  /** Distinct brands searched per month. `null` means unlimited. */
+  brandSearchesPerMonth: number | null;
+  /** Hands-on onboarding call. No plan offers it today. */
+  priorityOnboarding: boolean;
   /** Prep centre / warehouse connections. */
   prepCenterConnections: number;
   /** Seats included before the per-seat charge applies. */
@@ -310,13 +314,25 @@ export interface PlanLimits {
   historicalBuyBoxAverages: boolean;
 }
 
+/**
+ * Matched to the app's own plan comparison (Subscriptions page, frontend
+ * `features/apex-black/subscriptions/index.tsx`) on 2026-10-05, at Stefano's
+ * word that the app is the correct one. The site had drifted from it on
+ * marketplaces (2/3 against the app's 1/2), monitored listings (Pro 20,000
+ * against 4,000), Review Booster (Starter 50 a month against unlimited) and
+ * priority onboarding (Pro yes against no plan). Change the app's table and
+ * this together.
+ */
 export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   starter: {
     monthlySales: 10_000,
+    marketplaces: 1,
     housedAsins: 1_000,
+    brandSearchesPerMonth: 25,
+    priorityOnboarding: false,
     prepCenterConnections: 1,
     authorizedUsers: 1,
-    reviewRequestsPerMonth: 50,
+    reviewRequestsPerMonth: null,
     upcScansPerMonth: 5,
     upcSkusPerMonth: 60_000,
     purchaseOrderDiscrepancy: false,
@@ -325,7 +341,10 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   },
   plus: {
     monthlySales: null,
-    housedAsins: 5_000,
+    marketplaces: 1,
+    housedAsins: 2_000,
+    brandSearchesPerMonth: 200,
+    priorityOnboarding: false,
     prepCenterConnections: 2,
     authorizedUsers: 3,
     reviewRequestsPerMonth: null,
@@ -337,7 +356,10 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   },
   pro: {
     monthlySales: null,
-    housedAsins: 20_000,
+    marketplaces: 2,
+    housedAsins: 4_000,
+    brandSearchesPerMonth: null,
+    priorityOnboarding: false,
     prepCenterConnections: 3,
     authorizedUsers: 5,
     reviewRequestsPerMonth: null,
