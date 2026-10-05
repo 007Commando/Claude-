@@ -152,7 +152,7 @@ function VideoModal() {
             <X size={18} />
           </button>
         </div>
-        <video key={lang} src={videoUrl(video, lang)} controls autoPlay playsInline />
+        <video key={lang} src={videoUrl(video, lang)} poster={videoUrl(video, lang).replace(/\.mp4$/, ".jpg")} controls autoPlay playsInline />
       </div>
     </div>
   );
