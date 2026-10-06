@@ -320,7 +320,7 @@ export default function PickPlan() {
                   </span>
                   {isAnnual && (
                     <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `${formatPrice(PRICE_LIMITED_M * 12)} billed yearly`}
+                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `$${(PRICE_LIMITED_M * 12).toLocaleString("en-US")} billed yearly`}
                     </span>
                   )}
                 </div>
@@ -350,7 +350,7 @@ export default function PickPlan() {
                   </span>
                   {isAnnual && (
                     <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `${formatPrice(PRICE_UNLIMITED_M * 12)} billed yearly`}
+                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `$${(PRICE_UNLIMITED_M * 12).toLocaleString("en-US")} billed yearly`}
                     </span>
                   )}
                 </div>
