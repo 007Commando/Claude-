@@ -286,8 +286,8 @@ export default function ApexGold() {
               <p className="text-lg text-slate-600 mb-10 leading-relaxed">
                 Standalone repricers see a price. Gold sees the purchase order the unit came in on,
                 the P&amp;L it lands in, and the restock decision it feeds, because it shares one
-                platform with Apex Blue, Green, and Red. Included in every Apex plan, not sold as a
-                separate subscription.
+                platform with Apex Blue, Green, and Red. Part of Apex Pro, not sold as a separate
+                subscription, and Beginner can try it on one listing.
               </p>
               <ViewAppButton data-feature-cta className="bg-amber-500 text-white px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-amber-600 transition-all">
                 Start with Apex Gold <ExternalLink size={18} />

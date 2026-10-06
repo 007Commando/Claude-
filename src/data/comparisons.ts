@@ -1,5 +1,5 @@
 import type { Coverage } from "../components/CompareShared";
-import { PLAN_LIMITS, limitLabel, salesCeilingLabel } from "../config/offer";
+import { PLAN_LIMITS, limitLabel, planById, salesCeilingLabel } from "../config/offer";
 
 /**
  * The comparisons, as data.
@@ -59,6 +59,18 @@ export type Comparison = {
  * So the caps are stated, and read from the file that enforces them, which is
  * the only version that cannot drift back.
  */
+/**
+ * Against a repricer, the honest Apex price is Pro's: the repricer is a Pro
+ * feature (Starter has none, Beginner one listing; REPRICED_LISTINGS in
+ * offer.ts), so the $149 bar would quote a plan that cannot do the job.
+ */
+const APEX_PRO_BAR = {
+  label: "Apex Pro (whole suite)",
+  price: planById("pro").monthly,
+  caption: "Every module, repricer on every listing",
+  apex: true,
+};
+
 const APEX_BAR = {
   label: "Apex Starter (whole suite)",
   price: 149,
@@ -103,7 +115,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Dedicated repricing platform" },
-      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$47/mo, rising to $97 / $197 / $297" },
+      { label: "Entry price", apex: "$299/mo for Pro, the whole suite with the repricer", rival: "$47/mo, rising to $97 / $197 / $297" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Repricing automation", apex: true, rival: true },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
@@ -115,7 +127,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     priceBars: [
       { label: "Aura entry", price: 47, caption: "Lowest of four tiers; check the limits on it" },
-      APEX_BAR,
+      APEX_PRO_BAR,
       { label: "Aura top tier", price: 297, caption: "Repricing platform" },
     ],
     chooseRival: [
@@ -142,7 +154,7 @@ export const COMPARISONS: Comparison[] = [
       "Tiered repricing with both AI and rule-based capacity, starting well below a suite subscription. If repricing is the only gap, the entry tier is worth pricing out.",
     title: "Apex vs BQool (2026): Repricing Compared",
     description:
-      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite at $149.",
+      "BQool offers tiered repricing with AI and rule-based capacity from $25/mo. Apex Gold reprices from break-even floors inside a full suite on Pro at $299.",
     h1: "Apex Applications vs BQool",
     intro:
       "BQool offers tiered repricing with both AI and rule-based capacity, and its lower entry price may suit a seller who needs exactly that function and nothing else. Apex Gold is a repricer inside a wholesale suite, priced as part of it. Read the entry tiers carefully: BQool's lowest tier distinguishes how many listings it will reprice with AI from how many it will reprice by rule.",
@@ -157,7 +169,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Tiered repricing tool" },
-      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$25/mo, rising to $50 / $100 / $200 / $300" },
+      { label: "Entry price", apex: "$299/mo for Pro, the whole suite with the repricer", rival: "$25/mo, rising to $50 / $100 / $200 / $300" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "AI repricing", apex: false, rival: true },
       { label: "Rule-based repricing", apex: true, rival: true },
@@ -170,7 +182,7 @@ export const COMPARISONS: Comparison[] = [
     priceBars: [
       { label: "BQool entry", price: 25, caption: "Check the AI vs rule-based listing capacity on this tier" },
       { label: "BQool mid", price: 100, caption: "Repricing only" },
-      APEX_BAR,
+      APEX_PRO_BAR,
       { label: "BQool top", price: 300, caption: "Repricing only" },
     ],
     chooseRival: [
@@ -197,7 +209,7 @@ export const COMPARISONS: Comparison[] = [
       "Automated repricing on one flat monthly price, with no user or listing limits published. A clean offer if repricing is the whole job.",
     title: "Apex vs Informed Repricer (2026): Pricing Compared",
     description:
-      "Informed Repricer is $199/month flat with a 14-day no-card trial, no published listing limits. Apex Gold reprices from break-even floors in a $149 suite.",
+      "Informed Repricer is $199/month flat with a 14-day no-card trial, no published listing limits. Apex Gold reprices from break-even floors in a $299 suite.",
     h1: "Apex Applications vs Informed Repricer",
     intro:
       "Informed emphasises automated repricing on a flat monthly offer, and its pricing page lists no user or listing limits, a genuinely simple proposition if repricing is what you are buying. Validate the supported marketplaces and features against your own operation. Apex Gold prices from break-even floors computed inside the suite that holds your costs.",
@@ -212,7 +224,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Full suite including the repricer", rival: "Automated repricing, flat rate" },
-      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$199/mo flat" },
+      { label: "Entry price", apex: "$299/mo for Pro, the whole suite with the repricer", rival: "$199/mo flat" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Published listing limits", apex: "None", rival: "None listed on their pricing page" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
@@ -223,7 +235,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "P&L and cashflow from your own store", apex: true, rival: false },
     ],
     priceBars: [
-      APEX_BAR,
+      APEX_PRO_BAR,
       { label: "Informed Repricer", price: 199, caption: "Flat monthly, no published listing limits" },
     ],
     chooseRival: [
@@ -232,13 +244,13 @@ export const COMPARISONS: Comparison[] = [
       "You want a no-card trial before committing anything.",
     ],
     chooseApex: [
-      "The whole suite costs less than their repricer alone, and repricing is only one of the jobs in it.",
+      "Repricing is only one of the jobs you need done, and Pro covers the others too.",
       "You want floors anchored to landed cost and real fees rather than bounds you set yourself.",
       "Your pricing, buying and profit reporting should share one set of numbers.",
     ],
     ctaLine:
-      "Their repricer is $199. The entire Apex suite, repricer included, is $149.",
-    shotCaption: "Everything in this window is in the $149 plan, not just the repricing tab.",
+      "Their repricer is $199. Apex Pro is $299, and the repricer is one of its tabs.",
+    shotCaption: "Everything in this window is in the Pro plan, not just the repricing tab.",
     sources: [
       { label: "Informed Repricer pricing", href: "https://www.informedrepricer.com/pricing" },
     ],
@@ -267,7 +279,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     rows: [
       { label: "What it is", apex: "Amazon wholesale suite incl. repricer", rival: "Multichannel repricing" },
-      { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$99/mo, rising to $299 / $499" },
+      { label: "Entry price", apex: "$299/mo for Pro, the whole suite with the repricer", rival: "$99/mo, rising to $299 / $499" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days, no card" },
       { label: "Channels beyond Amazon", apex: false, rival: true },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Net-margin features vary by tier" },
@@ -278,7 +290,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     priceBars: [
       { label: "Repricer.com entry", price: 99, caption: "Check channel and SKU limits on this tier" },
-      APEX_BAR,
+      APEX_PRO_BAR,
       { label: "Repricer.com mid", price: 299, caption: "Multichannel repricing" },
       { label: "Repricer.com top", price: 499, caption: "Multichannel repricing" },
     ],
@@ -324,9 +336,9 @@ export const COMPARISONS: Comparison[] = [
       { label: "Entry price", apex: "$149/mo for the whole suite", rival: "$19.95/mo, rising to $29.95 / $49.95" },
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "Mobile scanning app", apex: false, rival: true },
-      { label: "Browser extension", apex: false, rival: true },
+      { label: "Browser extension", apex: "Free for Apex University graduates", rival: true },
       { label: "Bulk catalog scanning", apex: true, rival: "Not verified" },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: "Via BQool integration; needs both subscriptions" },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: "Via BQool integration; needs both subscriptions" },
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: false },
     ],
@@ -377,8 +389,8 @@ export const COMPARISONS: Comparison[] = [
       { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Pro $29.99, Business $79.99, Business Plus $189.99" },
       { label: "Free trial", apex: "7 days, card required", rival: "Varies by plan and billing interval" },
       { label: "Price-list analysis", apex: true, rival: true },
-      { label: "Browser extension", apex: false, rival: true },
-      { label: "Repricing", apex: "Included on every plan", rival: "Allowance varies by plan" },
+      { label: "Browser extension", apex: "Free for Apex University graduates", rival: true },
+      { label: "Repricing", apex: "Every listing on Pro; 1 listing on Beginner", rival: "Allowance varies by plan" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
       { label: "Purchase orders and restock planning", apex: true, rival: "Purchasing features; compare scope" },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Not verified" },
@@ -396,7 +408,7 @@ export const COMPARISONS: Comparison[] = [
       "You have tested both and their sourcing data fits your suppliers better.",
     ],
     chooseApex: [
-      "You want repricing included at full capacity on every plan rather than metered by tier.",
+      "You want repricing on every listing (Apex Pro) without counting a per-tier allowance.",
       "You want price floors computed from your own landed costs, prep and shipping rather than entered manually.",
       "You want the prep and warehouse side of the operation in the same system as the buying.",
     ],
@@ -434,7 +446,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Entry price", apex: "$149/mo for the whole suite", rival: "Free tier; Unlimited $70/mo, or $60/mo billed annually" },
       { label: "Free tier", apex: "7-day trial of everything", rival: "One file a month, up to 10,000 products" },
       { label: "Bulk catalog scanning", apex: true, rival: true },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: false },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: false },
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "Prep and warehouse network", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: false },
@@ -488,7 +500,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Free tier", apex: "7-day trial of everything", rival: "One weekly scan, up to 50,000 products" },
       { label: "Bulk catalog scanning", apex: true, rival: true },
       { label: "Identifier lookup tools", apex: "Not published", rival: true },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: false },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: false },
       { label: "Purchase orders and restock planning", apex: true, rival: false },
       { label: "Prep and warehouse network", apex: true, rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: false },
@@ -541,7 +553,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Billing interval", apex: "Monthly or annual", rival: "The $15 figure is an annual equivalent, not a verified monthly price" },
       { label: "Free trial", apex: "7 days, card required", rival: "One month, no card" },
       { label: "Profit and loss reporting", apex: true, rival: true },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: "Announced September 2026; compare it directly" },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: "Announced September 2026; compare it directly" },
       { label: "Purchase orders and restock planning", apex: true, rival: "Purchasing features; compare scope" },
       { label: "Catalog scanning against the marketplace", apex: true, rival: "Not verified" },
       { label: "Prep and warehouse network", apex: true, rival: "Not verified" },
@@ -590,7 +602,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Listing and shipment preparation", apex: "Apex Red (beta)", rival: true },
       { label: "Accounting workflow", apex: true, rival: true },
       { label: "Catalog scanning against the marketplace", apex: true, rival: "Not verified" },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: "Compare what the current bundle includes" },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: "Compare what the current bundle includes" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
       { label: "Purchase orders and restock planning", apex: true, rival: "Compare scope in the bundle" },
     ],
@@ -646,7 +658,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Free trial", apex: "7 days, card required", rival: "14 days" },
       { label: "Listing and shipment preparation", apex: "Apex Red (beta)", rival: true },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: false },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: false },
       { label: "Purchase orders and restock planning", apex: true, rival: "Not verified" },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Not verified" },
     ],
@@ -699,7 +711,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Carrier discounts", apex: false, rival: "Verify the current terms directly" },
       { label: "Listing and shipment preparation", apex: "Apex Red (beta)", rival: true },
       { label: "Catalog scanning against the marketplace", apex: true, rival: false },
-      { label: "Repricing", apex: "Included (Apex Gold)", rival: false },
+      { label: "Repricing", apex: "Pro plan (Apex Gold)", rival: false },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Not verified" },
     ],
     priceBars: [
@@ -762,7 +774,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Purchase orders", apex: true, rival: true },
       { label: "Restock planning", apex: true, rival: true },
       { label: "Ungated brand checks", apex: "In bulk, one probe per brand", rival: true },
-      { label: "Automated repricing", apex: "Included (Apex Gold)", rival: "Not mentioned on their site" },
+      { label: "Automated repricing", apex: "Pro plan (Apex Gold)", rival: "Not mentioned on their site" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "Not verified" },
       { label: "Profit reporting", apex: "P&L and cashflow by day, week or month", rival: "Supplier spending and profit tracking" },
       { label: "Tier limits", apex: APEX_TIER_LIMITS, rival: "Tiers are Limited and Unlimited; check what Limited limits" },
@@ -819,7 +831,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Supplier catalog scanning", apex: true, rival: true },
       { label: "Selling eligibility checks", apex: "In bulk, one probe per brand", rival: "Restriction Checker" },
       { label: "Purchase orders and restock planning", apex: true, rival: "Not part of the product" },
-      { label: "Automated repricing", apex: "Included (Apex Gold)", rival: "A separate tool in the Seller 365 bundle" },
+      { label: "Automated repricing", apex: "Pro plan (Apex Gold)", rival: "A separate tool in the Seller 365 bundle" },
       { label: "Break-even floors from your own fee data", apex: true, rival: "No repricing in the product" },
       { label: "P&L and cashflow from your own store", apex: true, rival: "Not part of the product" },
     ],

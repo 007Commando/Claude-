@@ -129,16 +129,18 @@ export const DOLLAR_WEEK = {
 };
 
 /**
- * VERIFIED — every route in `routes/api/gold.ts` is gated by `subRequired()`
- * with no plan argument, and that middleware admits any account holding any
- * active subscription. The repricer is therefore included in every paid plan,
- * Starter included.
- *
- * This resolves the contradiction the SEO audit flagged: the pricing matrix
- * omitted Gold while the comparison pages claimed it was included. The
- * comparison pages were right.
+ * VERIFIED — the repricer is a Pro feature. `repricedListings` in the
+ * backend's `services/plans/entitlements.ts` allows Beginner 1 listing,
+ * Starter 0, Plus 5 and Pro unlimited, enforced when a listing is switched on.
+ * The site said "every plan, Starter included" until 2026-10-05, which a
+ * Starter customer would find refused the first time they tried.
  */
-export const GOLD_INCLUDED_IN_EVERY_PLAN = true;
+export const GOLD_INCLUDED_IN_EVERY_PLAN = false;
+export const REPRICED_LISTINGS: Record<"beginner" | "starter" | "pro", number | null> = {
+  beginner: 1,
+  starter: 0,
+  pro: null,
+};
 
 export interface Plan {
   id: "beginner" | "starter" | "plus" | "pro";
@@ -223,8 +225,15 @@ export const PLANS_SHOWN: Plan[] = PLANS.filter((plan) => plan.id !== "plus");
 export const planById = (id: Plan["id"]): Plan =>
   PLANS.find((plan) => plan.id === id) ?? PLANS[0];
 
-/** PUBLISHED — the discount applied when a plan is billed yearly. */
-export const ANNUAL_DISCOUNT_PERCENT = 20;
+/**
+ * PUBLISHED — the discount applied when a plan is billed yearly.
+ *
+ * None. The app bills a year at twelve months' price ($1,788 Starter, $3,588
+ * Pro, from PLANS_PRICES in the frontend's subscriptions config), and the site
+ * had been promising 20% off it. Matched to the app on Stefano's word,
+ * 2026-10-05. Copy that mentions a saving checks this first.
+ */
+export const ANNUAL_DISCOUNT_PERCENT = 0;
 
 /** `$149.99`, `$299` — trailing `.00` dropped, because prices read as prices. */
 export const formatPrice = (amount: number): string =>

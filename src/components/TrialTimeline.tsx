@@ -19,7 +19,7 @@ import {
 function priceSentence(planId: Plan["id"], period: string) {
   const monthly = formatPrice(planById(planId).monthly);
   return period === "yearly"
-    ? `${monthly} a month billed yearly, ${ANNUAL_DISCOUNT_PERCENT}% off`
+    ? `${monthly} a month billed yearly${ANNUAL_DISCOUNT_PERCENT ? `, ${ANNUAL_DISCOUNT_PERCENT}% off` : ""}`
     : `${monthly} a month`;
 }
 

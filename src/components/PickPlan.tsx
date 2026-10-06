@@ -26,7 +26,6 @@ import {
 import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
 import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
 import {
-  ANNUAL_DISCOUNT_PERCENT,
   countLabel,
   formatPrice,
   limitLabel,
@@ -103,30 +102,28 @@ const sections: Section[] = [
     ],
   },
   /**
-   * Gold was missing from this matrix entirely while the comparison pages
-   * claimed the repricer was included — a buyer could read both and not know
-   * which to believe. It is included: every Gold route is gated by a
-   * subscription check with no plan restriction, so any active plan reaches it.
+   * The repricer is Pro's: the backend allows Beginner one listing to try it
+   * on, Starter none, Pro every listing (REPRICED_LISTINGS in offer.ts).
    */
   {
     title: "Apex Gold",
     rows: [
-      { label: "Repricer", icon: <Tag className="w-4 h-4" />, beginner: "1 listing", limited: yes, unlimited: yes },
-      { label: "Break-Even Floors", limited: yes, unlimited: yes },
-      { label: "Repricing Strategies", limited: yes, unlimited: yes },
-      { label: "Dry-Run Previews & Activity Log", limited: yes, unlimited: yes },
+      { label: "Repricer", icon: <Tag className="w-4 h-4" />, beginner: "1 listing", limited: no, unlimited: "Every listing" },
+      { label: "Break-Even Floors", beginner: yes, limited: no, unlimited: yes },
+      { label: "Repricing Strategies", beginner: yes, limited: no, unlimited: yes },
+      { label: "Dry-Run Previews & Activity Log", beginner: yes, limited: no, unlimited: yes },
     ],
   },
   /**
-   * Red is beta and says so here. It was absent from the matrix while some
-   * comparison pages counted fulfilment as a live feature, which is the
-   * contradiction the audit picked up.
+   * Matched to the app's plan table (2026-10-05), which lists every Red tool
+   * as included on every plan, with prep centre connections set by plan.
    */
   {
-    title: "Apex Red (beta)",
+    title: "Apex Red",
     rows: [
-      { label: "Shipments & Warehouses", limited: "Beta access", unlimited: "Beta access" },
-      { label: "Prep Centre Workflows", limited: "Beta access", unlimited: "Beta access" },
+      { label: "Shipments & Warehouses", limited: yes, unlimited: yes },
+      { label: "Prep Centre Workflows", limited: "Unlimited", unlimited: "Unlimited" },
+      { label: "Inventory, Prep Chat & Prep Billing", limited: yes, unlimited: yes },
     ],
   },
   {
@@ -150,7 +147,7 @@ const sections: Section[] = [
 const faqs = [
   {
     question: "How much does Apex Applications cost?",
-    answer: `The Beginner Plan is ${formatPrice(planById("beginner").monthly)}/month, the Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Paying annually saves ${ANNUAL_DISCOUNT_PERCENT}% on Starter and Pro; Beginner is monthly only.`,
+    answer: `The Beginner Plan is ${formatPrice(planById("beginner").monthly)}/month, the Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Starter and Pro can also be billed yearly, at twelve months' price; Beginner is monthly only.`,
   },
   {
     question: "Who is the Beginner plan for?",
@@ -170,7 +167,7 @@ const faqs = [
   {
     question: "Is the repricer included?",
     answer:
-      "Yes, on both plans. Apex Gold is available to every account with an active subscription, Starter included.",
+      "Apex Gold, the repricer, is a Pro feature: Pro reprices every listing. Beginner can switch it on for 1 listing to try it, and Starter doesn't include it.",
   },
   {
     question: "What's the difference between the Starter and Pro plans?",
@@ -178,7 +175,7 @@ const faqs = [
     // wrong figure in Google's answer too. Derived from PLAN_LIMITS for that
     // reason: this answer previously named the next tier up on both counts.
     answer:
-      `Starter covers up to $${(PLAN_LIMITS.starter.monthlySales! / 1000).toFixed(0)}K a month in sales, ${PLAN_LIMITS.starter.housedAsins.toLocaleString("en-US")} monitored listings, ${PLAN_LIMITS.starter.marketplaces} marketplace and ${PLAN_LIMITS.starter.authorizedUsers} authorized user, with email support. Pro removes the sales ceiling and raises that to ${PLAN_LIMITS.pro.housedAsins.toLocaleString("en-US")} listings, ${PLAN_LIMITS.pro.marketplaces} marketplaces and ${PLAN_LIMITS.pro.authorizedUsers} authorized users, with unlimited UPC scans and brand searches. Extra seats can be added to either plan for $8.99 a month, and the repricer is included in both.`,
+      `Starter covers up to $${(PLAN_LIMITS.starter.monthlySales! / 1000).toFixed(0)}K a month in sales, ${PLAN_LIMITS.starter.housedAsins.toLocaleString("en-US")} monitored listings, ${PLAN_LIMITS.starter.marketplaces} marketplace and ${PLAN_LIMITS.starter.authorizedUsers} authorized user, with email support. Pro removes the sales ceiling and raises that to ${PLAN_LIMITS.pro.housedAsins.toLocaleString("en-US")} listings, ${PLAN_LIMITS.pro.marketplaces} marketplaces and ${PLAN_LIMITS.pro.authorizedUsers} authorized users, with unlimited UPC scans and brand searches. Pro also includes the repricer on every listing. Extra seats can be added to either plan for $8.99 a month.`,
   },
   {
     question: "Can I cancel anytime?",
@@ -322,8 +319,8 @@ export default function PickPlan() {
                     <span className="text-xs text-slate-400 font-semibold">/month</span>
                   </span>
                   {isAnnual && (
-                    <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                      Save {annualSavingsPct}%
+                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `${formatPrice(PRICE_LIMITED_M * 12)} billed yearly`}
                     </span>
                   )}
                 </div>
@@ -352,8 +349,8 @@ export default function PickPlan() {
                     <span className="text-xs text-slate-400 font-semibold">/month</span>
                   </span>
                   {isAnnual && (
-                    <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                      Save {annualSavingsPct}%
+                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `${formatPrice(PRICE_UNLIMITED_M * 12)} billed yearly`}
                     </span>
                   )}
                 </div>

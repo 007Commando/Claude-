@@ -134,8 +134,8 @@ export default function ApexRed() {
             The rest of Apex is not in beta
           </h2>
           <p className="text-slate-600 leading-relaxed mb-6 max-w-2xl">
-            Sourcing, purchasing, repricing and profit reporting are live and included in every
-            plan. If the bottleneck is deciding what to buy and what to charge rather than moving
+            Sourcing, purchasing and profit reporting are live on every plan, and repricing is live
+            on Pro. If the bottleneck is deciding what to buy and what to charge rather than moving
             the boxes, you do not need to wait for Red.
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
