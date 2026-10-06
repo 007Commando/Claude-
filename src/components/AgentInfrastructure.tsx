@@ -70,10 +70,10 @@ const STEPS: { t: string; d: string; status: Status }[] = [
   { t: "The agent asks", d: "A standard MCP request, carrying your connector key.", status: "live" },
   { t: "Key check", d: "The key resolves to one account and one user. It is stored hashed and can be revoked at any time.", status: "live" },
   { t: "Permission check", d: "The same subscription and permission rules as the matching page in the app.", status: "live" },
-  { t: "Read-only tool", d: "The app's own query runs. Nothing in this step can change your account.", status: "live" },
+  { t: "The app's own code runs", d: "A read link runs the app's own query and can only read. A write link can only make drafts.", status: "live" },
   { t: "Trimmed answer", d: "Rows are capped and shaped so the result fits a model's context.", status: "live" },
-  { t: "Approval gate", d: "For future actions: the agent proposes, you approve, then it happens.", status: "planned" },
-  { t: "Audit log", d: "Every call recorded with the key, the tool and the time, viewable in Settings.", status: "planned" },
+  { t: "Draft, then you decide", d: "A draft waits in Apex. Most assistants also ask you to approve each write call. Nothing is submitted or sent until you do it in Apex.", status: "live" },
+  { t: "Audit log", d: "Every write call is recorded with the key, the tool and the time, successful or refused.", status: "live" },
 ];
 
 const EXAMPLE = `> tools/call get_restock_recommendations
@@ -87,7 +87,7 @@ const EXAMPLE = `> tools/call get_restock_recommendations
         "daysOfInventory": 6,
         "recommendedQty": 120 } ] }`;
 
-const CAPABILITIES: { group: string; tools: [string, string][]; status: Status }[] = [
+const CAPABILITIES: { group: string; tools: [string, string][]; status: Status; note?: string }[] = [
   {
     group: "Business overview",
     status: "live",
@@ -104,6 +104,8 @@ const CAPABILITIES: { group: string; tools: [string, string][]; status: Status }
       ["search_products", "Your product database with cost, price, profit, ROI, stock and rank."],
       ["list_catalog_scans", "Supplier catalog scans you have run."],
       ["get_catalog_scan_results", "Products found in one scan, sortable by profit or ROI, with the ones you do not have yet on their own."],
+      ["search_brands", "Find brands to source from, with product counts, prices, seller counts and share sold by Amazon. Naming a brand uses your plan's monthly brand searches, as in the app."],
+      ["research_products", "Search Amazon products by brand, rank, sellers, price and more, and hide the ones already in your database."],
     ],
   },
   {
@@ -121,6 +123,16 @@ const CAPABILITIES: { group: string; tools: [string, string][]; status: Status }
       ["get_restock_recommendations", "Profitable products you sell that are lowest on stock."],
       ["get_inventory", "FBA inventory, velocity, days left and restock status."],
       ["get_purchase_orders", "Your purchase orders: vendor, status, lines, cost, projected profit and ROI."],
+    ],
+  },
+  {
+    group: "Draft work",
+    status: "live",
+    note: "Separate write link, Pro plan",
+    tools: [
+      ["create_draft_purchase_order", "A draft purchase order on your Open tab, never submitted. Your assistant asks you for costs and quantities."],
+      ["add_products_to_database", "Products added to your database as drafts, never activated. Ones you already have are skipped and reported."],
+      ["add_vendor", "A new supplier on your Vendors page. A name you already have is refused."],
     ],
   },
   {
@@ -151,20 +163,26 @@ const FLOWS: Flow[] = [
     answer: "Shows what repricing changed and what it was worth, and which brands have listings under MAP risk. Reading is available now. Letting an agent change prices is planned, with your approval.",
     tools: ["get_repricer_listings", "get_repricer_impact", "get_map_compliance"],
     note: "The repricer itself is in Beta." },
-  { tab: "Purchase orders", status: "planned", ask: "Draft a PO for those three reorders.",
-    answer: "Planned. The agent will prepare a draft purchase order and show it to you. Nothing is created or sent to a supplier until you approve it.",
-    tools: [], note: "No tool exists for this yet." },
+  { tab: "Find products", status: "live", ask: "Find products from this brand that I do not have yet, with fewer than five sellers.",
+    answer: "Looks the brand up, searches its products, leaving out ones Amazon sells itself and ones you already hold, and shows rank, estimated monthly sales and net proceeds for each. You pick, then it can add them to your database as drafts.",
+    tools: ["search_brands", "research_products", "add_products_to_database"],
+    note: "Adding products needs a write link on the Pro plan." },
+  { tab: "Purchase orders", status: "live", ask: "Draft a PO for those three reorders.",
+    answer: "Prepares a draft purchase order on your Open tab with the supplier, quantities and costs you give it. It is never submitted and nothing goes to a supplier: you review it in Apex and submit it yourself.",
+    tools: ["create_draft_purchase_order", "get_purchase_orders"],
+    note: "Needs a write link, which is part of the Pro plan." },
 ];
 
 const CONTROLS: { name: string; detail: string; status: Status }[] = [
   { name: "Per-seller connector keys", detail: "One account and one user each, stored hashed, shown once, up to 10 live keys.", status: "live" },
+  { name: "Read links and write links", detail: "A read link can only read. A write link is a separate key, Pro plan, up to 3 per account, and adds draft-making tools.", status: "live" },
   { name: "Instant revoke", detail: "Turn a key off from Settings. A key also stops working if its user loses access to the account.", status: "live" },
   { name: "Permissions carried through", detail: "A key sees what its user sees in the app, and no more.", status: "live" },
-  { name: "Read-only tools", detail: "Nothing an agent calls today can change a price, an order or a setting.", status: "live" },
+  { name: "Drafts only", detail: "Nothing an agent calls can submit, send, ship, spend money, delete, or change a live price or setting.", status: "live" },
+  { name: "Review before anything is sent", detail: "Drafts wait in Apex for you to review and submit. Most assistants also ask you before each write call.", status: "live" },
+  { name: "Audit log", detail: "Every write call recorded with the key, the tool and whether it worked. A revoked key keeps its history.", status: "live" },
+  { name: "Rate limits and a daily cap", detail: "60 calls a minute per key. Write links: 10 a minute and 100 drafts a day per account.", status: "live" },
   { name: "Per-tool scopes", detail: "Choose which areas a key can read, such as P&L or catalog only.", status: "planned" },
-  { name: "Audit log", detail: "Every agent call listed in Settings.", status: "planned" },
-  { name: "Human approval for changes", detail: "Agents propose, you approve, then it happens.", status: "planned" },
-  { name: "Rate limits per key", detail: "A ceiling on calls so a runaway agent cannot flood your account.", status: "planned" },
   { name: "Sign in with OAuth", detail: "Connect without pasting a key.", status: "planned" },
 ];
 
@@ -274,11 +292,11 @@ function Developers() {
         </div>
       </div>
       <p className="mt-3 text-sm text-slate-500">
-        Create a key in Apex: Connect your AI in your account menu, for Claude or ChatGPT. Treat it like a password. Without a key the endpoint answers 401; without the plan or permission a tool needs, it refuses in plain words.
+        Create a key in Apex: Connect your AI in your account menu, for Claude or ChatGPT. Make a separate write link there too if you want drafts, on the Pro plan. Treat it like a password. Without a key the endpoint answers 401; without the plan or permission a tool needs, it refuses in plain words.
       </p>
       <div className="mt-6 flex flex-col gap-3 rounded-xl border border-dashed border-slate-300 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3 text-sm text-slate-600">
-          <Badge status="planned" /> Public REST API, OpenAPI spec, webhooks, and tools that change things.
+          <Badge status="planned" /> Public REST API, OpenAPI spec, webhooks, and tools that change live settings.
         </div>
         <Link href="/contact-us" className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700">
           Tell us what you would build <ArrowRight size={14} />
@@ -356,7 +374,7 @@ export default function AgentInfrastructure() {
               </CheckoutLink>
             </div>
             <p className="flex items-center gap-2 text-sm text-slate-500">
-              <Check size={15} className="shrink-0 text-emerald-600" /> Read-only today. Actions with your approval are coming.
+              <Check size={15} className="shrink-0 text-emerald-600" /> Read-only by default. Draft work behind a separate write link, Pro plan.
             </p>
             <p className="mt-6 max-w-lg text-[11px] leading-relaxed text-slate-400">
               Logos show MCP compatibility. Claude, ChatGPT, Gemini and Cursor are trademarks of their owners; Apex is independent and not affiliated with them.
@@ -372,7 +390,7 @@ export default function AgentInfrastructure() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-[200px_1fr]">
         <SideNav />
         <div className="min-w-0 max-w-3xl">
-          <Block id="how" title="How it works" lead="Before an agent sees a single row, Apex checks who is asking and what they may see. Then it runs the same read-only query the app itself would.">
+          <Block id="how" title="How it works" lead="Before an agent sees a single row, Apex checks who is asking and what they may see. Then it runs the same code the app itself would. A read link can only read, and a write link can only make drafts.">
             <ol className="mb-8 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200">
               {STEPS.map((s, i) => (
                 <li key={s.t} className={`flex items-start gap-4 p-4 ${s.status === "planned" ? "bg-slate-50/60" : "bg-white"}`}>
@@ -393,12 +411,15 @@ export default function AgentInfrastructure() {
             </div>
           </Block>
 
-          <Block id="capabilities" title="Capabilities" lead="Fourteen read-only tools across five areas. Lists are capped so results fit a model's context. Two kinds of action are planned, both behind approval.">
+          <Block id="capabilities" title="Capabilities" lead="Nineteen tools across six areas: sixteen that only read, and three that make drafts behind a separate write link on the Pro plan. Lists are capped so results fit a model's context. Changing live settings is planned, behind approval.">
             <div className="space-y-6">
               {CAPABILITIES.map((g) => (
                 <div key={g.group} className="overflow-hidden rounded-2xl border border-slate-200">
                   <div className="flex items-center justify-between bg-slate-50 px-4 py-2.5">
-                    <span className="text-sm font-bold text-slate-900">{g.group}</span>
+                    <span className="text-sm font-bold text-slate-900">
+                      {g.group}
+                      {g.note && <span className="ml-2 text-xs font-medium text-slate-500">{g.note}</span>}
+                    </span>
                     <Badge status={g.status} />
                   </div>
                   <ul className="divide-y divide-slate-100">
@@ -417,14 +438,13 @@ export default function AgentInfrastructure() {
                   <Badge status="planned" />
                 </div>
                 <ul className="divide-y divide-slate-100 text-sm text-slate-500">
-                  <li className="px-4 py-3">Draft a purchase order, shown to you before anything is created.</li>
                   <li className="px-4 py-3">Propose repricer settings, applied only after you approve.</li>
                 </ul>
               </div>
             </div>
           </Block>
 
-          <Block id="flows" title="Example flows" lead="Four work today. One is planned and says so.">
+          <Block id="flows" title="Example flows" lead="Each of these works today. Letting an agent change a price is not available, and is planned with your approval.">
             <Flows />
           </Block>
 
