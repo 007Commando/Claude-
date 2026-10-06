@@ -1,5 +1,6 @@
 "use client";
 
+import { trackReddit } from "../lib/redditPixel";
 import {
   Check,
   Compass,
@@ -541,6 +542,7 @@ export default function PopQualify() {
         ...(dollarWeek ? { offer: "dollar-week" } : {}),
       });
       window.fbq?.("track", "Lead", { content_name: "apex-pop-web" });
+      trackReddit("Lead");
       fetch("/api/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -70,6 +70,8 @@ export const metadata: Metadata = {
  * preview build, and true on www.apexapplications.io.
  */
 const IS_PRODUCTION = process.env.VERCEL_ENV === "production";
+// Reddit ads test (October 2026): the pixel loads only once its id is set in Vercel.
+const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -187,6 +189,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Script id="oaiq-pixel" strategy="afterInteractive">
               {`!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"8iBamdbpfEKYXHWyzY5p8i",debug:false});`}
             </Script>
+            {REDDIT_PIXEL_ID && (
+              <Script id="reddit-pixel" strategy="afterInteractive">
+                {`!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','${REDDIT_PIXEL_ID}',{optOut:false,useDecimalCurrencyValues:true});rdt('track','PageVisit');`}
+              </Script>
+            )}
             <Script id="meta-pixel" strategy="afterInteractive">
               {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2587560145358706');fbq('track','PageView');`}
             </Script>

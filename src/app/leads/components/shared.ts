@@ -11,6 +11,7 @@ export const SOURCE_LABELS: Record<LeadSource, string> = {
   "facebook-web": "Facebook web",
   google: "Google",
   chatgpt: "ChatGPT",
+  reddit: "Reddit",
   ash: "Amazon Success Hub",
   direct: "Direct",
   other: "Other",
@@ -23,6 +24,7 @@ export const SOURCE_ABBR: Record<LeadSource, string> = {
   "facebook-web": "FB web",
   google: "Google",
   chatgpt: "ChatGPT",
+  reddit: "Reddit",
   ash: "ASH",
   direct: "Direct",
   other: "Other",
@@ -51,7 +53,7 @@ export const SELLER_TYPE_LABELS: Record<SellerType, string> = {
 };
 
 export const STAGES: Stage[] = ["lead", "registered", "trial", "customer", "churned"];
-export const ALL_SOURCES: LeadSource[] = ["primewell", "facebook-form", "facebook-web", "google", "chatgpt", "direct", "other"];
+export const ALL_SOURCES: LeadSource[] = ["primewell", "facebook-form", "facebook-web", "google", "chatgpt", "reddit", "direct", "other"];
 export const ALL_SELLER_TYPES: SellerType[] = ["selling", "beginner", "unknown"];
 
 export function stageColorVar(stage: Stage): string {

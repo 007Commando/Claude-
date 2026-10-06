@@ -12,6 +12,7 @@ export type LeadSource =
   | "facebook-web"
   | "google"
   | "chatgpt"
+  | "reddit"
   | "ash"
   | "direct"
   | "other";
@@ -218,6 +219,9 @@ export function sourceFromAcquisition(
       break;
     case "chatgpt":
       mapped = "chatgpt";
+      break;
+    case "reddit":
+      mapped = "reddit";
       break;
     case "":
     case "direct":

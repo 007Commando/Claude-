@@ -67,7 +67,7 @@ export default function Footer() {
    * text, where it opens in a new tab.
    */
   const isNoLinksFooterPage =
-    pathname === "/apex-pop-facebook" || pathname === "/apex-pop/start";
+    pathname === "/apex-pop-facebook" || pathname === "/apex-pop-reddit" || pathname === "/apex-pop/start";
   if (isNoLinksFooterPage) {
     return (
       <footer className="bg-white text-slate-900 py-12">

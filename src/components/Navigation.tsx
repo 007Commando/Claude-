@@ -83,6 +83,7 @@ export default function Navigation() {
   const isLeanHeaderPage =
     pathname === "/apex-pop-primewell" ||
     pathname === "/apex-pop-facebook" ||
+    pathname === "/apex-pop-reddit" ||
     pathname === "/primewell";
   /**
    * The Facebook page is the top of the website A/B arm, and the qualifier
@@ -90,11 +91,13 @@ export default function Navigation() {
    * to /auth was a leak past the questions, and LOG IN on that page was a
    * misclick waiting to happen for someone who has no account yet.
    */
-  const isPopWebJourney = pathname === "/apex-pop-facebook";
+  const isPopWebJourney = pathname === "/apex-pop-facebook" || pathname === "/apex-pop-reddit";
   const leanSignupHref =
     pathname === "/apex-pop-facebook"
       ? "/apex-pop/start?from=apex-pop-facebook&utm_source=facebook&utm_medium=website&utm_campaign=apex-pop-promotion-web"
-      : pathname === "/primewell"
+      : pathname === "/apex-pop-reddit"
+        ? "/apex-pop/start?from=apex-pop-reddit"
+        : pathname === "/primewell"
         ? "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=primewell-form"
         : "/auth?mode=signup&plan=free&utm_source=primewell&utm_medium=funnel&utm_campaign=apex-pop-primewell";
 

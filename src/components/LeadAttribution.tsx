@@ -25,6 +25,12 @@ export interface StoredAttribution {
    */
   fbc?: string;
   /**
+   * Reddit's click id (rdt_cid, added to every Reddit ad click). Refreshed
+   * like the Meta one and sent with the signup, so a trial can be reported
+   * back to the Reddit ad that brought it.
+   */
+  rdtCid?: string;
+  /**
    * The Google click identifier, if this visitor arrived on a paid Google
    * click. Held separately from `source` because the two answer different
    * questions and have different lifetimes: `source` is first-touch and
@@ -71,6 +77,7 @@ function sourceFromReferrer(referrer: string): string | null {
     if (host.includes("facebook.") || host.includes("fb.")) return "facebook";
     if (host.includes("instagram.")) return "instagram";
     if (host.includes("primewell")) return "primewell";
+    if (host.includes("reddit.") || host === "redd.it") return "reddit";
     return host;
   } catch {
     return null;
@@ -104,6 +111,7 @@ function AttributionCapture() {
     const utmTerm = params.get("utm_term") ?? undefined;
     const fbclid = params.get("fbclid") ?? undefined;
     const fbc = fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined;
+    const rdtCid = params.get("rdt_cid") ?? undefined;
     const referrer = document.referrer || undefined;
 
     const clickSource = CLICK_PARAMS.find((name) => params.get(name));
@@ -127,6 +135,10 @@ function AttributionCapture() {
       let changed = false;
       if (fbc && !existing.fbc?.endsWith(`.${fbclid}`)) {
         filled.fbc = fbc;
+        changed = true;
+      }
+      if (rdtCid && existing.rdtCid !== rdtCid) {
+        filled.rdtCid = rdtCid;
         changed = true;
       }
       if (!existing.utmContent && utmContent) {
@@ -165,6 +177,10 @@ function AttributionCapture() {
         refreshed.fbc = fbc;
         changed = true;
       }
+      if (rdtCid && existing.rdtCid !== rdtCid) {
+        refreshed.rdtCid = rdtCid;
+        changed = true;
+      }
       if (changed) storeAttribution(refreshed);
       return;
     }
@@ -182,6 +198,7 @@ function AttributionCapture() {
       clickSource,
       // Keep an earlier Meta click id when this visit carries none.
       fbc: fbc ?? existing?.fbc,
+      rdtCid: rdtCid ?? existing?.rdtCid,
     };
     storeAttribution(attribution);
 

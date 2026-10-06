@@ -80,7 +80,7 @@ export interface LeadsPayload {
 
 const lower = (s: string) => s.trim().toLowerCase();
 
-const SOURCES: LeadSource[] = ["primewell", "facebook-form", "facebook-web", "google", "chatgpt", "ash", "direct", "other"];
+const SOURCES: LeadSource[] = ["primewell", "facebook-form", "facebook-web", "google", "chatgpt", "reddit", "ash", "direct", "other"];
 const STAGES: Stage[] = ["lead", "registered", "trial", "customer", "churned"];
 
 interface NormalisedContact {
@@ -115,7 +115,13 @@ function resolveSource(
   tags: string[],
   acquisitionSource: string | null | undefined,
   acquisitionCampaign: string | null | undefined,
+  utmSource?: string,
 ): { source: LeadSource; sourceDetail: string | null } {
+  // A Reddit ad lands on the same qualifier as Facebook's web ads, which
+  // tags every finisher pop-web-lead; the ad's own utm_source says Reddit.
+  if ([utmSource, acquisitionSource].some((s) => (s ?? "").trim().toLowerCase() === "reddit")) {
+    return { source: "reddit", sourceDetail: acquisitionCampaign ?? null };
+  }
   return sourceFromTags(tags) ?? sourceFromAcquisition(acquisitionSource, acquisitionCampaign);
 }
 
@@ -174,7 +180,7 @@ function buildLead(params: {
       : (apexCreatedAt ?? new Date().toISOString());
 
   const acquisition = apexMember?.acquisition ?? apexOnly?.acquisition;
-  const { source: tagOrAcqSource, sourceDetail } = resolveSource(tags, acquisition?.source, acquisition?.campaign);
+  const { source: tagOrAcqSource, sourceDetail } = resolveSource(tags, acquisition?.source, acquisition?.campaign, fields["utm_source"]);
 
   const isPrimewellSource = tagOrAcqSource === "primewell";
   const sellerType = deriveSellerType(fields, tags, isPrimewellSource);

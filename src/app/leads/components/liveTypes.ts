@@ -139,6 +139,7 @@ export function fmtDuration(ms: number): string {
 export function pageLabel(path: string): string {
   if (path.startsWith("/apex-pop/start")) return "Qualifier";
   if (path.startsWith("/apex-pop-facebook")) return "Facebook landing page";
+  if (path.startsWith("/apex-pop-reddit")) return "Reddit landing page";
   if (path.startsWith("/apex-pop-primewell") || path === "/primewell") return "PrimeWell page";
   if (path.startsWith("/auth")) return "Sign-up";
   if (path.startsWith("/checkout")) return "Checkout";

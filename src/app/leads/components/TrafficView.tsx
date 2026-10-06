@@ -37,6 +37,7 @@ const PLATFORM_LABELS: Record<string, string> = {
   linkedin: "LinkedIn",
   email: "Email & SMS",
   primewell: "PrimeWell",
+  reddit: "Reddit",
   direct: "Direct",
   other: "Other sites",
 };
@@ -52,6 +53,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   linkedin: "#0a66c2",
   email: "#f59e0b",
   primewell: "#1d4ed8",
+  reddit: "#ff4500",
   direct: "#667085",
   other: "#98a2b3",
 };

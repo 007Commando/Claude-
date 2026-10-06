@@ -1,5 +1,6 @@
 "use client";
 
+import { trackRedditSignUp } from "../lib/redditPixel";
 import { useEffect, useRef, useState } from "react";
 import TrialTimeline from "./TrialTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -37,10 +38,13 @@ import { liveAccount } from "../lib/live/client";
 function acquisitionFromLanding() {
   const landed = readStoredAttribution();
   const fbp = readCookie("_fbp");
-  // A Meta click id or browser id is worth sending even on a "direct" visit:
-  // it is what lets Meta match the trial back to an ad.
-  if (!landed || (!landed.source && !landed.fbc)) return fbp ? { acquisition: { source: "direct", fbp } } : {};
-  if (landed.source === "direct" && !landed.fbc && !fbp) return {};
+  const rdtUuid = readCookie("_rdt_uuid");
+  // A Meta or Reddit click id or browser id is worth sending even on a
+  // "direct" visit: it is what lets the ad network match the trial to an ad.
+  if (!landed || (!landed.source && !landed.fbc && !landed.rdtCid)) {
+    return fbp || rdtUuid ? { acquisition: { source: "direct", fbp, rdtUuid } } : {};
+  }
+  if (landed.source === "direct" && !landed.fbc && !fbp && !landed.rdtCid && !rdtUuid) return {};
   return {
     acquisition: {
       source: landed.source || "direct",
@@ -51,6 +55,8 @@ function acquisitionFromLanding() {
       term: landed.utmTerm,
       fbc: landed.fbc,
       fbp,
+      rdtCid: landed.rdtCid,
+      rdtUuid,
     },
   };
 }
@@ -101,6 +107,8 @@ declare global {
           term?: string;
           fbc?: string;
           fbp?: string;
+          rdtCid?: string;
+          rdtUuid?: string;
         };
       }) => Promise<SignupResult>;
       /** Replays the redirect signUp held back, once the code is accepted. */
@@ -130,6 +138,8 @@ declare global {
           term?: string;
           fbc?: string;
           fbp?: string;
+          rdtCid?: string;
+          rdtUuid?: string;
         };
       }) => Promise<{
         adoptionStatus?: "adopted" | "duplicate" | "ignored" | null;
@@ -405,11 +415,13 @@ const FREE_TIER = [
 function reportPaidSignup(email?: string) {
   liveAccount(email);
   trackConversion("checkout", { email });
+  trackRedditSignUp(email);
 }
 
 export function reportFreeSignup(email?: string) {
   liveAccount(email);
   trackConversion("freeAccount", { email });
+  trackRedditSignUp(email);
   const eventId = `free-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   window.fbq?.(
     "track",
