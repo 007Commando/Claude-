@@ -226,14 +226,18 @@ export const planById = (id: Plan["id"]): Plan =>
   PLANS.find((plan) => plan.id === id) ?? PLANS[0];
 
 /**
- * PUBLISHED — the discount applied when a plan is billed yearly.
+ * VERIFIED — the discount applied when a plan is billed yearly.
  *
- * None. The app bills a year at twelve months' price ($1,788 Starter, $3,588
- * Pro, from PLANS_PRICES in the frontend's subscriptions config), and the site
- * had been promising 20% off it. Matched to the app on Stefano's word,
- * 2026-10-05. Copy that mentions a saving checks this first.
+ * 20%, read from the live Stripe yearly Prices on 2026-10-05: Starter
+ * 143040 and Pro 287040 cents, twelve months at 80%. That is more than two
+ * months free, which is how Stefano wants it sold, together with the Annual
+ * Member perks below. (For a few hours that day this was 0, copied from the
+ * app's plan cards, which were showing twelve full months by mistake.)
  */
-export const ANNUAL_DISCOUNT_PERCENT = 0;
+export const ANNUAL_DISCOUNT_PERCENT = 20;
+
+/** What an Annual Member gets beyond the price. Stefano, 2026-10-05. */
+export const ANNUAL_MEMBER_PERK = "Annual Members also join Apex's private member groups and network.";
 
 /** `$149.99`, `$299` — trailing `.00` dropped, because prices read as prices. */
 export const formatPrice = (amount: number): string =>

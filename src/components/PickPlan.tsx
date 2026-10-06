@@ -26,6 +26,8 @@ import {
 import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
 import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
 import {
+  ANNUAL_DISCOUNT_PERCENT,
+  ANNUAL_MEMBER_PERK,
   countLabel,
   formatPrice,
   limitLabel,
@@ -147,7 +149,7 @@ const sections: Section[] = [
 const faqs = [
   {
     question: "How much does Apex Applications cost?",
-    answer: `The Beginner Plan is ${formatPrice(planById("beginner").monthly)}/month, the Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Starter and Pro can also be billed yearly, at twelve months' price; Beginner is monthly only.`,
+    answer: `The Beginner Plan is ${formatPrice(planById("beginner").monthly)}/month, the Starter Plan is ${formatPrice(planById("starter").monthly)}/month and the Pro Plan is ${formatPrice(planById("pro").monthly)}/month. Billed yearly, Starter and Pro are ${ANNUAL_DISCOUNT_PERCENT}% off, more than two months free, and ${ANNUAL_MEMBER_PERK.replace(/^Annual Members also/, "Annual Members")} Beginner is monthly only.`,
   },
   {
     question: "Who is the Beginner plan for?",
@@ -201,7 +203,7 @@ export default function PickPlan() {
     ? (PRICE_LIMITED_M * (1 - ANNUAL_DISCOUNT)).toFixed(2)
     : PRICE_LIMITED_M.toFixed(2);
   const unlimitedPrice = isAnnual
-    ? Math.round(PRICE_UNLIMITED_M * (1 - ANNUAL_DISCOUNT)).toString()
+    ? (PRICE_UNLIMITED_M * (1 - ANNUAL_DISCOUNT)).toFixed(2) // $239.20, as Stripe charges
     : PRICE_UNLIMITED_M.toString();
   const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
 
@@ -272,6 +274,12 @@ export default function PickPlan() {
                 </button>
               </div>
             </div>
+            {/* The reason to pick Annual, stated next to the switch rather than
+              left for the badge to imply. Stefano, 2026-10-05: drive annual. */}
+            <p className="mt-4 text-sm text-slate-600">
+              <span className="font-bold text-emerald-600">Save {ANNUAL_DISCOUNT_PERCENT}% with Annual</span>
+              , more than 2 months free. {ANNUAL_MEMBER_PERK}
+            </p>
           </div>
         </div>
 
