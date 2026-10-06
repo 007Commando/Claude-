@@ -103,7 +103,7 @@ const CAPABILITIES: { group: string; tools: [string, string][]; status: Status }
       ["get_profitable_opportunities", "Profitable ASINs in your database that you are not selling yet."],
       ["search_products", "Your product database with cost, price, profit, ROI, stock and rank."],
       ["list_catalog_scans", "Supplier catalog scans you have run."],
-      ["get_catalog_scan_results", "Products found in one scan, sortable by profit or ROI."],
+      ["get_catalog_scan_results", "Products found in one scan, sortable by profit or ROI, with the ones you do not have yet on their own."],
     ],
   },
   {
@@ -120,6 +120,7 @@ const CAPABILITIES: { group: string; tools: [string, string][]; status: Status }
     tools: [
       ["get_restock_recommendations", "Profitable products you sell that are lowest on stock."],
       ["get_inventory", "FBA inventory, velocity, days left and restock status."],
+      ["get_purchase_orders", "Your purchase orders: vendor, status, lines, cost, projected profit and ROI."],
     ],
   },
   {
@@ -273,7 +274,7 @@ function Developers() {
         </div>
       </div>
       <p className="mt-3 text-sm text-slate-500">
-        Create a key in Apex under Settings, then Claude connector. Treat it like a password. Without a key the endpoint answers 401; without the plan or permission a tool needs, it refuses in plain words.
+        Create a key in Apex: Connect your AI in your account menu, for Claude or ChatGPT. Treat it like a password. Without a key the endpoint answers 401; without the plan or permission a tool needs, it refuses in plain words.
       </p>
       <div className="mt-6 flex flex-col gap-3 rounded-xl border border-dashed border-slate-300 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3 text-sm text-slate-600">
@@ -392,7 +393,7 @@ export default function AgentInfrastructure() {
             </div>
           </Block>
 
-          <Block id="capabilities" title="Capabilities" lead="Thirteen read-only tools across five areas. Lists are capped so results fit a model's context. Two kinds of action are planned, both behind approval.">
+          <Block id="capabilities" title="Capabilities" lead="Fourteen read-only tools across five areas. Lists are capped so results fit a model's context. Two kinds of action are planned, both behind approval.">
             <div className="space-y-6">
               {CAPABILITIES.map((g) => (
                 <div key={g.group} className="overflow-hidden rounded-2xl border border-slate-200">
