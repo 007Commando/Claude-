@@ -236,8 +236,8 @@ export const planById = (id: Plan["id"]): Plan =>
  */
 export const ANNUAL_DISCOUNT_PERCENT = 20;
 
-/** What an Annual Member gets beyond the price. Stefano, 2026-10-05. */
-export const ANNUAL_MEMBER_PERK = "Annual Members also join Apex's private member groups and network.";
+/** What an Annual Member gets beyond the price. Stefano, 2026-10-05/06. */
+export const ANNUAL_MEMBER_PERK = "Annual Members also join Apex's private Discord and WhatsApp community.";
 
 /** `$149.99`, `$299` — trailing `.00` dropped, because prices read as prices. */
 export const formatPrice = (amount: number): string =>
