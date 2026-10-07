@@ -111,9 +111,9 @@ const INTERNAL_EMAILS = new Set(
 );
 
 /**
- * Clients Stefano signs himself, outside the funnels (2026-10-07). They pay
- * through Stripe under emails no account or GHL contact carries, so they are
- * labelled for what they are instead of being flagged as unmatched.
+ * Clients Stefano signs himself, outside the funnels (2026-10-07). They are
+ * not leads, so like our own accounts they are kept off the board and out of
+ * every count ("I don't want her to be on this leads table").
  */
 const PRIVATE_CLIENT_EMAILS = new Set(
   (process.env.LEAD_DESK_PRIVATE_CLIENTS ?? "empowered.blessed.llc@gmail.com")
@@ -318,7 +318,7 @@ function buildLead(params: {
     firstSource: attribution.firstSource,
     convertedVia: attribution.convertedVia,
     convertedViaDetail: attribution.convertedViaDetail,
-    internal: email ? INTERNAL_EMAILS.has(email) : false,
+    internal: email ? INTERNAL_EMAILS.has(email) || PRIVATE_CLIENT_EMAILS.has(email) : false,
     stripeOnly: false,
   };
 }
@@ -637,7 +637,7 @@ function stripeOnlyLead(email: string | null, name: string | null, at: string): 
     firstSource: "direct",
     convertedVia: null,
     convertedViaDetail: null,
-    internal: e ? INTERNAL_EMAILS.has(e) : false,
+    internal: e ? INTERNAL_EMAILS.has(e) || privateClient : false,
     stripeOnly: !privateClient,
   };
 }
