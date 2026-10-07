@@ -1,0 +1,19 @@
+Row Type,Action,Ad group status,Campaign,Ad group,Ad group type,Ad rotation,Default max. CPC
+Ad group,Add,Enabled,A1 | Brand,Brand | Core,Standard,Optimize,2.00
+Ad group,Add,Enabled,A1 | Brand,Brand | Pricing,Standard,Optimize,2.00
+Ad group,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,Standard,Optimize,6.00
+Ad group,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,Standard,Optimize,4.50
+Ad group,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,Standard,Optimize,6.00
+Ad group,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,Standard,Optimize,6.00
+Ad group,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,Standard,Optimize,9.00
+Ad group,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,Standard,Optimize,4.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,Standard,Optimize,7.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,Standard,Optimize,6.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,Standard,Optimize,5.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,Standard,Optimize,5.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,Standard,Optimize,5.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,Standard,Optimize,5.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,Standard,Optimize,4.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,Standard,Optimize,6.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,Standard,Optimize,10.00
+Ad group,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,Standard,Optimize,6.00

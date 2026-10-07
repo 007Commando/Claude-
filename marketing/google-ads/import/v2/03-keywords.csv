@@ -1,0 +1,645 @@
+Row Type,Action,Keyword status,Campaign,Ad group,Keyword,Type,Default max. CPC,Final URL
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apexapplications,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apexapplications,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications amazon,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications amazon,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications software,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications software,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex amazon wholesale software,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex amazon wholesale software,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications io,Exact match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Core,apex applications io,Phrase match,2.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications pricing,Exact match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications pricing,Phrase match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications price,Exact match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications price,Phrase match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications cost,Exact match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications cost,Phrase match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications plans,Exact match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A1 | Brand,Brand | Pricing,apex applications plans,Phrase match,2.00,https://www.apexapplications.io/pricing
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale sourcing software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale sourcing software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale product sourcing software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale product sourcing software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,software for amazon wholesale,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,software for amazon wholesale,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,wholesale fba software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,wholesale fba software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,best amazon wholesale software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,best amazon wholesale software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale tools,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale tools,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale tool,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale tool,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale management software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,amazon wholesale management software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,fba wholesale software,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,fba wholesale software,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,wholesale software for amazon sellers,Exact match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Software,wholesale software for amazon sellers,Phrase match,6.00,https://www.apexapplications.io/
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,amazon wholesale scanner,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,amazon wholesale scanner,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,supplier price list scanner,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,supplier price list scanner,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,scan supplier catalog amazon,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,scan supplier catalog amazon,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,wholesale price list analysis amazon,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,wholesale price list analysis amazon,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,amazon wholesale list analysis,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,amazon wholesale list analysis,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,bulk upc lookup amazon,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,bulk upc lookup amazon,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin bulk,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin bulk,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin converter,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc to asin converter,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,bulk asin lookup,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,bulk asin lookup,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc scanner for amazon sellers,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,upc scanner for amazon sellers,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,price list to asin,Exact match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A2 | Wholesale Software,Wholesale | Price List Scanner,price list to asin,Phrase match,4.50,https://www.apexapplications.io/features/green
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon purchase order software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon purchase order software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,purchase order software for amazon sellers,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,purchase order software for amazon sellers,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon wholesale purchase order,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon wholesale purchase order,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,fba purchase order software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,fba purchase order software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon po software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,amazon po software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,purchase order tool for amazon sellers,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Purchase Orders,purchase order tool for amazon sellers,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon seller profit tracker,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon seller profit tracker,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon fba profit tracker,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon fba profit tracker,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon profit and loss software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon profit and loss software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon seller p&l software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon seller p&l software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon cogs tracking software,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon cogs tracking software,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon fba profit dashboard,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon fba profit dashboard,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon wholesale profit tracking,Exact match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Profit Tracking,amazon wholesale profit tracking,Phrase match,6.00,https://www.apexapplications.io/features/blue
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,amazon inventory management software,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,amazon restock software,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,fba restock planner,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,amazon reorder software,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,amazon inventory planning software,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A3 | Purchasing & Profit,Purchasing | Restock Planning,amazon restock tool,Exact match,9.00,https://www.apexapplications.io/amazon-inventory-management-software
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,chatgpt for amazon sellers,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,chatgpt for amazon sellers,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,chatgpt for amazon fba,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,chatgpt for amazon fba,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,claude for amazon sellers,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,claude for amazon sellers,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai for amazon wholesale,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai for amazon wholesale,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai tool for amazon wholesale,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai tool for amazon wholesale,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,amazon seller mcp,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,amazon seller mcp,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,mcp server for amazon sellers,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,mcp server for amazon sellers,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai assistant for amazon sellers,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,ai assistant for amazon sellers,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,connect chatgpt to amazon seller data,Exact match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A5 | AI for Amazon Sellers,AI | ChatGPT and Claude,connect chatgpt to amazon seller data,Phrase match,4.00,https://www.apexapplications.io/ai
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits alternative,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits alternative,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits alternatives,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits alternatives,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to third party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits competitors,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits competitors,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits vs,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits vs,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like third party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like third party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like third party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits alternative,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits alternative,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits alternatives,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits alternatives,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to thirdpartyprofits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits competitors,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits competitors,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits vs,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits vs,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like thirdpartyprofits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like thirdpartyprofits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like thirdpartyprofits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits alternative,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits alternative,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits alternatives,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits alternatives,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,alternative to 3rd party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits competitors,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits competitors,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits vs,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits vs,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apps like 3rd party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,tools like 3rd party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,software like 3rd party profits,Phrase match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits competitor,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,similar to third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,better than third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,cheaper than third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,third party profits vs apex,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apex vs third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,replace third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,switch from third party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits competitor,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,similar to thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,better than thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,cheaper than thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,thirdpartyprofits vs apex,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apex vs thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,replace thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,switch from thirdpartyprofits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits competitor,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,similar to 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,better than 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,cheaper than 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,3rd party profits vs apex,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,apex vs 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,replace 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Third Party Profits,switch from 3rd party profits,Exact match,7.00,https://www.apexapplications.io/compare/third-party-profits
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp alternative,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp alternative,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp alternatives,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to selleramp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp competitors,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp competitors,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp vs,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp vs,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like selleramp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like selleramp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like selleramp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp alternative,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp alternative,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp alternatives,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to seller amp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp competitors,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp competitors,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp vs,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp vs,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like seller amp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like seller amp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like seller amp,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas alternative,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas alternative,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas alternatives,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,alternative to selleramp sas,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas competitors,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas competitors,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas vs,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas vs,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apps like selleramp sas,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,tools like selleramp sas,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,software like selleramp sas,Phrase match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp competitor,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,similar to selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,better than selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,cheaper than selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp vs apex,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apex vs selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,replace selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,switch from selleramp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp competitor,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,similar to seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,better than seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,cheaper than seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,seller amp vs apex,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apex vs seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,replace seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,switch from seller amp,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas competitor,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,similar to selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,better than selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,cheaper than selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,selleramp sas vs apex,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,apex vs selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,replace selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SellerAmp,switch from selleramp sas,Exact match,6.00,https://www.apexapplications.io/compare/selleramp
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app alternative,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app alternative,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app alternatives,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,alternative to seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,alternative to seller assistant app,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app competitors,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app competitors,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app vs,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app vs,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apps like seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apps like seller assistant app,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,tools like seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,tools like seller assistant app,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,software like seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,software like seller assistant app,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant alternative,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant alternative,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant alternatives,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,alternative to sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,alternative to sellerassistant,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant competitors,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant competitors,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant vs,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant vs,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apps like sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apps like sellerassistant,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,tools like sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,tools like sellerassistant,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,software like sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,software like sellerassistant,Phrase match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app competitor,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,similar to seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,better than seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,cheaper than seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,seller assistant app vs apex,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apex vs seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,replace seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,switch from seller assistant app,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant competitor,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,similar to sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,better than sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,cheaper than sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,sellerassistant vs apex,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,apex vs sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,replace sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Seller Assistant,switch from sellerassistant,Exact match,5.00,https://www.apexapplications.io/compare/seller-assistant
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited alternative,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited alternative,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited alternatives,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,alternative to scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,alternative to scan unlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited competitors,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited competitors,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited vs,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited vs,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apps like scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apps like scan unlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,tools like scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,tools like scan unlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,software like scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,software like scan unlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited alternative,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited alternative,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited alternatives,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,alternative to scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,alternative to scanunlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited competitors,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited competitors,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited vs,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited vs,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apps like scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apps like scanunlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,tools like scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,tools like scanunlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,software like scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,software like scanunlimited,Phrase match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited competitor,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,similar to scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,better than scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,cheaper than scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scan unlimited vs apex,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apex vs scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,replace scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,switch from scan unlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited competitor,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,similar to scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,better than scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,cheaper than scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,scanunlimited vs apex,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,apex vs scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,replace scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Scan Unlimited,switch from scanunlimited,Exact match,5.00,https://www.apexapplications.io/compare/scan-unlimited
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage alternative,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage alternative,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage alternatives,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,alternative to tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,alternative to tactical arbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage competitors,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage competitors,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage vs,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage vs,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apps like tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apps like tactical arbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tools like tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tools like tactical arbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,software like tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,software like tactical arbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage alternative,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage alternative,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage alternatives,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,alternative to tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,alternative to tacticalarbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage competitors,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage competitors,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage vs,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage vs,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apps like tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apps like tacticalarbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tools like tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tools like tacticalarbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,software like tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,software like tacticalarbitrage,Phrase match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage competitor,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,similar to tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,better than tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,cheaper than tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tactical arbitrage vs apex,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apex vs tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,replace tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,switch from tactical arbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage competitor,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,similar to tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,better than tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,cheaper than tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,tacticalarbitrage vs apex,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,apex vs tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,replace tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Tactical Arbitrage,switch from tacticalarbitrage,Exact match,5.00,https://www.apexapplications.io/compare/tactical-arbitrage
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source alternative,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source alternative,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source alternatives,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,alternative to rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,alternative to rocket source,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source competitors,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source competitors,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source vs,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source vs,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apps like rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apps like rocket source,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,tools like rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,tools like rocket source,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,software like rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,software like rocket source,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource alternative,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource alternative,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource alternatives,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource alternatives,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,alternative to rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,alternative to rocketsource,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource competitors,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource competitors,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource vs,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource vs,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apps like rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apps like rocketsource,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,tools like rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,tools like rocketsource,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,software like rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,software like rocketsource,Phrase match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source competitor,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,similar to rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,better than rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,cheaper than rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocket source vs apex,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apex vs rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,replace rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,switch from rocket source,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource competitor,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,similar to rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,better than rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,cheaper than rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,rocketsource vs apex,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,apex vs rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,replace rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Rocket Source,switch from rocketsource,Exact match,5.00,https://www.apexapplications.io/compare/rocket-source
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem alternative,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem alternative,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem alternatives,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem alternatives,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,alternative to boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,alternative to boxem,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem competitors,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem competitors,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem vs,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem vs,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,apps like boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,apps like boxem,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,tools like boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,tools like boxem,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,software like boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,software like boxem,Phrase match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem competitor,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,similar to boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,better than boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,cheaper than boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,boxem vs apex,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,apex vs boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,replace boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | Boxem,switch from boxem,Exact match,4.00,https://www.apexapplications.io/compare/boxem
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout alternative,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout alternative,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout alternatives,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,alternative to smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,alternative to smartscout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout competitors,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout competitors,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout vs,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout vs,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apps like smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apps like smartscout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,tools like smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,tools like smartscout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,software like smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,software like smartscout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout alternative,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout alternative,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout alternatives,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,alternative to smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,alternative to smart scout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout competitors,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout competitors,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout vs,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout vs,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apps like smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apps like smart scout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,tools like smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,tools like smart scout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,software like smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,software like smart scout,Phrase match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout competitor,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,similar to smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,better than smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,cheaper than smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smartscout vs apex,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apex vs smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,replace smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,switch from smartscout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout competitor,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,similar to smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,better than smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,cheaper than smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,smart scout vs apex,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,apex vs smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,replace smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | SmartScout,switch from smart scout,Exact match,6.00,https://www.apexapplications.io/compare/smartscout
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard alternative,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard alternative,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard alternatives,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard alternatives,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,alternative to sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,alternative to sellerboard,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard competitors,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard competitors,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard vs,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard vs,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apps like sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apps like sellerboard,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,tools like sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,tools like sellerboard,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,software like sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,software like sellerboard,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board alternative,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board alternative,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board alternatives,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board alternatives,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,alternative to seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,alternative to seller board,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board competitors,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board competitors,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board vs,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board vs,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apps like seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apps like seller board,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,tools like seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,tools like seller board,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,software like seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,software like seller board,Phrase match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard competitor,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,similar to sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,better than sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,cheaper than sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,sellerboard vs apex,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apex vs sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,replace sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,switch from sellerboard,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board competitor,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,similar to seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,better than seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,cheaper than seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,seller board vs apex,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,apex vs seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,replace seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | sellerboard,switch from seller board,Exact match,10.00,https://www.apexapplications.io/compare/sellerboard
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab alternative,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab alternative,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab alternatives,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to inventorylab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab competitors,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab competitors,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab vs,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab vs,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like inventorylab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like inventorylab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like inventorylab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab alternative,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab alternative,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab alternatives,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to inventory lab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab competitors,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab competitors,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab vs,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab vs,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like inventory lab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like inventory lab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like inventory lab,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 alternative,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 alternative,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 alternatives,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 alternatives,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,alternative to seller 365,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 competitors,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 competitors,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 vs,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 vs,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apps like seller 365,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,tools like seller 365,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,software like seller 365,Phrase match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab competitor,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,similar to inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,better than inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,cheaper than inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventorylab vs apex,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apex vs inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,replace inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,switch from inventorylab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab competitor,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,similar to inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,better than inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,cheaper than inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,inventory lab vs apex,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apex vs inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,replace inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,switch from inventory lab,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 competitor,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,similar to seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,better than seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,cheaper than seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,seller 365 vs apex,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,apex vs seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,replace seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
+Keyword,Add,Enabled,A4 | Competitor Alternatives,Alt | InventoryLab,switch from seller 365,Exact match,6.00,https://www.apexapplications.io/compare/inventorylab
