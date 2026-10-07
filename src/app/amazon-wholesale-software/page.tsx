@@ -7,6 +7,7 @@ import { COMPARISONS } from "../../data/comparisons";
 import { HAND_BUILT, COMPARISON_COUNT } from "../../data/compareIndexCards";
 import { ANNUAL_DISCOUNT_PERCENT, TRIAL_DAYS, formatPrice, planById, trialTerms } from "../../config/offer";
 import { REPRICER_FACTS, SUPPLIER_ACCESS } from "../../config/product";
+import HeroCta from "../../components/HeroCta";
 
 /**
  * The page that owns "Amazon wholesale software".
@@ -131,6 +132,7 @@ export default function Page() {
           and see what you made. Each step can be its own subscription, and most sellers end up copying numbers between them.
           Here is what software for wholesale has to handle, and how Apex does each part.
         </p>
+        <HeroCta cta="guide-amazon-wholesale-software-hero" align="left" />
 
         <div className="mt-14 space-y-6">
           {JOBS.map((item, index) => (

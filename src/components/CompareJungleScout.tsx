@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import HeroCta from "./HeroCta";
 import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 import { APEX_ENTRY, APEX_EXTENSION, APEX_GOLD, APEX_RED } from "../data/comparisons";
 import { planById } from "../config/offer";
@@ -24,6 +25,7 @@ export default function CompareJungleScout() {
             repricing, and cashflow. Both are research tools at heart; they research different
             businesses.
           </p>
+          <HeroCta cta="compare-junglescout-hero" />
         </motion.header>
 
         <WorkflowCoverage

@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import HeroCta from "./HeroCta";
 import { absoluteUrl } from "../config/site";
 import { ArrowRight, Check } from "lucide-react";
 import { fadeIn } from "./CompareShared";
@@ -94,6 +95,8 @@ export default function ContentPage({
             {h1}
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">{intro}</p>
+          {/* Paid search lands here: a way to start before the essay (Google Ads rebuild, 2026-10-07). */}
+          <HeroCta cta={`guide-${pathname.replace(/^\//, "") || "home"}-hero`} align="left" />
         </motion.header>
 
         <div className="space-y-12">

@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import HeroCta from "./HeroCta";
 import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 import { APEX_ENTRY, APEX_EXTENSION, APEX_GOLD, APEX_RED } from "../data/comparisons";
 import { planById } from "../config/offer";
@@ -24,6 +25,7 @@ export default function CompareHelium10() {
             break-even repricing and inventory turns. Most sellers do not need both. They need to
             know which business they are in.
           </p>
+          <HeroCta cta="compare-helium10-hero" />
         </motion.header>
 
         <WorkflowCoverage

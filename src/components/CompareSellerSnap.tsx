@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import HeroCta from "./HeroCta";
 import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
 import { APEX_GOLD, APEX_PRO_ENTRY } from "../data/comparisons";
 import { planById } from "../config/offer";
@@ -25,6 +26,7 @@ export default function CompareSellerSnap() {
             is whether you want a dedicated standalone repricer, or repricing as part of one
             operating platform.
           </p>
+          <HeroCta cta="compare-sellersnap-hero" />
         </motion.header>
 
         <WorkflowCoverage

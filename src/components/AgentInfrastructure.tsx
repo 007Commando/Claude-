@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Copy, X } from "lucide-react";
 
 import CheckoutLink from "./CheckoutLink";
+import HeroCta from "./HeroCta";
 import ArchitectureDiagram from "./agent/ArchitectureDiagram";
 import { TRIAL_CHECKOUT_URL, trialCta } from "../config/offer";
 import { AI_CLIENTS, AI_CONNECTOR, COMPANY, VERIFIED_STATS } from "../config/product";
@@ -346,13 +347,12 @@ export default function AgentInfrastructure() {
             <p className="mb-8 max-w-xl text-lg leading-relaxed text-slate-600">
               Ask about your profit, stock, supplier scans and purchase orders in plain English, and get answers from your own Apex data. On the Pro plan your assistant can also prepare drafts for you to review. It can never submit an order, spend money or change a live price.
             </p>
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row">
-              <a href="#access" className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
-                See what you need <ArrowRight size={15} />
-              </a>
-              <a href={`${APP}/settings/claude`} className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400">
-                Connect your account
-              </a>
+            {/* Trial first for new visitors (paid search lands here); existing users connect from the side panel or the link below. */}
+            <div className="mb-6">
+              <HeroCta cta="ai-hero" align="left" secondary={{ label: "See what you need", href: "#access" }} />
+              <p className="mt-3 text-sm text-slate-600">
+                Already on Apex? <a href={`${APP}/settings/claude`} className="font-semibold text-blue-700 hover:underline">Connect your account</a>.
+              </p>
             </div>
             <p className="max-w-lg text-[12px] leading-relaxed text-slate-500">
               Claude and ChatGPT are trademarks of their owners. Apex is independent and not affiliated with Anthropic or OpenAI.

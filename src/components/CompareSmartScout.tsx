@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
+import HeroCta from "./HeroCta";
 import { APEX_ENTRY, APEX_EXTENSION, APEX_GOLD, APEX_RED } from "../data/comparisons";
 import { planById } from "../config/offer";
 
@@ -22,6 +23,7 @@ export default function CompareSmartScout() {
             in beta and by invitation. Which one you need depends on
             whether you want to study the market or operate in it.
           </p>
+          <HeroCta cta="compare-smartscout-hero" />
         </motion.header>
 
         <WorkflowCoverage
