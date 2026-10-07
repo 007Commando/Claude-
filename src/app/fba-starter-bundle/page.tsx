@@ -5,7 +5,7 @@ import FbaStarterBundle from "../../components/FbaStarterBundle";
 export const metadata: Metadata = pageMetadata({
   title: "Amazon FBA Starter Bundle for $29 | Apex",
   description:
-    "Get the Amazon FBA Starter Bundle for $29: an extended trial of the Apex suite, 3 free suppliers, a free lifetime Review Booster and the Keepa Playbook.",
+    "Get the Amazon FBA Starter Bundle for $29: an extended trial of the Starter plan, 3 starting suppliers, Review Booster included and the Keepa Playbook.",
   path: "/fba-starter-bundle",
 });
 

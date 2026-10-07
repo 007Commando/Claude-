@@ -4,9 +4,9 @@ import ApexRed from "../../../components/ApexRed";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Amazon FBA Prep Center & Shipment Software | Apex Red",
+  title: "Apex Red: Prep & Shipment Management (Beta, By Invitation)",
   description:
-    "Manage FBA shipments, warehouses, inventory and prep center billing in one place, alongside Apex's prep center network. Now in beta.",
+    "Shipments, warehouses, prep center chat and prep billing next to your orders. In beta and opened by invitation; free for sellers connected to a prep center approved on Apex.",
   path: "/features/red",
 });
 

@@ -4,9 +4,9 @@ import ApexGold from "../../../components/ApexGold";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Amazon Repricer With Break-Even Floors | Apex Gold",
+  title: "Apex Gold: Amazon Repricer (Beta, Pro Plan)",
   description:
-    "Amazon repricing anchored to true break-evens from your real FBA fees. Set floors by ROI, margin or dollar profit, preview every move and keep a full log.",
+    "A rule-based Amazon repricer in beta. Floors come from your cost and Amazon's fees, you preview each change, and every decision is logged. Pro on every listing; Plus 5; Beginner 1.",
   path: "/features/gold",
 });
 

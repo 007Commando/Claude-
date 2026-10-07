@@ -33,7 +33,7 @@ export const HAND_BUILT: Card[] = [
     category: "Private-label suite",
     module: "/features/green",
     frame:
-      "The giant of private label: keywords, listings, PPC. Apex plays the other game, third-party wholesale. The comparison is really a fork: which business are you in?",
+      "Built for private label: keywords, listings, PPC. Apex plays the other game, third-party wholesale. The comparison is really a fork: which business are you in?",
   },
   {
     href: "/compare/junglescout",
@@ -41,7 +41,7 @@ export const HAND_BUILT: Card[] = [
     category: "Product research",
     module: "/features/green",
     frame:
-      "The original niche-validation tool, for inventing your own product. Apex runs products that already exist. Bought at wholesale, repriced to break-even, restocked on math.",
+      "A niche-validation tool for inventing your own product. Apex runs products that already exist: bought at wholesale, restocked from your own numbers, and repriced on Pro (beta).",
   },
   {
     href: "/compare/smartscout",
@@ -49,7 +49,7 @@ export const HAND_BUILT: Card[] = [
     category: "Wholesale research",
     module: "/features/green",
     frame:
-      "Closest to our lane: excellent brand and market analytics. The difference is what happens after research. Apex adds the purchase orders, repricer, and P&L.",
+      "Close to our lane: brand and market analytics. The difference is what happens after research. Apex adds purchase orders and P&L, with the repricer (beta) on Pro.",
   },
   {
     href: "/compare/sellersnap",
@@ -57,7 +57,7 @@ export const HAND_BUILT: Card[] = [
     category: "AI repricer",
     module: "/features/gold",
     frame:
-      "A respected game-theory repricer, and only a repricer. Apex Gold reprices with break-even floors from live fees. Inside the suite the rest of your operation runs on.",
+      "A game-theory repricer, and only a repricer. Apex Gold (beta, on Pro) reprices with break-even floors from your fees, inside the platform the rest of your operation runs on.",
   },
 ];
 

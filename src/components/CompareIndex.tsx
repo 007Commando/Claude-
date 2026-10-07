@@ -31,7 +31,7 @@ const SECTIONS: { module: string; title: string; blurb: string }[] = [
     module: "/features/gold",
     title: "Repricers",
     blurb:
-      "Tools whose main job is deciding your price. Apex Gold does this from break-even floors computed out of your own costs.",
+      "Tools whose main job is deciding your price. Apex Gold (beta, on Pro) does this from break-even floors computed out of your own costs.",
   },
   {
     module: "/features/green",
@@ -49,7 +49,7 @@ const SECTIONS: { module: string; title: string; blurb: string }[] = [
     module: "/features/red",
     title: "Shipping and prep",
     blurb:
-      "Tools for getting boxes to Amazon. The Apex module here, Apex Red, is in beta, every page in this group says so.",
+      "Tools for getting boxes to Amazon. The Apex module here, Apex Red, is in beta and opened by invitation, and every page in this group says so.",
   },
 ];
 
@@ -57,7 +57,8 @@ export default function CompareIndex() {
   return (
     <div className="pt-32 pb-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <motion.header {...fadeIn} className="text-center max-w-3xl mx-auto">
+        {/* initial={false}: the hero is the LCP element and must render visible on the server, not at opacity 0. */}
+        <motion.header {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">Comparisons</p>
           <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-[1.05] mb-6">
             Apex vs the field, honestly
@@ -68,10 +69,10 @@ export default function CompareIndex() {
             because the sellers these comparisons are wrong for were never our customers, and the
             ones they are right for deserve a straight answer.
           </p>
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="mt-4 text-sm text-slate-500">
             Where we have not verified a competitor&apos;s capability, the table says so rather
-            than marking it absent. Prices were checked in September 2026 against each
-            company&apos;s own pricing page.
+            than marking it absent. Competitor details reviewed September 2026 against each
+            company&apos;s own pricing page. Apex details checked against the Apex app in October 2026.
           </p>
         </motion.header>
 
@@ -99,7 +100,7 @@ export default function CompareIndex() {
                       href={item.href}
                       className="group block h-full rounded-3xl border border-slate-200 bg-white p-8 transition-all hover:border-blue-300 hover:shadow-[0_20px_40px_-24px_rgba(21,112,239,0.35)]"
                     >
-                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
                         {item.category}
                       </div>
                       <h3 className="text-2xl font-black tracking-tight text-slate-900 mb-3">
@@ -118,7 +119,7 @@ export default function CompareIndex() {
           );
         })}
 
-        <CompareCta line="Or skip the reading: connect your store and see your own numbers inside Apex in fifteen minutes." />
+        <CompareCta line="Or skip the reading: connect your store and see your own numbers inside Apex." />
       </div>
     </div>
   );

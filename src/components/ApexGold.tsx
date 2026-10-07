@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
 import {
   Activity,
@@ -16,6 +17,9 @@ import {
 } from "lucide-react";
 import ViewAppButton from "./ViewAppButton";
 import ScrollProgressLine from "./ScrollProgressLine";
+import FeatureFacts from "./FeatureFacts";
+import { moduleByKey, REPRICER_FACTS } from "../config/product";
+import { TRIAL_DAYS, formatPrice, planById, trialTerms } from "../config/offer";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -30,7 +34,7 @@ const sectionReveal = {
   transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
 } as const;
 
-/** A mock repricer row: the concept art for a page with no screenshots yet. */
+/** A mock repricer row: the concept art for a page with no screenshots yet. Every panel that uses it carries an "Example, not real data" label. */
 function RepriceRow({
   sku, floor, price, delta, up, winning, delay,
 }: {
@@ -74,10 +78,11 @@ export default function ApexGold() {
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <Zap size={14} className="stroke-[3]" />
-              Repricing engine (beta)
+              Repricer · Beta · Pro plan
             </div>
           </div>
-          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-amber-700">Amazon repricer with break-even floors</h1>
+          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-amber-700">Apex Gold: {moduleByKey("gold").label} (Beta)</h1>
           <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             PRICING <br />
             <span className="text-amber-500 italic">REFLEXES.</span>
@@ -85,9 +90,16 @@ export default function ApexGold() {
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
             Apex Gold works out what every listing should sell for, anchored to true break-evens
             computed from your real Amazon fees, never a guess. Preview each move before it
-            goes anywhere near your storefront.
+            goes anywhere near your storefront. {REPRICER_FACTS.plans}
           </p>
         </motion.div>
+      </div>
+
+      {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
+      <FeatureFacts module="gold" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-16" aria-hidden="true" />
 
         {/*
           The same thing the application says to a first-time Gold user, said
@@ -96,7 +108,7 @@ export default function ApexGold() {
           confident in the results", and a marketing page that promised a
           finished autopilot was contradicting our own product.
         */}
-        <motion.div {...sectionReveal} className="max-w-3xl mx-auto mb-24 rounded-2xl border border-amber-200 bg-amber-50/50 p-6">
+        <motion.div {...sectionReveal} initial={false} className="max-w-3xl mx-auto mb-24 rounded-2xl border border-amber-200 bg-amber-50/50 p-6">
           <p className="text-sm font-black text-amber-900 mb-1.5">Apex Gold is in beta</p>
           <p className="text-sm leading-relaxed text-amber-900/80">
             Set a floor on every listing before switching repricing on, keep an eye on your
@@ -104,6 +116,7 @@ export default function ApexGold() {
             confident in the results. Pricing is one of several factors in Amazon&apos;s offer
             selection. No repricer can promise you the Buy Box, and this one does not.
           </p>
+          <p className="mt-3 text-sm leading-relaxed text-amber-900/80">{REPRICER_FACTS.howPricesMove}</p>
         </motion.div>
 
         <div className="text-center mb-24">
@@ -144,13 +157,14 @@ export default function ApexGold() {
                     </div>
                   ))}
                 </div>
-                <ViewAppButton data-feature-cta className="bg-amber-500 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-amber-600 transition-all">
+                <ViewAppButton plan="pro" data-feature-cta className="bg-amber-500 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-amber-600 transition-all">
                   View Apex Gold <ExternalLink size={18} />
                 </ViewAppButton>
               </div>
               <div className="relative">
                 <div className="absolute inset-0 rounded-[32px] bg-amber-400/25 blur-3xl" aria-hidden />
                 <div className="relative space-y-2.5 rounded-[28px] border border-amber-200/70 bg-amber-50/40 p-5">
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</p>
                   <RepriceRow sku="B08KHQ · Facial Serum 1oz" floor="$7.29" price="$18.90" delta="+$0.35" up winning delay={0.1} />
                   <RepriceRow sku="B0CRSN · Tea Tree Oil 2oz" floor="$9.14" price="$21.40" delta="-$0.22" up={false} winning={false} delay={0.2} />
                   <RepriceRow sku="B006IF · Wave Serum 5.3oz" floor="$11.02" price="$26.15" delta="+$1.10" up winning delay={0.3} />
@@ -166,7 +180,8 @@ export default function ApexGold() {
               <div className="relative order-last lg:order-first">
                 <div className="absolute inset-0 rounded-[32px] bg-amber-400/20 blur-3xl" aria-hidden />
                 <div className="relative rounded-[28px] border border-slate-200 bg-white p-7">
-                  <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Set floors by goal</div>
+                  <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Set floors by goal</div>
+                  <p className="mb-5 text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</p>
                   {[
                     { label: "Minimum 10% ROI", detail: "floor computed per SKU from cost + real FBA fees", active: true },
                     { label: "Minimum 15% margin", detail: "solved from referral rate and fulfillment fee", active: false },
@@ -203,7 +218,7 @@ export default function ApexGold() {
                 </p>
                 <div className="space-y-4">
                   {[
-                    "True break-even per SKU from live Amazon fee data",
+                    "True break-even per SKU from Amazon fee data",
                     "Floors by goal: ROI %, margin %, or $ profit; bulk applied",
                     "Refuses to guess: no floor without real fee data behind it",
                   ].map((item, i) => (
@@ -253,7 +268,9 @@ export default function ApexGold() {
                 <div className="relative rounded-[28px] border border-slate-200 bg-white p-7">
                   <div className="flex items-center gap-2 mb-5">
                     <Activity size={16} className="text-amber-600" />
-                    <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Live activity</span>
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Activity log</span>
+                    {/* Invented rows (concept art, not output): labelled so they cannot be read as real Buy Box results. */}
+                    <span className="ml-auto text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</span>
                   </div>
                   {[
                     { t: "2m ago", line: "Raised B006IF to $26.15; competitor left the Buy Box" },
@@ -286,12 +303,21 @@ export default function ApexGold() {
               <p className="text-lg text-slate-600 mb-10 leading-relaxed">
                 Standalone repricers see a price. Gold sees the purchase order the unit came in on,
                 the P&amp;L it lands in, and the restock decision it feeds, because it shares one
-                platform with Apex Blue, Green, and Red. Part of Apex Pro, not sold as a separate
-                subscription, and Beginner can try it on one listing.
+                platform with Apex Blue, Green, and Red. {REPRICER_FACTS.plans} It is not sold as a
+                separate subscription, and it is in beta.
               </p>
-              <ViewAppButton data-feature-cta className="bg-amber-500 text-white px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-amber-600 transition-all">
-                Start with Apex Gold <ExternalLink size={18} />
-              </ViewAppButton>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <ViewAppButton plan="pro" data-feature-cta className="bg-amber-500 text-white px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-amber-600 transition-all">
+                  Start a 7-day Pro trial <ExternalLink size={18} />
+                </ViewAppButton>
+                <Link href="/pricing" className="rounded-xl border border-amber-300 px-8 py-4 font-bold text-amber-800 hover:bg-amber-50 transition-all">
+                  See the Pro plan
+                </Link>
+              </div>
+              <p className="mt-4 text-sm text-slate-500">
+                {/* The trial button starts Pro, the plan the repricer is on (ViewAppButton plan="pro"). */}
+                {trialTerms("pro")}
+              </p>
             </div>
           </motion.div>
         </div>

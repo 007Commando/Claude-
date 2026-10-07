@@ -197,10 +197,11 @@ export const PLANS: Plan[] = [
   {
     id: "plus",
     name: "Plus",
-    monthly: 149,
-    // Not shown on the pricing page yet: the live Stripe amount for Plus has
-    // not been confirmed against this figure, and the comparison table has no
-    // column for it. See PLANS_SHOWN below.
+    monthly: 199,
+    // Live Price `price_1Sxxsl09vRtiSO1RibrTmCUg` is `unit_amount: 19900`,
+    // read from Stripe on 2026-10-07. This said 149, which is what the $1 week
+    // rolls onto (DOLLAR_WEEK.thenPrice), not what Plus costs from the plan
+    // picker. Still not shown on the pricing page; see PLANS_SHOWN below.
     fitsWho: "Sellers scanning whole supplier catalogues and reconciling every delivery.",
     href: "/pricing",
   },

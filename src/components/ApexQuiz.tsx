@@ -12,8 +12,9 @@
  * qualify the lead before anyone calls (they land in GHL as tags and a note).
  *
  * The result is unlocked with a name and an email, said plainly on the gate.
- * Every figure on the result screens is real: the Bilo Distributor scan in
- * the ads (12,203 lines, 2,860 profitable, 120 after one filter). Plan
+ * Every figure on the result screens is real: one supplier catalog we scanned
+ * (the Bilo Distributor scan in the ads: 12,203 lines, 2,860 profitable, 120
+ * after one filter), a different example catalog from /apex-scan's. Plan
  * mentions match the live pricing page.
  */
 
@@ -186,7 +187,7 @@ export default function ApexQuiz() {
                 What kind of Amazon seller are you?
               </h1>
               <p className="mx-auto mt-5 max-w-lg text-lg text-slate-600">
-                Five quick questions. You get the one thing to fix first, and the plan sellers like you use.
+                Five quick questions. You get the one thing to fix first, and the plan we would suggest.
               </p>
               <button
                 onClick={() => setStep(0)}
@@ -200,7 +201,7 @@ export default function ApexQuiz() {
               <div className="mx-auto mt-14 grid max-w-xl grid-cols-3 gap-3 text-left">
                 {[
                   ["4", "seller types"],
-                  ["12,203", "lines in the real scan we use as proof"],
+                  ["12,203", "lines in one supplier catalog we scanned"],
                   ["$1", "to try what your result recommends"],
                 ].map(([n, l]) => (
                   <div key={l} className="rounded-2xl border border-slate-200 p-4">
@@ -329,7 +330,7 @@ export default function ApexQuiz() {
               <div className="mt-4 flex items-center gap-5 rounded-2xl border border-blue-200 bg-blue-50/60 p-6">
                 <p className="shrink-0 text-3xl font-extrabold text-blue-600">{R.proof[0]}</p>
                 <p className="text-slate-600">
-                  {R.proof[1]}. <span className="text-slate-400">One real catalog; yours will differ.</span>
+                  {R.proof[1]}. <span className="text-slate-400">One supplier catalog we scanned (12,203 lines), an example and not a typical result; yours will differ.</span>
                 </p>
               </div>
 
@@ -342,8 +343,8 @@ export default function ApexQuiz() {
                 Try it for ${DOLLAR_WEEK.price} this week <ArrowRight className="size-5" aria-hidden />
               </button>
               <p className="mt-3 text-center text-sm text-slate-500">
-                The full suite for {DOLLAR_WEEK.days} days. Cancel inside the week and we refund the dollar. Three vetted
-                U.S. suppliers included.
+                The Plus plan for {DOLLAR_WEEK.days} days, with the repricer (beta) on 5 listings. Cancel inside the week
+                and we refund the dollar. Three U.S. wholesale distributors from the Vault included.
               </p>
 
               <div className="mx-auto mt-12 max-w-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-black">
@@ -356,7 +357,7 @@ export default function ApexQuiz() {
                   preload="none"
                 />
               </div>
-              <p className="mt-3 text-center text-sm text-slate-500">See Apex scan a real price list, in 90 seconds.</p>
+              <p className="mt-3 text-center text-sm text-slate-500">Watch Apex scan a supplier price list.</p>
             </motion.section>
           )}
         </AnimatePresence>

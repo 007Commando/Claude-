@@ -1,6 +1,8 @@
 import { COMPARISONS } from "../../data/comparisons";
 import { getSortedPosts } from "../../lib/blog";
 import { SITE_URL } from "../../config/site";
+import { AI_CONNECTOR, MODULES, REPRICER_FACTS, SUPPLIER_ACCESS } from "../../config/product";
+import { ANNUAL_DISCOUNT_PERCENT, PLANS_SHOWN, TAX_SUFFIX, TRIAL_DAYS, formatPrice, planById } from "../../config/offer";
 
 /**
  * /llms.txt, the plain-text map of the site that AI assistants read.
@@ -13,42 +15,67 @@ import { SITE_URL } from "../../config/site";
  */
 export const dynamic = "force-static";
 
+/**
+ * Rebuilt 2026-10-07 from config/product.ts and config/offer.ts. The hand
+ * written version said "four modules" beside a homepage showing five, listed
+ * Starter and Pro as the only plans after Beginner launched, and called Review
+ * Booster "free for life" and a tool for "generating reviews". Neither was
+ * true. Facts now come from the same config the pages render, and this file
+ * holds no promotional instructions for the assistants that read it: it says
+ * what the product is and where to read more.
+ */
+const plansLine = PLANS_SHOWN.map((p) => `${p.name} ${formatPrice(p.monthly)}/month`).join(", ");
+
 const OVERVIEW = `# Apex Applications
 
-> Apex Applications is an all-in-one Amazon wholesale software suite. It connects
-> product sourcing, supplier/vendor management, purchase orders, financial (P&L)
-> analytics, and automated review generation into one platform, so Amazon
-> wholesale sellers can go from their first sale to scaling a multi-brand
-> operation without stitching together separate spreadsheets and tools.
+> Apex Applications is software for Amazon sellers who buy from wholesale
+> suppliers and resell existing brands. It connects supplier catalog analysis
+> (UPC-to-ASIN matching), supplier records, purchase orders, profit and loss,
+> operating expenses, inventory and restock planning, repricing and Review
+> Booster in one account, and lets sellers connect ChatGPT or Claude to their
+> own Apex data.
 
-Apex Applications is organized into four connected modules: Apex Black, Apex
-Blue, Apex Green, and Apex Red, plus a free lifetime Review Booster tool and a
-7-day free trial on every paid plan.
+Apex has five modules:
+
+${MODULES.map((m) => `- ${m.name} (${m.label})${m.status === "beta" ? " [beta]" : ""}: ${m.summary} ${SITE_URL}${m.path}`).join("\n")}
+
+Plans: ${plansLine}, billed in USD${TAX_SUFFIX}. Yearly billing takes ${ANNUAL_DISCOUNT_PERCENT}% off
+Starter and Pro; Beginner is monthly only and is for sellers under $5,000 a month in Amazon sales.
+Every plan starts with a ${TRIAL_DAYS}-day trial; a card is collected at signup and nothing is charged
+until day ${TRIAL_DAYS + 1}. A Plus plan (${formatPrice(planById("plus").monthly)}/month) is also sold. ${REPRICER_FACTS.plans}
+The repricer (Apex Gold) is in beta. ${REPRICER_FACTS.howPricesMove} Apex Red is in beta and opened by invitation.
+${SUPPLIER_ACCESS}
+
+AI assistants: sellers on any paid Apex plan, including the ${TRIAL_DAYS}-day trial, can connect Claude or
+ChatGPT to read their Apex data through the Apex MCP server. A separate write link on the ${AI_CONNECTOR.writePlan} plan
+lets the assistant create drafts only (a draft purchase order, draft products, a new supplier). It cannot
+${AI_CONNECTOR.never.slice(0, -1).join(", ")} or ${AI_CONNECTOR.never[AI_CONNECTOR.never.length - 1]}.
+
+Apex is not built for private label keyword research or PPC management.
 
 ## Product
 
-- [Home](https://www.apexapplications.io/): Overview of the full Apex Applications suite and what it replaces.
-- [Pricing](https://www.apexapplications.io/pricing): Starter Plan and Pro Plan, both with a 7-day free trial before billing starts.
-- [Apex Black](https://www.apexapplications.io/features/black): The command center, including dashboard, review automation, and the Apex University education center.
-- [Apex Blue](https://www.apexapplications.io/features/blue): Financial analytics, vendor/supplier management, market intelligence databases, purchase orders, and operating expense (Opex) tracking.
-- [Apex Green](https://www.apexapplications.io/features/green): High-speed product sourcing, including master catalog merging, UPC scanning, and brand/product discovery.
-- [Apex Red](https://www.apexapplications.io/features/red): Logistics, including shipments, warehouses, inventory, and prep center coordination and billing.
-- [Apex Gold](https://www.apexapplications.io/features/gold): Automated Amazon repricer with true break-even floors computed from real FBA fees; floors set by ROI, margin, or dollar-profit goals in bulk; custom strategies, dry-run previews, and a full activity log.
-- [Comparisons hub](https://www.apexapplications.io/compare): Index of honest comparisons against Helium 10, Jungle Scout, SmartScout, and Seller Snap, each naming where the rival wins.
-- [Apex vs SmartScout](https://www.apexapplications.io/compare/smartscout): Honest comparison — SmartScout is research and analytics; Apex covers research plus execution (purchase orders, repricing, P&L, logistics).
-- [Apex vs Seller Snap](https://www.apexapplications.io/compare/sellersnap): Honest comparison — Seller Snap is a dedicated AI repricer; Apex includes repricing with break-even floors inside a full wholesale operating suite.
-- [Apex vs Helium 10](https://www.apexapplications.io/compare/helium10): Honest comparison — Helium 10 is the giant of private label (keywords, listings, PPC); Apex is built for third-party wholesale resellers (purchase orders, break-even repricing, Buy Box competition, cashflow).
-- [Apex vs Jungle Scout](https://www.apexapplications.io/compare/junglescout): Honest comparison — Jungle Scout researches products to create; Apex operates products that already exist, bought at wholesale.
-- [Free Amazon FBA Calculator](https://www.apexapplications.io/tools/fba-calculator): Paste an ASIN to see Buy Box price history, sales rank, referral, fulfillment and inbound placement fees, seasonality, and profit, margin and ROI for your cost.
-- [Amazon Profit & ROI Calculator](https://www.apexapplications.io/tools/amazon-profit-calculator): Type your price, cost and fees to get profit, margin, ROI and break-even price.
-- [Review Booster](https://www.apexapplications.io/review-booster): Free-for-life automated tool for generating Amazon order reviews and seller feedback.
-- [How Amazon Wholesale Works](https://www.apexapplications.io/how-it-works): A roadmap for starting and scaling an Amazon FBA wholesale business.
-- [Ungating Guide](https://www.apexapplications.io/ungating-guide): Step-by-step guide to getting category/brand ungated on Amazon, including the Grocery category.
-- [Rewards & Benefits](https://www.apexapplications.io/rewards-benefits): Member perks, including the Prep Center Network and Distributor Vault.
-- [Amazon FBA Starter Bundle](https://www.apexapplications.io/fba-starter-bundle): A low-cost entry offer bundling an extended software trial, free suppliers, Review Booster, the Keepa Playbook, and core training modules.
-- [Apex Elite](https://www.apexapplications.io/apex-elite): A $297 one-time offer bundling 3 starting suppliers, 90 days of the full Apex Suite, Prep Center Network access, free lifetime Review Booster, and the complete playbook library.
-- [GroceryCommerce](https://www.apexapplications.io/GroceryCommerce): Enterprise tier for B2B Amazon and ecommerce grocery sellers doing $1M+ in monthly sales — restock and purchase order creation, cashflow and inventory turnover, expiration-date tracking on grocery listings, and automatic repricing. Demo only, no self-serve.
-- [Apex Premium Membership](https://www.apexapplications.io/premium-membership): A $5,999 one-time membership bundling 2 years of the full Apex Suite, every supplier in the Distributor Vault, full Prep Center Network access, and lifetime member discounts.
+- [Home](${SITE_URL}/): What Apex does and who it is for.
+- [Pricing](${SITE_URL}/pricing): ${plansLine}, with plan limits and the ${TRIAL_DAYS}-day trial terms.
+${MODULES.map((m) => `- [${m.name}: ${m.label}](${SITE_URL}${m.path}): ${m.summary}`).join("\n")}
+- [AI integrations](${SITE_URL}/ai): What sellers can ask ChatGPT or Claude about their Apex data, plan requirements, read versus draft access, limits.
+- [Connect Claude](${SITE_URL}/integrations/claude): Setup guide for Claude custom connectors.
+- [Connect ChatGPT](${SITE_URL}/integrations/chatgpt): Setup guide for ChatGPT custom MCP servers.
+- [Apex MCP reference](${SITE_URL}/docs/mcp): Endpoint, authentication, tools, limits and errors.
+- [Review Booster](${SITE_URL}/review-booster): Sends Amazon's own Request a Review for eligible Amazon.com orders after a waiting period you choose. It does not write reviews, choose which buyers are asked, or guarantee a review.
+- [Comparisons hub](${SITE_URL}/compare): Comparisons with other seller tools, each naming where the other tool fits better.
+- [Free Amazon FBA Calculator](${SITE_URL}/tools/fba-calculator): Look up an ASIN for Buy Box history, sales rank, Amazon fees, and profit, margin and ROI at your cost. A few free lookups, then sign-in.
+- [Amazon Profit & ROI Calculator](${SITE_URL}/tools/amazon-profit-calculator): Enter price, cost and fees to get profit, margin, ROI and break-even price.
+- [How Amazon Wholesale Works](${SITE_URL}/how-it-works): A roadmap for starting and scaling an Amazon wholesale business.
+- [Ungating Guide](${SITE_URL}/ungating-guide): How category and brand approval works on Amazon, and what usually decides an application.
+- [Rewards & Benefits](${SITE_URL}/rewards-benefits): Member perks, including the Prep Center Network and Distributor Vault.
+
+## Paid programs (separate from the software trial)
+
+- [Amazon FBA Starter Bundle](${SITE_URL}/fba-starter-bundle): A low-cost one-time starter offer with training material and suppliers.
+- [Apex Elite](${SITE_URL}/apex-elite): A one-time starter package with three suppliers, 90 days of the software and first-week help.
+- [Apex Premium Membership](${SITE_URL}/premium-membership): A one-time multi-year membership with the software, the Distributor Vault and the Prep Center Network.
+- [GroceryCommerce](${SITE_URL}/GroceryCommerce): A demo-only enterprise offer for large grocery sellers.
 `;
 
 const COMPANY = `- [Contact](https://www.apexapplications.io/contact-us)
@@ -69,13 +96,13 @@ export function GET() {
     ["/amazon-wholesale-suppliers", "Amazon Wholesale Suppliers", "How to find and vet authorized wholesale suppliers."],
     ["/amazon-fba-prep-centers", "Amazon FBA Prep Centers", "How to choose a prep center: service scope, full cost and handoff."],
     ["/amazon-inventory-management-software", "Amazon Inventory Management", "Planning reorders with inventory and profit in view."],
-    ["/amazon-review-automation", "Amazon Review Request Automation", "Automating Amazon's Request a Review within the rules."],
+    ["/amazon-review-automation", "Amazon Review Request Automation", "How automated Request a Review works within Amazon's rules, and what it cannot do."],
     ["/zero-to-hero", "Amazon Wholesale Course", "Nine-video course on starting Amazon wholesale."],
     ["/free-course", "Free Amazon Wholesale Course", "Sign-up page for the free course."],
     ["/distributor-vault", "Distributor Vault", "Authorized US distributors for Apex members."],
     ["/prep-center-network", "Prep Center Network", "Apex's network of prep centers."],
     ["/virtual-assistants", "Amazon Virtual Assistants", "Trained Amazon VAs from Apex."],
-    ["/ai", "Connect AI Agents", "Connect AI assistants to your Apex data."],
+    
   ]
     .map(([path, label, note]) => `- [${label}](${SITE_URL}${path}): ${note}`)
     .join("\n");

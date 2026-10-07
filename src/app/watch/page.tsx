@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title:
     "Watch Apex analyze a catalog and build a purchase order, Apex Applications",
   description:
-    "A live walkthrough: a supplier catalog checked against real Amazon fees and a purchase order built from what clears, in under two minutes. Then start your 7 day free trial.",
+    "A walkthrough: a supplier catalog checked against real Amazon fees and a purchase order built from what clears. Then start your 7 day free trial.",
   alternates: { canonical: "https://www.apexapplications.io/watch" },
   robots: { index: false, follow: false },
 };
@@ -21,9 +21,10 @@ export const metadata: Metadata = {
 export default function WatchPage() {
   return (
     <WatchLanding
-      eyebrow="The two minute walkthrough"
-      headline="Watch how Apex analyzes catalogs and builds a purchase order in under two minutes, live."
-      // Uploaded 23 September, runs 1:44, which is what earns the claim above.
+      // Accuracy pass 2026-10-07: the "under two minutes" claim is gone from the copy; the video itself runs 1:44.
+      eyebrow="The purchase order walkthrough"
+      headline="Watch how Apex analyzes catalogs and builds a purchase order."
+      // Uploaded 23 September, runs 1:44.
       // A Short, so vertical.
       video={{ kind: "youtube", id: "EClM6RcJ628", portrait: true }}
       videoTitle="Apex Applications: building an Amazon FBA purchase order"

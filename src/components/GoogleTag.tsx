@@ -32,6 +32,7 @@ const ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
 export default function GoogleTag() {
   useBookingClicks();
+  useCtaClicks();
 
   const primary = GA4_ID ?? ADS_ID;
   if (!primary) return null;
@@ -130,6 +131,34 @@ function useBookingClicks(): void {
       }
       if (!/(^|\.)calendly\.com$/.test(host)) return;
       trackConversion("booking");
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, []);
+}
+
+/**
+ * Which buttons people press, as a GA4 event and never as a conversion.
+ *
+ * Any element carrying `data-cta="<name>"` (or inside one) reports
+ * `cta_click` with that name and the page path. It deliberately is not a
+ * Google Ads conversion: a click on "Start my 7-day trial" is somebody leaving
+ * for Stripe, and the trial itself is already counted once, on return, in
+ * Auth.tsx with the Stripe session id. Counting the click too would report the
+ * same trial twice and teach the bidder that intent is purchase.
+ *
+ * Only the button's name and the path are sent: no text the visitor typed, no
+ * email, nothing about their account.
+ */
+function useCtaClicks(): void {
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      const el = target?.closest?.("[data-cta]") ?? target?.closest?.("a")?.querySelector?.("[data-cta]");
+      const name = el?.getAttribute("data-cta");
+      const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+      if (!name || typeof gtag !== "function") return;
+      gtag("event", "cta_click", { cta: name, page_path: window.location.pathname });
     };
     document.addEventListener("click", onClick, { capture: true });
     return () => document.removeEventListener("click", onClick, { capture: true });

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getSortedPosts, postModified } from "../lib/blog";
 import { NOINDEX_ROUTES, SITE_URL } from "../config/site";
 import { COMPARISONS } from "../data/comparisons";
+import { AI_CLIENTS } from "../config/product";
 
 type Entry = {
   path: string;
@@ -12,7 +13,17 @@ type Entry = {
 const ENTRIES: Entry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/pricing", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/ai", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/ai", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/docs/mcp", changeFrequency: "monthly", priority: 0.6 },
+  /**
+   * The setup guides join the sitemap only once someone has walked their
+   * screens with a real link (AI_CLIENTS.interfaceTested). Until then each page
+   * says noindex, and listing a noindex page here is the contradiction the
+   * filter below exists to prevent.
+   */
+  ...(["claude", "chatgpt"] as const)
+    .filter((client) => AI_CLIENTS[client].interfaceTested)
+    .map((client) => ({ path: `/integrations/${client}`, changeFrequency: "monthly" as const, priority: 0.7 })),
   { path: "/fba-starter-bundle", changeFrequency: "weekly", priority: 0.9 },
   { path: "/apex-elite", changeFrequency: "weekly", priority: 0.9 },
   { path: "/premium-membership", changeFrequency: "weekly", priority: 0.9 },

@@ -5,7 +5,7 @@ import HowItWorks from "../../components/HowItWorks";
 export const metadata: Metadata = pageMetadata({
   title: "How Apex Works for Amazon Wholesale Sellers",
   description:
-    "The easiest roadmap to growing a real Amazon FBA wholesale business, from foundation to scale, powered by Apex Black, Blue and Green.",
+    "A six-step roadmap for an Amazon FBA wholesale business, from foundation to scale, using Apex Black, Blue and Green, with the Gold repricer in beta.",
   path: "/how-it-works",
 });
 

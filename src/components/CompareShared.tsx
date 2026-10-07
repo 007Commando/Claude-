@@ -3,7 +3,8 @@
 import { motion } from "motion/react";
 import { ArrowRight, Check, Minus } from "lucide-react";
 import Link from "next/link";
-import { isBeta } from "../config/features";
+import { CATALOG_SIZE_LABEL, isBeta } from "../config/features";
+import { TRIAL_DAYS, formatPrice, planById, trialCta, trialTerms } from "../config/offer";
 
 export const fadeIn = {
   initial: { opacity: 0, y: 24 },
@@ -14,9 +15,33 @@ export const fadeIn = {
 
 export type CompareCell = string | boolean;
 
+/**
+ * A cell always states its state in words. The icons alone were invisible to a
+ * screen reader and to anyone who cannot tell a green tick from a grey dash, so
+ * each carries visible-to-assistive-tech text: "Included" / "Not included".
+ * An unverified rival capability is the string "Not verified" and is drawn as
+ * text, never as a cross.
+ */
 export function CellValue({ value }: { value: CompareCell }) {
-  if (value === true) return <Check size={18} className="text-emerald-600 mx-auto" strokeWidth={3} />;
-  if (value === false) return <Minus size={16} className="text-slate-300 mx-auto" strokeWidth={3} />;
+  if (value === true) {
+    return (
+      <>
+        <Check size={18} className="text-emerald-600 mx-auto" strokeWidth={3} aria-hidden="true" />
+        <span className="sr-only">Included</span>
+      </>
+    );
+  }
+  if (value === false) {
+    return (
+      <>
+        <Minus size={16} className="text-slate-400 mx-auto" strokeWidth={3} aria-hidden="true" />
+        <span className="sr-only">Not included</span>
+      </>
+    );
+  }
+  if (value === "Not verified") {
+    return <span className="text-sm italic text-slate-500">Not verified</span>;
+  }
   return <span className="text-sm text-slate-600">{value}</span>;
 }
 
@@ -36,17 +61,22 @@ export function CompareTable({
   return (
     <motion.div {...fadeIn} className="overflow-x-auto rounded-3xl border border-slate-200">
       <table className="w-full min-w-[38rem] border-collapse bg-white text-left">
+        <caption className="sr-only">
+          Apex Applications compared with {rivalName}. Each cell says Included, Not included, Not verified, or states the detail.
+        </caption>
         <thead>
           <tr className="border-b border-slate-200 bg-slate-50/70">
-            <th className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-400 w-2/5"> </th>
-            <th className="px-6 py-4 text-sm font-black text-slate-900 text-center bg-blue-50/40">Apex Applications</th>
-            <th className="px-6 py-4 text-sm font-black text-slate-900 text-center">{rivalName}</th>
+            <th scope="col" className="px-6 py-4 text-xs font-black uppercase tracking-wider text-slate-500 w-2/5">
+              <span className="sr-only">Feature</span>
+            </th>
+            <th scope="col" className="px-6 py-4 text-sm font-black text-slate-900 text-center bg-blue-50/40">Apex Applications</th>
+            <th scope="col" className="px-6 py-4 text-sm font-black text-slate-900 text-center">{rivalName}</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.label} className="border-b border-slate-100 last:border-b-0">
-              <td className="px-6 py-4 text-sm font-bold text-slate-700">{row.label}</td>
+              <th scope="row" className="px-6 py-4 text-sm font-bold text-slate-700">{row.label}</th>
               <td className="px-6 py-4 text-center bg-blue-50/40"><CellValue value={row.apex} /></td>
               <td className="px-6 py-4 text-center"><CellValue value={row.rival} /></td>
             </tr>
@@ -97,30 +127,37 @@ export function HonestVerdict({
 export function CompareCta({ line }: { line: string }) {
   return (
     <motion.div {...fadeIn} className="text-center rounded-[32px] border border-slate-200 bg-gradient-to-b from-slate-50 to-white px-8 py-14">
-      <h2 className="text-3xl font-black tracking-tight text-slate-900 mb-3">Try the whole suite free</h2>
+      {/* Was "Try the whole suite free". A trial opens the plan you pick; Starter has no repricer and Red is by invitation. */}
+      <h2 className="text-3xl font-black tracking-tight text-slate-900 mb-3">Start a {TRIAL_DAYS}-day trial</h2>
       <p className="text-slate-500 max-w-xl mx-auto mb-8">{line}</p>
       <Link
         href="/auth?mode=signup"
         className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 text-white px-10 py-4 font-black uppercase tracking-wide hover:scale-[1.03] transition-all"
       >
-        Start the 7-day free trial <ArrowRight size={18} />
+        {trialCta} <ArrowRight size={18} />
       </Link>
-      <p className="text-xs text-slate-400 mt-4">Beginner $49.99/mo · Starter $149/mo · Pro $299/mo · repricer on Pro</p>
+      <p className="text-xs text-slate-500 mt-4 max-w-md mx-auto">{trialTerms()}</p>
+      <p className="text-xs text-slate-500 mt-2">
+        {/* Built from config so it cannot drift from the pricing page. Plus is sold too ($199/mo) but is not on the pricing table. */}
+        Beginner {formatPrice(planById("beginner").monthly)}/mo, Starter {formatPrice(planById("starter").monthly)}/mo, Pro{" "}
+        {formatPrice(planById("pro").monthly)}/mo (repricer on Pro, beta). Plus is also available.
+      </p>
     </motion.div>
   );
 }
 
 export function FactsFootnote({ rivalName, sources }: { rivalName: string; sources: { label: string; href: string }[] }) {
   return (
-    <p className="text-xs text-slate-400 leading-relaxed max-w-2xl mx-auto text-center">
-      {rivalName} details verified September 2026 against public pricing pages and independent
+    <p className="text-xs text-slate-500 leading-relaxed max-w-2xl mx-auto text-center">
+      Competitor details reviewed September 2026 against public pricing pages and independent
       reviews ({sources.map((source, i) => (
         <span key={source.href}>
           {i > 0 && ", "}
-          <a href={source.href} target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-600">{source.label}</a>
+          <a href={source.href} target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-700">{source.label}</a>
         </span>
-      ))}). Their features and prices change on their schedule, not ours, check their site for
-      current terms. {rivalName} is a trademark of its owner; no affiliation.
+      ))}). {rivalName} changes its features and prices on its own schedule, so check its site
+      for current terms. Apex details checked against the Apex app in October 2026.{" "}
+      {rivalName} is a trademark of its owner; no affiliation.
     </p>
   );
 }
@@ -135,10 +172,14 @@ export type Coverage = { state: "full" | "partial" | "none"; note?: string };
 
 const STAGES = ["Research", "Buy & PO", "Price", "Fulfill", "Books"];
 
-function CoverageCell({ cell, tone }: { cell: Coverage; tone: "apex" | "rival" }) {
+function CoverageCell({ cell, tone, stage }: { cell: Coverage; tone: "apex" | "rival"; stage: string }) {
   const base = "h-14 rounded-lg border flex items-center justify-center px-2 text-center";
   if (cell.state === "none") {
-    return <div className={`${base} border-dashed border-slate-200 bg-slate-50/40`}><span className="text-[10px] font-bold text-slate-300"> </span></div>;
+    return (
+      <div className={`${base} border-dashed border-slate-200 bg-slate-50/40`}>
+        <span className="sr-only">{stage}: not covered or not verified</span>
+      </div>
+    );
   }
   const full = cell.state === "full";
   const palette = tone === "apex"
@@ -154,7 +195,8 @@ function CoverageCell({ cell, tone }: { cell: Coverage; tone: "apex" | "rival" }
       className={`${base} ${palette}`}
     >
       <span className={`text-[10px] font-black leading-tight ${text}`}>
-        {cell.note || (full ? "✓" : "partial")}
+        <span className="sr-only">{stage}: {full ? "covered" : "partly covered"}, </span>
+        {cell.note || (full ? "Covered" : "Partial")}
       </span>
     </motion.div>
   );
@@ -170,9 +212,12 @@ export function WorkflowCoverage({ rivalName, rival }: { rivalName: string; riva
    * the site on all sixteen pages at once.
    */
   const apex: Coverage[] = [
-    { state: "full", note: "122M products" },
+    { state: "full", note: CATALOG_SIZE_LABEL },
     { state: "full", note: "POs + restock" },
-    { state: "full", note: "break-even floors" },
+    // The repricer is beta (isBeta("gold")) and a Pro feature, so the Price cell is never a plain full tick.
+    isBeta("gold")
+      ? { state: "partial", note: "Gold (beta, Pro)" }
+      : { state: "full", note: "break-even floors" },
     isBeta("red")
       ? { state: "partial", note: "Red (beta)" }
       : { state: "full", note: "prep network" },
@@ -180,7 +225,7 @@ export function WorkflowCoverage({ rivalName, rival }: { rivalName: string; riva
   ];
   return (
     <motion.div {...fadeIn} className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 overflow-x-auto">
-      <h3 className="text-sm font-black uppercase tracking-[0.15em] text-slate-400 mb-6 text-center">
+      <h3 className="text-sm font-black uppercase tracking-[0.15em] text-slate-500 mb-6 text-center">
         A reseller&apos;s week, and who covers it
       </h3>
       <div className="min-w-[34rem]">
@@ -192,15 +237,15 @@ export function WorkflowCoverage({ rivalName, rival }: { rivalName: string; riva
         </div>
         <div className="grid grid-cols-[6.5rem_repeat(5,1fr)] gap-2 items-center mb-2">
           <span className="text-sm font-black text-slate-900">Apex</span>
-          {apex.map((cell, i) => <CoverageCell key={i} cell={cell} tone="apex" />)}
+          {apex.map((cell, i) => <CoverageCell key={i} cell={cell} tone="apex" stage={STAGES[i]} />)}
         </div>
         <div className="grid grid-cols-[6.5rem_repeat(5,1fr)] gap-2 items-center">
-          <span className="text-sm font-black text-slate-500">{rivalName}</span>
-          {rival.map((cell, i) => <CoverageCell key={i} cell={cell} tone="rival" />)}
+          <span className="text-sm font-black text-slate-600">{rivalName}</span>
+          {rival.map((cell, i) => <CoverageCell key={i} cell={cell} tone="rival" stage={STAGES[i]} />)}
         </div>
       </div>
-      <p className="text-[11px] text-slate-400 mt-5 text-center">
-        Filled = does the job · labeled light cells = partially, with the caveat shown · dash = you buy another tool
+      <p className="text-[11px] text-slate-500 mt-5 text-center">
+        Filled = does the job · light cells = partly, with the caveat shown · dashed empty cell = not covered, or not verified
       </p>
     </motion.div>
   );
@@ -214,7 +259,7 @@ export function PriceBars({ items }: { items: { label: string; price: number; ca
   const max = Math.max(...items.map((item) => item.price));
   return (
     <motion.div {...fadeIn} className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
-      <h3 className="text-sm font-black uppercase tracking-[0.15em] text-slate-400 mb-6 text-center">
+      <h3 className="text-sm font-black uppercase tracking-[0.15em] text-slate-500 mb-6 text-center">
         Monthly price, side by side
       </h3>
       <div className="space-y-4 max-w-2xl mx-auto">
@@ -222,7 +267,7 @@ export function PriceBars({ items }: { items: { label: string; price: number; ca
           <div key={item.label}>
             <div className="flex items-baseline justify-between mb-1">
               <span className={`text-[13px] font-black ${item.apex ? "text-blue-700" : "text-slate-700"}`}>{item.label}</span>
-              <span className="text-sm font-black tabular-nums text-slate-900">${item.price}</span>
+              <span className="text-sm font-black tabular-nums text-slate-900">{formatPrice(item.price)}</span>
             </div>
             <div className="h-6 rounded-md bg-slate-100 overflow-hidden">
               <motion.div
@@ -233,7 +278,7 @@ export function PriceBars({ items }: { items: { label: string; price: number; ca
                 className={`h-full rounded-md ${item.apex ? "bg-blue-600" : "bg-slate-400"}`}
               />
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">{item.caption}</p>
+            <p className="text-[11px] text-slate-500 mt-1">{item.caption}</p>
           </div>
         ))}
       </div>

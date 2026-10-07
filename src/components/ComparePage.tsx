@@ -28,6 +28,7 @@ export default function ComparePage({ data }: { data: Comparison }) {
   return (
     <div className="pt-32 pb-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        {/* initial={false}: the hero is the LCP element and must render visible on the server, not at opacity 0. */}
         <motion.header {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">
             Honest comparison
@@ -36,7 +37,7 @@ export default function ComparePage({ data }: { data: Comparison }) {
             {data.h1}
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">{data.intro}</p>
-          <p className="mt-5 text-sm text-slate-400">
+          <p className="mt-5 text-sm text-slate-500">
             Read more about{" "}
             <Link href={data.moduleHref} className="text-blue-600 underline hover:text-blue-700">
               {data.moduleLabel}

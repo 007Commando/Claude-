@@ -16,12 +16,18 @@ import {
 } from "lucide-react";
 import ViewAppButton from "./ViewAppButton";
 import apexBlueCtaBull from "../assets/apex-blue-cta-bull.png.asset.json";
+import { trialCta, trialTerms } from "../config/offer";
+
+// Accuracy pass 2026-10-07: "proven", "maximize your approval odds", "easiest"
+// and "everything you just saw is already built into Apex" removed. Gold is in
+// beta and Pro-only, so the closing line no longer claims the whole roadmap is
+// generally available.
 
 const steps = [
   {
     icon: BookOpen,
     title: "Build Your Foundation",
-    body: "Before you ever reach out to a supplier, get your business foundation right. Our proven setup guide is built to maximize your approval odds with wholesale vendors from day one.",
+    body: "Before you ever reach out to a supplier, get your business foundation right. Our setup guide covers what wholesale vendors usually ask for, from day one. Approval is always the vendor's decision.",
     highlights: ["Ungating Unlock SOP", "9 High-Level Videos", "Keepa Playbook"],
     linkLabel: "See the Foundation Guide",
     linkHref: "/features/black#apex-university",
@@ -29,9 +35,9 @@ const steps = [
   {
     icon: Building2,
     title: "Open Wholesale Accounts",
-    body: "Reach out to vetted, authorized distributors and brands, open your wholesale accounts, and start pulling their full product catalogs.",
-    highlights: ["3 Authorized US Distributors on Day One", "Review Requests on Every Eligible Order"],
-    linkLabel: "Browse Vetted Vendors",
+    body: "Reach out to US wholesale distributors from the Distributor Vault, open your wholesale accounts, and ask for their full product catalogs.",
+    highlights: ["3 US Distributors Open on Day One", "More Open Each Month"],
+    linkLabel: "Browse the Distributor Vault",
     linkHref: "/features/black#resource-library",
   },
   {
@@ -45,8 +51,8 @@ const steps = [
   {
     icon: SlidersHorizontal,
     title: "Filter & Build Purchase Orders",
-    body: "Set your profitability filters and turn your best finds into real purchase orders, ready to send with confidence.",
-    highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown", "Buy Box Profit Tracking"],
+    body: "Set your profitability filters and turn your best finds into purchase orders you can review before you send them.",
+    highlights: ["Profit Projections", "Per-Supplier Margin & ROI Breakdown", "Buy Box Profit Tracking"],
     linkLabel: "View Purchase Orders",
     linkHref: "/features/blue#purchase-orders",
   },
@@ -54,7 +60,7 @@ const steps = [
     icon: Tag,
     title: "Price It With a Floor Underneath",
     body: "Apex Gold works out each listing's break-even from the costs you just recorded and shows you the price your strategy implies, previewed before anything moves. Gold is in beta; keep an eye on Seller Central while you get started.",
-    highlights: ["Break-Even Floors from Your Own Costs", "Dry-Run Preview of Every Move", "Beta"],
+    highlights: ["Break-Even Floors from Your Own Costs", "Dry-Run Preview of Every Move", "Beta, Pro Plan"],
     linkLabel: "View the Repricer",
     linkHref: "/features/gold",
   },
@@ -102,8 +108,9 @@ export default function HowItWorks() {
     <div className="pt-32 pb-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
+        {/* initial={false}: the H1 must render visible on the server (LCP). */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-20"
@@ -116,8 +123,8 @@ export default function HowItWorks() {
             How Amazon Wholesale <span className="text-brand">Works</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The easiest path to growing a real Amazon FBA wholesale business, six steps, start
-            to scale. Scroll down to follow the route.
+            Six steps for an Amazon FBA wholesale business, from foundation to scale. Scroll
+            down to follow the route.
           </p>
         </motion.section>
 
@@ -227,11 +234,11 @@ export default function HowItWorks() {
               Ready to Get Started?
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              Everything you just saw is already built into Apex. Jump in and start your first
-              deal today.
+              Sourcing, purchasing and profit tracking are in Apex today. The repricer in step 5 is
+              in beta and is included on the Pro plan. {trialTerms("starter")}
             </p>
             <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
-              Start Free Trial
+              {trialCta}
             </ViewAppButton>
           </div>
         </motion.section>

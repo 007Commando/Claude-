@@ -72,6 +72,7 @@ import {
 } from "lucide-react";
 
 import "./apex-docs.css";
+import { REPRICER_FACTS } from "../config/product";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -1255,6 +1256,18 @@ export default function HowApexWorks() {
             <h2>
               Getting the stock to Amazon <Anchor id="red" />
             </h2>
+            {/* Status note added 2026-10-07: Red is beta and opened by invitation (MODULE_FACTS.red). */}
+            <div className="docs-note" style={{ "--nc": MODULE.red.accent } as CSSProperties}>
+              <span className="docs-note-ico" aria-hidden="true">
+                <Info size={17} strokeWidth={2} />
+              </span>
+              <p>
+                <strong>Apex Red is in beta and opened by invitation.</strong> Screens and
+                steps may change, and some shipment steps are still being finished. Sellers
+                connected to a prep center that is approved on Apex get it free; on other
+                accounts it opens by invitation, on any plan.
+              </p>
+            </div>
             <p className="docs-lede">
               The logistics half: the stretch between a supplier accepting your order and
               Amazon marking the units receivable.{" "}
@@ -1314,9 +1327,19 @@ export default function HowApexWorks() {
             <h2>
               Repricing and the Buy Box <Anchor id="gold" />
             </h2>
+            {/* Status note added 2026-10-07: Gold is beta; plan limits from REPRICER_FACTS. */}
+            <div className="docs-note" style={{ "--nc": MODULE.gold.accent } as CSSProperties}>
+              <span className="docs-note-ico" aria-hidden="true">
+                <Info size={17} strokeWidth={2} />
+              </span>
+              <p>
+                <strong>Apex Gold is in beta.</strong> {REPRICER_FACTS.plans}{" "}
+                {REPRICER_FACTS.howPricesMove}
+              </p>
+            </div>
             <p className="docs-lede">
               Gold is the repricer. The problem it solves is that the two obvious
-              approaches are both wrong: never move your price and you lose the Buy Box,
+              approaches are both wrong: a price that never moves can fall out of the Buy Box,
               always be cheapest and you win a race to the bottom you have to keep
               paying for.{" "}
               <strong>A strategy is how you say which trade you are willing to make.</strong>
@@ -1379,7 +1402,7 @@ export default function HowApexWorks() {
               <p>
                 <strong>Safety is the group worth reading twice.</strong> Your floor can
                 be derived from the costs already in Apex rather than typed in, which
-                means a repricer that knows what you paid cannot price you into a loss.
+                means a repricer that knows what you paid will not price below that floor.
                 Amazon decides who holds the Buy Box; no repricer can promise it.
               </p>
             </div>

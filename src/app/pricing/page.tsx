@@ -3,11 +3,12 @@ import { pageMetadata } from "../../lib/seo";
 import PickPlan from "../../components/PickPlan";
 import { PLANS_SHOWN, TRIAL_DAYS } from "../../config/offer";
 import { absoluteUrl, SITE_URL } from "../../config/site";
+import { ORGANIZATION_ID, SOFTWARE_ID } from "../../config/product";
 
 export const metadata: Metadata = pageMetadata({
   title: `Apex Pricing: Plans and ${TRIAL_DAYS}-Day Trial`,
   description:
-    "Compare the workflows, capacity and team access included in the Beginner, Starter and Pro plans from Apex Applications. Every plan starts with a seven-day trial.",
+    `Compare what the ${PLANS_SHOWN.map((p) => p.name).join(", ").replace(/, ([^,]*)$/, " and $1")} plans include, from supplier scans and products to the repricer and AI access. Every plan starts with a ${TRIAL_DAYS}-day trial.`,
   path: "/pricing",
 });
 
@@ -27,20 +28,30 @@ export const metadata: Metadata = pageMetadata({
 const softwareApplicationJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
+  "@id": SOFTWARE_ID,
   name: "Apex Applications",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description:
-    "Amazon wholesale software suite: supplier catalogue analysis, purchase orders, profit analytics and repricing.",
+    "Amazon wholesale software: supplier catalog analysis, purchase orders, profit and loss, inventory and restock planning, repricing on Pro, and ChatGPT and Claude connections to your own data.",
   url: SITE_URL,
+  publisher: { "@id": ORGANIZATION_ID },
   // PLANS_SHOWN, not PLANS: the structured data must offer exactly what the
   // cards below it offer, or a crawler and a customer are quoted different
   // catalogues — which is the failure this config was written to prevent.
   offers: PLANS_SHOWN.map((plan) => ({
     "@type": "Offer",
     name: `${plan.name} Plan`,
+    description: plan.fitsWho,
     price: plan.monthly.toFixed(2),
     priceCurrency: "USD",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: plan.monthly.toFixed(2),
+      priceCurrency: "USD",
+      billingDuration: "P1M",
+      unitText: "month",
+    },
     category: "subscription",
     url: absoluteUrl("/pricing"),
   })),

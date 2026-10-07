@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import amazonPartnerBadge from "../assets/amazon-partner-badge.png.asset.json";
+import { MODULES } from "../config/product";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -207,8 +208,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/ai" className="hover:text-brand transition-colors">
-                  Connect AI Agents
+                <Link href="/docs/mcp" className="hover:text-brand transition-colors">
+                  MCP Developer Docs
                 </Link>
               </li>
               <li>
@@ -225,45 +226,21 @@ export default function Footer() {
           {/* Features */}
           <div className="md:col-span-2">
             <p className="font-semibold text-slate-900 mb-5">Features</p>
+            {/* Descriptive labels first: "Apex Green" alone tells a new visitor
+                nothing about what is behind the link. */}
             <ul className="space-y-3 text-slate-600">
+              {MODULES.map((m) => (
+                <li key={m.key}>
+                  <Link href={m.path} className="hover:text-brand transition-colors">
+                    {m.label}
+                    <span className="block text-xs text-slate-500">{m.name}</span>
+                  </Link>
+                </li>
+              ))}
               <li>
-                <Link
-                  href="/features/black"
-                  className="hover:text-brand transition-colors"
-                >
-                  Apex Black
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/blue"
-                  className="hover:text-brand transition-colors"
-                >
-                  Apex Blue
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/green"
-                  className="hover:text-brand transition-colors"
-                >
-                  Apex Green
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/red"
-                  className="hover:text-brand transition-colors"
-                >
-                  Apex Red
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/gold"
-                  className="hover:text-brand transition-colors"
-                >
-                  Apex Gold
+                <Link href="/ai" className="hover:text-brand transition-colors">
+                  AI Integrations
+                  <span className="block text-xs text-slate-500">ChatGPT and Claude</span>
                 </Link>
               </li>
             </ul>
@@ -275,9 +252,10 @@ export default function Footer() {
                   href="/tools/fba-calculator"
                   className="inline-flex items-center gap-2 font-semibold text-brand hover:text-brand-dark transition-colors"
                 >
-                  Free FBA Fee Calculator
-                  <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
-                    Free
+                  FBA Fee Calculator
+                  {/* It is three free lookups, then sign-in and a plan; "Free" alone oversold it. */}
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-700">
+                    3 free lookups
                   </span>
                 </Link>
               </li>
@@ -292,7 +270,7 @@ export default function Footer() {
               <li>
                 <Link href="/tools#chrome-extension" className="hover:text-brand transition-colors">
                   Chrome Extension
-                  <span className="block text-xs text-slate-400">Free when you finish Apex University</span>
+                  <span className="block text-xs text-slate-500">Free when you finish Apex University</span>
                 </Link>
               </li>
               <li>
@@ -399,6 +377,11 @@ export default function Footer() {
               <li>
                 <Link href="/free-course" className="hover:text-brand transition-colors">
                   Free Wholesale Course
+                </Link>
+              </li>
+              <li>
+                <Link href="/zero-to-hero" className="hover:text-brand transition-colors">
+                  Zero to Hero Course
                 </Link>
               </li>
               <li>

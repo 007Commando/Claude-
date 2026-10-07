@@ -56,7 +56,7 @@ export default function Page() {
       caveat={{
         heading: "Apex does not operate a prep center",
         body:
-          "Apex is software. We connect to prep centers and warehouses so purchase orders, receiving counts and prep costs live in the same system as your buying and pricing, but we do not handle your inventory and we do not rank or endorse providers. This page is a checklist rather than a directory: we are not going to publish provider listings, local offices or ratings we cannot stand behind. Apex Red, the module that builds FBA shipments, is in beta.",
+          "Apex is software. We connect to prep centers and warehouses so purchase orders, receiving counts and prep costs live in the same system as your buying and pricing, but we do not handle your inventory and we do not rank or endorse providers. This page is a checklist rather than a directory: we are not going to publish provider listings, local offices or ratings we cannot stand behind. Apex Red, the module that builds FBA shipments, is in beta and opened by invitation.",
       }}
       faqs={[
         {
@@ -72,7 +72,7 @@ export default function Page() {
         {
           question: "How do prep costs reach my profit numbers?",
           answer:
-            "You set your prep cost per unit in Apex, and it becomes part of the landed cost behind every profit, ROI and margin figure. Including the floor the repricer will not sell below.",
+            "You set your prep cost per unit in Apex, and it becomes part of the landed cost behind every profit, ROI and margin figure. Including the floor that Apex Gold, the beta repricer, will not sell below.",
         },
       ]}
       ctaHeading="Keep prep costs in the numbers that decide the buy"
@@ -80,7 +80,7 @@ export default function Page() {
       ctaLabel="Compare prep requirements"
       related={[
         { label: "Inventory and restock planning", href: "/amazon-inventory-management-software" },
-        { label: "Apex Red, shipments (beta)", href: "/features/red" },
+        { label: "Apex Red, shipments (beta, by invitation)", href: "/features/red" },
         { label: "Prep center network", href: "/prep-center-network" },
         { label: "Profit and ROI calculator", href: "/tools/amazon-profit-calculator" },
       ]}

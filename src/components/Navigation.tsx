@@ -2,6 +2,8 @@
 
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { DOLLAR_WEEK } from "../config/offer";
+import { moduleByKey } from "../config/product";
+import { isBeta } from "../config/features";
 import { motion, AnimatePresence } from "motion/react";
 import {
   BarChart,
@@ -31,7 +33,7 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const apexBlackLogo = "/images/nav-logos/apex-black-logo.png";
 const apexBlueLogo = "/images/nav-logos/apex-blue-logo.png";
@@ -39,13 +41,16 @@ const apexGreenLogo = "/images/nav-logos/apex-green-logo.png";
 const apexRedLogo = "/images/nav-logos/apex-red-logo.png";
 const apexGoldLogo = "/images/nav-logos/apex-gold-logo.png";
 
+const FOCUS =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const featuresTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
+  const featuresToggleRef = useRef<HTMLButtonElement>(null);
 
   const isFeatureActive = [
     "/features/black",
@@ -54,10 +59,13 @@ export default function Navigation() {
     "/features/red",
     "/features/gold",
   ].includes(pathname);
-  const isHomeActive = pathname === "/";
   const isPricingActive = pathname === "/pricing";
   const isRewardsActive = pathname === "/rewards-benefits";
   const isCalculatorActive = pathname === "/tools/fba-calculator";
+  const isAiActive =
+    pathname === "/ai" ||
+    pathname.startsWith("/integrations") ||
+    pathname.startsWith("/docs/mcp");
   /**
    * Internal tools (the ops dashboard, Lead Desk) are gated behind Basic Auth
    * and noindexed — not pages a visitor lands on — so the public nav (Home /
@@ -150,8 +158,7 @@ export default function Navigation() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleFeatureClick = (path: string) => {
-    router.push(path);
+  const closeMenus = () => {
     setIsFeaturesOpen(false);
     setIsMenuOpen(false);
   };
@@ -169,7 +176,7 @@ export default function Navigation() {
             <Link href="/" className="flex items-center gap-2">
               <img
                 src={apexBullLogo.url}
-                alt="Apex Applications"
+                alt=""
                 className="h-18 w-auto object-contain"
               />
               <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -193,7 +200,7 @@ export default function Navigation() {
                 className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
               >
                 {/* The Facebook page sells the $1 week once it is on; "free" beside it is the mismatch. */}
-                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "SIGN UP FREE"}
+                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "SIGN UP"}
               </Link>
             </div>
           </div>
@@ -214,7 +221,7 @@ export default function Navigation() {
             <div className="flex items-center gap-2">
               <img
                 src={apexBullLogo.url}
-                alt="Apex Applications"
+                alt=""
                 className="h-18 w-auto object-contain"
               />
               <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -237,7 +244,7 @@ export default function Navigation() {
           <Link href="/" className="flex items-center gap-2">
             <img
               src={apexBullLogo.url}
-              alt="Apex Applications"
+              alt=""
               className="h-18 w-auto object-contain"
             />
             <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -253,15 +260,23 @@ export default function Navigation() {
               because five links centred on top of the row ran into the logo. */}
           <div className="hidden lg:flex items-center gap-6 xl:gap-10 whitespace-nowrap text-[13px] font-bold text-slate-600 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
             <Link
-              href="/"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${isHomeActive ? "text-brand" : ""}`}
+              href="/ai"
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isAiActive ? "text-brand" : ""}`}
             >
-              HOME
+              {/* Short below 1280px, where the full row pushed LOG IN onto two lines. */}
+              <span className="xl:hidden">AI</span>
+              <span className="hidden xl:inline">AI INTEGRATIONS</span>
             </Link>
 
             <div
               className="relative"
               ref={menuRef}
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && isFeaturesOpen) {
+                  setIsFeaturesOpen(false);
+                  featuresToggleRef.current?.focus();
+                }
+              }}
               onMouseEnter={() => {
                 if (featuresTimeoutRef.current)
                   clearTimeout(featuresTimeoutRef.current);
@@ -275,8 +290,13 @@ export default function Navigation() {
               }}
             >
               <button
+                ref={featuresToggleRef}
+                type="button"
+                aria-expanded={isFeaturesOpen}
+                aria-controls="features-menu"
+                aria-haspopup="true"
                 onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}
-                className={`flex items-center gap-1.5 transition-colors uppercase tracking-wider ${isFeaturesOpen || isFeatureActive ? "text-brand" : "hover:text-brand"}`}
+                className={`flex items-center gap-1.5 transition-colors uppercase tracking-wider ${FOCUS} ${isFeaturesOpen || isFeatureActive ? "text-brand" : "hover:text-brand"}`}
               >
                 FEATURES{" "}
                 <ChevronDown
@@ -288,6 +308,7 @@ export default function Navigation() {
               <AnimatePresence>
                 {isFeaturesOpen && (
                   <motion.div
+                    id="features-menu"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -309,30 +330,39 @@ export default function Navigation() {
                       <div className="grid grid-cols-5 divide-x divide-slate-100">
                         {/* Column 1: Apex Black */}
                         <div className="p-6">
-                          <button
-                            onClick={() =>
-                              handleFeatureClick("/features/black")
-                            }
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 hover:shadow-[0_0_28px_-2px_rgba(15,23,42,0.45)]"
+                          <Link
+                            href="/features/black"
+                            onClick={closeMenus}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 hover:shadow-[0_0_28px_-2px_rgba(15,23,42,0.45)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexBlackLogo}
                               alt="Apex Black"
                               className="h-11 w-auto object-contain"
                             />
-                          </button>
+                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
+                              <span className="text-[12px] font-semibold text-slate-700">
+                                {moduleByKey("black").label}
+                              </span>
+                              {isBeta("black") && (
+                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                                  Beta
+                                </span>
+                              )}
+                            </span>
+                          </Link>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
                               {
                                 title: "Dashboard",
-                                desc: "Your Omnispective Amazon Dashboard",
+                                desc: "Your whole Amazon business on one screen",
                                 icon: LayoutGrid,
                                 hash: "dashboard",
                               },
                               {
                                 title: "Review Booster",
-                                desc: "Automate Your Order Reviews & Boost Seller Feedback",
+                                desc: "Sends Amazon's Request a Review for your orders",
                                 icon: Star,
                                 hash: "review-booster",
                                 free: true,
@@ -353,14 +383,11 @@ export default function Navigation() {
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
-                                <button
+                                <Link
                                   key={i}
-                                  onClick={() =>
-                                    handleFeatureClick(
-                                      `/features/black#${item.hash}`,
-                                    )
-                                  }
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-orange-50/60"
+                                  href={`/features/black#${item.hash}`}
+                                  onClick={closeMenus}
+                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-orange-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                                 >
                                   <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
                                     <Icon
@@ -384,7 +411,7 @@ export default function Navigation() {
                                       {item.desc}
                                     </div>
                                   </div>
-                                </button>
+                                </Link>
                               );
                             })}
                           </div>
@@ -392,16 +419,27 @@ export default function Navigation() {
 
                         {/* Column 2: Apex Blue */}
                         <div className="p-6">
-                          <button
-                            onClick={() => handleFeatureClick("/features/blue")}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_0_28px_-2px_rgba(37,99,235,0.5)]"
+                          <Link
+                            href="/features/blue"
+                            onClick={closeMenus}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_0_28px_-2px_rgba(37,99,235,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexBlueLogo}
                               alt="Apex Blue"
                               className="h-11 w-auto object-contain"
                             />
-                          </button>
+                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
+                              <span className="text-[12px] font-semibold text-slate-700">
+                                {moduleByKey("blue").label}
+                              </span>
+                              {isBeta("blue") && (
+                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                                  Beta
+                                </span>
+                              )}
+                            </span>
+                          </Link>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
@@ -438,14 +476,11 @@ export default function Navigation() {
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
-                                <button
+                                <Link
                                   key={i}
-                                  onClick={() =>
-                                    handleFeatureClick(
-                                      `/features/blue#${item.hash}`,
-                                    )
-                                  }
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-blue-50/60"
+                                  href={`/features/blue#${item.hash}`}
+                                  onClick={closeMenus}
+                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-blue-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                                 >
                                   <Icon
                                     className="text-slate-400 group-hover:text-blue-600 transition-colors mt-0.5 shrink-0"
@@ -460,7 +495,7 @@ export default function Navigation() {
                                       {item.desc}
                                     </div>
                                   </div>
-                                </button>
+                                </Link>
                               );
                             })}
                           </div>
@@ -468,18 +503,27 @@ export default function Navigation() {
 
                         {/* Column 3: Apex Green */}
                         <div className="p-6">
-                          <button
-                            onClick={() =>
-                              handleFeatureClick("/features/green")
-                            }
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 hover:shadow-[0_0_28px_-2px_rgba(34,197,94,0.5)]"
+                          <Link
+                            href="/features/green"
+                            onClick={closeMenus}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 hover:shadow-[0_0_28px_-2px_rgba(34,197,94,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexGreenLogo}
                               alt="Apex Green"
                               className="h-11 w-auto object-contain"
                             />
-                          </button>
+                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
+                              <span className="text-[12px] font-semibold text-slate-700">
+                                {moduleByKey("green").label}
+                              </span>
+                              {isBeta("green") && (
+                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                                  Beta
+                                </span>
+                              )}
+                            </span>
+                          </Link>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
@@ -510,14 +554,11 @@ export default function Navigation() {
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
-                                <button
+                                <Link
                                   key={i}
-                                  onClick={() =>
-                                    handleFeatureClick(
-                                      `/features/green#${item.hash}`,
-                                    )
-                                  }
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-green-50/60"
+                                  href={`/features/green#${item.hash}`}
+                                  onClick={closeMenus}
+                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-green-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                                 >
                                   <Icon
                                     className="text-slate-400 group-hover:text-green-600 transition-colors mt-0.5 shrink-0"
@@ -532,7 +573,7 @@ export default function Navigation() {
                                       {item.desc}
                                     </div>
                                   </div>
-                                </button>
+                                </Link>
                               );
                             })}
                           </div>
@@ -540,16 +581,27 @@ export default function Navigation() {
 
                         {/* Column 4: Apex Red */}
                         <div className="p-6">
-                          <button
-                            onClick={() => handleFeatureClick("/features/red")}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 hover:shadow-[0_0_28px_-2px_rgba(239,68,68,0.5)]"
+                          <Link
+                            href="/features/red"
+                            onClick={closeMenus}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 hover:shadow-[0_0_28px_-2px_rgba(239,68,68,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexRedLogo}
                               alt="Apex Red"
                               className="h-11 w-auto object-contain"
                             />
-                          </button>
+                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
+                              <span className="text-[12px] font-semibold text-slate-700">
+                                {moduleByKey("red").label}
+                              </span>
+                              {isBeta("red") && (
+                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                                  Beta
+                                </span>
+                              )}
+                            </span>
+                          </Link>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
@@ -586,14 +638,11 @@ export default function Navigation() {
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
-                                <button
+                                <Link
                                   key={i}
-                                  onClick={() =>
-                                    handleFeatureClick(
-                                      `/features/red#${item.hash}`,
-                                    )
-                                  }
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-red-50/60"
+                                  href={`/features/red#${item.hash}`}
+                                  onClick={closeMenus}
+                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-red-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                                 >
                                   <Icon
                                     className="text-slate-400 group-hover:text-red-600 transition-colors mt-0.5 shrink-0"
@@ -608,7 +657,7 @@ export default function Navigation() {
                                       {item.desc}
                                     </div>
                                   </div>
-                                </button>
+                                </Link>
                               );
                             })}
                           </div>
@@ -616,16 +665,27 @@ export default function Navigation() {
 
                         {/* Column 5: Apex Gold */}
                         <div className="p-6">
-                          <button
-                            onClick={() => handleFeatureClick("/features/gold")}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 hover:shadow-[0_0_28px_-2px_rgba(245,158,11,0.5)]"
+                          <Link
+                            href="/features/gold"
+                            onClick={closeMenus}
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 hover:shadow-[0_0_28px_-2px_rgba(245,158,11,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexGoldLogo}
                               alt="Apex Gold"
                               className="h-11 w-auto object-contain"
                             />
-                          </button>
+                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
+                              <span className="text-[12px] font-semibold text-slate-700">
+                                {moduleByKey("gold").label}
+                              </span>
+                              {isBeta("gold") && (
+                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                                  Beta
+                                </span>
+                              )}
+                            </span>
+                          </Link>
                           <div className="border-t border-slate-200 mb-3" />
                           <div className="space-y-1">
                             {[
@@ -656,14 +716,11 @@ export default function Navigation() {
                             ].map((item, i) => {
                               const Icon = item.icon;
                               return (
-                                <button
+                                <Link
                                   key={i}
-                                  onClick={() =>
-                                    handleFeatureClick(
-                                      `/features/gold#${item.hash}`,
-                                    )
-                                  }
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-amber-50/60"
+                                  href={`/features/gold#${item.hash}`}
+                                  onClick={closeMenus}
+                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-amber-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                                 >
                                   <Icon
                                     className="text-slate-400 group-hover:text-amber-600 transition-colors mt-0.5 shrink-0"
@@ -678,7 +735,7 @@ export default function Navigation() {
                                       {item.desc}
                                     </div>
                                   </div>
-                                </button>
+                                </Link>
                               );
                             })}
                           </div>
@@ -714,19 +771,19 @@ export default function Navigation() {
             </div>
             <Link
               href="/pricing"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${isPricingActive ? "text-brand" : ""}`}
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isPricingActive ? "text-brand" : ""}`}
             >
               PRICING
             </Link>
             <Link
               href="/tools/fba-calculator"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${isCalculatorActive ? "text-brand" : ""}`}
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isCalculatorActive ? "text-brand" : ""}`}
             >
               FBA CALCULATOR
             </Link>
             <Link
               href="/rewards-benefits"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${isRewardsActive ? "text-brand" : ""}`}
+              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isRewardsActive ? "text-brand" : ""}`}
             >
               <span className="xl:hidden">REWARDS</span>
               <span className="hidden xl:inline">REWARDS & BENEFITS</span>
@@ -734,7 +791,7 @@ export default function Navigation() {
           </div>
 
           {/* Right-side auth */}
-          <div className="hidden lg:flex items-center gap-6 uppercase tracking-wider text-[13px]">
+          <div className="hidden lg:flex items-center gap-6 whitespace-nowrap uppercase tracking-wider text-[13px]">
             <Link
               href="/auth"
               className="text-slate-900 hover:text-brand transition-colors font-bold"
@@ -751,12 +808,16 @@ export default function Navigation() {
 
           {/* Mobile Nav Toggle */}
           <div className="lg:hidden flex items-center gap-4">
-            <Link href="/auth" className="text-sm font-bold text-slate-900">
+            <Link href="/auth" className="whitespace-nowrap text-sm font-bold text-slate-900">
               LOG IN
             </Link>
             <button
+              type="button"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-slate-100 bg-slate-900 rounded-lg shadow-lg"
+              className="p-2 text-slate-100 bg-slate-900 rounded-lg shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               {isMenuOpen ? (
                 <X size={20} className="text-white" />
@@ -772,6 +833,7 @@ export default function Navigation() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -790,76 +852,52 @@ export default function Navigation() {
                   Features
                 </div>
                 <div className="grid grid-cols-1 gap-2">
-                  <button
-                    onClick={() => handleFeatureClick("/features/black")}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left"
-                  >
-                    <img
-                      src={apexBlackLogo}
-                      alt="Apex Black"
-                      className="h-7 w-auto object-contain"
-                    />
-                    <span className="font-medium text-slate-700">
-                      Apex Black
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleFeatureClick("/features/blue")}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left"
-                  >
-                    <img
-                      src={apexBlueLogo}
-                      alt="Apex Blue"
-                      className="h-7 w-auto object-contain"
-                    />
-                    <span className="font-medium text-slate-700">
-                      Apex Blue
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleFeatureClick("/features/green")}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left"
-                  >
-                    <img
-                      src={apexGreenLogo}
-                      alt="Apex Green"
-                      className="h-7 w-auto object-contain"
-                    />
-                    <span className="font-medium text-slate-700">
-                      Apex Green
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleFeatureClick("/features/red")}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left"
-                  >
-                    <img
-                      src={apexRedLogo}
-                      alt="Apex Red"
-                      className="h-7 w-auto object-contain"
-                    />
-                    <span className="font-medium text-slate-700">Apex Red</span>
-                  </button>
-                  {/*
-                        Gold was in the desktop mega-menu and missing here, so
-                        the repricer — the thing the paid search plan is built
-                        around — was unreachable from the menu on a phone.
-                      */}
-                  <button
-                    onClick={() => handleFeatureClick("/features/gold")}
-                    className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left"
-                  >
-                    <img
-                      src={apexGoldLogo}
-                      alt="Apex Gold"
-                      className="h-7 w-auto object-contain"
-                    />
-                    <span className="font-medium text-slate-700">
-                      Apex Gold
-                    </span>
-                  </button>
+                  {/* Gold was in the desktop mega-menu and missing here once, so
+                      the repricer was unreachable from the menu on a phone. */}
+                  {(
+                    [
+                      { key: "green", name: "Apex Green", logo: apexGreenLogo },
+                      { key: "blue", name: "Apex Blue", logo: apexBlueLogo },
+                      { key: "gold", name: "Apex Gold", logo: apexGoldLogo },
+                      { key: "red", name: "Apex Red", logo: apexRedLogo },
+                      { key: "black", name: "Apex Black", logo: apexBlackLogo },
+                    ] as const
+                  ).map((mod) => (
+                    <Link
+                      key={mod.key}
+                      href={moduleByKey(mod.key).path}
+                      onClick={closeMenus}
+                      className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                    >
+                      <img
+                        src={mod.logo}
+                        alt={mod.name}
+                        className="h-7 w-auto object-contain"
+                      />
+                      <span className="flex flex-col min-w-0">
+                        <span className="flex flex-wrap items-center gap-1.5">
+                          <span className="font-medium text-slate-800">
+                            {moduleByKey(mod.key).label}
+                          </span>
+                          {isBeta(mod.key) && (
+                            <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+                              Beta
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-xs text-slate-500">{mod.name}</span>
+                      </span>
+                    </Link>
+                  ))}
                 </div>
               </div>
+              <Link
+                href="/ai"
+                onClick={closeMenus}
+                className="block text-slate-900 font-bold text-lg w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              >
+                AI Integrations
+              </Link>
               {/* Pricing had no mobile entry at all — the page a buyer looks
                   for first was reachable only by typing the URL. */}
               <Link
@@ -883,14 +921,13 @@ export default function Navigation() {
               >
                 Rewards & Benefits
               </Link>
-              <button
-                onClick={() =>
-                  handleFeatureClick("/features/black#resource-library")
-                }
-                className="block text-slate-900 font-bold text-lg w-full text-left"
+              <Link
+                href="/features/black#resource-library"
+                onClick={closeMenus}
+                className="block text-slate-900 font-bold text-lg w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
               >
                 Resources
-              </button>
+              </Link>
             </div>
 
             <div className="pt-4 border-t border-slate-100 space-y-3">
@@ -899,16 +936,15 @@ export default function Navigation() {
                 onClick={() => setIsMenuOpen(false)}
                 className="block w-full text-center bg-brand text-white px-5 py-4 rounded-2xl font-bold shadow-lg shadow-brand/20"
               >
-                SIGN UP FREE
+                SIGN UP
               </Link>
-              <button
-                onClick={() =>
-                  handleFeatureClick("/features/black#apex-university")
-                }
-                className="w-full border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all"
+              <Link
+                href="/features/black#apex-university"
+                onClick={closeMenus}
+                className="block w-full text-center border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
               >
                 FREE AMAZON COURSE
-              </button>
+              </Link>
               <Link
                 href="/contact-us"
                 onClick={() => setIsMenuOpen(false)}

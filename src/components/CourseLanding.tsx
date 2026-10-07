@@ -21,6 +21,7 @@ import { Compass, Building2, Search, ShoppingCart } from "lucide-react";
 import { useRef } from "react";
 
 import { BUNDLE_CHECKOUT_URL, BUNDLE_PRICE, formatPrice } from "../config/offer";
+import { REVIEW_BOOSTER } from "../config/product";
 import "./apex-landing.css";
 
 const origin = "https://www.apexapplications.io";
@@ -42,6 +43,11 @@ const LOGIN_HREF = "/auth?mode=login&plan=free";
 export type CourseVariant = "free" | "paid";
 
 const PRICE = formatPrice(BUNDLE_PRICE);
+
+// Accuracy pass 2026-10-07: the Review Booster is free to switch on without a card only until REVIEW_BOOSTER.freeUntilLabel,
+// and "for life" / "vetted / authorized" are not claims we can support. The "three UPC scans" on a free account are not
+// documented in the plan limits (Beginner allows 2 scans a month); left as written for a human to confirm.
+const RB_FREE_UNTIL = REVIEW_BOOSTER.freeUntilLabel;
 
 const VARIANTS = {
   free: {
@@ -66,12 +72,12 @@ const VARIANTS = {
         <span className="blue">It costs nothing.</span>
       </>
     ),
-    enrolLead: "Create a free Apex account and Apex University opens straight away. The Review Booster and three UPC scans come with it.",
+    enrolLead: `Create a free Apex account and Apex University opens straight away. The Review Booster (free to switch on until ${RB_FREE_UNTIL}) and three UPC scans come with it.`,
     enrolNote: "No card is taken. There is no trial to run out, and nothing to cancel.",
     includesLead: "Your free account includes",
     includes: [
       ["Apex University", "Nine videos, four modules, from zero to your first order."],
-      ["Review Booster", "Automated Amazon review requests on eligible orders."],
+      ["Review Booster", `Amazon's own review request, sent on eligible orders. Free to switch on until ${RB_FREE_UNTIL}.`],
       ["3 UPC scans", "Run a supplier list through the scanner and see it work."],
     ],
     enrolCta: "Create My Free Account",
@@ -115,10 +121,10 @@ const VARIANTS = {
     includesLead: `Your ${PRICE} includes`,
     includes: [
       ["Apex University", "Nine videos, four modules, from zero to your first order."],
-      ["Extended suite trial", "Apex Black, Blue and Green, opened for longer than the standard trial."],
-      ["3 vetted suppliers", "Authorized US wholesale distributors, handed over on registration."],
-      ["Review Booster for life", "Automated Amazon review requests on eligible orders."],
-      ["Keepa Playbook and Ungating SOP", "The frameworks for reading a chart and getting approved."],
+      ["Extended Starter trial", "Apex Black, Blue and Green, opened for longer than the standard trial."],
+      ["3 starting suppliers", "US wholesale distributors from the Distributor Vault, opened on registration."],
+      ["Review Booster included", "Amazon's own review request, sent on eligible orders."],
+      ["Keepa Playbook and Ungating SOP", "The frameworks for reading a chart and applying for approval."],
     ],
     enrolCta: `Get Instant Access for ${PRICE}`,
     helper: "Secure checkout by Stripe. Access lands in your inbox straight away.",
@@ -152,8 +158,8 @@ const BUNDLE_HREF = "/fba-starter-bundle";
 /** The rest of what the bundle carries, read off /fba-starter-bundle. */
 const bundleExtras = [
   "Extended trial of Apex Black, Blue & Green",
-  "3 vetted US wholesale suppliers",
-  "Review Booster, free for life",
+  "3 starting US wholesale suppliers",
+  "Review Booster included",
   "The Ungating SOP",
 ];
 
@@ -274,7 +280,7 @@ const faqsByVariant: Record<CourseVariant, [string, string][]> = {
   free: [
     [
       "Is the course really free?",
-      "Yes. Create an account and Apex University opens. No card, no plan, nothing to cancel. The Review Booster and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.",
+      `Yes. Create an account and Apex University opens. No card, no plan, nothing to cancel. The Review Booster (free to switch on until ${RB_FREE_UNTIL}) and three UPC scans come with the same free account. The paid plans exist for the rest of the software, not for the course.`,
     ],
     ...sharedFaqs,
     [
@@ -285,7 +291,7 @@ const faqsByVariant: Record<CourseVariant, [string, string][]> = {
   paid: [
     [
       `What exactly does the ${PRICE} buy?`,
-      `The nine videos, an extended trial of the Apex suite, three vetted wholesale suppliers, the Review Booster for life, and the Keepa Playbook with the Ungating SOP. One payment of ${PRICE}. It does not start a subscription.`,
+      `The nine videos, an extended trial of the Starter plan, three starting wholesale suppliers, the Review Booster, and the Keepa Playbook with the Ungating SOP. One payment of ${PRICE}. It does not start a subscription.`,
     ],
     ...sharedFaqs,
     [

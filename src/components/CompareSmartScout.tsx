@@ -2,21 +2,24 @@
 
 import { motion } from "motion/react";
 import { CompareTable, CompareCta, HonestVerdict, FactsFootnote, fadeIn, WorkflowCoverage, PriceBars, SuiteShot } from "./CompareShared";
+import { APEX_ENTRY, APEX_EXTENSION, APEX_GOLD, APEX_RED } from "../data/comparisons";
+import { planById } from "../config/offer";
 
 export default function CompareSmartScout() {
   return (
     <div className="pt-32 pb-24 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <motion.header {...fadeIn} className="text-center max-w-3xl mx-auto">
+        {/* initial={false}: the hero is the LCP element and must render visible on the server, not at opacity 0. */}
+        <motion.header {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-600 mb-5">Honest comparison</p>
           <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-[1.05] mb-6">
             Apex Applications vs SmartScout
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The short version: SmartScout is a research and analytics tool, and a good one.
+            The short version: SmartScout is a research and analytics tool.
             Apex covers research <em>and then runs the business you find</em>: purchase orders,
-            repricing and P&amp;L in the same platform, with shipment handling (Apex Red) still in
-            beta. Which one you need depends on
+            repricing (Pro, beta) and P&amp;L in the same platform, with shipment handling (Apex Red)
+            in beta and by invitation. Which one you need depends on
             whether you want to study the market or operate in it.
           </p>
         </motion.header>
@@ -35,18 +38,18 @@ export default function CompareSmartScout() {
         <CompareTable
           rivalName="SmartScout"
           rows={[
-            { label: "What it is", apex: "Full wholesale operating suite", rival: "Research & market analytics" },
-            { label: "Entry price", apex: "$149/mo (Starter)", rival: "$49/mo (Basic, $29 on annual)" },
+            { label: "What it is", apex: "Wholesale sourcing, purchasing and profit; repricer on Pro (beta)", rival: "Research & market analytics" },
+            { label: "Entry price", apex: APEX_ENTRY, rival: "$49/mo (Basic, $29 on annual)" },
             { label: "Free trial", apex: "7 days, every plan", rival: "No trial; 7-day money-back" },
             { label: "Brand & product research", apex: true, rival: true },
             { label: "Supplier price-list scanning", apex: true, rival: true },
             { label: "Keyword & traffic analytics", apex: false, rival: true },
-            { label: "Automated repricer", apex: "Included, with break-even floors", rival: false },
-            { label: "Purchase orders & restock", apex: true, rival: false },
-            { label: "P&L / cashflow from your store", apex: true, rival: false },
-            { label: "Prep & logistics coordination", apex: "Apex Red (beta)", rival: false },
-            { label: "Review automation", apex: "Included", rival: true },
-            { label: "Chrome extension", apex: false, rival: true },
+            { label: "Automated repricer", apex: APEX_GOLD, rival: "Not verified" },
+            { label: "Purchase orders & restock", apex: true, rival: "Not verified" },
+            { label: "P&L / cashflow from your store", apex: true, rival: "Not verified" },
+            { label: "Prep & logistics coordination", apex: APEX_RED, rival: "Not verified" },
+            { label: "Review automation", apex: "Review Booster (Amazon's own review request)", rival: true },
+            { label: "Chrome extension", apex: APEX_EXTENSION, rival: true },
           ]}
         />
 
@@ -54,12 +57,15 @@ export default function CompareSmartScout() {
           items={[
             { label: "SmartScout Basic", price: 49, caption: "Research only, 25 keyword searches/mo" },
             { label: "SmartScout Essentials", price: 119, caption: "Full brand & keyword data" },
-            { label: "Apex Starter, whole suite", price: 149, caption: "Research + POs + repricer + P&L (shipments in beta)", apex: true },
+            // Was "Apex Starter, whole suite" with the repricer in the caption. Starter has no repricer (Pro does).
+            { label: "Apex Starter", price: planById("starter").monthly, caption: "Research, POs and P&L. Repricer is on Pro; shipments (Red) in beta.", apex: true },
+            { label: "Apex Pro", price: planById("pro").monthly, caption: "Adds the repricer on every listing (beta)", apex: true },
             { label: "SmartScout Business", price: 299, caption: "Adds exports and automation" },
           ]}
         />
 
-        <SuiteShot caption="What the $149 actually opens: the whole operating suite, not a research tab." />
+        {/* Was "What the $149 actually opens: the whole operating suite". $149 is Starter, which has no repricer. */}
+        <SuiteShot caption="Beyond research: purchase orders, profit reporting and, on Pro, the repricer (beta)." />
 
         <HonestVerdict
           rivalName="SmartScout"
@@ -69,13 +75,13 @@ export default function CompareSmartScout() {
             "You want a Chrome extension for on-page Amazon research.",
           ]}
           chooseApex={[
-            "You want the products you find to flow into purchase orders, repricing, and P&L without exporting spreadsheets between tools.",
-            "A repricer with true break-even floors matters to you, computed from your own landed costs rather than bounds you maintain by hand.",
+            "You want the products you find to flow into purchase orders, repricing (Pro, beta), and P&L without exporting spreadsheets between tools.",
+            "A repricer (Pro, beta) with break-even floors matters to you, computed from your own landed costs rather than bounds you maintain by hand.",
             "You'd rather pay for one platform than stack a research tool, a repricer, and an accounting sheet separately.",
           ]}
         />
 
-        <CompareCta line="Research a brand, cut the PO, and let the repricer defend the margin, in one login. That's the part no research tool does." />
+        <CompareCta line="Research a brand, cut the PO and, on Pro, let the repricer work from your margin floor, in one login." />
 
         <FactsFootnote
           rivalName="SmartScout"

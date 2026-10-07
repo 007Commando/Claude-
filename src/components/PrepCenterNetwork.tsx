@@ -10,8 +10,6 @@ import {
   Truck,
   Check,
   X as XIcon,
-  Clock,
-  DollarSign,
   Copy,
   CheckCircle2,
   AlertTriangle,
@@ -55,62 +53,6 @@ function groupByCity(list: PrepCenter[]): CityGroup[] {
   return [...map.values()];
 }
 
-function TimeDonut({ sourcingPct, label, accent }: { sourcingPct: number; label: string; accent: string }) {
-  const r = 50;
-  const circumference = 2 * Math.PI * r;
-  const arc = circumference * (sourcingPct / 100);
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-32 h-32">
-        <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-          <circle cx={60} cy={60} r={r} fill="none" stroke="#e2e8f0" strokeWidth={14} />
-          <circle
-            cx={60}
-            cy={60}
-            r={r}
-            fill="none"
-            stroke={accent}
-            strokeWidth={14}
-            strokeLinecap="round"
-            strokeDasharray={`${arc} ${circumference}`}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-black text-slate-900">{sourcingPct}%</span>
-        </div>
-      </div>
-      <div className="mt-4 text-sm font-bold text-slate-900 text-center">{label}</div>
-      <div className="text-xs text-slate-400">sourcing &amp; deals</div>
-    </div>
-  );
-}
-
-function CostBars() {
-  const warehouse = 8400;
-  const prep = 700;
-  const max = warehouse;
-  return (
-    <div className="flex items-end justify-center gap-10 sm:gap-16 h-56">
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-lg font-black text-slate-900">${warehouse.toLocaleString()}</div>
-        <div
-          className="w-16 sm:w-20 bg-slate-300 rounded-t-xl transition-all"
-          style={{ height: `${(warehouse / max) * 170}px` }}
-        />
-        <div className="text-xs text-slate-500 font-bold text-center">Your Warehouse</div>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-lg font-black text-brand">${prep.toLocaleString()}</div>
-        <div
-          className="w-16 sm:w-20 bg-brand rounded-t-xl transition-all"
-          style={{ height: `${Math.max((prep / max) * 170, 10)}px` }}
-        />
-        <div className="text-xs text-slate-500 font-bold text-center">Prep Center</div>
-      </div>
-    </div>
-  );
-}
-
 function BreakEvenChart() {
   return (
     <svg viewBox="0 0 400 180" className="w-full h-auto max-w-xl">
@@ -125,7 +67,7 @@ function BreakEvenChart() {
       <circle cx="258" cy="58" r="5" fill="#0f172a" />
       <line x1="258" y1="58" x2="258" y2="178" stroke="#0f172a" strokeWidth="1.5" strokeDasharray="3 3" />
       <text x="200" y="176" fontSize="9" fill="#0f172a" fontWeight="700">
-        ~13,000 units/mo
+        Break-even depends on your volume
       </text>
     </svg>
   );
@@ -162,7 +104,7 @@ const onboardingSteps = [
   {
     step: "3",
     title: "Complete Onboarding",
-    body: "Fill out any additional intake forms, share invoicing preferences, and confirm receiving procedures. Most centers respond within 24-48 hours.",
+    body: "Fill out any additional intake forms, share invoicing preferences, and confirm receiving procedures. Response times differ from center to center.",
   },
   {
     step: "4",
@@ -202,16 +144,18 @@ const whyReasons = [
       "Unless you're running serious volume, a private warehouse costs a lot of money and delivers little protection. For most sellers, a prep center is far cheaper, more flexible, and instantly scalable.",
     eyebrow: "Run the Numbers",
     headline: "What a warehouse really costs you every month",
-    body: "Most sellers underestimate the overhead of running their own space. Here's a realistic monthly breakdown for a small operation versus outsourcing to a prep center.",
+    body: "Most sellers underestimate the overhead of running their own space. These are the cost lines a private warehouse adds, which a prep center covers inside its per-unit rate. Your own figures will depend on your city and volume.",
   },
 ];
 
+// Accuracy pass 2026-10-07: the dollar amounts per line ($8,400 a month in total) were an
+// invented illustration, so the lines are listed without figures.
 const costRows = [
-  { label: "Facility lease", warehouse: "$3,500", prep: "$0" },
-  { label: "Staff / labor", warehouse: "$2,800", prep: "$0" },
-  { label: "Insurance", warehouse: "$450", prep: "$0" },
-  { label: "Supplies & equipment", warehouse: "$600", prep: "$0" },
-  { label: "Utilities", warehouse: "$350", prep: "$0" },
+  { label: "Facility lease" },
+  { label: "Staff / labor" },
+  { label: "Insurance" },
+  { label: "Supplies & equipment" },
+  { label: "Utilities" },
 ];
 
 export default function PrepCenterNetwork() {
@@ -250,14 +194,14 @@ export default function PrepCenterNetwork() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand/10 text-brand text-xs font-black rounded-full uppercase tracking-[0.2em] mb-6">
             <Zap size={14} />
-            {prepCenters.length} Vetted Prep Partners
+            {prepCenters.length} Prep Centers Listed
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 mb-5 sm:mb-6 tracking-tight leading-tight">
             The <span className="text-brand">Prep Center</span> Network
@@ -270,8 +214,9 @@ export default function PrepCenterNetwork() {
           <div className="mt-6 inline-flex items-start sm:items-center gap-3 text-left sm:text-center bg-brand/5 border border-brand/10 rounded-2xl px-5 py-4 max-w-xl mx-auto">
             <Zap size={16} className="text-brand shrink-0 mt-0.5 sm:mt-0" />
             <p className="text-sm text-slate-600 leading-relaxed">
-              Apex members unlock instant discounts across our network: exclusive pricing sourced
-              through our direct partnerships, passed straight to you.
+              Member pricing is offered by participating centers. Each center sets its own rates, so
+              ask the center for its quote.
+              {/* Accuracy pass 2026-10-07: "direct partnerships" removed. The footer says Apex is not a formal partner of these centers. */}
             </p>
           </div>
         </motion.section>
@@ -412,16 +357,10 @@ export default function PrepCenterNetwork() {
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
-                    {c.approvedPartner ? (
-                      <div className="inline-flex items-center gap-1.5 text-[10px] font-black text-brand uppercase tracking-widest">
-                        <ShieldCheck size={12} />
-                        Apex Approved Partner
-                      </div>
-                    ) : (
-                      <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
-                        Network Listing
-                      </div>
-                    )}
+                    {/* "Apex Approved Partner" removed: Apex is not a formal partner of the centers listed. */}
+                    <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                      Network Listing
+                    </div>
                     <span className="inline-flex items-center gap-1 text-xs text-slate-400 shrink-0">
                       <Star size={12} className="fill-amber-400 text-amber-400" />
                       {c.rating.toFixed(2).replace(/0$/, "").replace(/\.$/, "")} ({c.reviews})
@@ -486,69 +425,39 @@ export default function PrepCenterNetwork() {
         >
           <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-block bg-brand/10 text-brand text-xs font-black uppercase tracking-[0.2em] rounded-full px-4 py-1.5 mb-5">
-              Exclusive Member Pricing
+              Member Pricing
             </div>
             <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-4 tracking-tight">
-              Save Up to <span className="text-brand">30% OFF</span> Lifetime Prepping
+              Ask for <span className="text-brand">Apex Member</span> Pricing
             </h2>
             <p className="text-base sm:text-lg text-slate-500 leading-relaxed">
-              As an Apex member, you unlock exclusive lifetime discounts at selected prep centers in
-              our network. The savings add up fast.
+              Member pricing is offered by participating prep centers. Each center sets its own
+              rates, so ask the center for its quote before you ship.
             </p>
           </div>
 
+          {/* Accuracy pass 2026-10-07: the market-rate and member-rate figures and the per-1,000-unit
+              and 12-month savings were unsourced, and each center sets its own rates. */}
           <div className="grid sm:grid-cols-3 gap-4 mb-6">
-            <div className="rounded-2xl border border-slate-200 p-6 text-center">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                Average Market Rate
+            {[
+              { n: "1", t: "Pick a center", d: "Browse the list and open the card for the centers near your suppliers." },
+              { n: "2", t: "Mention Apex", d: "Use the outreach email below and say Apex referred you." },
+              { n: "3", t: "Ask for the quote", d: "Ask whether the center offers member pricing and what its rates and terms are." },
+            ].map((x) => (
+              <div key={x.n} className="rounded-2xl border border-slate-200 p-6 text-center">
+                <div className="text-xs font-bold text-brand uppercase tracking-widest mb-2">Step {x.n}</div>
+                <div className="text-lg font-black text-slate-900">{x.t}</div>
+                <div className="text-xs text-slate-500 mt-1">{x.d}</div>
               </div>
-              <div className="text-2xl font-black text-slate-900">$1.00 to $1.20</div>
-              <div className="text-xs text-slate-400 mt-1">or higher at boutique centers</div>
-            </div>
-            <div className="rounded-2xl border-2 border-brand bg-brand/5 p-6 text-center">
-              <div className="text-xs font-bold text-brand uppercase tracking-widest mb-2">
-                Apex Member Price
-              </div>
-              <div className="text-2xl font-black text-brand">$0.60 to $0.70</div>
-              <div className="text-xs text-slate-500 mt-1">per unit for member accounts</div>
-            </div>
-            <div className="rounded-2xl border border-slate-200 p-6 text-center">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                Your Savings
-              </div>
-              <div className="text-2xl font-black text-emerald-600">$0.30 to $0.60</div>
-              <div className="text-xs text-slate-400 mt-1">per unit on average</div>
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div className="rounded-2xl bg-slate-50 border border-slate-100 p-6 flex items-center gap-4">
-              <div className="w-11 h-11 rounded-xl bg-slate-900 flex items-center justify-center shrink-0">
-                <DollarSign size={18} className="text-white" />
-              </div>
-              <div>
-                <div className="text-lg font-black text-slate-900">$400 to $500 saved</div>
-                <div className="text-xs text-slate-500">Per 1,000 units shipped</div>
-              </div>
-            </div>
-            <div className="rounded-2xl bg-slate-50 border border-slate-100 p-6 flex items-center gap-4">
-              <div className="w-11 h-11 rounded-xl bg-slate-900 flex items-center justify-center shrink-0">
-                <Clock size={18} className="text-white" />
-              </div>
-              <div>
-                <div className="text-lg font-black text-slate-900">$4,800 to $6,000+ saved</div>
-                <div className="text-xs text-slate-500">Over 12 months</div>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="rounded-2xl bg-slate-50 border border-slate-100 p-6 flex items-start gap-3">
             <ShieldCheck size={18} className="text-brand shrink-0 mt-0.5" />
             <p className="text-sm text-slate-500 leading-relaxed">
-              <span className="font-bold text-slate-900">Lifetime Discount, No Catch: </span>
-              These rates are set by individual prep centers. Once you're in the Apex network, your
-              discounted rate stays locked in for as long as you work with that partner, with no
-              expiration, no renegotiation needed.
+              <span className="font-bold text-slate-900">Rates are set by each center: </span>
+              Whether a center offers member pricing, and for how long, is up to that center. Get the
+              rate and its terms in writing before you ship.
             </p>
           </div>
         </motion.section>
@@ -643,19 +552,17 @@ export default function PrepCenterNetwork() {
             className="grid lg:grid-cols-2 gap-10 items-center mb-20"
           >
             <div className="order-2 lg:order-1">
-              <div className="flex items-center justify-center gap-10 mb-6">
-                <TimeDonut sourcingPct={20} label="Doing it yourself" accent="#94a3b8" />
-                <TimeDonut sourcingPct={80} label="With a prep center" accent="#2563eb" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-center">
-                  <div className="text-xl font-black text-brand">5x</div>
-                  <div className="text-xs text-slate-500">more time on sourcing &amp; deals</div>
+              {/* Accuracy pass 2026-10-07: the 20% / 80% time donut and "5x" were invented figures. */}
+              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-6">
+                <div className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">
+                  What a prep center handles
                 </div>
-                <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4 text-center">
-                  <div className="text-xl font-black text-slate-900">0 hrs</div>
-                  <div className="text-xs text-slate-500">packing boxes at midnight</div>
-                </div>
+                {["Receiving", "Inspecting", "Labeling and prepping", "Shipping to Amazon"].map((t) => (
+                  <div key={t} className="flex items-center gap-2 mb-2 text-sm text-slate-600">
+                    <Check size={14} className="text-emerald-500 shrink-0" />
+                    {t}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="order-1 lg:order-2">
@@ -687,29 +594,21 @@ export default function PrepCenterNetwork() {
               <p className="text-slate-500 leading-relaxed">{whyReasons[2].body}</p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-slate-100 p-6 flex flex-col items-center">
-                <div className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 self-start">
-                  Monthly Operating Cost
-                </div>
-                <CostBars />
-              </div>
+            <div className="max-w-xl mx-auto">
               <div className="rounded-2xl border border-slate-100 p-6">
                 <div className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">
-                  Cost Breakdown
+                  What your own warehouse adds up to
                 </div>
                 <div className="space-y-2">
                   {costRows.map((row) => (
                     <div key={row.label} className="flex items-center justify-between text-sm py-1.5 border-b border-slate-50">
                       <span className="text-slate-600">{row.label}</span>
-                      <span className="font-bold text-slate-900">{row.warehouse}</span>
                     </div>
                   ))}
                 </div>
                 <div className="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600 leading-relaxed">
-                  You could be paying <span className="font-black text-slate-900">$8,400 every month</span>{" "}
-                  ($100,800/yr) running your own warehouse, against a flat, pay-per-unit rate with a
-                  prep center.
+                  A prep center charges a per-unit rate instead. Ask each center for its current
+                  rates and compare them with what your own space would cost you.
                 </div>
               </div>
             </div>
@@ -744,7 +643,7 @@ export default function PrepCenterNetwork() {
               Apex Prep Center Onboarding Guide
             </div>
             <h2 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tight">
-              How to Onboard With an <span className="text-brand">Apex-Approved</span> Prep Center
+              How to Onboard With a <span className="text-brand">Network</span> Prep Center
             </h2>
           </div>
 
@@ -766,8 +665,8 @@ export default function PrepCenterNetwork() {
               <div>
                 <div className="text-sm font-bold text-slate-900">Approach Method</div>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Copy, paste, and replace the highlighted fields. Mentioning Apex can help you get
-                  priority handling or a better price.
+                  Copy, paste, and replace the highlighted fields. Mentioning Apex as your referral
+                  source may help, but each center decides.
                 </p>
               </div>
               <button

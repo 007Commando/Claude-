@@ -3,6 +3,8 @@
 import { motion } from "motion/react";
 import { ArrowRight, Check, Container, Minus } from "lucide-react";
 import Link from "next/link";
+import FeatureFacts from "./FeatureFacts";
+import { moduleByKey } from "../config/product";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -14,10 +16,11 @@ const fadeIn = {
 /**
  * The date this page's scope list was checked against the application.
  *
- * A beta page without one is a roadmap: it reads as a promise, ages silently,
- * and nobody can tell whether "coming soon" was written last week or last year.
+ * Kept as a code comment only: a visible "Scope checked <date>" stamp on a
+ * customer-facing page makes the software look dated (house rule: no as-of
+ * stamps). Update the lists below whenever you re-check them.
  */
-const CHECKED_ON = "14 September 2026";
+// Scope last checked 14 September 2026.
 
 /** What works in the beta today, checked against the running application. */
 const IN_BETA: string[] = [
@@ -42,15 +45,17 @@ export default function ApexRed() {
   return (
     <div className="pt-32 pb-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div {...fadeIn} className="max-w-3xl mx-auto text-center">
+        {/* initial={false}: the hero must be visible in the server HTML, before any script runs. */}
+        <motion.div {...fadeIn} initial={false} className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 border border-red-100 text-red-600 text-[11px] font-bold rounded-full uppercase tracking-[0.1em] shadow-sm">
               <Container size={14} className="stroke-[3]" />
-              Beta. Not a finished product
+              Beta, by invitation. Not a finished product
             </div>
           </div>
 
-          <h1 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-red-700">FBA shipment and prep center software</h1>
+          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
+          <h1 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-red-700">Apex Red: {moduleByKey("red").label} (Beta)</h1>
           <p className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-[1.02]">
             Help shape the next Apex{" "}
             <span className="text-red-600">fulfillment workflow</span>.
@@ -58,18 +63,23 @@ export default function ApexRed() {
 
           <p className="text-lg text-slate-600 leading-relaxed mb-4 max-w-2xl mx-auto">
             Apex Red brings shipments, warehouses, prep centres and their billing into the same
-            system that buys and prices your stock. It is in beta: the list below is what works
-            today, not what is planned.
+            system that buys and prices your stock. It is in beta and opened by invitation: the list
+            below is what works today, not what is planned.
           </p>
-          <p className="text-sm text-slate-400">Scope checked {CHECKED_ON}.</p>
         </motion.div>
+      </div>
+
+      {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
+      <FeatureFacts module="red" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <motion.div {...fadeIn} className="mt-16 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl border-2 border-red-100 bg-red-50/30 p-8">
             <h2 className="text-lg font-black tracking-tight text-slate-900 mb-1">
               Working in the beta today
             </h2>
-            <p className="text-xs text-slate-500 mb-5">Checked {CHECKED_ON}</p>
+            <p className="text-xs text-slate-500 mb-5">Checked against the running application</p>
             <ul className="space-y-3">
               {IN_BETA.map((item) => (
                 <li key={item} className="flex gap-3 items-start text-sm text-slate-700 leading-relaxed">
@@ -106,7 +116,7 @@ export default function ApexRed() {
             Tell us how your operation actually works
           </h2>
           <p className="text-slate-600 leading-relaxed mb-6 max-w-2xl">
-            Beta places are given out against real operations rather than first come, first served.
+            Red is by invitation, and places are given out against real operations rather than first come, first served.
             The useful things to tell us are your monthly shipment volume, how many people touch a
             shipment, what you use for listing and prep today, and which single step costs you the
             most time. That last answer is what decides what gets built next.
@@ -121,7 +131,7 @@ export default function ApexRed() {
             href="/contact-us"
             className="inline-flex items-center gap-2 rounded-[20px] bg-red-600 text-white px-8 py-4 font-black uppercase tracking-wide hover:bg-red-700 hover:scale-[1.03] transition-all"
           >
-            Join the Apex Red beta <ArrowRight size={18} />
+            Ask for a beta invitation <ArrowRight size={18} />
           </Link>
           <p className="mt-4 text-xs text-slate-500">
             This opens our contact form. It does not start a subscription, take a card, or begin a
@@ -131,17 +141,17 @@ export default function ApexRed() {
 
         <motion.div {...fadeIn} className="mt-16">
           <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-4">
-            The rest of Apex is not in beta
+            Most of Apex is not in beta
           </h2>
           <p className="text-slate-600 leading-relaxed mb-6 max-w-2xl">
-            Sourcing, purchasing and profit reporting are live on every plan, and repricing is live
-            on Pro. If the bottleneck is deciding what to buy and what to charge rather than moving
+            Sourcing, purchasing and profit reporting are live on every plan, and repricing is in
+            beta on Pro. If the bottleneck is deciding what to buy and what to charge rather than moving
             the boxes, you do not need to wait for Red.
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             {[
               { label: "Apex Green, catalog scanning", href: "/features/green" },
-              { label: "Apex Gold, repricing", href: "/features/gold" },
+              { label: "Apex Gold, repricing (beta)", href: "/features/gold" },
               { label: "Apex Blue, profit and purchasing", href: "/features/blue" },
               { label: "What a plan costs", href: "/pricing" },
             ].map((link) => (
@@ -164,16 +174,16 @@ export default function ApexRed() {
               a: "Compare the list above against what your operation actually needs, and decide from that rather than from a roadmap. If a function you depend on is in the second column, the answer is no.",
             },
             {
-              q: "Does requesting beta access start a paid subscription?",
+              q: "Does asking for an invitation start a paid subscription?",
               a: "No. The button opens our contact form. No card, no trial, no subscription, it sends a message and we reply. Paid plans are a separate decision on the pricing page.",
             },
             {
               q: "Do I need a paid plan to be in the beta?",
-              a: "Beta access is arranged with us directly. Tell us about your operation and we will tell you what is available and what it would cost, before anything is charged.",
+              a: "Red is by invitation on any plan, arranged with us directly. Sellers connected to a prep center that is approved on Apex get it free. Tell us about your operation and we will tell you what is available before anything is charged.",
             },
             {
               q: "When does Red leave beta?",
-              a: "We are not going to give you a date we cannot keep. This page carries the date its scope was last checked, and the list changes as the work does.",
+              a: "We are not going to give you a date we cannot keep. The lists on this page change as the work does.",
             },
           ].map((faq) => (
             <div key={faq.q} className="rounded-2xl border border-slate-200 bg-white p-5">

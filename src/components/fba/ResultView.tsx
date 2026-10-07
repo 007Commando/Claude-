@@ -27,6 +27,12 @@ import type { FbaProduct } from "../../lib/fba/types";
 import { AnimatedNumber, Chip, money, Panel, percent, whole } from "./parts";
 import SeasonHeatmap from "./SeasonHeatmap";
 
+// Accuracy pass 2026-10-07: margin and ROI are defined where they first
+// appear (compute() in lib/fba/calc.ts: margin = profit / price, ROI = profit /
+// product cost + prep + shipping to Amazon + other costs), the referral-fee
+// wording no longer claims a flat rate, and the fee footnote says the figures
+// are estimates rather than the seller's exact fees.
+
 const SIZE_TIER: Record<NonNullable<FbaProduct["sizeTier"]>, string> = {
   standard_small: "Small standard",
   standard_large: "Large standard",
@@ -401,10 +407,10 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
           delay={0.26}
           accent="bg-amber-500"
           icon={<Receipt size={16} />}
-          label="Amazon fees"
+          label="Est. Amazon fees"
           foot={
             basePrice !== null && feeAtBuyBox !== null ? (
-              <span>{percent(feeAtBuyBox / basePrice)} of the selling price</span>
+              <span>Estimate, {percent(feeAtBuyBox / basePrice)} of the selling price</span>
             ) : (
               <span>Needs a price</span>
             )
@@ -474,12 +480,12 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
               (rRead.change < -0.1 ? (
                 <>
                   The 30-day average is <b className="text-slate-900">{Math.abs(rRead.change * 100).toFixed(0)}% better</b> than the
-                  90-day one: demand has been picking up.
+                  90-day one: demand may be picking up.
                 </>
               ) : rRead.change > 0.1 ? (
                 <>
                   The 30-day average is <b className="text-slate-900">{(rRead.change * 100).toFixed(0)}% worse</b> than the 90-day one:
-                  demand has been cooling.
+                  demand may be cooling.
                 </>
               ) : (
                 <>The rank has held steady, which is what you want from a product you plan to reorder.</>
@@ -675,6 +681,10 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
                   ))}
                 </div>
               )}
+              <p className="mt-4 text-xs leading-relaxed text-slate-400">
+                Margin is profit divided by the selling price. ROI is profit divided by your cost per unit (product cost, prep,
+                shipping to Amazon and other costs you enter). Amazon&apos;s fees are already taken out of profit.
+              </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6">
@@ -725,8 +735,8 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
                     <span className="font-bold text-slate-400">({sellPrice > 0 ? percent(result.referral / sellPrice, 1) : "n/a"} of price)</span>
                   </dt>
                   <dd>
-                    Amazon&apos;s cut of every sale. The rate depends on the category{product.category ? ` (${product.category})` : ""}, with a
-                    minimum of $0.30 on most categories.
+                    Amazon&apos;s cut of every sale. It varies by category{product.category ? ` (this one is ${product.category})` : ""}, commonly 8
+                    to 15 percent with a minimum per item; see Amazon&apos;s referral fee table.
                   </dd>
                 </div>
                 <div>
@@ -734,8 +744,8 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
                     FBA fulfillment fee: {hasFbaFee ? money(result.fba) : "n/a"}
                   </dt>
                   <dd>
-                    Picking, packing and shipping to the customer. It follows the size tier and weight, and steps up above $10 and $50
-                    selling price.
+                    Picking, packing and shipping to the customer. It follows the size tier and weight, and has three price tiers, changing at
+                    $10 and $50 selling price.
                   </dd>
                 </div>
                 <div>
@@ -750,21 +760,23 @@ export default function ResultView({ product, onReset }: { product: FbaProduct; 
               </dl>
               <p className="mt-4 border-t border-slate-100 pt-4 text-xs leading-relaxed text-slate-400">
                 Not included: monthly storage, aged-inventory surcharges, returns processing, advertising and taxes. Add them to
-                &quot;Other costs&quot; if you want them counted. These are estimates built from a database snapshot, so confirm the
-                figures in Seller Central before you buy.
+                &quot;Other costs&quot; if you want them counted. These fee figures are estimates, not your account&apos;s exact fees. The
+                referral fee follows the rules Apex uses in its product database, the FBA fee is the one held there for this product,
+                and inbound placement follows the schedule Amazon published for 2026 (Amazon gives a range by size and weight, so the
+                East, Central and West figures are close, not exact). Confirm them in Seller Central before you buy.
               </p>
             </div>
 
             <div className="flex flex-col items-start justify-between gap-4 rounded-3xl bg-slate-950 p-6 text-white sm:flex-row sm:items-center">
               <div>
                 <p className="text-lg font-black tracking-tight">Check a whole supplier list the same way.</p>
-                <p className="text-sm text-slate-400">Apex scans a catalog and builds the purchase order for you.</p>
+                <p className="text-sm text-slate-400">Apex scans a catalog so you can build a purchase order from what clears.</p>
               </div>
               <Link
                 href={`/auth?mode=signup&utm_source=apex-site&utm_medium=free-tool&utm_campaign=fba-calculator&utm_content=${product.asin}-result`}
                 className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black uppercase tracking-wide text-slate-950 transition-transform hover:scale-[1.03]"
               >
-                Create free account <ArrowRight size={16} />
+                Create an account <ArrowRight size={16} />
               </Link>
             </div>
           </div>

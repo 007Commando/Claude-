@@ -31,16 +31,19 @@ const brandStyles: Record<Brand, { dot: string; iconBg: string; icon: string; la
 };
 
 export default function NetworkHub() {
+  // Accuracy pass 2026-10-07: descriptions made literal. "Real-time net margin", "Automated PO dispatch",
+  // "Vetted supplier directory", "High-speed file vetting", "Live sales console" and "Automated review engine"
+  // overstated what the modules do (margin updates on a sync; purchase orders are built and submitted by the seller).
   const features: Record<string, HubNode> = {
-    vendors:   { title: "Vendor Management", desc: "Vetted supplier directory",     icon: Globe,           brand: "blue" },
-    upc:       { title: "UPC Scanner",       desc: "High-speed file vetting",       icon: ScanLine,        brand: "green" },
+    vendors:   { title: "Vendor Management", desc: "Supplier directory",            icon: Globe,           brand: "blue" },
+    upc:       { title: "UPC Scanner",       desc: "Supplier file scanner",           icon: ScanLine,        brand: "green" },
     database:  { title: "Central Database",  desc: "Unified product vault",         icon: Database,        brand: "blue" },
     inventory: { title: "Inventory",         desc: "Stock & restock signals",       icon: Boxes,           brand: "blue" },
     catalog:   { title: "Master Catalog",    desc: "Supplier price book",           icon: Library,         brand: "green" },
-    po:        { title: "Purchase Orders",   desc: "Automated PO dispatch",         icon: FileText,        brand: "blue" },
-    analytics: { title: "Analytics Hub",     desc: "Real-time net margin",          icon: BarChart3,       brand: "blue" },
-    dashboard: { title: "Operation Dashboard", desc: "Live sales console",          icon: LayoutDashboard, brand: "black" },
-    review:    { title: "Review Booster",    desc: "Automated review engine",       icon: Star,            brand: "black" },
+    po:        { title: "Purchase Orders",   desc: "Purchase order builder",            icon: FileText,        brand: "blue" },
+    analytics: { title: "Analytics Hub",     desc: "Net margin from your synced sales",          icon: BarChart3,       brand: "blue" },
+    dashboard: { title: "Operation Dashboard", desc: "Sales dashboard",                   icon: LayoutDashboard, brand: "black" },
+    review:    { title: "Review Booster",    desc: "Amazon's Request a Review",      icon: Star,            brand: "black" },
   };
 
   // viewBox 1000 x 500. Hub center (500, 90)

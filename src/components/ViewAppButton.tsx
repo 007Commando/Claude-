@@ -6,9 +6,16 @@ import { getAuthUserEmail, hasActiveSubscription } from "../lib/subscriptionGate
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
+  /**
+   * The plan a signed-out visitor's trial starts on. Starter unless the page
+   * sells something Starter lacks: the Gold page passes "pro", because a
+   * repricer page that signed people up to a plan without the repricer was
+   * sending them into a wall.
+   */
+  plan?: "beginner" | "starter" | "plus" | "pro";
 };
 
-export default function ViewAppButton({ children, onClick, ...rest }: Props) {
+export default function ViewAppButton({ children, onClick, plan = "starter", ...rest }: Props) {
   const router = useRouter();
   const { session } = useSession();
 
@@ -27,7 +34,7 @@ export default function ViewAppButton({ children, onClick, ...rest }: Props) {
         router.push("/auth?mode=login");
       }
     } else {
-      router.push("/auth?mode=signup&plan=starter&period=monthly");
+      router.push(`/auth?mode=signup&plan=${plan}&period=monthly`);
     }
   };
 

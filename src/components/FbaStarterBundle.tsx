@@ -30,11 +30,15 @@ const COUNTDOWN_SECONDS = 9 * 60;
 import { BUNDLE_CHECKOUT_URL as CHECKOUT_URL } from "../config/offer";
 import CheckoutLink from "./CheckoutLink";
 
+// Accuracy pass 2026-10-07: "full Apex suite" replaced with the Starter plan's modules (no repricer; Red by invitation),
+// "vetted/authorized" and "free for life" removed, Review Booster stated as "included" and its benefit bullets dropped
+// (a review request cannot ungate or win sales), and the outcome promises softened. The trial length is not stated here
+// because it is not set in this repo.
 const includes = [
   {
     icon: Rocket,
-    title: "Extended Trial to the Full Apex Suite",
-    body: "Full access to Apex Black, Blue & Green, including sourcing, analytics, purchase orders, and more, on an extended trial, not the standard 7 days.",
+    title: "Extended Trial of the Starter Plan",
+    body: "Apex Black, Blue & Green, including sourcing, profit analytics and purchase orders, on an extended trial, not the standard 7 days. The Starter plan does not include the repricer, and Apex Red is by invitation.",
     image: {
       src: apexSuiteOverviewImage,
       alt: "Apex dashboard with the Tools menu open, showing Apex Black, Blue, and Green modules",
@@ -43,8 +47,8 @@ const includes = [
   },
   {
     icon: Building2,
-    title: "3 Free Suppliers",
-    body: "Three vetted, authorized US wholesale distributors handed to you on registration, so you skip the months of cold outreach.",
+    title: "3 Starting Suppliers",
+    body: "Three US wholesale distributors from the Distributor Vault open when you register, so you have somewhere to start instead of cold outreach.",
     photo: {
       src: productCatalogCollageImage,
       alt: "Real products and UPC catalogs from wholesale suppliers",
@@ -52,20 +56,14 @@ const includes = [
   },
   {
     icon: Star,
-    title: "Free Lifetime Review Booster",
-    body: "Our automated review-generation tool, free for life, so your new listings build social proof from day one.",
-    highlights: [
-      "Autopilot growth for starting sellers",
-      "Win more sales",
-      "Ungate easier",
-      "Earn more trust with Amazon customers",
-    ],
+    title: "Review Booster Included",
+    body: "Sends Amazon's own Request a Review on eligible Amazon.com orders, a set number of days after the order that you choose.",
     image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black Review Booster" },
   },
   {
     icon: BookOpen,
     title: "Keepa Playbook and Ungating SOP",
-    body: "The exact framework we use to read Keepa charts and spot profitable, stable, fast-moving wholesale products, plus our step-by-step SOP for getting ungated fast.",
+    body: "A framework for reading Keepa charts and spotting profitable, stable, fast-moving wholesale products, plus a step-by-step SOP for ungating applications.",
     books: [
       { src: keepaPlaybookBookImage, alt: "Apex Keepa Playbook book cover", label: "Keepa Playbook" },
       { src: ungatingSopBookImage, alt: "Apex Ungating SOP book cover", label: "Ungating SOP" },
@@ -82,7 +80,7 @@ const includes = [
 const trustPoints = [
   { icon: Zap, label: "Instant access" },
   { icon: Lock, label: "Secure checkout" },
-  { icon: ShieldCheck, label: "Cancel anytime" },
+  { icon: ShieldCheck, label: "One payment" },
 ];
 
 function BuyButton({ className = "", children }: { className?: string; children: React.ReactNode }) {
@@ -161,7 +159,7 @@ export default function FbaStarterBundle() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-12"
@@ -171,13 +169,12 @@ export default function FbaStarterBundle() {
             Amazon FBA Starter Bundle
           </div>
           <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-[1.05]">
-            Everything You Need to Launch on Amazon{" "}
+            Your Starter Kit for Amazon Wholesale{" "}
             <span className="text-brand">for Just $29</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            One bundle, everything to start: extended access to the full Apex suite, 3
-            free suppliers, lifetime review automation, the Keepa Playbook, and 9 core wholesale
-            modules.
+            One bundle to start: an extended trial of the Starter plan, 3 starting suppliers,
+            Review Booster included, the Keepa Playbook, and 9 core wholesale modules.
           </p>
 
           <div className="flex flex-col items-center gap-4">
@@ -203,7 +200,7 @@ export default function FbaStarterBundle() {
           transition={{ duration: 0.5 }}
           className="text-2xl lg:text-3xl font-black text-slate-900 text-center tracking-tight mb-8 max-w-2xl mx-auto"
         >
-          The Fastest Path to a Real FBA Business
+          A Starter Kit for Amazon Wholesale
         </motion.h2>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -215,7 +212,7 @@ export default function FbaStarterBundle() {
           <BrowserFrame
             src={dashboardHeroImage.url}
             alt="Apex dashboard showing Amazon balance, sales, and profit"
-            caption="What We Promise You"
+            caption="Your Apex dashboard"
           />
           <div className="absolute -right-2 sm:-right-6 lg:-right-14 -bottom-10 sm:-bottom-12 lg:-bottom-14 w-28 sm:w-36 lg:w-48 rotate-3 rounded-[22px] border-4 border-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.45)] overflow-hidden bg-white">
             <img
@@ -239,8 +236,7 @@ export default function FbaStarterBundle() {
               What's Inside the Bundle
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Five things that normally take months and hundreds of dollars to assemble, bundled
-              into one $29 starter pack.
+              Five things to start with, bundled into one $29 starter pack.
             </p>
           </div>
 
@@ -256,19 +252,7 @@ export default function FbaStarterBundle() {
                     <h3 className="text-xl font-black text-slate-900 tracking-tight">{item.title}</h3>
                   </div>
                   <p className="text-sm text-slate-600 leading-relaxed mb-4">{item.body}</p>
-                  {"highlights" in item && item.highlights && (
-                    <div className="flex flex-wrap gap-2">
-                      {item.highlights.map((highlight) => (
-                        <span
-                          key={highlight}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand bg-brand/10 rounded-full px-3 py-1.5"
-                        >
-                          <Sparkles size={12} className="shrink-0" />
-                          {highlight}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* The benefit pills were removed with the Review Booster bullets (no item carries highlights now). */}
                 </div>
               );
 
@@ -359,8 +343,7 @@ export default function FbaStarterBundle() {
               Start Selling for Just $29
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              A one-time $29 gets you the whole starter bundle. No experience required, everything
-              you need to land your first profitable deal is included.
+              A one-time $29 gets you the whole starter bundle. No experience required.
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
@@ -383,7 +366,7 @@ export default function FbaStarterBundle() {
                 </BuyButton>
               </ShakeOnScroll>
               <p className="text-center text-xs text-slate-400 mt-3">
-                Secure checkout · Instant access · Cancel anytime
+                Secure checkout · Instant access · One payment
               </p>
             </div>
           </div>

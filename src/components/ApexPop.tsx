@@ -43,7 +43,6 @@ import {
   Boxes,
   Building2,
   Candy,
-  Check,
   ClipboardCheck,
   ClipboardList,
   FileSpreadsheet,
@@ -60,6 +59,8 @@ import "./apex-surface.css";
 import "./apex-pop.css";
 import TrustpilotBadge, { type TrustpilotFigures } from "./TrustpilotBadge";
 import { DOLLAR_WEEK, TAX_SUFFIX } from "../config/offer";
+import { REPRICER_FACTS } from "../config/product";
+import { DISTRIBUTOR_CATEGORIES, DISTRIBUTOR_COUNT } from "../data/distributorStats";
 
 const ORIGIN = "https://www.apexapplications.io";
 
@@ -211,21 +212,14 @@ const DELIVERABLES = [
  * distributor map follows for locked pins. Network counts are the roster in
  * src/data/distributors.ts.
  */
+// Accuracy pass 2026-10-07: the three invented supplier names are now "Supplier 1/2/3" placeholders and the
+// per-supplier perk claims ("named contact who approves you") are gone, because no real supplier backs them.
 const DROP = [
-  {
-    Icon: HeartPulse,
-    category: "Health & Supplements",
-    blur: "Northfield Health Supply",
-  },
-  { Icon: Candy, category: "Candy & Snacks", blur: "Brightway Confections" },
-  { Icon: PawPrint, category: "Pet Supplies", blur: "Coastal Pet Wholesale" },
+  { Icon: HeartPulse, category: "Health & Supplements", blur: "Supplier 1" },
+  { Icon: Candy, category: "Candy & Snacks", blur: "Supplier 2" },
+  { Icon: PawPrint, category: "Pet Supplies", blur: "Supplier 3" },
 ] as const;
-const DROP_PERKS = [
-  "Sells to Amazon resellers",
-  "Named contact who approves you",
-  "Full catalog, ready to scan",
-] as const;
-const NETWORK = { distributors: 389, categories: 14 } as const;
+const NETWORK = { distributors: DISTRIBUTOR_COUNT, categories: DISTRIBUTOR_CATEGORIES.length } as const;
 
 /**
  * The suppliers made visible: the real Vendors screen with the products it
@@ -279,14 +273,6 @@ function SupplierShowcase({
                   Unlocks when you sign up
                 </span>
               </p>
-              <ul className="pop-sup-perks">
-                {DROP_PERKS.map((p) => (
-                  <li key={p}>
-                    <Check size={15} strokeWidth={3} aria-hidden="true" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
             </li>
           ))}
           <li className="pop-sup-card pop-sup-more">
@@ -321,7 +307,7 @@ function WatchItWork({ video }: { video: { id: string; title: string; length: st
         <p>
           A real price list goes into Apex, the products that still make money
           after Amazon&rsquo;s fees float to the top, and the order gets built
-          from them. Start to finish in under two minutes.
+          from them. That is the whole path in this demo.
         </p>
         <ul className="pop-shot-list">
           <li>
@@ -576,9 +562,9 @@ const SUITE = [
     bull: "/__l5e/assets-v1/a0c4a52b-a77b-4b9a-b0ab-bc2869ea2c95/bull-black.png",
     tools: [
       ["Dashboard", "Your Amazon business at a glance"],
-      ["Review Booster", "Review requests on every order"],
+      ["Review Booster", "Review requests on every eligible order"],
       ["Apex University", "The wholesale blueprint"],
-      ["Authorized FBA Distributors", "Vetted US wholesalers and who to contact"],
+      ["Distributor Vault", "US wholesale distributors and their contacts"],
       ["Rewards & Benefits", "Prep centers, playbooks and perks"],
     ],
   },
@@ -608,7 +594,7 @@ const SUITE = [
   },
   {
     module: "Apex Red",
-    area: "Logistics",
+    area: "Logistics (beta, by invitation)",
     bull: "/__l5e/assets-v1/496a6fdc-4714-4c12-a2e2-39a484ee8a80/apex-red-bull.png",
     tools: [
       ["Shipments", "Create and track shipments"],
@@ -620,7 +606,7 @@ const SUITE = [
   },
   {
     module: "Apex Gold",
-    area: "Repricing",
+    area: "Repricing (beta)",
     bull: "/__l5e/assets-v1/49e2659a-0879-4cda-8766-39fb1497383d/apex-gold-bull.png",
     tools: [
       ["Listings", "Repricing rules on live listings"],
@@ -640,8 +626,8 @@ function AllInOne() {
           {SUITE_TOOL_COUNT} tools. <span className="pop-blue">One login.</span>
         </h3>
         <p>
-          From the first supplier to the repricer: sourcing, purchase orders, inventory, prep and repricing in one place,
-          instead of a stack of separate subscriptions that never talk to each other.
+          From the first supplier to the repricer: sourcing, purchase orders, inventory, prep and repricing in one place
+          (prep and repricing are in beta), instead of a stack of separate subscriptions that never talk to each other.
         </p>
       </div>
       <figure className="pop-frame glow-edge pop-suite-frame">
@@ -675,7 +661,9 @@ function AllInOne() {
           ))}
         </div>
       </figure>
-      <p className="pop-suite-note">Some tools depend on your plan: the repricer (Apex Gold) is on Pro.</p>
+      <p className="pop-suite-note">
+        Apex Gold (the repricer) and Apex Red are in beta. {REPRICER_FACTS.plans} Red is opened by invitation.
+      </p>
     </article>
   );
 }
@@ -703,7 +691,7 @@ const FAQS: readonly (readonly [string, string])[] = [
   ],
   [
     "Does this require the Apex software?",
-    "The process runs on the Apex suite — Vendors for suppliers, the UPC Scanner for catalogs, the Purchase Order Builder for the order itself. We will go through what your setup needs on the call.",
+    "The process runs on the Apex software: Vendors for suppliers, the UPC Scanner for catalogs, the Purchase Order Builder for the order itself. We will go through what your setup needs on the call.",
   ],
 ];
 

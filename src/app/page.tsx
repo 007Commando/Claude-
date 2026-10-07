@@ -9,9 +9,9 @@ import LandingPage from "../components/LandingPage";
  * applied to all of them.
  */
 export const metadata: Metadata = pageMetadata({
-  title: "Amazon Wholesale Software for Sellers | Apex",
+  title: "Amazon Wholesale Software for Sourcing, Purchasing & Profit | Apex",
   description:
-    "Research supplier catalogs, manage purchasing, understand profit and reprice your listings in one Amazon wholesale suite. Start with the job you need.",
+    "Scan supplier price lists, turn the best products into purchase orders, track real profit and restocks, and ask ChatGPT or Claude about your own Apex data.",
   path: "/",
 });
 

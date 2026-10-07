@@ -23,6 +23,13 @@ import { FBA_FAQ } from "../../lib/fba/faq";
 import { sessionToken, warmSession } from "../../lib/fba/session";
 import type { FbaProduct, LookupAccess, LookupResult } from "../../lib/fba/types";
 import ResultView from "./ResultView";
+import { trialTerms } from "../../config/offer";
+
+// Accuracy pass 2026-10-07: fee figures are described as estimates (referral
+// rules mirror Apex's product database, FBA fulfillment comes from that
+// database, placement follows Amazon's 2026 schedule), the referral-fee line
+// no longer says "around 15 percent", the margin/ROI benchmark is labelled a
+// rule of thumb, and the hero renders visible on the server (initial={false}).
 
 const SAMPLES: { asin: string; label: string }[] = [
   { asin: "B01M5H13WQ", label: "Duct tape" },
@@ -38,7 +45,7 @@ const TRIAL =
 type Gate = "signin-required" | "plan-required";
 type Problem = Exclude<LookupResult["status"], "found" | Gate>;
 
-const STEPS = ["Finding the listing", "Reading price and rank history", "Pricing the Amazon fees"];
+const STEPS = ["Finding the listing", "Reading price and rank history", "Estimating the Amazon fees"];
 
 const MESSAGES: Record<Problem, string> = {
   "not-found":
@@ -304,7 +311,7 @@ export default function FbaCalculator() {
         <Backdrop />
         <div className="relative mx-auto max-w-5xl px-5 text-center">
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/80 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-blue-700"
           >
@@ -315,7 +322,7 @@ export default function FbaCalculator() {
             3 free lookups, no account needed
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 18 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.6 }}
             className="text-balance text-4xl font-black leading-[1.05] tracking-tight text-slate-950 sm:text-6xl"
@@ -323,18 +330,18 @@ export default function FbaCalculator() {
             Free Amazon FBA Calculator
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.16, duration: 0.6 }}
             className="mx-auto mt-5 max-w-2xl text-balance text-lg leading-relaxed text-slate-600"
           >
-            Paste an ASIN or an Amazon link. See the price history, sales rank, Amazon fees and what it costs to ship to FBA, then
-            find out what you would actually keep.
+            Paste an ASIN or an Amazon link. See the price history, sales rank, estimated Amazon fees and what it costs to ship to FBA, then
+            find out what you would keep.
           </motion.p>
 
           <motion.form
             onSubmit={submit}
-            initial={{ opacity: 0, y: 22 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.24, duration: 0.6 }}
             className="mx-auto mt-9 max-w-2xl"
@@ -410,7 +417,7 @@ export default function FbaCalculator() {
             >
               {[
                 { icon: <BarChart3 size={20} />, title: "Price and rank history", text: "Buy Box price against its 30, 60 and 90 day averages, and the sales rank trend." },
-                { icon: <Receipt size={20} />, title: "Every Amazon fee", text: "Referral, FBA fulfillment and inbound placement, worked out for this exact product." },
+                { icon: <Receipt size={20} />, title: "Estimated Amazon fees", text: "Referral, FBA fulfillment and inbound placement, estimated for this product. Not your account's exact fees." },
                 { icon: <Truck size={20} />, title: "Ship-to-FBA switch", text: "Compare East, Central and West and one, two or three warehouse splits." },
               ].map((item) => (
                 <div key={item.title} className="rounded-3xl border border-slate-200 bg-white/80 p-5 backdrop-blur">
@@ -443,7 +450,7 @@ export default function FbaCalculator() {
                   <p className="mt-1 text-sm leading-relaxed text-slate-600">{MESSAGES[state.status]}</p>
                   {state.status === "not-found" && (
                     <Link href={SIGNUP + "&utm_content=not-found"} className="mt-3 inline-flex items-center gap-1.5 text-sm font-black text-blue-600 hover:text-blue-700">
-                      Open Apex free <ArrowRight size={14} />
+                      Open Apex <ArrowRight size={14} />
                     </Link>
                   )}
                 </div>
@@ -475,17 +482,17 @@ export default function FbaCalculator() {
               Now do it for your entire supplier catalog.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-slate-300">
-              Upload a price list and Apex checks every product for profit, demand and competition, then builds the purchase order
-              for the ones worth buying. Create a free account to start.
+              Upload a price list and Apex checks every product for profit, demand and competition, so you can build a purchase order
+              from the ones worth buying. Scans start with the Apex trial.
             </p>
             <Link
               href={SIGNUP + "&utm_content=band"}
               className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-sm font-black uppercase tracking-wide text-slate-950 transition-transform hover:scale-[1.03]"
             >
-              Create my free account <ArrowRight size={16} />
+              Create my account <ArrowRight size={16} />
             </Link>
             <p className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
-              <ShieldCheck size={14} /> Free to join. No card to look around.
+              <ShieldCheck size={14} /> {trialTerms("starter")}
             </p>
           </div>
         </div>
@@ -503,13 +510,18 @@ export default function FbaCalculator() {
             Amazon takes a few separate fees out of every FBA sale, and a product that looks profitable at the shelf price can lose
             money once they are added up. This is what each one is and what moves it.
           </p>
+          <p className="mt-3 text-sm leading-relaxed text-slate-500">
+            The fee figures in this calculator are estimates, not your account&apos;s exact fees. They come from Apex&apos;s product
+            database and Amazon&apos;s published fee schedules, and the exact amounts are the ones Seller Central quotes for your
+            listing.
+          </p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             {[
               {
                 icon: <Receipt size={20} />,
                 title: "Referral fee",
-                text: "A percentage of the selling price that Amazon charges on every sale. Most categories are around 15 percent, some are lower or tiered by price, and most have a minimum of $0.30. It rises and falls with your price.",
+                text: "A percentage of the selling price that Amazon charges on every sale. It varies by category (commonly 8 to 15 percent, with a minimum per item), so see Amazon's referral fee table for yours. It rises and falls with your price.",
               },
               {
                 icon: <Boxes size={20} />,
@@ -538,17 +550,19 @@ export default function FbaCalculator() {
           <h2 className="mt-16 text-balance text-3xl font-black tracking-tight text-slate-950">How to tell if a product is worth buying</h2>
           <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-600">
             <p>
-              Start with <b className="text-slate-900">profit after fees</b>, not the gap between your cost and the selling price. A
-              healthy wholesale product usually clears at least 15 percent margin and a return on investment above 30 percent, because
-              returns, storage and ads will take a share.
+              Start with <b className="text-slate-900">profit after fees</b>, not the gap between your cost and the selling price.
+              Margin is profit divided by the selling price. ROI is profit divided by what you spend on each unit. A common starting
+              filter is at least 15 percent margin and a return on investment above 30 percent, because returns, storage and ads will
+              take a share. It is a rule of thumb, not a standard, so set your own.
             </p>
             <p>
               Then check the <b className="text-slate-900">price history</b>. If today&apos;s Buy Box price sits well above its 90-day
               average, your profit may not last. If it sits well below, you may be looking at a temporary dip.
             </p>
             <p>
-              Finally, read the <b className="text-slate-900">sales rank</b>. A lower rank means more sales. A rank that is improving
-              across 30, 60 and 90 days means demand is growing, which is the best sign for a reorder.
+              Finally, read the <b className="text-slate-900">sales rank</b>. A lower rank generally means more sales. A rank that has been
+              improving across 30, 60 and 90 days can point to growing demand, but rank also moves with promotions and the season, so read it
+              alongside the price history.
             </p>
           </div>
         </div>

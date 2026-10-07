@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, GraduationCap, Rocket, Search, ShoppingCart, TrendingUp, Building2, Sparkles } from "lucide-react";
 import { Angle, DEFAULT_ANGLE } from "../lib/proposalAngles";
+import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
+
+// Accuracy pass 2026-10-07: "389+ vetted" replaced with the distributor count from distributorStats and no "vetted".
 
 const CALENDLY_URL = "https://calendly.com/apexapplications-info/new-meeting";
 
 /**
  * Three complete messages over one held-constant offer (Apex software and
- * coaching, the "Sell the Right Way" strategy, 389+ vetted suppliers, the
+ * coaching, the "Sell the Right Way" strategy, the distributor directory, the
  * selling-approval roadmap, buying/restock tools). Ads pick the variant via
  * ?angle=<tag>; the tag rides into Calendly's utm_term and the pixel's
  * Schedule event so every booking and sale reports back to its angle.
@@ -62,7 +65,7 @@ const ANGLES: Record<Angle, AngleContent> = {
             A place to <span className="bg-brand text-white px-2">start your search</span>
           </>
         ),
-        body: "389+ vetted Amazon FBA suppliers, plus a roadmap for selling approvals.",
+        body: `${DISTRIBUTOR_COUNT} US wholesale distributors, plus a roadmap for selling approvals.`,
         finePrint: "Each supplier has its own terms. Amazon decides selling approvals.",
       },
       {
@@ -85,7 +88,7 @@ const ANGLES: Record<Angle, AngleContent> = {
   wholesale_suppliers: {
     headline: "For Amazon wholesale FBA sellers tired of hunting for suppliers.",
     subline:
-      "Get 389+ vetted suppliers, a selling-approval roadmap, and Apex tools to help check what is worth buying.",
+      `Get a directory of ${DISTRIBUTOR_COUNT} US wholesale distributors, a selling-approval roadmap, and Apex tools to help check what is worth buying.`,
     slides: [
       {
         eyebrow: "For Amazon wholesale FBA sellers",
@@ -106,7 +109,7 @@ const ANGLES: Record<Angle, AngleContent> = {
         eyebrow: "The supplier list",
         headline: (
           <>
-            <span className="bg-brand text-white px-2">389+ vetted</span> Amazon FBA suppliers
+            <span className="bg-brand text-white px-2">{DISTRIBUTOR_COUNT}</span> US wholesale distributors
           </>
         ),
         body: "Find suppliers to contact. Ask about their terms and request their product lists.",
@@ -173,7 +176,7 @@ const ANGLES: Record<Angle, AngleContent> = {
       {
         eyebrow: "The support behind it",
         headline: "A buying process you can keep using",
-        body: "Apex software and coaching, plus 389+ vetted suppliers and a selling-approval roadmap.",
+        body: `Apex software and coaching, plus a directory of ${DISTRIBUTOR_COUNT} US wholesale distributors and a selling-approval roadmap.`,
         finePrint: "Supplier terms vary. Amazon decides selling approvals.",
       },
       {

@@ -4,9 +4,9 @@ import ApexBlue from "../../../components/ApexBlue";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Amazon Purchase Order & P&L Software | Apex Blue",
+  title: "Apex Blue: Purchase Orders & Profit Analytics for Amazon Sellers",
   description:
-    "Purchase orders, supplier management, an inventory database and a P&L by day, week or month for Amazon wholesale sellers, with real landed costs and fees.",
+    "Suppliers, purchase orders with landed cost, a profit and loss statement by day, week or month, operating expenses and restock planning, from your own costs and Amazon fees.",
   path: "/features/blue",
 });
 

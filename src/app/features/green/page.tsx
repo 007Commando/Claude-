@@ -4,9 +4,9 @@ import ApexGreen from "../../../components/ApexGreen";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
-  title: "UPC Scanner for Amazon Wholesale | Apex Green",
+  title: "Apex Green: Product Sourcing & UPC Scanner for Amazon Wholesale",
   description:
-    "Upload a supplier price list and Apex Green matches every UPC to its ASIN, then shows profit, ROI and sales rank per row. Up to 100,000 UPCs an hour.",
+    "Upload a supplier price list, match each UPC or EAN to Amazon in the background, then filter by profit, ROI, sales rank and competition.",
   path: "/features/green",
 });
 

@@ -9,6 +9,7 @@ import LeadAttribution from "../components/LeadAttribution";
 import LiveBeacon from "../components/LiveBeacon";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { SITE_URL } from "../config/site";
+import { COMPANY, ORGANIZATION_ID } from "../config/product";
 import "../index.css";
 
 export const metadata: Metadata = {
@@ -76,17 +77,18 @@ const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Apex Applications",
+  "@id": ORGANIZATION_ID,
+  name: COMPANY.name,
   url: SITE_URL,
   logo: `${SITE_URL}${apexBullLogo.url}`,
   description:
-    "All-in-one Amazon wholesale software suite for sourcing, analytics, purchase orders, and review automation.",
-  // Profiles that verifiably belong to Apex; add others (LinkedIn, YouTube) as they are confirmed.
-  sameAs: ["https://www.trustpilot.com/review/apexapplications.io"],
+    "Software for Amazon wholesale sellers: supplier catalog analysis, purchase orders, profit and loss, inventory and restock planning, repricing and review requests.",
+  // Profiles that verifiably belong to Apex, from config/product.ts.
+  sameAs: [...COMPANY.sameAs],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer support",
-    email: "support@apexapplications.io",
+    email: COMPANY.supportEmail,
     url: `${SITE_URL}/contact-us`,
   },
 };
@@ -94,11 +96,12 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Apex Applications",
+  "@id": `${SITE_URL}/#website`,
+  name: COMPANY.name,
   url: SITE_URL,
   description:
-    "Apex Applications is the all-in-one Amazon wholesale suite: sourcing, vendor management, P&L analytics, purchase orders, and review automation.",
-  publisher: { "@type": "Organization", name: "Apex Applications" },
+    "Amazon wholesale software for sourcing, purchasing, profit and repricing, with ChatGPT and Claude connections to your own data.",
+  publisher: { "@id": ORGANIZATION_ID },
 };
 
 /**

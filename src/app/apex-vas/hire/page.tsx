@@ -15,7 +15,7 @@ import ApexVas from "../../../components/ApexVas";
 export const metadata: Metadata = {
   title: "Hire an Amazon VA. Rates and availability | Apex Applications",
   description:
-    "Pick a trained Amazon wholesale VA, set the weekly schedule and start within one business day. Part-time from $7.00/hour, full-time from $5.50/hour, 5% off paid quarterly.",
+    "Pick a trained Amazon wholesale VA and set the weekly schedule. Part-time from $7.00/hour, full-time from $5.50/hour, 5% off paid quarterly.",
   alternates: { canonical: "https://www.apexapplications.io/apex-vas/hire" },
   robots: { index: false, follow: false },
 };

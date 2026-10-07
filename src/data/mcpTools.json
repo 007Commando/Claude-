@@ -1,0 +1,584 @@
+[
+ {
+  "name": "get_business_snapshot",
+  "write": false,
+  "description": "High-level counts for the seller's Apex account: ASINs in their product database, how many are profitable, how many profitable ones they already sell versus not yet, supplier count and plan. Call this first for general questions about how the business is doing.",
+  "params": []
+ },
+ {
+  "name": "get_profitable_opportunities",
+  "write": false,
+  "description": "Profitable ASINs in the seller's database that they are NOT currently selling, best profit first. Use for 'what should I source next' or 'what am I missing'.",
+  "params": [
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "How many to return (1-25, default 10)",
+    "minimum": 1,
+    "maximum": 25
+   }
+  ]
+ },
+ {
+  "name": "get_restock_recommendations",
+  "write": false,
+  "description": "Profitable products the seller already sells that are lowest on stock. Use for 'what should I reorder' or 'what is running out'.",
+  "params": [
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "How many to return (1-25, default 10)",
+    "minimum": 1,
+    "maximum": 25
+   }
+  ]
+ },
+ {
+  "name": "get_growth_gaps",
+  "write": false,
+  "description": "Structural gaps holding the seller back: empty database, no or few suppliers, untapped profitable ASINs, lower plan. Use before suggesting what to work on next.",
+  "params": []
+ },
+ {
+  "name": "get_profit_and_loss",
+  "write": false,
+  "description": "Monthly profit and loss from Amazon sales for the last N months: sales, units, refunds, fees, cost of goods and gross profit per month. Use for 'how did I do in August' or 'is profit trending up'.",
+  "params": [
+   {
+    "name": "months",
+    "type": "integer",
+    "required": false,
+    "description": "Months to include (1-24, default 12)",
+    "minimum": 1,
+    "maximum": 24
+   }
+  ]
+ },
+ {
+  "name": "get_profit_and_loss_statement",
+  "write": false,
+  "description": "Profit and loss statement over a date range, bucketed by day, week or month (Sellerboard-style). Dates are YYYY-MM-DD. Defaults to the last 12 months by month. A range by day may cover at most about three months, by week about two years.",
+  "params": [
+   {
+    "name": "by",
+    "type": "string",
+    "required": false,
+    "description": "Bucket size",
+    "enum": [
+     "day",
+     "week",
+     "month"
+    ]
+   },
+   {
+    "name": "from",
+    "type": "string",
+    "required": false,
+    "description": "Start date, YYYY-MM-DD"
+   },
+   {
+    "name": "to",
+    "type": "string",
+    "required": false,
+    "description": "End date, YYYY-MM-DD (default today)"
+   }
+  ]
+ },
+ {
+  "name": "search_products",
+  "write": false,
+  "description": "Search the seller's product database (Apex Blue Databases): every ASIN they have sourced with cost, Buy Box price, profit, ROI, margin, stock and rank. Search matches ASIN, UPC, supplier SKU and title. Leave search empty to page through everything. Sort with orderBy like 'grossBuyBox:DESC' or 'roi:DESC'.",
+  "params": [
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "ASIN, UPC, supplier SKU or words from the title"
+   },
+   {
+    "name": "orderBy",
+    "type": "string",
+    "required": false,
+    "description": "Column and direction, e.g. grossBuyBox:DESC, margin:DESC, salesRank:ASC"
+   },
+   {
+    "name": "page",
+    "type": "integer",
+    "required": false,
+    "description": "Page number (default 1)",
+    "minimum": 1
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Rows per page (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   }
+  ]
+ },
+ {
+  "name": "list_catalog_scans",
+  "write": false,
+  "description": "Catalog scans the seller has run through the UPC Scanner (Apex Green): one row per uploaded supplier catalog with its name, supplier, when it ran, line count and how many products it found, newest first. Pass vendorId (the supplier's id from get_purchase_orders' vendor.id or the Apex suppliers list) to see only that supplier's scans. Use the scan id with get_catalog_scan_results. For 'which profitable products does this supplier have that I do not have yet': call this with the supplier, take the latest scan id, then call get_catalog_scan_results with onlyNew=true and orderBy='profit:DESC'.",
+  "params": [
+   {
+    "name": "vendorId",
+    "type": "string",
+    "required": false,
+    "description": "Only this supplier's scans (default: all suppliers)"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Most recent N scans (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   }
+  ]
+ },
+ {
+  "name": "get_catalog_scan_results",
+  "write": false,
+  "description": "Products found in one catalog scan with cost, Amazon price, profit, ROI, margin, rank and seller counts. Search matches title, brand, ASIN or UPC. Sort with orderBy like 'profit:DESC' or 'roi:DESC'. Every row has inDatabase: true when the seller already holds that ASIN as an active product in their database. Set onlyNew=true to return only products NOT yet in their database (total then counts just those). That, with orderBy='profit:DESC', answers 'which profitable products does this supplier have that I do not have yet': find the scan with list_catalog_scans, then call this.",
+  "params": [
+   {
+    "name": "scanId",
+    "type": "string",
+    "required": true,
+    "description": "Scan id from list_catalog_scans"
+   },
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "Title, brand, ASIN or UPC"
+   },
+   {
+    "name": "orderBy",
+    "type": "string",
+    "required": false,
+    "description": "Column and direction, e.g. profit:DESC, roi:DESC, salesRank:ASC"
+   },
+   {
+    "name": "onlyNew",
+    "type": "boolean",
+    "required": false,
+    "description": "Only products the seller does not already have in their database (default false)"
+   },
+   {
+    "name": "page",
+    "type": "integer",
+    "required": false,
+    "description": "Page number (default 1)",
+    "minimum": 1
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Rows per page (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   }
+  ]
+ },
+ {
+  "name": "get_purchase_orders",
+  "write": false,
+  "description": "The seller's purchase orders (Apex Blue Purchase Orders page): vendor, order date, status, number of lines, units, total landed cost, projected revenue, profit, ROI and margin, destination warehouse, expected arrival. status='open' (default) is the page's Open tab: orders still being built, not yet submitted (status 'draft'). status='all' adds the Closed tab: submitted orders, each 'submitted' (sent, no shipment yet), 'in_transit' (inbound shipment created, not arrived) or 'received' (arrived). Projections use the Buy Box price, or the line's target price where one is set, minus fees and landed cost. Search matches vendor name, ASIN or product title. Newest first.",
+  "params": [
+   {
+    "name": "status",
+    "type": "string",
+    "required": false,
+    "description": "'open' (default): draft orders not yet submitted. 'all': also submitted, in transit and received",
+    "enum": [
+     "open",
+     "all"
+    ]
+   },
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "Vendor name, ASIN or words from a product title"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Orders to return (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   }
+  ]
+ },
+ {
+  "name": "get_repricer_listings",
+  "write": false,
+  "description": "The seller's live Amazon listings as the repricer (Apex Gold) sees them: your price, Buy Box price, lowest offer, stock, 7 and 30 day units, fees, break-even and the strategy applied. Search matches SKU, ASIN or title.",
+  "params": [
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "SKU, ASIN or words from the title"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Rows to return (1-100, default 25)",
+    "minimum": 1,
+    "maximum": 100
+   }
+  ]
+ },
+ {
+  "name": "get_repricer_impact",
+  "write": false,
+  "description": "What the repricer has been worth: units and revenue within seven days of a price it changed and Amazon accepted, with margin before and after.",
+  "params": []
+ },
+ {
+  "name": "get_map_compliance",
+  "write": false,
+  "description": "Minimum advertised price (MAP) status by brand. Without a brand: one row per brand with how many active listings it has and how many have MAP enforcement on. With a brand: that brand's listings with MAP price, whether enforcement is on, and the current listing price.",
+  "params": [
+   {
+    "name": "brand",
+    "type": "string",
+    "required": false,
+    "description": "Brand name as returned in the summary (case-insensitive)"
+   },
+   {
+    "name": "onlyEnforced",
+    "type": "boolean",
+    "required": false,
+    "description": "Only brands or listings with MAP enforcement on"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Rows to return (1-200, default 100)",
+    "minimum": 1,
+    "maximum": 200
+   }
+  ]
+ },
+ {
+  "name": "get_inventory",
+  "write": false,
+  "description": "FBA inventory per SKU with available, reserved and inbound units, sales velocity, days of inventory, stock status (Out of Stock, Restock, Enough Stock, Overstock), recommended restock and aged units. view='aging' narrows to SKUs with units past the aging line. Sort by any column, e.g. sortKey='daysOfInventory'.",
+  "params": [
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "SKU, ASIN or words from the title"
+   },
+   {
+    "name": "view",
+    "type": "string",
+    "required": false,
+    "description": "'all' (default) or 'aging'",
+    "enum": [
+     "all",
+     "aging"
+    ]
+   },
+   {
+    "name": "sortKey",
+    "type": "string",
+    "required": false,
+    "description": "Column to sort by (default availableInventory)"
+   },
+   {
+    "name": "sortOrder",
+    "type": "string",
+    "required": false,
+    "description": "asc or desc (default desc)",
+    "enum": [
+     "asc",
+     "desc"
+    ]
+   },
+   {
+    "name": "page",
+    "type": "integer",
+    "required": false,
+    "description": "Page number (default 1)",
+    "minimum": 1
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Rows per page (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   }
+  ]
+ },
+ {
+  "name": "search_brands",
+  "write": false,
+  "description": "Find brands to source from (Apex Green Brands): one row per brand with how many products Amazon lists for it, average price, average sellers per listing, share sold by Amazon, rating and average sales rank. search matches the brand name; category narrows to a department such as 'Health & Household'. Leave search empty to browse (free). Naming a brand counts toward the plan's monthly brand-search allowance exactly as typing it in the app does (a brand already looked at this month costs nothing again), and an empty search costs nothing. The sourcing loop: search_brands to pick a brand, research_products with that brand and inMyDatabase='hide' to find what is not yet in the seller's database, then add_products_to_database or create_draft_purchase_order (write links only).",
+  "params": [
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "Brand name, or part of it"
+   },
+   {
+    "name": "category",
+    "type": "string",
+    "required": false,
+    "description": "Department, e.g. 'Grocery & Gourmet Food' (optional)"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Brands to return (1-25, default 10)",
+    "minimum": 1,
+    "maximum": 25
+   }
+  ]
+ },
+ {
+  "name": "research_products",
+  "write": false,
+  "description": "Search Amazon products the way the Apex Products page does (Apex Green): ASIN, title, brand, price, sales rank, estimated monthly sales, number of sellers, whether Amazon sells it, estimated net proceeds after fees, and inDatabase (true when the seller already holds it as an active product). Give a brand (from search_brands) for the best results; browsing everything is slow and arbitrary. Set inMyDatabase='hide' to see only products the seller does not already have, which is the right setting before adding anything. soldByAmazon='no' leaves out products Amazon sells itself. orderBy is a column and direction such as 'salesRank:ASC', 'price:DESC', 'sellersCount:ASC' or 'estimatedMonthlySales:DESC'. Next steps for a good product: add_products_to_database or create_draft_purchase_order (write links only; they need the seller's cost from the supplier).",
+  "params": [
+   {
+    "name": "brand",
+    "type": "string",
+    "required": false,
+    "description": "Brand name (a partial name is matched)"
+   },
+   {
+    "name": "search",
+    "type": "string",
+    "required": false,
+    "description": "ASIN or words from the title; comma separate several ASINs"
+   },
+   {
+    "name": "salesRankMin",
+    "type": "integer",
+    "required": false,
+    "description": "Best (lowest) sales rank to include",
+    "minimum": 1
+   },
+   {
+    "name": "salesRankMax",
+    "type": "integer",
+    "required": false,
+    "description": "Worst (highest) sales rank to include",
+    "minimum": 1
+   },
+   {
+    "name": "sellersMin",
+    "type": "integer",
+    "required": false,
+    "description": "Fewest sellers on the listing",
+    "minimum": 0
+   },
+   {
+    "name": "sellersMax",
+    "type": "integer",
+    "required": false,
+    "description": "Most sellers on the listing",
+    "minimum": 0
+   },
+   {
+    "name": "priceMin",
+    "type": "number",
+    "required": false,
+    "description": "Lowest price in USD",
+    "minimum": 0
+   },
+   {
+    "name": "priceMax",
+    "type": "number",
+    "required": false,
+    "description": "Highest price in USD",
+    "minimum": 0
+   },
+   {
+    "name": "soldByAmazon",
+    "type": "string",
+    "required": false,
+    "description": "'yes' only Amazon-sold, 'no' leaves those out, 'all' (default) both",
+    "enum": [
+     "yes",
+     "no",
+     "all"
+    ]
+   },
+   {
+    "name": "inMyDatabase",
+    "type": "string",
+    "required": false,
+    "description": "'all' (default), 'hide' what the seller already has, 'only' what they already have",
+    "enum": [
+     "all",
+     "hide",
+     "only"
+    ]
+   },
+   {
+    "name": "orderBy",
+    "type": "string",
+    "required": false,
+    "description": "Column:DIRECTION, e.g. salesRank:ASC or estimatedMonthlySales:DESC"
+   },
+   {
+    "name": "limit",
+    "type": "integer",
+    "required": false,
+    "description": "Products to return (1-50, default 20)",
+    "minimum": 1,
+    "maximum": 50
+   },
+   {
+    "name": "page",
+    "type": "integer",
+    "required": false,
+    "description": "Page number (default 1)",
+    "minimum": 1
+   }
+  ]
+ },
+ {
+  "name": "create_draft_purchase_order",
+  "write": true,
+  "description": "Create a DRAFT purchase order for one supplier in the seller's Apex Blue Purchase Orders page (it appears on the Open tab). It is never submitted: the seller reviews and submits it in Apex. Give the supplier (id or name) and lines of {asin, quantity, unitCost?}. An ASIN already in the database under that supplier uses its cost unless you give unitCost (then only this order's line cost is set, the database is untouched); an ASIN that is not there needs unitCost and is added to the database as a draft product. Destination and notes are chosen in Apex when the order is submitted, not here. Pass a requestId so a retry cannot make a second order. Ask the seller for costs and quantities; never invent them.",
+  "params": [
+   {
+    "name": "vendor",
+    "type": "string",
+    "required": true,
+    "description": "Supplier id, or the supplier's name (a close match is accepted)"
+   },
+   {
+    "name": "lines",
+    "type": "array",
+    "required": true,
+    "description": "Up to 50 products to order",
+    "maxItems": 50
+   },
+   {
+    "name": "lines[].asin",
+    "type": "string",
+    "required": true,
+    "description": "10-character ASIN"
+   },
+   {
+    "name": "lines[].quantity",
+    "type": "integer",
+    "required": true,
+    "description": "Units to order (1-100,000)",
+    "minimum": 1,
+    "maximum": 100000
+   },
+   {
+    "name": "lines[].unitCost",
+    "type": "number",
+    "required": false,
+    "description": "Cost per unit in USD. Optional when the ASIN is already in the database under this supplier (its cost is used); required otherwise",
+    "minimum": 0
+   },
+   {
+    "name": "requestId",
+    "type": "string",
+    "required": false,
+    "description": "Any unique text for this order. Sending the same requestId again within 24 hours returns the first order instead of making another, so a retry is safe"
+   }
+  ]
+ },
+ {
+  "name": "add_products_to_database",
+  "write": true,
+  "description": "Add products to the seller's Apex Blue database as DRAFTS (the Drafts tab of the Databases page), exactly like uploading the bulk-upload template. Each item is {asin, unitCost, vendor?, casePack?, vendorSku?}: unitCost is the seller's cost per unit from the supplier, never a guess; every product needs a supplier, given per item or once as the top-level vendor (a name or id; it must already exist, see add_vendor); casePack defaults to 1. A product already in the database is skipped and reported, never duplicated. Nothing is made active: the seller reviews the drafts in Apex.",
+  "params": [
+   {
+    "name": "vendor",
+    "type": "string",
+    "required": false,
+    "description": "Supplier for every item that does not name its own (name or id)"
+   },
+   {
+    "name": "items",
+    "type": "array",
+    "required": true,
+    "description": "Up to 100 products",
+    "maxItems": 100
+   },
+   {
+    "name": "items[].asin",
+    "type": "string",
+    "required": true,
+    "description": "10-character ASIN"
+   },
+   {
+    "name": "items[].unitCost",
+    "type": "number",
+    "required": true,
+    "description": "Cost per unit in USD",
+    "minimum": 0
+   },
+   {
+    "name": "items[].vendor",
+    "type": "string",
+    "required": false,
+    "description": "Supplier name or id (overrides the top-level vendor)"
+   },
+   {
+    "name": "items[].casePack",
+    "type": "integer",
+    "required": false,
+    "description": "Units per case (default 1)",
+    "minimum": 1
+   },
+   {
+    "name": "items[].vendorSku",
+    "type": "string",
+    "required": false,
+    "description": "The supplier's own SKU (optional)"
+   }
+  ]
+ },
+ {
+  "name": "add_vendor",
+  "write": true,
+  "description": "Add a supplier to the seller's Apex Blue Vendors page, the way its Add vendor form does (it starts as a lead on the pipeline board). Name is required; website and email are optional. If a supplier with that name already exists nothing is created and the existing one is returned. Apex suppliers have no notes field, so put anything else in the conversation, not here.",
+  "params": [
+   {
+    "name": "name",
+    "type": "string",
+    "required": true,
+    "description": "Supplier name"
+   },
+   {
+    "name": "website",
+    "type": "string",
+    "required": false,
+    "description": "Website (optional)"
+   },
+   {
+    "name": "email",
+    "type": "string",
+    "required": false,
+    "description": "Contact email (optional)"
+   }
+  ]
+ }
+]

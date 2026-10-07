@@ -17,11 +17,18 @@ import {
 import DistributorStrip from "../../components/landing/DistributorStrip";
 
 import sourcingSpeed from "../../assets/sourcing-speed.mp4.asset.json";
+import { formatPrice, planById } from "../../config/offer";
+import { DISTRIBUTOR_COUNT } from "../../data/distributorStats";
+
+// Accuracy pass 2026-10-07: "authorized / vetted" suppliers, "accounts already open", "full Apex software suite" and
+// "writes the order / sent purchase order" were not supportable. The trial is the Starter plan (Black, Blue, Green; no
+// repricer), the three suppliers are distributors from the Vault, and the mentor answers questions and walks the seller
+// through the order, which the seller builds and submits themselves.
 
 export const metadata: Metadata = {
   title: "Start your Amazon wholesale business free for 7 days, Apex Applications",
   description:
-    "Three authorized supplier accounts, the full Apex software suite, and an AI mentor that builds your first purchase order. Free for your first 7 days.",
+    "Three starting suppliers, the Apex software on the Starter plan, and an AI mentor that walks you through your first purchase order. Free for your first 7 days.",
   robots: { index: false, follow: false },
 };
 
@@ -36,7 +43,7 @@ export default function StartPage() {
         }
         titleTop="Three Suppliers. The Software. Your First PO."
         titleAccent="Free For Seven Days."
-        lede="Most sellers never place a first wholesale order because no distributor replies. Start with three accounts already open, and an AI mentor that turns them into a purchase order."
+        lede="Most sellers never place a first wholesale order because they do not know who to contact. Start with three distributors to reach out to, and an AI mentor that walks you through the purchase order."
         actions={
           <>
             <Link href={SIGNUP} className={ctaPrimary}>
@@ -47,7 +54,7 @@ export default function StartPage() {
             </Link>
           </>
         }
-        note="3 authorized suppliers included · No card charged for 7 days · Cancel any time"
+        note="3 suppliers included · No card charged for 7 days · Cancel any time"
         art={
           <VideoFrame
             src="/videos/dashboard-hero-demo.mp4"
@@ -62,11 +69,11 @@ export default function StartPage() {
             Suppliers: the part nobody else gives you
           </Eyebrow>
         }
-        title="Three authorized accounts, open on day one."
-        body="Research tools tell you what to sell. None of them get a distributor to open an account for you. Your first week includes three vetted accounts with the contact who actually approves resellers."
+        title="Three suppliers, open on day one."
+        body="Research tools tell you what to sell. None of them give you distributors to start from. Your first week opens three US wholesale distributors from the Distributor Vault, with their websites and contact emails in your account."
         items={[
-          ["Named contacts, not a scraped list", "The person who opens reseller accounts, with a direct email."],
-          ["Vetted for Amazon-friendly terms", "Distributors that permit resale on the marketplace."],
+          ["Contacts in your account", "A website and contact email for each distributor."],
+          ["US wholesale distributors", `Drawn from a Vault of ${DISTRIBUTOR_COUNT}.`],
           ["Three more every month you stay", "Your catalogue keeps widening as you grow."],
         ]}
         below={<DistributorStrip />}
@@ -81,12 +88,12 @@ export default function StartPage() {
       <OfferRow
         flip
         eyebrow={<Eyebrow icon={<Bot size={14} />}>The AI mentor</Eyebrow>}
-        title="It doesn't just answer questions. It writes the order."
-        body="The mentor reads your own catalogue, costs and stock, then hands you the next move with the numbers behind it: which products clear margin, how many units, and which supplier to send it to."
+        title="It answers your questions and walks you through the order."
+        body="Ask the mentor about a supplier, a product or the next step, and it points you to the move that follows. You build and submit the purchase order yourself in Apex."
         items={[
-          ["Reads your real data", "Your catalogue and your costs, not generic advice."],
-          ["Shows the working", "Every step carries the profit and ROI that justified it."],
-          ["Ends in a sent purchase order", "Step by step to an order, not a chat transcript."],
+          ["Answers your questions", "Ask about a supplier, a product or a step in the order."],
+          ["Walks you through it", "One step at a time, from catalogue to purchase order."],
+          ["You send the order", "You build and submit the purchase order yourself. Nothing is sent for you."],
         ]}
         art={
           <VideoFrame
@@ -105,7 +112,7 @@ export default function StartPage() {
               Seven days to find out whether wholesale works for you.
             </h3>
             <p className="text-base sm:text-lg lg:text-xl text-slate-300 mb-8 sm:mb-10 leading-relaxed">
-              Suppliers, software and a mentor that writes the first order.
+              Suppliers, software and a mentor that walks you through the first order.
               Cancel before the week is out and you are charged nothing at all.
             </p>
             <div className="flex justify-center">
@@ -114,7 +121,7 @@ export default function StartPage() {
               </Link>
             </div>
             <p className="mt-6 text-sm text-slate-400">
-              $149 a month after the trial. Cancel any time before it ends.
+              {formatPrice(planById("starter").monthly)} a month after the trial. Cancel any time before it ends.
             </p>
           </div>
         </Rail>

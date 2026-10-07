@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Calculator, Chrome, GraduationCap, Search } from "lucide-react";
 import { pageMetadata } from "../../lib/seo";
 import { absoluteUrl } from "../../config/site";
+import { CHROME_EXTENSION } from "../../config/product";
 
 export const metadata: Metadata = pageMetadata({
   title: "Free Amazon Seller Tools | Apex",
@@ -16,7 +17,7 @@ const TOOLS = [
     href: "/tools/fba-calculator",
     icon: Search,
     name: "Free Amazon FBA Calculator",
-    body: "Paste an ASIN or Amazon link. See the Buy Box price against its 30, 60 and 90 day averages, the sales rank trend, every Amazon fee including inbound placement by region, a two-year seasonality chart, and your profit once you enter your cost.",
+    body: "Paste an ASIN or Amazon link. See the Buy Box price against its 30, 60 and 90 day averages, the sales rank trend, estimated Amazon fees including inbound placement by region, a two-year seasonality chart, and your profit once you enter your cost.",
     cta: "Look up a product",
   },
   {
@@ -53,7 +54,7 @@ export default function Page() {
           Free tools for Amazon FBA sellers
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-500">
-          Check a product before you buy it. Both tools are free and the profit calculator needs no account at all.
+          Check a product before you buy it. The FBA calculator gives you 3 free lookups before it asks you to sign in, and the profit calculator needs no account at all.
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
@@ -75,9 +76,8 @@ export default function Page() {
           ))}
         </div>
 
-        {/* The Chrome extension is the Apex University graduation gift: the
-          install link lives inside the course, so this page explains how to earn
-          it rather than linking to the store. */}
+        {/* The extension is free to install from the Chrome Web Store; its product
+          data opens once the seller finishes Apex University (CHROME_EXTENSION). */}
         <section id="chrome-extension" className="mt-6 scroll-mt-28 rounded-3xl border border-slate-200 p-7">
           <div className="flex flex-col gap-6 md:flex-row md:items-start">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
@@ -86,15 +86,14 @@ export default function Page() {
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-3">
                 <h2 className="text-xl font-black tracking-tight text-slate-900">Apex for Amazon Sellers, the Chrome extension</h2>
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Free for Apex University graduates</span>
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Free to install</span>
               </div>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 Your profit, ROI, Amazon fees, monthly sales and eligibility right on every Amazon listing, a badge on every
                 search result, and the Amazon match for every barcode on a supplier&apos;s price list.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                It isn&apos;t sold. Finish all nine lessons in Apex University, the course inside every Apex account, and the
-                install link unlocks at the end of the course.
+                {CHROME_EXTENSION.summary}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <a
@@ -102,6 +101,14 @@ export default function Page() {
                   className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800"
                 >
                   <GraduationCap size={16} /> Start Apex University
+                </a>
+                <a
+                  href={CHROME_EXTENSION.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-black text-blue-600 hover:gap-3 transition-all"
+                >
+                  Chrome Web Store listing <ArrowRight size={16} />
                 </a>
                 <Link href="/pricing" className="inline-flex items-center gap-2 text-sm font-black text-blue-600 hover:gap-3 transition-all">
                   New to Apex? See plans <ArrowRight size={16} />

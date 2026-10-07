@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Lock, Mail, ExternalLink, ShieldCheck, X, UserPlus } from "lucide-react";
 import { useSession } from "../hooks/useSession";
-import { DISTRIBUTOR_CATEGORIES as categories } from "../data/distributorStats";
+import { DISTRIBUTOR_CATEGORIES as categories, DISTRIBUTOR_COUNT } from "../data/distributorStats";
+import { SUPPLIER_ACCESS } from "../config/product";
 
 /** What the public page may know about a distributor: never its contacts. */
 export type PublicDistributor = { name: string; category: string; contacts: number };
@@ -53,21 +54,22 @@ export default function DistributorVault({ distributors }: { distributors: Publi
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand/10 text-brand text-xs font-black rounded-full uppercase tracking-[0.2em] mb-6">
             <ShieldCheck size={14} />
-            Annual Members Only
+            Members Only
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 mb-5 sm:mb-6 tracking-tight leading-tight">
             The Distributor <span className="text-brand">Vault</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-            {distributors.length}+ vetted wholesale distributors across {categories.length} categories,
-            names, websites, and direct contact emails, ready to reach out to today.
+            {DISTRIBUTOR_COUNT} US wholesale distributors across {categories.length} categories, with
+            names, websites, and contact emails. {SUPPLIER_ACCESS}
+            {/* Accuracy pass 2026-10-07: "Annual Members Only" and "vetted" removed; the access rule is SUPPLIER_ACCESS, stated once in config/product.ts. */}
           </p>
         </motion.section>
 
@@ -152,14 +154,14 @@ export default function DistributorVault({ distributors }: { distributors: Publi
                 </h2>
                 <p className="text-sm sm:text-base text-slate-500 leading-relaxed mb-7">
                   {loggedIn
-                    ? "Every distributor's website and direct contact email is reserved for Apex Annual members. Go annual to unlock the full vault."
-                    : "Every distributor's website and direct contact email is reserved for Apex members. Log in or create a free account to continue."}
+                    ? "Distributors open in your account on your plan's schedule. An annual plan opens the whole Vault at once."
+                    : "Distributors open in your account when you subscribe. Log in or create an account to continue."}
                 </p>
                 <button
                   onClick={() => router.push(loggedIn ? "/pricing" : "/auth?mode=signup&plan=starter&period=monthly")}
                   className="w-full bg-brand text-white px-6 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-[1.02] transition-all shadow-lg"
                 >
-                  {loggedIn ? "Go Annual" : "Log In / Sign Up"}
+                  {loggedIn ? "See Plans" : "Log In / Sign Up"}
                 </button>
               </div>
             </div>
@@ -204,8 +206,8 @@ export default function DistributorVault({ distributors }: { distributors: Publi
                     Log In to Access the Vault
                   </h2>
                   <p className="text-sm sm:text-base text-slate-500 leading-relaxed mb-7">
-                    The Distributor Vault is reserved for Apex Annual members. Log in or create a
-                    free account to continue.
+                    The Distributor Vault opens in your Apex account. Log in or create an account to
+                    continue.
                   </p>
                   <div className="space-y-3">
                     <button
@@ -218,24 +220,23 @@ export default function DistributorVault({ distributors }: { distributors: Publi
                       onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}
                       className="w-full border border-slate-200 text-slate-900 px-6 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:bg-slate-50 transition-all"
                     >
-                      Create Free Account
+                      Create Account
                     </button>
                   </div>
                 </>
               ) : (
                 <>
                   <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-3 tracking-tight">
-                    Annual Members Only
+                    Open the Vault
                   </h2>
                   <p className="text-sm sm:text-base text-slate-500 leading-relaxed mb-7">
-                    The Distributor Vault is exclusive to Apex Annual members. Upgrade your plan to
-                    unlock all {distributors.length} suppliers.
+                    {SUPPLIER_ACCESS}
                   </p>
                   <button
                     onClick={() => router.push("/pricing")}
                     className="w-full bg-brand text-white px-6 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-[1.02] transition-all shadow-lg"
                   >
-                    Upgrade to Annual
+                    See Plans
                   </button>
                 </>
               )}

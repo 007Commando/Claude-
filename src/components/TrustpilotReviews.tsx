@@ -6,6 +6,10 @@ import { TRUSTPILOT } from "./TrustpilotBadge";
  * because Trustpilot blocks server-side fetches. Every one is a real review
  * as published there; when a new one lands, add it here and bump TRUSTPILOT.
  * Order: newest first, as the profile shows them.
+ *
+ * Re-read 2026-10-07: the profile shows three reviews (Sachia Venter, Maria
+ * Sanfilippo, Abu Sayed). A fourth that sat here was no longer on Trustpilot,
+ * so it came off; this list must never hold a review the profile does not.
  */
 type Review = {
   name: string;
@@ -39,14 +43,6 @@ export const TRUSTPILOT_REVIEWS: Review[] = [
     stars: 5,
     title: "Finally made the jump from OA to wholesale",
     body: "I did online arbitrage for years because wholesale always felt too complicated and honestly a little intimidating. I didn’t really understand suppliers, purchase orders, ungating, or how to properly research wholesale products. Apex changed that for me. Having the tools, suppliers, product research, and guidance all in one place made wholesale finally make sense. I feel way more confident sourcing and placing orders now, and I wish I had made the switch sooner.",
-    date: "Sep 2026",
-  },
-  {
-    name: "Salvatore Spagnolo",
-    country: "IT",
-    stars: 5,
-    title: "A lot easier to manage my Amazon business",
-    body: "I’ve used quite a few tools for Amazon FBA, but Apex has made my day-to-day workflow a lot easier. I mainly use it for product research, checking ASINs, finding wholesale opportunities, and keeping my suppliers and purchase orders organized. The ungating tools have been a big help too. What I like most is that Apex isn’t just another product research tool. It covers a lot of what I actually need as an Amazon wholesale seller, from sourcing and supplier research to inventory, restocking, COGS and profit tracking.",
     date: "Sep 2026",
   },
 ];

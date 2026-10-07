@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Package, ShieldCheck, Users, Star, ArrowRight, Headphones } from "lucide-react";
 import apexBullLogo from "../assets/apex-bull-logo.png.asset.json";
 import { useRouter } from "next/navigation";
+import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
 
 const prepCenterPhoto = "/images/rewards-prep-center.png";
 const distributionPhoto = "/images/rewards-distribution.png";
@@ -21,7 +22,8 @@ const benefits = [
     iconBg: "bg-blue-600",
     photo: prepCenterPhoto,
     title: "Prep Center Network",
-    body: "Work with the best prep centers in the US at lower prices and with product insurance built in.",
+    // Accuracy pass 2026-10-07: "best", "lower prices" and "product insurance built in" removed. Each center sets its own rates and terms.
+    body: "Browse prep centers across the US. Member pricing is offered by participating centers, and each sets its own rates.",
     href: "/prep-center-network",
     ctaLabel: "Explore the Network"
   },
@@ -30,7 +32,8 @@ const benefits = [
     iconBg: "bg-blue-600",
     photo: distributionPhoto,
     title: "Distribution List",
-    body: "Source items from trusted vendors in our network ready to un-gate you and help you scale.",
+    // Accuracy pass 2026-10-07: vendors cannot ungate anyone, only Amazon approves.
+    body: `Browse ${DISTRIBUTOR_COUNT} US wholesale distributors who sell to Amazon resellers.`,
     href: "/distributor-vault",
     ctaLabel: "Explore the Vault"
   },
@@ -39,7 +42,7 @@ const benefits = [
     iconBg: "bg-indigo-700",
     photo: videoCallsPhoto,
     title: "Exclusive Video Calls",
-    body: "Learn from 7-figure Amazon sellers the new strategies and sourcing tips to scale your business."
+    body: "Join video calls on sourcing tips and strategies for growing your Amazon business."
   }
 ];
 
@@ -59,8 +62,8 @@ const growthPerks = [
   {
     icon: ShieldCheck,
     arcFraction: 0.7,
-    title: "No Contracts or Hidden Fees Ever",
-    body: "We keep it simple with a smooth, transparent experience."
+    title: "Clear Pricing",
+    body: "Plan prices are listed on the pricing page, and every plan starts with a 7-day trial."
   }
 ];
 
@@ -94,7 +97,7 @@ export default function RewardsBenefits() {
 
         {/* Hero */}
         <motion.section
-          initial="initial"
+          initial={false}
           animate="animate"
           variants={fadeIn}
           className="text-center mb-16"

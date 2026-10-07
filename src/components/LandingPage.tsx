@@ -1,388 +1,355 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion, useAnimate } from "motion/react";
 import Link from "next/link";
-import { 
-  BarChart3, 
-  Search, 
-  FileText, 
-  TrendingUp, 
-  CheckCircle2, 
+import {
   ArrowRight,
+  BarChart3,
+  Bot,
   Calculator,
-  ShoppingBag,
-  Layers,
-  ChevronRight,
-  GraduationCap
+  FileText,
+  GraduationCap,
+  Search,
+  ShieldCheck,
+  Tag,
 } from "lucide-react";
 import sourcingSpeedVideo from "../assets/sourcing-speed.mp4.asset.json";
 import SuiteMap from "./SuiteMap";
+import CheckoutLink from "./CheckoutLink";
+import LazyVideo from "./LazyVideo";
+import { TRUSTPILOT } from "./TrustpilotBadge";
+import { TRUSTPILOT_REVIEWS } from "./TrustpilotReviews";
+import { PLANS_SHOWN, PLAN_LIMITS, TRIAL_CHECKOUT_URL, formatPrice, planById, trialCta, trialTerms } from "../config/offer";
+import { isBeta } from "../config/features";
+import { VERIFIED_STATS, moduleByKey } from "../config/product";
 
+/**
+ * The homepage, rebuilt 2026-10-07 around one question a visitor brings:
+ * "is this for me, and what does it do?" In order: what Apex is, the product
+ * itself, the workflow it connects, the modules, what an AI assistant can do
+ * with it, who it fits and what it costs, what customers said, free things to
+ * try, and the questions people ask before a trial.
+ *
+ * Removed in the rebuild, because the product does not do them: an
+ * "intelligence engine" that "predicts Amazon rank fluctuations and competitor
+ * replenishment cycles", "predictive BSR analysis", auto-filtering of
+ * "IP-claim brands", and "join hundreds of wholesale experts" (Stripe had about
+ * thirty paying customers that day). The animated gross-sales counter went
+ * too: it re-rendered the page sixty times a second to show a number that was
+ * not anyone's.
+ *
+ * A server component: everything here is in the HTML before any script runs.
+ */
 
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-};
+const WORKFLOW = [
+  {
+    icon: Search,
+    step: "Find",
+    title: "Scan a supplier price list",
+    body: "Drop in the spreadsheet your supplier sent. Apex matches each UPC to Amazon and shows landed cost, profit at the Buy Box, 30, 60 and 90 day price and rank, seller count, whether Amazon is on the listing, and hazmat or meltable flags.",
+    module: moduleByKey("green"),
+  },
+  {
+    icon: FileText,
+    step: "Buy",
+    title: "Turn the winners into a purchase order",
+    body: "Keep suppliers, costs and case packs in one database, build purchase orders from it, and see projected profit and ROI on every order before you send it.",
+    module: moduleByKey("blue"),
+  },
+  {
+    icon: Tag,
+    step: "Sell",
+    title: "Reprice without going below your floor",
+    body: "Set floors from your own cost and Amazon's fees, preview a strategy before it moves a price, and see every price change the repricer made.",
+    module: moduleByKey("gold"),
+  },
+  {
+    icon: BarChart3,
+    step: "Track",
+    title: "Know your real profit and what to reorder",
+    body: "Sales and fees sync from Amazon every few minutes. Profit and loss uses the costs you have entered, and inventory shows days of stock left and what needs restocking.",
+    module: moduleByKey("blue"),
+  },
+];
 
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+const AI_QUESTIONS = [
+  "Which profitable products should I reorder this week?",
+  "How did my business do this month after expenses?",
+  "Which products from my last supplier scan clear 30% ROI?",
+];
 
-
-function SalesCounter() {
-  const [count, setCount] = useState(23469);
-  
-  useEffect(() => {
-    let startTime: number;
-    let duration = 3000; // 3 seconds to go from min to max
-    
-    const animate = (time: number) => {
-      if (!startTime) startTime = time;
-      const progress = (time - startTime) % (duration * 2);
-      
-      const normalizedProgress = progress < duration 
-        ? progress / duration 
-        : 1 - (progress - duration) / duration;
-        
-      const current = Math.floor(23469 + (148762 - 23469) * normalizedProgress);
-      setCount(current);
-      requestAnimationFrame(animate);
-    };
-    
-    const frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  return <span>${count.toLocaleString()}</span>;
-}
-
-// Real links rather than buttons that call router.push: crawlers follow
-// anchors, and people can open them in a new tab.
-const MotionLink = motion.create(Link);
+const FAQS: { q: string; a: React.ReactNode }[] = [
+  {
+    q: "Who is Apex for?",
+    a: "Amazon sellers who buy from wholesale suppliers and resell existing brands: people working through supplier price lists, placing purchase orders and restocking what sells. It is not built for private label keyword research or PPC management.",
+  },
+  {
+    q: "How does the trial work?",
+    a: trialTerms("starter"),
+  },
+  {
+    q: "Is the repricer included in every plan?",
+    a: `No. Apex Gold, the repricer, is in beta and part of Pro. Plus (${formatPrice(planById("plus").monthly)} a month) can use it on 5 listings and Beginner on 1; Starter does not include it.`,
+  },
+  {
+    q: "Do I need to connect my Amazon account?",
+    a: "To see your own sales, profit, inventory and reorder suggestions, yes. You can scan supplier price lists and research products before you connect.",
+  },
+  {
+    q: "Can I use ChatGPT or Claude with Apex?",
+    a: (
+      <>
+        Yes. On any paid plan, including the trial, you can connect Claude or ChatGPT to read your Apex data. On Pro, a
+        separate link lets them prepare drafts for you to review. <Link href="/ai" className="font-semibold text-brand hover:underline">See how it works</Link>.
+      </>
+    ),
+  },
+  {
+    q: "I am new to wholesale. Where do I start?",
+    a: (
+      <>
+        Apex University is included with every account and walks through the first steps in order. The{" "}
+        <Link href="/free-course" className="font-semibold text-brand hover:underline">free course</Link> is a good place to begin before you start a trial.
+      </>
+    ),
+  },
+];
 
 export default function LandingPage() {
-                const paths: Record<string, string> = { blue: "/features/blue", green: "/features/green", black: "/features/black", gold: "/features/gold" };
-                return (
+  const reviews = TRUSTPILOT_REVIEWS.slice(0, 3);
+
+  return (
     <>
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden">
+      {/* 1. Positioning and the primary action */}
+      <section className="pt-32 pb-16 lg:pt-44 lg:pb-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-[1fr_1.2fr] lg:gap-16 items-center">
-            {/* initial={false}: the headline is the largest thing on the first
-                screen, and starting it at opacity 0 hid it until scripts ran. */}
-            <motion.div 
-              initial={false}
-              animate="animate"
-              variants={fadeIn}
-              className="max-w-2xl"
-            >
-              <h1 className="text-5xl lg:text-6xl font-black text-slate-900 leading-[1.05] mb-10 tracking-tight">
-                The Amazon Wholesale Software to Build Your Business. <br/>
-                <span className="text-slate-300 italic">Scale It With Confidence.</span>
+          <div className="lg:grid lg:grid-cols-[1fr_1.15fr] lg:gap-16 items-center">
+            <div className="max-w-2xl">
+              <p className="mb-5 text-xs font-black uppercase tracking-[0.2em] text-brand">Software for Amazon wholesale sellers</p>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.05] mb-8 tracking-tight [text-wrap:balance]">
+                Amazon Wholesale Software for Sourcing, Purchasing, and Profit
               </h1>
-              <p className="text-2xl text-slate-500 mb-12 leading-relaxed font-medium">
-                Everything you need to source products, manage suppliers, build purchase orders, and grow your Amazon business from your first sale to your next million.
+              <p className="text-xl text-slate-600 mb-10 leading-relaxed">
+                Scan a supplier&rsquo;s price list, see what is profitable on Amazon, turn the best products into purchase
+                orders, and track your real profit and restocks in one place. Then ask ChatGPT or Claude about it, using your
+                own Apex data.
               </p>
-              <div className="flex flex-col sm:flex-row gap-5">
-                <Link
-                  href="/auth?mode=signup&plan=starter&period=monthly"
-                  className="bg-brand text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(249,115,22,0.3)] flex items-center justify-center gap-3 uppercase tracking-widest"
+              <div className="flex flex-col sm:flex-row gap-4">
+                <CheckoutLink
+                  href={TRIAL_CHECKOUT_URL}
+                  className="bg-brand text-white px-9 py-4 rounded-2xl text-sm font-black hover:brightness-110 transition-all shadow-[0_20px_40px_rgba(249,115,22,0.25)] flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
-                  Start Free Trial <ArrowRight size={18} />
-                </Link>
+                  <span data-cta="home-hero-trial">{trialCta}</span> <ArrowRight size={18} aria-hidden="true" />
+                </CheckoutLink>
                 <Link
-                  href="/apex-elite"
-                  className="bg-slate-50 text-slate-900 border border-slate-200 px-10 py-5 rounded-2xl text-sm font-black hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
+                  href="/pricing"
+                  data-cta="home-hero-pricing"
+                  className="bg-white text-slate-900 border border-slate-200 px-9 py-4 rounded-2xl text-sm font-black hover:border-slate-300 hover:shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
                 >
-                  Get First Month LaunchPad
+                  See plans
                 </Link>
               </div>
-            </motion.div>
+              <p className="mt-4 max-w-lg text-sm text-slate-500">{trialTerms("starter")}</p>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, rotateX: 20 }}
-              animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-24 lg:mt-0 perspective-1000"
-            >
-              <div className="relative bg-white rounded-[40px] p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-200 overflow-hidden">
-                <video
-                  src="/videos/dashboard-hero-demo.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-auto rounded-[34px]"
-                />
+            {/* 2. The product itself */}
+            <div className="mt-16 lg:mt-0">
+              <div className="relative bg-white rounded-[32px] p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-200 overflow-hidden">
+                <LazyVideo src="/videos/dashboard-hero-demo.mp4" label="The Apex dashboard in use" className="w-full h-auto rounded-[26px] aspect-video bg-slate-100" />
               </div>
-              {/* Decorative elements */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand/20 blur-[80px] rounded-full" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 blur-[80px] rounded-full" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sourcing: Speed is Precision */}
-      <section className="py-24 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1fr_1.4fr] gap-20 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-600 text-[10px] font-bold rounded-full mb-6 uppercase tracking-wider">
-                <Search size={14} />
-                Sourcing USP: The Intelligent Filter Engine
-              </div>
-              <h3 className="text-4xl font-extrabold text-slate-900 mb-6">Sourcing: Speed is Precision</h3>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                Wholesale is a race for stock. Our intelligence engine predicts Amazon rank fluctuations and competitor replenishment cycles, ensuring the leads you buy today don't become dead inventory tomorrow.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  ["Process millions of supplier data points in seconds", "Drop in a whole price list and see what's profitable right away."],
-                  ["Predictive BSR analysis to anticipate demand shifts", "See which products are picking up and which are slowing down."],
-                  ["Auto-filtering of suppressed buy-box or IP-claim brands", "Skip the brands that block resellers before you spend a dollar."],
-                  ["Integrated 'Price-Match' checking against competitors", "Know who's selling it and at what price before you buy."]
-                ].map(([item, detail], i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                      <CheckCircle2 className="text-brand w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-slate-800 font-bold block text-sm mb-0.5">{item}</span>
-                      <span className="text-slate-600 text-sm">{detail}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-            <div>
-              <div className="relative bg-white rounded-[40px] p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-200 overflow-hidden">
-                <video
-                  src={sourcingSpeedVideo.url}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-auto rounded-[34px] border border-slate-100 scale-[1.02] hover:scale-[1.04] transition-transform duration-500"
-                />
-              </div>
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-purple-500/15 blur-[60px] rounded-full" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-brand/15 blur-[60px] rounded-full" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Apex Ecosystem Map */}
-      <SuiteMap />
-
-
-
-      {/* Features Grid */}
-      <section id="features" className="py-24 bg-white">
+      {/* 3. The workflow */}
+      <section className="py-20 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-base font-bold text-brand uppercase tracking-wider mb-3">Core Pillars</h2>
-            <p className="text-4xl font-extrabold text-slate-900 mb-6">Built to solve the wholesale bottleneck.</p>
+          <div className="max-w-3xl mb-12">
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">From supplier price list to profit, without the spreadsheets</h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              We replace fragmented spreadsheets and legacy tool-chains with a single, high-speed OS designed specifically for the unique demands of Amazon wholesale.
+              Plenty of wholesale sellers keep each of these steps in a different tool or tab. In Apex they share one database of
+              products, suppliers and costs, so what you find in a scan is what you order, reprice and measure.
             </p>
           </div>
-
-          <motion.div 
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-8"
-          >
-            {[
-              {
-                title: "Live Profit & Loss",
-                desc: "Financial clarity is your primary competitive advantage. Know which SKUs are driving growth and which are draining capital, with sales synced from Amazon every few minutes.",
-                icon: <BarChart3 className="w-6 h-6" />,
-                color: "bg-blue-500",
-                usp: "Synced Every Few Minutes",
-                view: 'blue'
-              },
-              {
-                title: "High-Speed Sourcing",
-                desc: "Hand Apex a whole supplier price list and it works every row against the Amazon catalogue in the background. Scale your sourcing without increasing your headcount.",
-                icon: <Search className="w-6 h-6" />,
-                color: "bg-purple-500",
-                usp: "Whole-Catalog Scanning",
-                view: 'green'
-              },
-              {
-                title: "Precision POs",
-                desc: "Professionalize your relationship with suppliers. Build accurate, error-free orders that translate directly from your sourcing leads.",
-                icon: <FileText className="w-6 h-6" />,
-                color: "bg-emerald-500",
-                usp: "Sourcing-to-PO Workflow",
-                view: 'blue'
-              }
-            ].map((feature, i) => (
-                <MotionLink 
-                  key={i}
-                  href={paths[feature.view]}
-                  variants={fadeIn}
-                  className="block p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all group cursor-pointer"
-                >
-                <div className="flex items-center justify-between mb-6">
-                  <div className={`w-12 h-12 ${feature.color} text-white rounded-2xl flex items-center justify-center shadow-lg shadow-${feature.color.split('-')[1]}-500/20 group-hover:scale-110 transition-transform`}>
-                    {feature.icon}
+          <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {WORKFLOW.map((w, i) => {
+              const Icon = w.icon;
+              return (
+                <li key={w.title} className="flex flex-col rounded-3xl border border-slate-200 bg-white p-6">
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand/10 text-brand"><Icon size={20} aria-hidden="true" /></span>
+                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">{i + 1}. {w.step}</span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{feature.usp}</span>
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                <p className="text-slate-600 leading-relaxed text-sm mb-6">{feature.desc}</p>
-                <div className="h-1 w-12 bg-slate-200 rounded-full group-hover:bg-brand group-hover:w-full transition-all duration-500" />
-              </MotionLink>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+                  <h3 className="mb-2 text-lg font-bold text-slate-900">{w.title}</h3>
+                  <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-600">{w.body}</p>
+                  <Link href={w.module.path} className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-900 hover:text-brand">
+                    {w.module.label}
+                    {isBeta(w.module.key) && <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-700">Beta</span>}
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
 
-      {/* Solutions / Deep Dive Section */}
-      <section id="solutions" className="py-24 bg-slate-50 border-y border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* P&L Section */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <div className="bg-white p-8 rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-slate-100 relative group overflow-hidden">
-                {/* Gross Sales Counter */}
-                <div className="absolute top-8 left-8 z-10">
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Sales. Illustration, not customer data</div>
-                  <div className="text-2xl font-black text-slate-900 font-mono tracking-tighter">
-                    <SalesCounter />
-                  </div>
-                </div>
-
-                <div className="h-64 flex items-end gap-2 px-2 mt-12 relative z-0">
-                  {[35, 55, 42, 30, 38, 50, 52, 85, 65, 95, 78, 62, 30].map((h, i) => (
-                    <motion.div 
-                      key={i}
-                      animate={{ 
-                        height: [
-                          `${h}%`, 
-                          `${Math.min(100, h + 15)}%`, 
-                          `${Math.max(10, h - 10)}%`, 
-                          `${h}%`
-                        ] 
-                      }}
-                      transition={{ 
-                        duration: 4, 
-                        repeat: Infinity, 
-                        ease: "easeInOut",
-                        delay: i * 0.1
-                      }}
-                      className="flex-1 rounded-sm bg-orange-500 hover:brightness-110 transition-all cursor-crosshair"
-                    />
-                  ))}
-                </div>
-                
-                {/* Background Grid Lines */}
-                <div className="absolute inset-0 pointer-events-none p-8 flex flex-col justify-between opacity-[0.03]">
-                  {[1, 2, 3, 4, 5, 6].map(i => (
-                    <div key={i} className="w-full h-px bg-slate-900" />
-                  ))}
-                </div>
-              </div>
-            </div>
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full mb-6 uppercase tracking-widest">
-                <BarChart3 size={14} className="stroke-[3]" />
-                Financial Clarity Engine
-              </div>
-              <h3 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight">Clarity over <span className="text-slate-300 italic">Guesswork.</span></h3>
-              <p className="text-xl text-slate-600 mb-10 leading-relaxed font-medium">
-                Most sellers fly blind between monthly statements. Apex syncs with Amazon every few minutes and maps your net profit with Amazon's fees deducted automatically, and your own costs where you enter them.
+          <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_1.3fr] items-center">
+            <div>
+              <h3 className="text-2xl font-extrabold text-slate-900 mb-4">Let Apex sort the whole supplier list</h3>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                Map the columns once and Apex works through every row in the background, matching against a catalog of{" "}
+                {VERIFIED_STATS.catalog.value} Amazon products. Filter by ROI, rank and competition, hide what you already
+                carry, and send the rest to a purchase order.
               </p>
-              <div className="space-y-6">
-                {[
-                  { title: "True Net Margin Logic", desc: "Automated landed cost calculation per unit." },
-                  { title: "Fees Kept Current", desc: "Amazon fee changes picked up on the regular sync, not at month end." }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="shrink-0 w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3">
-                      {i === 0 ? <Calculator size={20} /> : <TrendingUp size={20} />}
-                    </div>
-                    <div>
-                      <h5 className="font-black text-slate-900 uppercase tracking-tight text-sm mb-1">{item.title}</h5>
-                      <p className="text-slate-500 text-xs font-medium">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Course Promo Section */}
-      <section className="py-24 bg-slate-50 border-t border-b border-slate-100 relative overflow-hidden">
-        <div className="absolute -right-10 -bottom-10 p-32 opacity-[0.03] pointer-events-none select-none">
-          <GraduationCap size={360} className="text-brand" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-white rounded-[40px] p-10 lg:p-16 border border-slate-200/60 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="max-w-2xl text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand/10 text-brand text-[10px] font-black rounded-full mb-6 uppercase tracking-widest">
-                <GraduationCap size={14} className="stroke-[3]" />
-                Apex Sourcing Academy
-              </div>
-              <h3 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tighter leading-tight">
-                New to Amazon? <br />
-                <span className="text-slate-300 italic">Learn for Free.</span>
-              </h3>
-              <p className="text-xl text-slate-500 font-medium leading-relaxed">
-                Learn for Free how to start selling with our included Course. Walk through account creation, supplier discovery, catalog vetting, and launch with precision.
-              </p>
-            </div>
-            <div className="shrink-0 w-full lg:w-auto">
-              <Link
-                href="/features/black#apex-university"
-                className="w-full lg:w-auto bg-brand hover:bg-brand-dark text-white px-10 py-5 rounded-2xl text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] flex items-center justify-center gap-3 uppercase tracking-widest"
-              >
-                Enroll In Free Course <ArrowRight size={18} />
+              <Link href="/features/green" data-cta="home-green" className="inline-flex items-center gap-2 text-sm font-bold text-brand hover:gap-3 transition-all">
+                How the UPC scanner works <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
+            <div className="relative bg-white rounded-[32px] p-2 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] border border-slate-200 overflow-hidden">
+              <LazyVideo src={sourcingSpeedVideo.url} label="A supplier price list being scanned in Apex Green" className="w-full h-auto rounded-[26px] aspect-video bg-slate-100" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-brand overflow-hidden relative">
-        <div className="absolute top-0 right-0 p-32 opacity-10">
-          <Layers size={400} className="text-white" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight">Ready to scale your Amazon business?</h2>
-          <p className="text-white/80 text-xl max-w-2xl mx-auto mb-10 font-medium">
-            Join hundreds of wholesale experts using Apex to automate their sourcing, save hours on POs, and maximize profit.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/pricing"
-              className="bg-white text-brand px-10 py-5 rounded-2xl text-xl font-black hover:scale-105 transition-all shadow-2xl"
-            >
-              Start Your 7-Day Free Trial
-            </Link>
+      {/* 4. The modules */}
+      <SuiteMap />
+
+      {/* 5. AI */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-12 lg:grid-cols-2 items-center">
+          <div>
+            <p className="mb-4 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-blue-700"><Bot size={16} aria-hidden="true" /> ChatGPT and Claude</p>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Ask your assistant about your actual business</h2>
+            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+              Connect Claude or ChatGPT to Apex and they answer from your own profit, stock, purchase orders and supplier
+              scans. Reading works on every paid plan, trial included. On Pro, they can also prepare draft purchase orders
+              for you to review in Apex. They can never submit an order, spend money or change a live price.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/ai" data-cta="home-ai" className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-bold text-white hover:bg-slate-800">
+                See what you can ask <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link href="/integrations/claude" className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-slate-900 hover:border-slate-300">Claude setup</Link>
+              <Link href="/integrations/chatgpt" className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-slate-900 hover:border-slate-300">ChatGPT setup</Link>
+            </div>
           </div>
+          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+            <ul className="space-y-3">
+              {AI_QUESTIONS.map((q) => (
+                <li key={q} className="ml-auto max-w-[90%] rounded-2xl rounded-br-md bg-blue-600 px-4 py-3 text-sm font-medium text-white">{q}</li>
+              ))}
+            </ul>
+            <p className="mt-5 flex items-start gap-2 text-sm text-slate-600">
+              <ShieldCheck size={18} className="mt-0.5 shrink-0 text-emerald-600" aria-hidden="true" />
+              The assistant sees what you can see in Apex and nothing more, and you can turn its access off in one click.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Who it fits, and plans */}
+      <section className="py-20 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-10">
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Pick the plan that fits where you are</h2>
+            <p className="text-lg text-slate-600 leading-relaxed">Every plan starts with a seven-day trial. Monthly prices shown; paying yearly takes 20% off Starter and Pro.</p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {PLANS_SHOWN.map((plan) => {
+              const limits = PLAN_LIMITS[plan.id];
+              return (
+                <div key={plan.id} className="flex flex-col rounded-3xl border border-slate-200 bg-white p-6">
+                  <h3 className="text-lg font-bold text-slate-900">{plan.name}</h3>
+                  <p className="mt-1 text-3xl font-black text-slate-900">{formatPrice(plan.monthly)}<span className="text-base font-semibold text-slate-500">/month</span></p>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{plan.fitsWho}</p>
+                  <ul className="mt-4 flex-1 space-y-1.5 text-sm text-slate-600">
+                    <li>{limits.housedAsins.toLocaleString("en-US")} products in your database</li>
+                    <li>{limits.upcScansPerMonth === null ? "Unlimited" : limits.upcScansPerMonth} supplier scans a month</li>
+                    <li>{plan.id === "pro" ? "Repricer on every listing" : plan.id === "beginner" ? "Repricer on 1 listing" : "No repricer"}</li>
+                    <li>{plan.id === "pro" ? "AI reads and drafts" : "AI reads"}</li>
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+          <Link href="/pricing" data-cta="home-plans" className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-brand hover:gap-3 transition-all">
+            Compare everything in each plan <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
+      {/* 7. Customer evidence: real, public reviews only */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">What sellers wrote on Trustpilot</h2>
+            <a href={TRUSTPILOT.href} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-900 hover:text-brand">
+              Read all {TRUSTPILOT.reviews} reviews on Trustpilot
+            </a>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {reviews.map((r) => (
+              <figure key={r.name} className="flex flex-col rounded-3xl border border-slate-200 p-6">
+                <p className="mb-2 text-sm font-bold text-slate-900">{r.title}</p>
+                <blockquote className="flex-1 text-sm leading-relaxed text-slate-600 line-clamp-6">{r.body}</blockquote>
+                <figcaption className="mt-4 text-xs text-slate-500">{r.name}, {r.country} · {r.stars} of 5 stars · {r.date}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Free tools and learning */}
+      <section className="py-20 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-10 tracking-tight">Free tools and guides</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: Calculator, title: "FBA calculator", body: "Paste an ASIN for Buy Box history, Amazon fees and profit at your cost.", href: "/tools/fba-calculator" },
+              { icon: Calculator, title: "Profit and ROI calculator", body: "Type a price, cost and fees to get profit, margin, ROI and break-even.", href: "/tools/amazon-profit-calculator" },
+              { icon: GraduationCap, title: "Free wholesale course", body: "The first steps of Amazon wholesale, in order, before you spend a dollar.", href: "/free-course" },
+              { icon: FileText, title: "Wholesale software guide", body: "What wholesale software needs to do at each step, and how to compare tools.", href: "/amazon-wholesale-software" },
+            ].map((t) => {
+              const Icon = t.icon;
+              return (
+                <Link key={t.href} href={t.href} className="group rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:shadow-lg">
+                  <Icon size={22} className="mb-4 text-brand" aria-hidden="true" />
+                  <h3 className="mb-2 font-bold text-slate-900 group-hover:text-brand">{t.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-600">{t.body}</p>
+                </Link>
+              );
+            })}
+          </div>
+          <p className="mt-8 text-sm text-slate-600">
+            Want hands-on help with your first month? <Link href="/apex-elite" className="font-semibold text-brand hover:underline">Apex Elite</Link> is a one-time paid starter package with three suppliers, 90 days of the software and first-week help from our team. It is separate from the free trial.
+          </p>
+        </div>
+      </section>
+
+      {/* 9. Questions */}
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-8 tracking-tight">Questions before you start</h2>
+          <div className="divide-y divide-slate-200 border-y border-slate-200">
+            {FAQS.map((f) => (
+              <details key={f.q} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand">
+                  {f.q}
+                  <span aria-hidden="true" className="text-slate-400 transition group-open:rotate-45">+</span>
+                </summary>
+                <div className="mt-3 text-slate-600 leading-relaxed">{f.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 10. Next step */}
+      <section className="py-20 bg-brand">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Try it on your next supplier list</h2>
+          <p className="text-white/85 text-lg mb-8">{trialTerms("starter")}</p>
+          <CheckoutLink href={TRIAL_CHECKOUT_URL} className="inline-flex items-center justify-center gap-2 bg-white text-brand px-10 py-4 rounded-2xl text-base font-black hover:shadow-2xl transition-all">
+            <span data-cta="home-footer-trial">{trialCta}</span> <ArrowRight size={18} aria-hidden="true" />
+          </CheckoutLink>
         </div>
       </section>
     </>

@@ -24,6 +24,12 @@ import { ArrowRight, Check, ChevronDown, Play } from "lucide-react";
 
 import upcScanner from "../assets/upc-scanner.png.asset.json";
 import { DOLLAR_WEEK } from "../config/offer";
+import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
+
+// Accuracy pass 2026-10-07: "full Apex suite" replaced with what the $1 week gives (Plus: the repricer on 5 listings,
+// in beta; Red by invitation), "vetted" suppliers and named approvers removed, the speed claim ("in minutes") and the
+// absolute "you stop buying products that lose money" softened, and the scan figures labelled as one supplier catalog
+// we scanned with its line count. /apex-quiz quotes a different catalog; neither is presented as typical.
 
 const APPLY_HREF = "/apex-pop/start?from=apex-scan";
 
@@ -131,8 +137,8 @@ const STEPS = [
 ];
 
 const RESULTS = [
-  "You stop buying products that lose money after fees",
-  "A whole catalog in minutes, not a weekend in a spreadsheet",
+  "See which products lose money after fees before you buy",
+  "A whole catalog scanned in the background, not a weekend in a spreadsheet",
   "Purchase orders built from the list, not from memory",
   "Your profit tracked from order to sale",
 ];
@@ -142,8 +148,8 @@ const FITS = [
     id: "new",
     tab: "New sellers",
     title: "Your first profitable order",
-    body: "You don't have suppliers yet, or you have one and don't know what to buy from it. Apex sends three vetted US wholesale distributors when you sign up, then shows you which of their products make money.",
-    points: ["3 vetted US suppliers on sign-up", "Scan their catalogs line by line", "Build your first purchase order"],
+    body: "You don't have suppliers yet, or you have one and don't know what to buy from it. Your trial opens three US wholesale distributors from the Distributor Vault. Once you have a price list from one, Apex shows you which products make money.",
+    points: ["3 US suppliers to start with", "Scan a price list line by line", "Build your first purchase order"],
   },
   {
     id: "wholesale",
@@ -157,18 +163,18 @@ const FITS = [
     tab: "Growing teams",
     title: "One system for buying, pricing and books",
     body: "Several suppliers, more than one person buying. Apex keeps the catalog scans, orders, repricing and profit in the same place, with seats for your team.",
-    points: ["Authorised users for your team", "Repricer on every listing (Pro)", "Connect Apex to Claude or ChatGPT"],
+    points: ["Authorised users for your team", "Repricer on every listing (Pro, beta)", "Connect Apex to Claude or ChatGPT"],
   },
 ];
 
 const FAQ = [
   {
     q: `What does the $${DOLLAR_WEEK.price} week include?`,
-    a: `The full Apex suite for ${DOLLAR_WEEK.days} days for $${DOLLAR_WEEK.price}. Cancel inside the week and the dollar comes back. If you stay, it becomes the Plus plan at $${DOLLAR_WEEK.thenPrice} a month.`,
+    a: `The Plus plan for ${DOLLAR_WEEK.days} days for $${DOLLAR_WEEK.price}: sourcing, purchasing and profit, plus the repricer (beta) on 5 listings. Apex Red is by invitation. Cancel inside the week and the dollar comes back. If you stay, it becomes the Plus plan at $${DOLLAR_WEEK.thenPrice} a month.`,
   },
   {
     q: "Do I need suppliers already?",
-    a: "No. Three vetted US wholesale distributors are sent to you when you sign up, each with the person who approves new resellers.",
+    a: `No. Three US wholesale distributors from the Distributor Vault (${DISTRIBUTOR_COUNT} in all) open when you start, and three more each month. Each supplier decides who it opens an account for.`,
   },
   {
     q: "Is my Amazon account safe?",
@@ -176,11 +182,11 @@ const FAQ = [
   },
   {
     q: "How long does setup take?",
-    a: "Minutes. Connect your Amazon account, drop in a price list, and the scan runs. We can also set it up with you on a call.",
+    a: "Connect your Amazon account, drop in a price list, and the scan runs through the whole file in the background. We can also set it up with you on a call.",
   },
   {
     q: "Will every catalog be 92% profitable?",
-    a: "No. That was one real supplier's catalog. Yours will differ, and that's the point: Apex tells you which lines are worth buying before you spend anything.",
+    a: "No. That was one supplier catalog we scanned, and it is not typical. Yours will differ, and that's the point: Apex tells you which lines are worth buying before you spend anything.",
   },
   {
     q: "Can I cancel anytime?",
@@ -263,7 +269,7 @@ export default function ApexScanFunnel() {
 
         {/* 4 + 5. The numbers, from one real scan. */}
         <Reveal className="mt-16 text-center">
-          <Label>One real supplier catalog, scanned in Apex</Label>
+          <Label>One supplier catalog we scanned in Apex</Label>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {[
               [SCAN.lines.toLocaleString("en-US"), "lines checked against Amazon"],
@@ -278,7 +284,10 @@ export default function ApexScanFunnel() {
               </div>
             ))}
           </div>
-          <p className="mt-4 text-sm text-slate-500">Your catalog will be different. Apex tells you how before you buy.</p>
+          <p className="mt-4 text-sm text-slate-500">
+            One supplier catalog we scanned, {SCAN.lines.toLocaleString("en-US")} lines. It is an example, not a typical
+            result. Your catalog will be different, and Apex tells you how before you buy.
+          </p>
         </Reveal>
 
         {/* 6. How it works, in three steps. */}
@@ -339,8 +348,8 @@ export default function ApexScanFunnel() {
         <Reveal className="mt-16 rounded-2xl bg-blue-600 p-8 text-center text-white">
           <h2 className="font-extrabold tracking-tight text-3xl">Try it for ${DOLLAR_WEEK.price}. Not for you? Get the dollar back.</h2>
           <p className="mt-3">
-            The full suite for {DOLLAR_WEEK.days} days, three vetted suppliers included. Cancel inside the week and we
-            refund it.
+            The Plus plan for {DOLLAR_WEEK.days} days, three suppliers from the Vault included. Cancel inside the week
+            and we refund it.
           </p>
           <div className="mx-auto mt-6 max-w-md">
             <Apply dark />
@@ -413,7 +422,8 @@ export default function ApexScanFunnel() {
 
       <footer className="mx-auto mt-20 max-w-3xl px-4 pb-12 text-center text-xs text-slate-500">
         <p>
-          The scan figures are from one real supplier catalog and are not a forecast for yours. Results depend on your
+          The scan figures are from one supplier catalog we scanned ({SCAN.lines.toLocaleString("en-US")} lines) and are
+          not typical or a forecast for yours. Results depend on your
           suppliers, your costs and Amazon. Supplier accounts and selling approvals are decided by the supplier and by
           Amazon.
         </p>

@@ -46,7 +46,7 @@ function DemoButton({ dark = false, big = false }: { dark?: boolean; big?: boole
 }
 
 /**
- * The brands our customers' pallets actually carry. Names only, set as plain
+ * Brands grocery sellers restock. Names only, set as plain
  * text chips: these identify the products enterprise grocery sellers move,
  * not partners of ours -- the fine print under the wall says so.
  */
@@ -191,26 +191,29 @@ function Conveyor() {
   );
 }
 
+// Accuracy pass 2026-10-07: this is a demo-request page. Expiry tracking is not a verified feature, so it is
+// described as something shown in the demo. The repricer is rule-based with floors (beta), not "bidding".
+// Prep rates are set by each center; "insured" removed.
 const PILLARS = [
   {
     icon: ClipboardList,
     title: "Restock & purchase order creation",
-    body: "Apex reads your sell-through and builds the restock math into ready-to-send purchase orders -- cases, cost, supplier, and landed margin -- so replenishment runs on numbers, not gut feel.",
+    body: "Apex works from your sales velocity and stock, and the cover and lead time you set, to suggest what to restock. Build the purchase order with cases, cost, supplier and landed cost from the same place.",
   },
   {
     icon: Banknote,
     title: "Cashflow & inventory turnover",
-    body: "Grocery margins live and die on turns. Track cash tied up per SKU, days of cover, and true inventory turnover across every warehouse, with P&L pulled from your own store data.",
+    body: "Grocery margins live and die on turns. See days of stock left on your synced inventory, with a profit and loss built from your own store data.",
   },
   {
     icon: CalendarClock,
-    title: "Expiration date tracking",
-    body: "Every grocery listing carries its lot dates. Apex watches shelf life across your inventory and flags what must move before Amazon's expiration windows close -- before it becomes unsellable stock.",
+    title: "Expiration dates",
+    body: "Expiry dates matter more in grocery than anywhere else. We'll show you how to track expiry dates in Apex in your demo.",
   },
   {
     icon: Gauge,
-    title: "Automatic repricer bidding",
-    body: "Break-even floors computed from real FBA fees, then automated bidding keeps every listing competitive around the clock -- aggressive when you own the Buy Box math, disciplined when you don't.",
+    title: "Rule-based repricing (beta)",
+    body: "Break-even floors worked out from your cost and Amazon's fees, with strategies that respond to competing offers and stay between your floor and ceiling. Prices change when you run your strategies from Apex.",
   },
 ];
 
@@ -230,7 +233,7 @@ export default function GroceryCommerce() {
           style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "26px 26px" }}
         />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div {...fadeIn} className="text-center max-w-3xl mx-auto">
+          <motion.div {...fadeIn} initial={false} className="text-center max-w-3xl mx-auto">
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-amber-300 mb-6">
               <ShieldCheck size={14} /> Enterprise only · $1M+ monthly sales
             </span>
@@ -239,9 +242,9 @@ export default function GroceryCommerce() {
               <span className="text-amber-400">B2B Amazon &amp; ecommerce grocery</span>
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto mb-8">
-              Restock and purchase orders, cashflow and inventory turns, expiration tracking on
-              every grocery listing, and automatic repricer bidding &mdash; one roof, built for
-              operations that move pallets, not parcels.
+              Restock and purchase orders, cashflow and inventory turns, expiry dates in the demo,
+              and rule-based repricing, under one roof, built for operations that move pallets,
+              not parcels.
             </p>
             <div className="flex flex-col items-center gap-3">
               <DemoButton dark big />
@@ -261,7 +264,7 @@ export default function GroceryCommerce() {
       <section className="bg-slate-950 text-white pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.p {...fadeIn} className="text-center text-xs font-black uppercase tracking-[0.25em] text-slate-500 mb-7">
-            Trusted to move the brands America restocks daily
+            Brands grocery sellers restock every day
           </motion.p>
           <motion.div {...fadeIn} className="flex flex-wrap justify-center gap-2.5 max-w-4xl mx-auto">
             {BRAND_WALL.map((brand) => (
@@ -274,7 +277,7 @@ export default function GroceryCommerce() {
             ))}
           </motion.div>
           <p className="text-center text-[11px] text-slate-600 mt-6">
-            Product brands our customers distribute and resell. No endorsement or affiliation implied.
+            Product brands that grocery sellers distribute and resell. No endorsement or affiliation implied.
           </p>
         </div>
       </section>
@@ -287,7 +290,7 @@ export default function GroceryCommerce() {
               Built where the work happens: the warehouse floor
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Assembly lines, palletizing, forklifts and trailers &mdash; Apex speaks the language
+              Assembly lines, palletizing, forklifts and trailers: Apex speaks the language
               of the floor and turns it into software your buyers and finance team share.
             </p>
           </motion.div>
@@ -296,9 +299,9 @@ export default function GroceryCommerce() {
             <motion.div {...fadeIn} className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
               <PalletStack />
               <p className="text-sm text-slate-500 mt-6 leading-relaxed">
-                <span className="font-black text-slate-900">Palletized, dated, tracked.</span>{" "}
-                Every case that gets wrapped carries lot and expiration data Apex follows to the
-                listing.
+                <span className="font-black text-slate-900">Palletized and dated.</span>{" "}
+                Lot and expiry dates matter in grocery. Ask us in the demo how to follow them in
+                Apex.
               </p>
             </motion.div>
 
@@ -310,8 +313,8 @@ export default function GroceryCommerce() {
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 to-transparent p-5 pt-14">
                 <p className="text-sm text-white font-bold leading-snug">
-                  A national prep network on the line &mdash; insured, negotiated member rates,
-                  restock-aware.
+                  A national prep center network on the line. Member pricing is offered by
+                  participating centers, each sets its own rates.
                 </p>
               </div>
             </motion.div>
@@ -319,9 +322,8 @@ export default function GroceryCommerce() {
             <motion.div {...fadeIn} transition={{ ...fadeIn.transition, delay: 0.2 }} className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
               <Forklift />
               <p className="text-sm text-slate-500 mt-6 leading-relaxed">
-                <span className="font-black text-slate-900">From dock to listing.</span> Inbound
-                pallets reconcile against purchase orders automatically &mdash; shortages surface
-                the day the truck unloads, not at month end.
+                <span className="font-black text-slate-900">From dock to listing.</span> Build the
+                purchase order in Apex, then compare what arrived with what you ordered.
               </p>
             </motion.div>
           </div>
@@ -336,7 +338,7 @@ export default function GroceryCommerce() {
               Everything under one roof
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Four systems that usually live in four tools &mdash; connected, because in grocery
+              Four systems that usually live in four tools, connected because in grocery
               a purchase order, a shelf date and a price are the same decision.
             </p>
           </motion.div>
@@ -369,9 +371,9 @@ export default function GroceryCommerce() {
             {[
               { icon: ClipboardList, label: "Purchase order" },
               { icon: Truck, label: "Inbound pallets" },
-              { icon: PackageCheck, label: "Live inventory" },
-              { icon: Timer, label: "Expiry watch" },
-              { icon: RefreshCcw, label: "Repricer bids" },
+              { icon: PackageCheck, label: "Inventory" },
+              { icon: Timer, label: "Expiry dates" },
+              { icon: RefreshCcw, label: "Repricing" },
               { icon: Banknote, label: "Cashflow & turns" },
             ].map((step, i, all) => (
               <div key={step.label} className="flex items-center gap-3">
@@ -397,7 +399,7 @@ export default function GroceryCommerce() {
               Built for a smaller room
             </h2>
             <p className="text-slate-500 leading-relaxed max-w-xl mx-auto mb-8">
-              GroceryCommerce is not self-serve and not for everyone &mdash; it is the enterprise
+              GroceryCommerce is not self-serve and not for everyone. It is the enterprise
               tier of Apex, deployed with our team beside yours.
             </p>
             <div className="grid sm:grid-cols-3 gap-4 mb-10">

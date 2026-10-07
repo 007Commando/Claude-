@@ -13,7 +13,7 @@ export default function BlogCtaBar() {
         </div>
         <div>
           <div className="text-sm font-black text-white">Start your 7-day free trial</div>
-          <div className="text-xs text-slate-400">No card charged until it ends. Cancel anytime.</div>
+          <div className="text-xs text-slate-400">Card required, nothing charged until day 8. Cancel any time before then.</div>
         </div>
       </div>
       <span className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-white/10 group-hover:bg-white/20 rounded-xl px-4 py-2.5 transition-colors w-full sm:w-auto justify-center">

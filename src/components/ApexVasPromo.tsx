@@ -106,23 +106,26 @@ export default function ApexVasPromo() {
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-12 text-center">
         <motion.p
           {...fadeIn}
+          initial={false}
           className="text-xs font-bold uppercase tracking-[0.2em] text-brand mb-4"
         >
           New offer
         </motion.p>
         <motion.h1
           {...fadeIn}
+          initial={false}
           className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 mb-5"
         >
           {VA_TRIAL_DAYS_LABEL} free. Put a professional Amazon VA to work in your business
         </motion.h1>
-        <motion.p {...fadeIn} className="text-lg text-slate-500 max-w-2xl mx-auto">
-          Not a general assistant you have to teach. Ours work inside your Apex
-          account from day one, with more than 20 years of Amazon experience
-          across the team behind them.
+        {/* Accuracy pass 2026-10-07: the "20+ years across the team" figure conflicted with "9+ years" on /apex-elite and neither is documented, so no number is quoted. */}
+        <motion.p {...fadeIn} initial={false} className="text-lg text-slate-500 max-w-2xl mx-auto">
+          Not a general assistant you have to teach. Ours are experienced
+          Amazon virtual assistants who work inside your Apex account from
+          day one.
         </motion.p>
 
-        <motion.div {...fadeIn} className="mt-8 flex flex-col items-center gap-3">
+        <motion.div {...fadeIn} initial={false} className="mt-8 flex flex-col items-center gap-3">
           <BookButton>Book your free trial call</BookButton>
           <p className="text-sm text-slate-400">
             Fifteen minutes. Tell us what you need done and we will match you to

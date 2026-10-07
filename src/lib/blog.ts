@@ -66,21 +66,23 @@ export const posts: BlogPost[] = [
     title: "How to Start Amazon Wholesale in 2026: A Step-by-Step Guide",
     seoTitle: "How to Start Amazon Wholesale in 2026: Step by Step",
     description:
-      "A practical guide to starting an Amazon wholesale business in 2026, from your first supplier to your first purchase order, with margin benchmarks.",
+      "A practical guide to starting an Amazon wholesale business in 2026, from your first supplier to your first purchase order, with margin rules of thumb.",
     category: "Getting Started",
     publishedAt: "2026-07-01",
+    updatedAt: "2026-10-07",
     readingTime: "17 min read",
     content: [
       {
         type: "p",
-        text: "Amazon wholesale is still one of the most repeatable ways to build a real ecommerce business, because you are selling products that already have proven demand instead of gambling on something brand new. The tradeoff is that it rewards process more than instinct. Sellers who win are the ones who source consistently, track their numbers, and move fast on approvals. Sellers who quit within the first year are almost always the ones who treated it as a series of one off decisions instead of a repeatable system. Roughly 42 percent of wholesale sellers report getting their business off the ground in under six weeks. Not because they got lucky, but because they followed a sequence instead of improvising one. Here is that sequence, in full, along with what happens when each step gets skipped.",
+        text: "Amazon wholesale is still one of the most repeatable ways to build a real ecommerce business, because you are selling products that already have proven demand instead of gambling on something brand new. The tradeoff is that it rewards process more than instinct. Sellers who win are the ones who source consistently, track their numbers, and move fast on approvals. Sellers who quit within the first year are almost always the ones who treated it as a series of one off decisions instead of a repeatable system. Many sellers take weeks to get a first order out, and the ones who move fastest usually do it by following a sequence instead of improvising one. Here is that sequence, in full, along with what happens when each step gets skipped.",
       },
       {
         type: "stats",
         items: [
-          { value: "6 weeks", label: "Typical time to launch for organized sellers" },
-          { value: "10 to 20%", label: "Typical wholesale net margin" },
-          { value: "30%+", label: "Gross margin target before fees" },
+          // Accuracy fix 2026-10-07: removed the "6 weeks" launch card (no survey or source) and relabelled the margin cards as rules of thumb.
+          { value: "Weeks", label: "Many sellers take weeks to get a first order out" },
+          { value: "10 to 20%", label: "A common net margin rule of thumb for wholesale (an assumption, not a survey)" },
+          { value: "30%+", label: "Gross margin we like to see before fees (rule of thumb)" },
           { value: "7 days", label: "Apex free trial before you're charged" },
         ],
       },
@@ -120,7 +122,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Wholesale means buying directly from brands or their authorized distributors at wholesale cost, then reselling at retail. The fastest path to your first supplier is not cold emailing brands blind. It is starting with distributors who already carry multiple brands you could resell, since one relationship can open dozens of products at once. This is exactly the shortcut Apex hands you on signup: every [new account gets 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly), so you skip the weeks most new sellers spend just finding someone who will sell to them.",
+        text: "Wholesale means buying directly from brands or their authorized distributors at wholesale cost, then reselling at retail. The fastest path to your first supplier is not cold emailing brands blind. It is starting with distributors who already carry multiple brands you could resell, since one relationship can open dozens of products at once. This is the shortcut Apex gives you. [Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once. So you skip much of the time new sellers spend just finding someone who will sell to them.",
       },
       {
         type: "image",
@@ -154,7 +156,7 @@ export const posts: BlogPost[] = [
         type: "image",
         src: upcScannerImage.url,
         alt: "Apex Green UPC Scanner showing landed cost, ROI, margin, and Amazon fees for a distributor price list",
-        caption: "Apex Green's UPC Scanner scans an entire distributor price list and shows margin per SKU instantly",
+        caption: "Apex Green's UPC Scanner scans an entire distributor price list and shows margin per SKU",
       },
       {
         type: "p",
@@ -172,11 +174,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "This is the question most starter guides skip, and it is the one that determines whether your business actually works. Wholesale sellers typically land in the 10 to 20 percent net margin range. Thinner per unit than private label, but far more repeatable because you are not betting on a new product's demand. As a rule of thumb, aim for at least 30 percent gross margin before Amazon and shipping fees when evaluating a product, since fees alone typically eat 15 to 25 percent of the sale price before you have paid for the product itself.",
+        text: "This is the question most starter guides skip, and it is the one that determines whether your business actually works. Many wholesale sellers aim for a net margin somewhere around 10 to 20 percent. That is a rule of thumb, not a measured benchmark, and your own number depends on the product, your costs and your fees. It is thinner per unit than private label, but more repeatable because you are not betting on a new product's demand. As a rule of thumb, we look for at least 30 percent gross margin before Amazon and shipping fees when evaluating a product, because fees vary by product and can take a large share of the sale price before you have paid for the product itself. Run a real product through the [Apex FBA calculator](/tools/fba-calculator) to see the actual figure.",
       },
       {
         type: "table",
-        headers: ["Margin range", "What it means"],
+        headers: ["Net margin (rule of thumb)", "What it means"],
         rows: [
           ["25%+ net", "Excellent. Hold onto this SKU and consider reordering deeper."],
           ["15 to 25% net", "Good, sustainable range for most wholesale products."],
@@ -194,7 +196,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Many of the best wholesale categories, including Grocery, Beauty, and Health & Personal Care, are gated. Amazon requires an application and an invoice before you can list. Submit your [ungating application](/ungating-guide) using the distributor invoice you collected in step two as soon as you know which products you want, not after the inventory arrives. Approval can take anywhere from a few minutes to a few days, and there is no reason to have cash tied up in boxes you cannot list yet. Amazon rejects roughly 70 percent of first time DIY ungating attempts over invoice formatting issues alone. Our [full ungating guide](/blog/amazon-ungating-guide) covers exactly what a passing invoice needs.",
+        text: "Many of the best wholesale categories, including Grocery, Beauty, and Health & Personal Care, are gated. Amazon requires an application and an invoice before you can list. Submit your [ungating application](/ungating-guide) using the distributor invoice you collected in step two as soon as you know which products you want, not after the inventory arrives. Timing varies, from minutes to days or longer, and there is no reason to have cash tied up in boxes you cannot list yet. Invoice problems are a common reason applications are rejected. Our [full ungating guide](/blog/amazon-ungating-guide) covers exactly what a passing invoice needs.",
       },
       {
         type: "h2",
@@ -220,7 +222,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Unless you are prepping and labeling out of your own garage, you need a prep center in place before your first shipment leaves the distributor's warehouse, not after it is already in transit with nowhere to go. Compare a few options on cost per unit, turnaround time, and communication before you commit. Our [guide on choosing a prep center for Amazon FBA wholesale](/blog/choosing-a-prep-center) walks through exactly what to check, and Apex members get member pricing across a [vetted network of US prep centers](/prep-center-network).",
+        text: "Unless you are prepping and labeling out of your own garage, you need a prep center in place before your first shipment leaves the distributor's warehouse, not after it is already in transit with nowhere to go. Compare a few options on cost per unit, turnaround time, and communication before you commit. Our [guide on choosing a prep center for Amazon FBA wholesale](/blog/choosing-a-prep-center) walks through exactly what to check, and Apex keeps a [Prep Center Network](/prep-center-network) directory of US prep centers you can compare. Apex is not a formal partner of the centers listed, so confirm rates and requirements with each one directly.",
       },
       {
         type: "h2",
@@ -228,7 +230,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Every experienced wholesale seller has watched a cohort of newer sellers start at roughly the same time they did, and noticed that maybe one in five is still around eighteen months later. The pattern is consistent enough to describe. Sellers who last treat sourcing as a weekly habit rather than a one time event, reordering proven SKUs on a schedule instead of waiting until they are already out of stock. They track landed cost on every single purchase order, not just the ones that feel risky. They build relationships with two or three distributors instead of chasing whichever price list looks cheapest that month, because a supplier who trusts you will extend better terms and warn you before a price increase. And they treat their first ungating rejection as a data point to fix, not a reason to abandon the category.",
+        text: "Every experienced wholesale seller has watched a cohort of newer sellers start at roughly the same time they did, and noticed that many of them are gone eighteen months later. The pattern is consistent enough to describe. Sellers who last treat sourcing as a weekly habit rather than a one time event, reordering proven SKUs on a schedule instead of waiting until they are already out of stock. They track landed cost on every single purchase order, not just the ones that feel risky. They build relationships with two or three distributors instead of chasing whichever price list looks cheapest that month, because a supplier who trusts you will extend better terms and warn you before a price increase. And they treat their first ungating rejection as a data point to fix, not a reason to abandon the category.",
       },
       {
         type: "p",
@@ -264,13 +266,13 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "It is rarely a bad first product. It is almost always a broken process: no system for tracking purchase orders, no repeatable way to find new suppliers, no visibility into real margin until it is too late to fix. [Apex Black](/features/black), [Blue](/features/blue), [Green](/features/green), and [Red](/features/red) exist to cover exactly those four gaps: dashboard and education, financial analytics and purchasing, sourcing and product research, and logistics, as one connected suite instead of five disconnected spreadsheets and subscriptions. Apex Black also ships with a complete library of tactical playbooks covering the wholesale blueprint, distributor outreach scripts, a negotiation guide, and an ungating SOP among others, a 300 dollar value included free with every account.",
+        text: "It is rarely a bad first product. It is almost always a broken process: no system for tracking purchase orders, no repeatable way to find new suppliers, no visibility into real margin until it is too late to fix. Apex has five modules to cover those gaps in one connected place: [Apex Black](/features/black) for the dashboard and education, [Apex Blue](/features/blue) for purchasing and financial analytics, [Apex Green](/features/green) for sourcing and product research, [Apex Gold](/features/gold) for repricing (beta, repricer on Pro), and [Apex Red](/features/red) for prep and shipments (beta, by invitation). Apex Black also includes a library of tactical playbooks covering the wholesale blueprint, distributor outreach scripts, a negotiation guide, and an ungating SOP among others.",
       },
       {
         type: "image",
         src: resourceLibraryImage.url,
         alt: "Apex University Complete Playbook Library with 10 tactical playbooks for Amazon wholesale",
-        caption: "Apex University's Playbook Library: 10 tactical playbooks worth $300, included with every account",
+        caption: "Apex University's Playbook Library: 10 tactical playbooks, included with every account",
       },
       {
         type: "image",
@@ -324,14 +326,15 @@ export const posts: BlogPost[] = [
     slug: "amazon-ungating-guide",
     title: "How to Get Ungated on Amazon Faster Without Guessing",
     description:
-      "Why Amazon gates categories, what gets an ungating application approved, why a 70 percent first attempt rejection rate is avoidable, and what works.",
+      "Why Amazon gates categories, what gets an ungating application approved, why invoice problems are a common reason for rejection, and what works.",
     category: "Ungating",
     publishedAt: "2026-07-08",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
         type: "p",
-        text: "Gating exists to keep counterfeit and unauthorized inventory off Amazon, not to keep small sellers out. Once you understand what Amazon's review team is actually checking for, ungating stops being a mystery and becomes a checklist. Here is what actually moves an application from pending to approved, why Amazon rejects an estimated 70 percent of first time DIY attempts, and why some sellers treat gated categories as their biggest advantage instead of their biggest obstacle.",
+        text: "Gating exists to keep counterfeit and unauthorized inventory off Amazon, not to keep small sellers out. Once you understand what Amazon's review team is actually checking for, ungating stops being a mystery and becomes a checklist. Here is what actually moves an application from pending to approved, why invoice problems are a common reason applications are rejected, and why some sellers treat gated categories as their biggest advantage instead of their biggest obstacle.",
       },
       {
         type: "image",
@@ -342,9 +345,10 @@ export const posts: BlogPost[] = [
       {
         type: "stats",
         items: [
-          { value: "~70%", label: "Of first time DIY ungating attempts get rejected" },
-          { value: "10 units", label: "Minimum quantity most invoices need to show" },
-          { value: "90 to 180 days", label: "Invoice must typically fall within this window" },
+          // Accuracy fix 2026-10-07: removed the unsourced rejection-rate card. Quantity and age requirements vary, so they are hedged.
+          { value: "Invoice", label: "Invoice problems are a common reason applications are rejected" },
+          { value: "Around 10 units", label: "Commonly asked for on an invoice; your application states the exact figure" },
+          { value: "Recent date", label: "Often within the last 90 to 180 days; check your application" },
         ],
       },
       {
@@ -383,17 +387,17 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Amazon's ungating review is almost entirely invoice based. A strong invoice has your registered business name, the supplier's business name and contact information, the brand name as it appears on Amazon, matching UPCs for each product, and a purchase quantity that looks like a real wholesale order rather than a single retail purchase. Most reviewers want to see at least 10 units per SKU, dated within roughly the last 90 to 180 days. A blurry photo of a handwritten receipt, or an invoice from a retailer like Costco or Sam's Club, will almost always get rejected. Amazon wants an authorized distributor or the brand itself, not a retail purchase.",
+        text: "Amazon's ungating review is almost entirely invoice based. A strong invoice has your registered business name, the supplier's business name and contact information, the brand name as it appears on Amazon, matching UPCs for each product, and a purchase quantity that looks like a real wholesale order rather than a single retail purchase. Amazon has commonly asked for around 10 units per SKU on an invoice dated within the last 90 to 180 days, but the exact figures vary by category, brand and account and change over time, so go by what your application states. A blurry photo of a handwritten receipt, or an invoice from a retailer like Costco or Sam's Club, will almost always get rejected. Amazon wants an authorized distributor or the brand itself, not a retail purchase.",
       },
       {
         type: "table",
         headers: ["Invoice must show", "Why it matters"],
         rows: [
-          ["Your exact Seller Central business name", "A mismatch is the single most common cause of rejection."],
+          ["Your exact Seller Central business name", "A mismatch is a common cause of rejection."],
           ["Supplier's business name, address, and contact info", "Proves the source is a real, traceable business."],
           ["Brand name matching the Amazon listing exactly", "Confirms you are sourcing the actual brand, not a lookalike."],
           ["Matching UPCs for each product", "Ties the invoice directly to the ASIN you are applying against."],
-          ["10+ units per SKU, dated within roughly 90 to 180 days", "Signals a real wholesale purchase, not a one off retail buy."],
+          ["Around 10 units per SKU, recent date (check your application)", "Signals a real wholesale purchase, not a one off retail buy."],
         ],
       },
       {
@@ -405,8 +409,8 @@ export const posts: BlogPost[] = [
         items: [
           "Invoice does not match your Seller Central business name exactly. Register with a distributor using the same legal name on file with Amazon.",
           "UPCs on the invoice do not match the ASIN you are applying against. Double check before submitting, since one mismatch can sink the whole application.",
-          "Quantity looks like a retail purchase, not wholesale. Most reviewers want to see at least 10 units per SKU, not a single unit.",
-          "Invoice is too old. Stay inside the roughly 90 to 180 day window most categories expect.",
+          "Quantity looks like a retail purchase, not wholesale. Amazon has commonly asked for around 10 units per SKU, not a single unit; check what your application states.",
+          "Invoice is too old. Amazon has commonly asked for an invoice dated within the last 90 to 180 days; your application states the window for your category.",
           "Supplier is not an authorized distributor for that brand. Ask for proof of authorization before you buy, not after you are rejected.",
         ],
       },
@@ -420,11 +424,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "A faster path: start with pre-vetted suppliers",
+        text: "A faster path: start with authorized distributors",
       },
       {
         type: "p",
-        text: "The single biggest time saver in ungating is not a better application template. It is starting with suppliers who are already known to produce invoices that pass. This is why sourcing from authorized distributors matters more than chasing the cheapest price list you can find. It is also the exact reason Apex hands every [new account 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly) on signup. You are not gambling on whether the invoice will hold up.",
+        text: "The single biggest time saver in ungating is not a better application template. It is starting with authorized distributors who issue proper wholesale invoices. This is why sourcing from authorized distributors matters more than chasing the cheapest price list you can find. Apex gives you a head start here. [Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once. Even then, check that a distributor is authorized for the brand before you rely on its invoice.",
       },
       {
         type: "h2",
@@ -448,7 +452,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "A rejection is not final. It is feedback. Read the rejection reason carefully, since Amazon usually tells you exactly what was missing, fix that specific gap, and reapply. Do not reapply with the same invoice hoping for a different reviewer. Fix the actual issue first. Most second attempts succeed once the real problem, usually a name mismatch or an unauthorized supplier, is corrected. Apex University's playbook library includes a dedicated Ungating SOP and template Authorization Letter you can lean on when a category asks for more than a standard invoice.",
+        text: "A rejection is not final. It is feedback. Read the rejection reason carefully, since Amazon usually tells you exactly what was missing, fix that specific gap, and reapply. Do not reapply with the same invoice hoping for a different reviewer. Fix the actual issue first. A second attempt often goes better once the real problem, such as a name mismatch or an unauthorized supplier, is corrected. Apex University's playbook library includes a dedicated Ungating SOP and template Authorization Letter you can lean on when a category asks for more than a standard invoice.",
       },
       {
         type: "p",
@@ -472,7 +476,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Many applications with a clean, correctly formatted invoice are approved within minutes to a few hours. Applications that require manual review, or categories with additional compliance requirements such as Supplements, can take several business days. A rejected application effectively restarts this clock, which is the real cost of submitting a weak invoice the first time.",
+        text: "Timing varies, from minutes to days or longer. Applications that require manual review, or categories with additional compliance requirements such as Supplements, can take several business days. A rejected application effectively restarts this clock, which is the real cost of submitting a weak invoice the first time.",
       },
       {
         type: "h3",
@@ -534,7 +538,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Everything else, including Amazon's own price line, used offers, and the Sales Rank drops chart, is useful once you are advanced, but these three lines alone are enough to make a solid go or no go call on 90 percent of products. New sellers tend to open Keepa, see a wall of colored lines, and either freeze up or ignore the chart entirely and go with gut feel. Both responses lead to the same outcome: a purchase order placed on incomplete information.",
+        text: "Everything else, including Amazon's own price line, used offers, and the Sales Rank drops chart, is useful once you are advanced, but these three lines alone are enough to make a solid go or no go call on most products. New sellers tend to open Keepa, see a wall of colored lines, and either freeze up or ignore the chart entirely and go with gut feel. Both responses lead to the same outcome: a purchase order placed on incomplete information.",
       },
       {
         type: "h2",
@@ -680,6 +684,7 @@ export const posts: BlogPost[] = [
       "A repeatable purchase order workflow for Amazon wholesale sellers, from deciding order quantity to reconciling what landed against what you paid for.",
     category: "Operations",
     publishedAt: "2026-07-16",
+    updatedAt: "2026-10-07",
     readingTime: "14 min read",
     content: [
       {
@@ -739,7 +744,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "That 9.3 percent margin is in the warning zone by the benchmarks in our [profit margins guide](/blog/wholesale-profit-margins). This exact kind of math, run before the purchase order instead of after, is what separates a product you should pass on from one you should double down on. Sellers who only track unit cost consistently overestimate their margin, because none of the add on costs above are small individually, but they compound fast across an order of a few hundred units.",
+        text: "That 9.3 percent margin is below the rule-of-thumb range in our [profit margins guide](/blog/wholesale-profit-margins). This exact kind of math, run before the purchase order instead of after, is what separates a product you should pass on from one you should double down on. Sellers who only track unit cost consistently overestimate their margin, because none of the add on costs above are small individually, but they compound fast across an order of a few hundred units.",
       },
       {
         type: "image",
@@ -781,11 +786,12 @@ export const posts: BlogPost[] = [
         type: "image",
         src: inventoryRestockingImage.url,
         alt: "Apex inventory analytics showing stock value, items to restock, and days until next order",
-        caption: "Real time inventory and restock alerts, so reorder points are not a guess",
+        caption: "Inventory and restock suggestions, so reorder points are not a guess",
       },
       {
         type: "p",
-        text: "Real time visibility into current inventory across every prep center and warehouse is exactly what [Apex Red's](/features/red) inventory tools are built to give you, so reorder points are not a guess.",
+        // Accuracy fix 2026-10-07: Red is beta and by invitation, its inventory view is synced rather than "real time", and restock suggestions live in Apex Blue.
+        text: "A synced view of your inventory across prep centers and warehouses is what [Apex Red's](/features/red) inventory tools (beta, by invitation) are built to give you, and [Apex Blue](/features/blue) turns your stock and sales velocity into restock suggestions, so reorder points are not a guess.",
       },
       {
         type: "h2",
@@ -856,6 +862,7 @@ export const posts: BlogPost[] = [
       "How to build review velocity for new listings with Amazon compliant automated requests, what counts as compliant, and the tactics that get you suspended.",
     category: "Reviews & Feedback",
     publishedAt: "2026-07-20",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -874,7 +881,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Shoppers do not read the description of an unfamiliar product before they check the review count. It is the fastest trust shortcut on the entire page, and a listing sitting at zero reads as a red flag regardless of price, photos, or how good the product actually is. That translates directly into a lower conversion rate, which lowers sales velocity, which is one of the inputs Amazon's own ranking algorithm weighs when deciding how often to show your listing at all. A slow start on reviews does not just cost you a few sales in week one. It can quietly suppress how much organic traffic that listing ever earns, which is why the sellers who take review requests seriously from day one tend to pull ahead of otherwise identical competitors within the first two months.",
+        text: "Shoppers do not read the description of an unfamiliar product before they check the review count. It is the fastest trust shortcut on the entire page, and a listing sitting at zero reads as a red flag regardless of price, photos, or how good the product actually is. That translates directly into a lower conversion rate, which lowers sales velocity, which is one of the inputs Amazon's own ranking algorithm weighs when deciding how often to show your listing at all. A slow start on reviews does not just cost you a few sales in week one. It can quietly suppress how much organic traffic that listing ever earns, which is why review requests are worth getting right from day one.",
       },
       {
         type: "h2",
@@ -916,11 +923,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "The timing that actually improves response rates",
+        text: "Why timing matters",
       },
       {
         type: "p",
-        text: "Requesting too early, before the customer has had time to use the product, or too late, after the moment has passed and the order is forgotten, both hurt response rates. For most physical products, a request timed a few days after estimated delivery, enough time to actually try the product but while it is still top of mind, performs best. This is exactly the kind of consistent, well timed request that is easy to design once and painful to execute manually order after order.",
+        text: "Requesting too early, before the customer has had time to use the product, or too late, after the moment has passed and the order is forgotten, both hurt response rates. Amazon does not give sellers a delivery date, so Review Booster counts from the order date and sends the request after the wait you set, a set number of days later. For most physical products, a wait that leaves enough time to try the product while it is still top of mind makes sense. This is exactly the kind of consistent request that is easy to design once and painful to execute manually order after order.",
       },
       {
         type: "h2",
@@ -928,7 +935,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The sellers whose listings accumulate reviews fastest are not doing anything Amazon would object to. They are simply more disciplined about the boring part: every order gets a request, every time, on a fixed schedule, with zero exceptions for orders that felt risky or customers who seemed unhappy. That consistency is what compounds. A seller who manually remembers to request reviews maybe 60 percent of the time is leaving 40 percent of their potential social proof on the table, and that gap widens every month the habit stays inconsistent.",
+        text: "The sellers whose listings accumulate reviews fastest are not doing anything Amazon would object to. They are simply more disciplined about the boring part: every order gets a request, every time, on a fixed schedule, with zero exceptions for orders that felt risky or customers who seemed unhappy. That consistency is what compounds. A seller who only remembers to request reviews some of the time is leaving potential social proof on the table, and that gap widens every month the habit stays inconsistent.",
       },
       {
         type: "h2",
@@ -948,7 +955,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "[Apex Black](/features/black) includes [Review Booster](/review-booster), free for life on every plan, specifically built around Amazon's compliant request framework: neutral, unconditional, automatically timed per order, with no discounts or incentives baked in anywhere. The goal is not to manufacture reviews. It is to make sure every legitimate customer who would have left one actually gets asked, without you manually tracking order dates in a spreadsheet.",
+        text: "[Apex Black](/features/black) includes [Review Booster](/review-booster), included with every plan and free to switch on until October 31, 2026. It is built around Amazon's own Request a Review: neutral and unconditional, sent for eligible Amazon.com orders after the wait you set, with no discounts or incentives baked in anywhere. The goal is not to manufacture reviews. It is to make sure every legitimate customer who would have left one actually gets asked, without you manually tracking order dates in a spreadsheet.",
       },
       {
         type: "h2",
@@ -964,11 +971,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h3",
-        text: "Is it legal to automate Amazon review requests?",
+        text: "Is it allowed under Amazon's rules to automate review requests?",
       },
       {
         type: "p",
-        text: "Yes, provided the automation only sends neutral, unconditional requests to every customer equally, matching what Amazon's own Request a Review feature does. Automation becomes a problem only when it is used to filter which customers get asked, or to attach any kind of incentive to the request.",
+        text: "Amazon allows it through its Request a Review feature, provided the automation only sends neutral, unconditional requests to every customer equally, matching what that feature does. Automation becomes a problem only when it is used to filter which customers get asked, or to attach any kind of incentive to the request.",
       },
       {
         type: "h3",
@@ -996,6 +1003,7 @@ export const posts: BlogPost[] = [
       "The real checklist for picking an Amazon FBA prep center, what a bad choice costs you, and the questions experienced sellers ask that beginners forget.",
     category: "Logistics",
     publishedAt: "2026-07-24",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -1035,7 +1043,7 @@ export const posts: BlogPost[] = [
         items: [
           "What is your average turnaround time, and what does it look like during Q4.",
           "How do you communicate discrepancies, including short shipments and damaged units, and how fast.",
-          "Do you offer real time inventory visibility, or do I have to email to check on a shipment.",
+          "Do you offer an up to date inventory dashboard, or do I have to email to check on a shipment.",
           "What is your process if Amazon rejects a shipment or requires relabeling.",
           "Can you handle bundling, if I ever need it for a multi pack listing.",
         ],
@@ -1047,7 +1055,7 @@ export const posts: BlogPost[] = [
           ["Pricing", "Itemized rate sheet, no surprise add ons", "Single vague per unit quote"],
           ["Turnaround", "1 to 2 days, holds up during Q4", "Verbal promise only, no written SLA"],
           ["Communication", "Fast, proactive on discrepancies", "Slow replies, has to be chased"],
-          ["Visibility", "Real time inventory dashboard", "Have to email to check status"],
+          ["Visibility", "Up to date inventory dashboard", "Have to email to check status"],
           ["Location", "Near your primary fulfillment region", "Far enough to add real transit time and cost"],
         ],
       },
@@ -1085,11 +1093,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "Skipping the vetting process entirely",
+        text: "Starting your comparison",
       },
       {
         type: "p",
-        text: "Evaluating prep centers cold takes real time: reference checks, sample shipments, rate comparisons. Apex members get a shortcut. The [Prep Center Network](/prep-center-network) is a vetted list of US prep centers with negotiated member pricing, so the reference checking work is already done before you ever request a quote. Once your prep flow is solid, the next lever is making sure you never miss a reorder window. See our [purchase order workflow guide](/blog/purchase-order-workflow) for how to set that up.",
+        text: "Evaluating prep centers cold takes real time: reference checks, sample shipments, rate comparisons. Apex keeps a [Prep Center Network](/prep-center-network) directory of US prep centers to start your comparison. Apex is not a formal partner of the centers listed, so still confirm rates and requirements with each one yourself. Once your prep flow is solid, the next lever is making sure you never miss a reorder window. See our [purchase order workflow guide](/blog/purchase-order-workflow) for how to set that up.",
       },
       {
         type: "h2",
@@ -1125,7 +1133,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Yes, and many established sellers do, often splitting volume across two prep centers in different regions to reduce shipping costs and add redundancy if one center has a delay. This does add coordination overhead, which is exactly why real time inventory visibility across every prep center matters more as a seller scales past a single location.",
+        text: "Yes, and many established sellers do, often splitting volume across two prep centers in different regions to reduce shipping costs and add redundancy if one center has a delay. This does add coordination overhead, which is exactly why up to date inventory visibility across every prep center matters more as a seller scales past a single location.",
       },
     ],
   },
@@ -1134,22 +1142,24 @@ export const posts: BlogPost[] = [
     title: "Amazon Wholesale Profit Margins in 2026: What's Actually Realistic",
     seoTitle: "Amazon Wholesale Profit Margins in 2026",
     description:
-      "Real benchmarks for Amazon wholesale profit margins in 2026, the margin killers nobody budgets for, and how top sellers protect margin as they scale.",
+      "Rules of thumb for Amazon wholesale profit margins in 2026, the margin killers nobody budgets for, and how top sellers protect margin as they scale.",
     category: "Profitability",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
         type: "p",
-        text: "Margin is the number that actually decides whether a wholesale business works, and it is also the number most new sellers get wrong, usually by pricing off unit cost alone and forgetting everything else that eats into it between the purchase order and the sale. Here is what is realistic in 2026, what happens when you ignore it, and how to calculate yours honestly.",
+        text: "Margin is the number that actually decides whether a wholesale business works, and it is also the number most new sellers get wrong, usually by pricing off unit cost alone and forgetting everything else that eats into it between the purchase order and the sale. Here are the rules of thumb we use in 2026, with the assumptions stated, what happens when you ignore margin, and how to calculate yours honestly. The ranges below are our own working assumptions for a typical product with ordinary fees, not measured industry data.",
       },
       {
         type: "stats",
         items: [
-          { value: "10 to 20%", label: "Typical wholesale net margin" },
-          { value: "30%+", label: "Gross margin target before fees" },
-          { value: "15 to 25%", label: "What's considered a good net margin" },
-          { value: "<8%", label: "Warning zone, a fee hike can push this negative" },
+          // Accuracy fix 2026-10-07: these were presented as benchmarks with no source. They are rules of thumb and are labelled that way.
+          { value: "10 to 20%", label: "Net margin rule of thumb for wholesale (our assumption)" },
+          { value: "30%+", label: "Gross margin we like to see before fees (rule of thumb)" },
+          { value: "15 to 25%", label: "A net margin we would call good (rule of thumb)" },
+          { value: "<8%", label: "Warning zone in our rule of thumb, a fee hike can push this negative" },
         ],
       },
       {
@@ -1166,7 +1176,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "table",
-        headers: ["Model", "Typical gross margin", "Typical net margin", "Why"],
+        headers: ["Model", "Gross margin (rule of thumb)", "Net margin (rule of thumb)", "Why"],
         rows: [
           ["Wholesale", "30%+ target", "10 to 20%", "Proven demand, thinner per unit margin, but repeatable volume"],
           ["Private Label", "40 to 60%+", "20 to 35%", "Full brand and pricing control, higher upside, higher upfront risk"],
@@ -1175,7 +1185,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "We go deeper on which model actually fits your situation in our [wholesale versus private label versus arbitrage comparison](/blog/wholesale-vs-private-label).",
+        text: "These ranges are rules of thumb that assume a typical product and ordinary fees; your own numbers will differ. We go deeper on which model actually fits your situation in our [wholesale versus private label versus arbitrage comparison](/blog/wholesale-vs-private-label).",
       },
       {
         type: "h2",
@@ -1247,7 +1257,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Gross margin measures the gap between sale price and product cost alone, before Amazon fees, shipping, and other operating costs are subtracted. Net margin subtracts everything, and it is the number that actually tells you whether the business is profitable. A product can have a healthy looking 40 percent gross margin and still be barely profitable once referral fees, fulfillment fees, storage, and software costs are counted, which is exactly the trap this guide's benchmarks are designed to help you avoid. Whenever a margin number is quoted, including by a supplier or in a sourcing tool, confirm whether it is gross or net before using it to make a purchase order decision.",
+        text: "Gross margin measures the gap between sale price and product cost alone, before Amazon fees, shipping, and other operating costs are subtracted. Net margin subtracts everything, and it is the number that actually tells you whether the business is profitable. A product can have a healthy looking 40 percent gross margin and still be barely profitable once referral fees, fulfillment fees, storage, and software costs are counted, which is exactly the trap this guide's rules of thumb are designed to help you avoid. Whenever a margin number is quoted, including by a supplier or in a sourcing tool, confirm whether it is gross or net before using it to make a purchase order decision.",
       },
       {
         type: "h2",
@@ -1259,7 +1269,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Many experienced wholesale sourcers use a minimum ROI threshold of 20 to 30 percent as a starting filter, where ROI is calculated as net profit divided by total landed cost rather than by sale price. A product below that threshold can still be worth ordering if velocity is extremely high, but it leaves very little cushion if costs rise or a price war erodes the sale price after the purchase order is already placed.",
+        text: "A common starting filter is a minimum ROI threshold of 20 to 30 percent, where ROI is calculated as net profit divided by total landed cost rather than by sale price. A product below that threshold can still be worth ordering if velocity is extremely high, but it leaves very little cushion if costs rise or a price war erodes the sale price after the purchase order is already placed.",
       },
       {
         type: "h3",
@@ -1404,7 +1414,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Not immediately, though most sellers add sourcing and margin tracking tools within the first few weeks once they realize how quickly a spreadsheet based approach breaks down across multiple suppliers and purchase orders. Starting with a free trial of a connected tool, rather than paying for multiple separate subscriptions from day one, keeps early costs down while still building the tracking habit from the start.",
+        text: "Not immediately, though most sellers add sourcing and margin tracking tools within the first few weeks once they realize how quickly a spreadsheet based approach breaks down across multiple suppliers and purchase orders. Starting with a trial of a connected tool, rather than paying for multiple separate subscriptions from day one, keeps early costs down while still building the tracking habit from the start.",
       },
     ],
   },
@@ -1416,6 +1426,7 @@ export const posts: BlogPost[] = [
       "An honest comparison of the three main ways to sell on Amazon: startup capital, time to first sale, margin, scalability, and who each model actually fits.",
     category: "Business Models",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -1428,7 +1439,7 @@ export const posts: BlogPost[] = [
         rows: [
           ["Startup capital", "Moderate ($1,000 to $3,000+)", "Higher ($3,000 to $10,000+)", "Low ($200 to $1,000)"],
           ["Time to first sale", "Fast, proven products", "Slow, product development plus launch", "Fastest, buy and list immediately"],
-          ["Typical net margin", "10 to 20%", "20 to 35%", "10 to 20%"],
+          ["Net margin (rule of thumb)", "10 to 20%", "20 to 35%", "10 to 20%"],
           ["Scalability", "High, reorder proven SKUs", "High, but each SKU is a new bet", "Limited, sourcing time caps volume"],
           ["Brand control", "None, reselling existing brands", "Full, you own the brand", "None"],
           ["Main risk", "Price wars, thin per unit margin", "Product does not sell, inventory risk", "Sourcing does not scale, IP or gating issues"],
@@ -1481,7 +1492,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Whichever model you choose, the operational backbone, meaning purchase orders, supplier relationships, inventory, and margin tracking, is the same problem to solve. That is exactly what [Apex Black, Blue, Green, and Red](/) are built around.",
+        text: "Whichever model you choose, the operational backbone, meaning purchase orders, supplier relationships, inventory, and margin tracking, is the same problem to solve. That is what Apex is built around: [Apex Black](/features/black), [Blue](/features/blue) and [Green](/features/green) are live, while [Gold](/features/gold) (the repricer, on Pro) and [Red](/features/red) (prep and shipments, by invitation) are in beta.",
       },
       {
         type: "h2",
@@ -1528,6 +1539,7 @@ export const posts: BlogPost[] = [
       "What a typical Amazon wholesale software stack costs in 2026, real pricing for the tools sellers combine, and what none of them cover that Apex does.",
     category: "Software & Tools",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
@@ -1543,12 +1555,12 @@ export const posts: BlogPost[] = [
           { label: "Jungle Scout Starter (product research)", price: 49, note: "Entry-level plan" },
           { label: "InventoryLab / Scoutify (inventory)", price: 69, note: "For sellers moving 100+ units/mo" },
           { label: "Typical 3-tool stack total", price: 106, note: "Scanner + Keepa + inventory, none of which cover POs" },
-          { label: "Apex Starter", price: 150, note: "Sourcing, PO management, financial analytics, logistics, prep network, free lifetime Review Booster, 3 free suppliers", highlight: true },
+          { label: "Apex Starter", price: 149, note: "Sourcing, purchase orders and profit analytics (Black, Blue, Green), Review Booster included, 3 US wholesale distributors when it starts and 3 more each month. No repricer. Red is by invitation.", highlight: true },
         ],
       },
       {
         type: "p",
-        text: "Prices reflect each company's publicly listed plans as of mid 2026. Pricing changes, so check current rates directly with each provider. The pattern holds regardless of the exact numbers: a stack of point tools adds up fast, and every one of them stops at research or data. None of them touch purchase orders, supplier relationships, or prep logistics.",
+        text: "Prices reflect each company's publicly listed plans when we reviewed them. Pricing changes, so check current rates directly with each provider. The pattern holds regardless of the exact numbers: a stack of point tools adds up fast, and every one of them stops at research or data. None of them touch purchase orders, supplier relationships, or prep logistics.",
       },
       {
         type: "h2",
@@ -1578,11 +1590,11 @@ export const posts: BlogPost[] = [
           ["Purchase order creation and tracking", "Not covered by any research tool", "Included, Apex Blue"],
           ["Financial P&L / margin analytics", "Partial, in some analytics tools", "Included, Apex Blue"],
           ["Supplier and vendor relationship management", "Not covered", "Included, Apex Blue"],
-          ["Real authorized distributor contacts", "Not covered", "3 free suppliers on signup"],
-          ["Inventory and restock alerts", "InventoryLab/Scoutify (separate cost)", "Included, Apex Red"],
-          ["Prep center coordination and network pricing", "Not covered", "Included, Apex Red"],
-          ["Automated, compliant review requests", "Separate review tools (extra cost)", "Included free for life, Apex Black"],
-          ["Sourcing/ungating/negotiation education", "Not covered", "Included, $300 playbook library, Apex Black"],
+          ["Distributor contacts", "Not covered", "3 US wholesale distributors when a subscription starts, 3 more each month"],
+          ["Inventory and restock suggestions", "InventoryLab/Scoutify (separate cost)", "Included, Apex Blue"],
+          ["Prep center coordination", "Not covered", "Apex Red (beta, by invitation)"],
+          ["Automated, compliant review requests", "Separate review tools (extra cost)", "Included with every plan, Apex Black (free to switch on until October 31, 2026)"],
+          ["Sourcing/ungating/negotiation education", "Not covered", "Included, playbook library, Apex Black"],
           ["Keyword research / PPC / listing optimization", "Helium 10, Jungle Scout", "Not Apex's focus, pair with those if needed"],
         ],
       },
@@ -1592,13 +1604,13 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Wholesale is an operations business as much as a sourcing business. The parts that actually break a scaling seller, meaning untracked purchase orders, no visibility into landed cost, prep centers found cold with no vetting, reviews forgotten because nobody remembered to request them, are not the parts any research tool was built to solve, because research tools are built for finding products, not running the business around them. Apex Black, Blue, Green, and Red exist specifically to cover that operational backbone in one connected suite, at one price, instead of a stack of point tools that each solve one slice of the problem and leave the rest to a spreadsheet.",
+        text: "Wholesale is an operations business as much as a sourcing business. The parts that actually break a scaling seller, meaning untracked purchase orders, no visibility into landed cost, prep centers found cold with no vetting, reviews forgotten because nobody remembered to request them, are not the parts any research tool was built to solve, because research tools are built for finding products, not running the business around them. Apex exists to cover that operational backbone in one connected place, with five modules: Black, Blue, Green, Gold (beta, repricer on Pro) and Red (beta, by invitation), instead of a stack of point tools that each solve one slice of the problem and leave the rest to a spreadsheet.",
       },
       {
         type: "image",
         src: apexSuiteOverviewImage,
         alt: "Apex dashboard Tools menu showing Apex Black, Blue, and Green modules",
-        caption: "One suite, one login, one price instead of a stack of subscriptions",
+        caption: "One login instead of a stack of subscriptions",
       },
       {
         type: "p",
@@ -1622,7 +1634,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "A reasonable range for a wholesale seller running real volume is $100 to $300 a month, depending on whether that spend covers a stack of separate point tools or one connected suite. The number itself matters less than what it actually buys, since a $300 stack that still requires manual reconciliation between tools delivers less real value than a $150 suite that eliminates that reconciliation entirely.",
+        text: "A reasonable range for a wholesale seller running real volume is $100 to $300 a month, depending on whether that spend covers a stack of separate point tools or one connected suite. The number itself matters less than what it actually buys, since a $300 stack that still requires manual reconciliation between tools delivers less real value than a $149 plan that removes much of that reconciliation.",
       },
       {
         type: "h3",
@@ -1644,12 +1656,13 @@ export const posts: BlogPost[] = [
   },
   {
     slug: "why-apex-applications",
-    title: "Why We Built Apex Applications: One Suite Instead of Five Subscriptions",
-    seoTitle: "Why We Built Apex: One Suite, Not Five Subscriptions",
+    title: "Why We Built Apex Applications: One Place Instead of Five Subscriptions",
+    seoTitle: "Why We Built Apex: One Place, Not Five Subscriptions",
     description:
       "The problem with the Amazon seller software market, what Apex Applications includes, what we deliberately do not try to be, and the bet we are making.",
     category: "Company",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "10 min read",
     content: [
       {
@@ -1672,20 +1685,21 @@ export const posts: BlogPost[] = [
         type: "image",
         src: apexSuiteOverviewImage,
         alt: "Apex dashboard Tools menu showing Apex Black, Blue, and Green modules",
-        caption: "Apex Black, Blue, Green, and Red: one login, one suite",
+        caption: "The Apex Tools menu: Black, Blue and Green, one login",
       },
       {
         type: "ul",
         items: [
-          "Apex Black: your dashboard, free lifetime Review Booster, and Apex University's $300 playbook library covering sourcing, negotiation, and ungating SOPs.",
+          "Apex Black: your dashboard, Review Booster (included with every plan, free to switch on until October 31, 2026), and Apex University's playbook library covering sourcing, negotiation, and ungating SOPs.",
           "Apex Blue: vendor and supplier management, purchase order creation and tracking, financial P&L analytics, and Opex tracking.",
-          "Apex Green: Master Catalog for merging supplier price lists, and a UPC Scanner for instant landed cost and margin checks.",
-          "Apex Red: shipments, warehouse and inventory management, and coordination with your prep centers.",
+          "Apex Green: Master Catalog for merging supplier price lists, and a UPC Scanner for landed cost and margin checks.",
+          "Apex Gold (beta): rule-based repricing. It is included on Pro for every listing, on 5 listings with Plus and 1 with Beginner. Starter does not include it.",
+          "Apex Red (beta, by invitation): shipments, warehouse and inventory management, and coordination with your prep centers.",
         ],
       },
       {
         type: "p",
-        text: "Every new account also starts with [3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly), the single hardest thing for a brand new seller to get on their own, and a 7 day free trial before any card is charged.",
+        text: "[Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once. It is the hardest thing for a brand new seller to get on their own. Every plan also starts with a 7 day trial with a card on file, and nothing is charged until day 8.",
       },
       {
         type: "h2",
@@ -1702,10 +1716,10 @@ export const posts: BlogPost[] = [
       {
         type: "stats",
         items: [
-          { value: "7 days", label: "Free trial before your card is charged" },
-          { value: "3", label: "Free authorized suppliers on signup" },
-          { value: "$300", label: "Playbook library value, included free" },
-          { value: "$0", label: "Cost of Review Booster, free for life" },
+          { value: "7 days", label: "Trial with a card on file; nothing is charged until day 8" },
+          { value: "3", label: "US wholesale distributors open when a subscription starts, 3 more each month" },
+          { value: "Included", label: "Apex University playbook library, with every account" },
+          { value: "Oct 31", label: "Review Booster is free to switch on until October 31, 2026" },
         ],
       },
       {
@@ -1722,7 +1736,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Apex works best for sellers running or seriously starting an Amazon FBA wholesale business, meaning sourcing existing, proven products from authorized brands and distributors rather than developing a private label brand from scratch. It fits sellers who are past the stage of wondering whether Amazon wholesale is a real business model and are ready to treat sourcing, purchasing, and inventory as a system rather than a series of one off decisions. New sellers get the fastest possible start with the free suppliers and playbook library. Established sellers running multiple suppliers get the operational visibility that a spreadsheet stopped providing months ago.",
+        text: "Apex works best for sellers running or seriously starting an Amazon FBA wholesale business, meaning sourcing existing, proven products from authorized brands and distributors rather than developing a private label brand from scratch. It fits sellers who are past the stage of wondering whether Amazon wholesale is a real business model and are ready to treat sourcing, purchasing, and inventory as a system rather than a series of one off decisions. New sellers get a faster start with the distributors the Vault opens and the playbook library. Established sellers running multiple suppliers get the operational visibility that a spreadsheet stopped providing months ago.",
       },
       {
         type: "h2",
@@ -1734,7 +1748,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Yes, and it is arguably where the value is highest for a beginner specifically, since the 3 free authorized distributors and the $300 playbook library solve the two hardest early problems, finding a first supplier and knowing what to actually do, before a new seller has spent weeks figuring either out alone.",
+        text: "Yes, and it is arguably where the value is highest for a beginner specifically, since the first 3 US wholesale distributors a subscription opens and the playbook library help with the two hardest early problems, finding a first supplier and knowing what to actually do, before a new seller has spent weeks figuring either out alone.",
       },
       {
         type: "h3",
@@ -1750,7 +1764,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Your card is charged for the plan you selected at signup, either the Starter Plan or the Pro Plan, and billing continues on a monthly or annual cycle depending on which you chose. You can cancel anytime before the trial ends with no charge, and cancel anytime afterward as well.",
+        text: "Every plan starts with a 7 day trial with a card on file, and nothing is charged until day 8. Your card is then charged for the plan you chose: Beginner is $49.99 a month (monthly only), Starter is $149, Plus is $199 and Pro is $299 a month, and the repricer is on Pro. Billing continues on the cycle you picked. You can cancel any time before the trial ends with no charge, and cancel any time afterward as well.",
       },
     ],
   },
@@ -1762,12 +1776,12 @@ export const posts: BlogPost[] = [
       "Amazon FBA fees for 2026 with real numbers: referral rates, fulfillment fees by size tier, inbound placement, storage and holiday peak fees. Free calculator.",
     category: "Operations",
     publishedAt: "2026-07-27",
-    updatedAt: "2026-10-04",
+    updatedAt: "2026-10-07",
     readingTime: "14 min read",
     content: [
       {
         type: "p",
-        text: "Amazon FBA fees in 2026 come in a stack: a referral fee on every sale (15 percent in most categories), a fulfillment fee set by the product's size tier, weight and price, a 3.5 percent fuel and logistics surcharge on that fulfillment fee, an inbound placement fee if you send stock to fewer warehouses than Amazon would choose, and monthly storage. On a typical $25 wholesale product those charges take roughly 35 to 40 percent of the sale price before you have paid for the product itself.",
+        text: "Amazon FBA fees in 2026 come in a stack: a referral fee on every sale (15 percent in most categories), a fulfillment fee set by the product's size tier, weight and price, a 3.5 percent fuel and logistics surcharge on that fulfillment fee, an inbound placement fee if you send stock to fewer warehouses than Amazon would choose, and monthly storage. In the $25 worked example below those charges take about 38 to 39 percent of the sale price before you have paid for the product itself. The share varies by product.",
       },
       {
         type: "p",
@@ -1964,7 +1978,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Most new sellers price a product by looking at unit cost and the current sale price and assuming the gap between them is profit. It is not. Referral and fulfillment fees alone routinely take 25 to 40 percent of the sale price before storage or shipping is considered, and a seller who has not internalized that number will consistently overestimate how healthy a product is. It is the most common reason a business that looks profitable on the Seller Central dashboard is barely breaking even once every real cost is counted.",
+        text: "Most new sellers price a product by looking at unit cost and the current sale price and assuming the gap between them is profit. It is not. Referral and fulfillment fees alone can take a large share of the sale price before storage or shipping is considered (the share varies by product, as the worked example above shows), and a seller who has not worked out that number will consistently overestimate how healthy a product is. It is the most common reason a business that looks profitable on the Seller Central dashboard is barely breaking even once every real cost is counted.",
       },
       {
         type: "h2",
@@ -1994,7 +2008,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "For a typical standard-size wholesale product priced between $10 and $50, expect a referral fee of 8 to 15 percent plus a fulfillment fee of about $3.30 to $7 depending on size and weight, plus a 3.5 percent surcharge on that fulfillment fee, plus placement and storage. Together that usually comes to 30 to 40 percent of the sale price. The Professional selling plan adds $39.99 a month.",
+        text: "For a typical standard-size wholesale product priced between $10 and $50, expect a referral fee of 8 to 15 percent plus a fulfillment fee of about $3.30 to $7 depending on size and weight, plus a 3.5 percent surcharge on that fulfillment fee, plus placement and storage. Together that came to about 38 to 39 percent of the sale price in the $25 worked example above, and the share varies by product. The Professional selling plan adds $39.99 a month.",
       },
       {
         type: "h3",
@@ -2002,7 +2016,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The referral fee alone is 15 percent in most categories (8 percent in some, and tiered in grocery, beauty, baby and clothing). Add the fulfillment fee and the total Amazon share is commonly 30 to 40 percent of a $15 to $30 product, falling as a share of price on more expensive items.",
+        text: "The referral fee alone is 15 percent in most categories (8 percent in some, and tiered in grocery, beauty, baby and clothing). Add the fulfillment fee and the total Amazon share varies by product. In the $25 worked example above it is about 38 to 39 percent; the [Apex FBA calculator](/tools/fba-calculator) shows the figure for your own product.",
       },
       {
         type: "h3",
@@ -2046,6 +2060,7 @@ export const posts: BlogPost[] = [
       "Ten real ways to find authorized Amazon wholesale distributors in 2026, ranked by how fast they work, and what separates sellers with a real supplier base.",
     category: "Sourcing",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
@@ -2058,7 +2073,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "A single distributor often carries dozens of brands, which means one relationship can unlock far more products than chasing individual brands one at a time. This is the fastest method available, which is exactly why every [new Apex account starts with 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly) rather than a list of brand contacts to cold email.",
+        text: "A single distributor often carries dozens of brands, which means one relationship can unlock far more products than chasing individual brands one at a time. This is the fastest method available, which is why Apex opens distributors for you rather than leaving you with a list of brand contacts to cold email. [Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once.",
       },
       {
         type: "h2",
@@ -2138,7 +2153,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The sellers who scale past their first year almost always have three to six active supplier relationships, not one. A single supplier relationship is fragile: a price increase, a stock shortage, or a change in their business terms can stall your entire sourcing pipeline overnight. Sellers who deliberately build multiple relationships, even if they only order from one or two regularly, have a fallback the moment something changes. Building that base does not happen by accident. It happens because a seller treats supplier development as an ongoing habit, not a task that ends once the first order ships.",
+        text: "Sellers who scale past their first year often have several active supplier relationships, not one. A single supplier relationship is fragile: a price increase, a stock shortage, or a change in their business terms can stall your entire sourcing pipeline overnight. Sellers who deliberately build multiple relationships, even if they only order from one or two regularly, have a fallback the moment something changes. Building that base does not happen by accident. It happens because a seller treats supplier development as an ongoing habit, not a task that ends once the first order ships.",
       },
       {
         type: "p",
@@ -2196,6 +2211,7 @@ export const posts: BlogPost[] = [
       "The real causes of Amazon account suspension for wholesale sellers, what happens during a suspension, and the habits that keep you off Amazon's radar.",
     category: "Compliance",
     publishedAt: "2026-07-27",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -2230,7 +2246,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The overwhelming majority of wholesale suspensions trace back to one root cause: inventory that cannot be cleanly proven to have come from an authorized source. This is exactly why the invoice standards covered in our [ungating guide](/blog/amazon-ungating-guide) matter beyond just getting approved to sell a category. A seller who only sources from confirmed authorized distributors, and keeps every invoice organized and accessible, can respond to an inauthenticity complaint within hours with documentation that resolves it quickly. A seller who cannot produce a clean invoice for every unit in a shipment is in a far weaker position, regardless of whether the product itself is genuine.",
+        text: "A common root cause of wholesale suspensions is inventory that cannot be cleanly proven to have come from an authorized source. This is exactly why the invoice standards covered in our [ungating guide](/blog/amazon-ungating-guide) matter beyond just getting approved to sell a category. A seller who only sources from confirmed authorized distributors, and keeps every invoice organized and accessible, can respond to an inauthenticity complaint within hours with documentation that resolves it quickly. A seller who cannot produce a clean invoice for every unit in a shipment is in a far weaker position, regardless of whether the product itself is genuine.",
       },
       {
         type: "h2",
@@ -2534,6 +2550,7 @@ export const posts: BlogPost[] = [
       "Online arbitrage and retail arbitrage behave very differently as Amazon businesses. Compare sourcing, time, scalability and risk, and which fits you.",
     category: "Business Models",
     publishedAt: "2026-07-28",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
@@ -2543,8 +2560,8 @@ export const posts: BlogPost[] = [
       {
         type: "stats",
         items: [
-          { value: "$100 to $500", label: "Typical starting budget for either model" },
-          { value: "10 to 20%", label: "Typical net margin after fees" },
+          { value: "$100 to $500", label: "Common starting budget for either model" },
+          { value: "10 to 20%", label: "Net margin rule of thumb after fees (an assumption, not a survey)" },
           { value: "Hours/week", label: "The real constraint on both models at scale" },
         ],
       },
@@ -2614,7 +2631,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The core limitation of both arbitrage models is that every unit sold has to be re-sourced individually, with no relationship guaranteeing the next batch. Wholesale flips this entirely. A single authorized distributor relationship can supply the same proven product every month, with predictable pricing, at a scale that would take dozens of arbitrage sourcing trips to match. This is exactly why our [guide to why wholesale wins for long term growth](/blog/why-wholesale-wins-long-term) goes deeper into the specific mechanics that let wholesale sellers build a business that compounds instead of one that requires constant manual restocking from scratch. If you are ready to make that jump, every [new Apex account starts with 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly), removing the single hardest part of that transition.",
+        text: "The core limitation of both arbitrage models is that every unit sold has to be re-sourced individually, with no relationship guaranteeing the next batch. Wholesale flips this entirely. A single authorized distributor relationship can supply the same proven product every month, with predictable pricing, at a scale that would take dozens of arbitrage sourcing trips to match. This is exactly why our [guide to why wholesale wins for long term growth](/blog/why-wholesale-wins-long-term) goes deeper into the specific mechanics that let wholesale sellers build a business that compounds instead of one that requires constant manual restocking from scratch. If you are ready to make that jump, Apex helps with the hardest part of that transition. [Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once.",
       },
       {
         type: "h2",
@@ -2662,6 +2679,7 @@ export const posts: BlogPost[] = [
       "Arbitrage and private label both have a role, but wholesale is the Amazon business model built to compound. Here is why, and what makes it repeatable.",
     category: "Business Models",
     publishedAt: "2026-07-29",
+    updatedAt: "2026-10-07",
     readingTime: "14 min read",
     content: [
       {
@@ -2732,7 +2750,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Every stage of that path depends on the operational backbone actually holding up as volume increases, which is exactly what [Apex Black, Blue, Green, and Red](/) are built to support, from the first free authorized supplier on signup through purchase order tracking at real scale.",
+        text: "Every stage of that path depends on the operational backbone actually holding up as volume increases, which is what Apex is built to support: [Apex Black](/features/black), [Blue](/features/blue) and [Green](/features/green), plus [Gold](/features/gold) (beta, repricer on Pro) and [Red](/features/red) (beta, by invitation), from the first distributors a subscription opens through purchase order tracking at real scale.",
       },
       {
         type: "h2",
@@ -2760,7 +2778,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Most sellers start to feel the compounding effect once they have two or three proven, reorderable SKUs with established suppliers, which for an organized seller following a real process typically happens within the first three to six months.",
+        text: "Most sellers start to feel the compounding effect once they have two or three proven, reorderable SKUs with established suppliers, which for an organized seller following a real process can happen within the first few months.",
       },
     ],
   },
@@ -2772,6 +2790,7 @@ export const posts: BlogPost[] = [
       "An honest look at the operational challenges that trip up new and scaling Amazon wholesale sellers, and how a connected system solves each one.",
     category: "Operations",
     publishedAt: "2026-07-30",
+    updatedAt: "2026-10-07",
     readingTime: "14 min read",
     content: [
       {
@@ -2784,7 +2803,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "This is the single biggest early obstacle. Cold emailing brands rarely works, distributor directories are hit or miss on quality, and a new seller has no track record to point to when asking for wholesale pricing. Our [complete guide to finding wholesale suppliers](/blog/find-wholesale-suppliers) covers ten real methods, but the fastest fix is starting with a distributor relationship that already exists rather than building one from nothing, which is exactly why every [new Apex account includes 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly) on signup.",
+        text: "This is the single biggest early obstacle. Cold emailing brands rarely works, distributor directories are hit or miss on quality, and a new seller has no track record to point to when asking for wholesale pricing. Our [complete guide to finding wholesale suppliers](/blog/find-wholesale-suppliers) covers ten real methods, but the fastest fix is starting with a distributor relationship that already exists rather than building one from nothing, which is what Apex gives you a head start on. [Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once.",
       },
       {
         type: "h2",
@@ -2792,7 +2811,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Amazon rejects roughly 70 percent of first time DIY ungating attempts, almost always over invoice formatting issues rather than the product itself being ineligible. This is a documentation problem far more than a product problem, and it is entirely solvable with the right invoice standards covered in our [full ungating guide](/blog/amazon-ungating-guide).",
+        text: "Invoice problems are a common reason applications are rejected, rather than the product itself being ineligible. This is often a documentation problem more than a product problem, and it is entirely solvable with the right invoice standards covered in our [full ungating guide](/blog/amazon-ungating-guide).",
       },
       {
         type: "h2",
@@ -2800,7 +2819,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Referral fees, fulfillment fees, prep costs, and inbound shipping routinely consume 20 to 35 percent of the sale price before a product's real margin becomes clear, and sellers who price off unit cost alone consistently overestimate profitability. This is covered in depth in our [profit margins guide](/blog/wholesale-profit-margins) and our [FBA fees breakdown](/blog/amazon-fba-fees-explained), and it is solved operationally by calculating landed cost automatically at the point of sourcing rather than manually after the fact.",
+        text: "Referral fees, fulfillment fees, prep costs, and inbound shipping can consume a large share of the sale price before a product's real margin becomes clear (the share varies by product), and sellers who price off unit cost alone consistently overestimate profitability. This is covered in depth in our [profit margins guide](/blog/wholesale-profit-margins) and our [FBA fees breakdown](/blog/amazon-fba-fees-explained), and it is solved operationally by calculating landed cost automatically at the point of sourcing rather than manually after the fact.",
       },
       {
         type: "image",
@@ -2822,13 +2841,13 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "A slow or unreliable prep center turns a proven, fast selling SKU into a stockout at the exact moment demand is highest, and the lost sales velocity can suppress organic ranking for weeks after the inventory finally lands. Choosing a prep center correctly the first time, covered in our [prep center evaluation guide](/blog/choosing-a-prep-center), and having real time inventory visibility across every location, prevents this from becoming a recurring problem.",
+        text: "A slow or unreliable prep center turns a proven, fast selling SKU into a stockout at the exact moment demand is highest, and the lost sales velocity can suppress organic ranking for weeks after the inventory finally lands. Choosing a prep center correctly the first time, covered in our [prep center evaluation guide](/blog/choosing-a-prep-center), and having up to date inventory visibility across every location, prevents this from becoming a recurring problem.",
       },
       {
         type: "image",
         src: inventoryRestockingImage.url,
-        alt: "Apex inventory analytics showing stock value and restock alerts",
-        caption: "Real time inventory visibility across every prep center, so a reorder never happens too late",
+        alt: "Apex inventory analytics showing stock value and restock suggestions",
+        caption: "Inventory and restock suggestions, so a reorder does not happen too late",
       },
       {
         type: "h2",
@@ -2836,7 +2855,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Inauthenticity complaints, review manipulation flags, and gated category violations are the leading causes of wholesale account suspensions, and nearly all of them trace back to sourcing documentation that cannot be quickly produced when Amazon asks for it. Our [account suspension prevention checklist](/blog/prevent-amazon-suspension) covers the specific habits that keep experienced sellers off Amazon's radar entirely.",
+        text: "Inauthenticity complaints, review manipulation flags, and gated category violations are common causes of wholesale account suspensions, and many of them trace back to sourcing documentation that cannot be quickly produced when Amazon asks for it. Our [account suspension prevention checklist](/blog/prevent-amazon-suspension) covers the specific habits that keep experienced sellers off Amazon's radar entirely.",
       },
       {
         type: "h2",
@@ -2852,7 +2871,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Most sellers end up stacking three to five separate subscriptions for sourcing, analytics, and inventory, none of which share data with each other, which means every handoff between tools is a place where a number gets copied wrong or a shipment gets forgotten. Our [full cost breakdown of stacking Amazon seller software](/blog/cost-of-seller-software) covers exactly what this costs and what a connected alternative looks like.",
+        text: "Many sellers end up stacking several separate subscriptions for sourcing, analytics, and inventory, none of which share data with each other, which means every handoff between tools is a place where a number gets copied wrong or a shipment gets forgotten. Our [full cost breakdown of stacking Amazon seller software](/blog/cost-of-seller-software) covers exactly what this costs and what a connected alternative looks like.",
       },
       {
         type: "h2",
@@ -2860,7 +2879,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Every one of these challenges is, at its core, an information visibility problem. A seller cannot fix a margin they cannot see, cannot reorder a product they are not tracking, cannot prevent a suspension they have no documentation for, and cannot request reviews consistently without a system reminding them. None of these challenges require a smarter seller to solve. They require a connected system that surfaces the right information at the right moment, which is precisely what [Apex Black, Blue, Green, and Red](/) exist to provide as one suite instead of five disconnected point tools.",
+        text: "Every one of these challenges is, at its core, an information visibility problem. A seller cannot fix a margin they cannot see, cannot reorder a product they are not tracking, cannot prevent a suspension they have no documentation for, and cannot request reviews consistently without a system reminding them. None of these challenges require a smarter seller to solve. They require a connected system that surfaces the right information at the right moment, which is what Apex is built to provide in one place instead of five disconnected point tools: [Apex Black](/features/black), [Blue](/features/blue), [Green](/features/green), [Gold](/features/gold) (beta, repricer on Pro) and [Red](/features/red) (beta, by invitation).",
       },
       {
         type: "h2",
@@ -2897,9 +2916,10 @@ export const posts: BlogPost[] = [
     title: "Everything You Get When You Start Your Apex Trial: Tools, Automation, Prep Network, Suppliers, and Support",
     seoTitle: "Everything Included in Your Apex Trial",
     description:
-      "An honest inventory of what an Apex Applications account includes: software suite, automation, prep center network, free suppliers, education and support.",
+      "An honest inventory of what an Apex Applications account includes: the software, review requests, a prep center directory, wholesale distributors, education and onboarding help.",
     category: "Company",
     publishedAt: "2026-07-31",
+    updatedAt: "2026-10-07",
     readingTime: "13 min read",
     content: [
       {
@@ -2910,15 +2930,15 @@ export const posts: BlogPost[] = [
         type: "image",
         src: apexSuiteOverviewImage,
         alt: "Apex dashboard Tools menu showing Apex Black, Blue, and Green modules",
-        caption: "The full Apex Tools menu, everything below in one place",
+        caption: "The Apex Tools menu",
       },
       {
         type: "h2",
-        text: "The software: Apex Black, Blue, Green, and Red",
+        text: "The software: five modules",
       },
       {
         type: "p",
-        text: "Apex Black is your dashboard and home base, showing your Amazon balance, sales, and profit at a glance. Apex Blue covers the financial and relationship side of the business: vendor and supplier management, purchase order creation and tracking, full P&L analytics, and Opex tracking for recurring expenses. Apex Green handles sourcing and product research, including a Master Catalog that merges every supplier's price list into one searchable database, and a UPC Scanner that shows landed cost, ROI, and margin instantly. Apex Red covers logistics, including shipments, warehouse and inventory management, and coordination with your prep centers.",
+        text: "Apex Black is your dashboard and home base, showing your Amazon balance, sales, and profit at a glance. Apex Blue covers the financial and relationship side of the business: vendor and supplier management, purchase order creation and tracking, full P&L analytics, and Opex tracking for recurring expenses. Apex Green handles sourcing and product research, including a Master Catalog that merges every supplier's price list into one searchable database, and a UPC Scanner that shows landed cost, ROI, and margin for each product. Apex Gold (beta) is a rule-based repricer. It is included on Pro for every listing, on 5 listings with Plus and 1 with Beginner, and Starter does not include it. Apex Red (beta, opened by invitation) covers shipments, warehouses, inventory at prep centers, prep chat and prep billing. Sellers connected to a prep center approved on Apex get it free.",
       },
       {
         type: "image",
@@ -2932,13 +2952,13 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Review Booster runs neutral, compliant review requests automatically on every order, timed for the highest response rate, without you tracking order dates by hand. Purchase order and Opex tooling calculate real landed cost margin automatically as soon as an order is entered, rather than requiring a manual spreadsheet formula rebuilt for every product. Restock alerts flag inventory that needs a reorder before it actually runs out, based on real sales velocity rather than a guess.",
+        text: "Review Booster sends Amazon's own Request a Review for eligible Amazon.com orders after the wait you set, without you tracking order dates by hand. Purchase order and Opex tooling calculate real landed cost margin automatically as soon as an order is entered, rather than requiring a manual spreadsheet formula rebuilt for every product. Restock suggestions in Apex Blue point to inventory that may need a reorder, based on your stock, your sales velocity and the cover and lead time you set.",
       },
       {
         type: "image",
         src: reviewBoosterImage.url,
         alt: "Apex Review Booster automation dashboard",
-        caption: "Review Booster: free for life, fully automated, and built around Amazon's own compliant framework",
+        caption: "Review Booster: included with every plan, free to switch on until October 31, 2026, and built around Amazon's own Request a Review",
       },
       {
         type: "h2",
@@ -2946,15 +2966,15 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Evaluating prep centers cold takes real time, including reference checks, sample shipments, and rate comparisons, all covered in our [prep center evaluation guide](/blog/choosing-a-prep-center). The [Prep Center Network](/prep-center-network) is a vetted list of US prep centers with negotiated member pricing, so that reference checking work is already done before you ever request a quote.",
+        text: "Evaluating prep centers cold takes real time, including reference checks, sample shipments, and rate comparisons, all covered in our [prep center evaluation guide](/blog/choosing-a-prep-center). Apex keeps a [Prep Center Network](/prep-center-network) directory of US prep centers to start your comparison. Apex is not a formal partner of the centers listed, so confirm rates and requirements with each one yourself.",
       },
       {
         type: "h2",
-        text: "The supplier directory and free distributors",
+        text: "The Distributor Vault",
       },
       {
         type: "p",
-        text: "Every [new account starts with 3 free, vetted, authorized US wholesale distributors](/auth?mode=signup&plan=starter&period=monthly), removing the single hardest early obstacle for a brand new seller. Annual members also get access to the Distributor Vault, a searchable directory of vetted wholesale distributors with contact information organized by category, so finding a second, third, or tenth supplier does not require starting from zero every time.",
+        text: "[Every subscription, trial included, opens 3 US wholesale distributors from the Distributor Vault when it starts and 3 more each month](/auth?mode=signup&plan=starter&period=monthly). Quarterly billing opens 90 a quarter, and an annual plan opens the whole Vault at once. The Distributor Vault is a searchable directory of US wholesale distributors with contact information organized by category, so finding a second, third, or tenth supplier does not require starting from zero every time.",
       },
       {
         type: "h2",
@@ -2962,13 +2982,13 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Apex University includes a complete library of tactical playbooks, a $300 value included free with every account, covering the wholesale blueprint, distributor outreach scripts, a negotiation guide, a Keepa reading playbook, a prep center guide, sales scripts, a brand direct sourcing playbook, and standard operating procedures for authorization letters, cease and desist responses, and ungating.",
+        text: "Apex University includes a complete library of tactical playbooks, included with every account, covering the wholesale blueprint, distributor outreach scripts, a negotiation guide, a Keepa reading playbook, a prep center guide, sales scripts, a brand direct sourcing playbook, and standard operating procedures for authorization letters, cease and desist responses, and ungating.",
       },
       {
         type: "image",
         src: resourceLibraryImage.url,
         alt: "Apex University Complete Playbook Library with 10 tactical playbooks for Amazon wholesale",
-        caption: "Apex University's Playbook Library: 10 tactical playbooks worth $300, included with every account",
+        caption: "Apex University's Playbook Library: 10 tactical playbooks, included with every account",
       },
       {
         type: "h2",
@@ -2976,7 +2996,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Every account includes white glove onboarding, roughly 160 minutes of Amazon education combined with full software installation and setup, and direct access to a dedicated account manager, a real person who understands your workflow rather than a generic support queue. This is the part of the platform that turns a software subscription into an actual support system, since a new seller is rarely stuck figuring things out alone.",
+        text: "Every account includes onboarding help from the Apex team, along with Apex University's Amazon education. If you get stuck, you can reach the team through support, so a new seller is rarely figuring things out alone.",
       },
       {
         type: "h2",
@@ -2984,7 +3004,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Stitched together piecemeal, the equivalent of the above would mean a separate sourcing tool, a separate review automation tool, cold outreach to find your own suppliers with no vetting, no prep center reference checking, no structured education, and no dedicated support contact. Our [breakdown of what a typical Amazon seller software stack actually costs](/blog/cost-of-seller-software) covers the real dollar comparison, but the deeper cost is the time spent stitching disconnected pieces together instead of running the business.",
+        text: "Stitched together piecemeal, the equivalent of the above would mean a separate sourcing tool, a separate review automation tool, cold outreach to find your own suppliers, no prep center directory, no structured education, and no onboarding help. Our [breakdown of what a typical Amazon seller software stack actually costs](/blog/cost-of-seller-software) covers the real dollar comparison, but the deeper cost is the time spent stitching disconnected pieces together instead of running the business.",
       },
       {
         type: "h2",
@@ -2996,23 +3016,23 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The 7 day free trial gives full access to the plan you selected, Starter or Pro, so you can evaluate the complete suite, the free suppliers, and the playbook library before your card is charged.",
+        text: "Every plan starts with a 7 day trial with a card on file, and nothing is charged until day 8. The trial covers the plan you pick, so what you can use depends on it. For example, the repricer is on Pro (5 listings on Plus, 1 on Beginner) and Apex Red is opened by invitation. The distributors open when the trial starts, and the playbook library comes with the account.",
       },
       {
         type: "h3",
-        text: "Is the dedicated account manager a real person?",
+        text: "Who helps me get set up?",
       },
       {
         type: "p",
-        text: "Yes. It is direct access to a specific person who understands your account and workflow, not a rotating general support queue.",
+        text: "The Apex team. Every account includes onboarding help from the team, and you can reach support if you get stuck.",
       },
       {
         type: "h3",
-        text: "What is the difference between the Starter Plan and Pro Plan inclusions?",
+        text: "What is the difference between the plans?",
       },
       {
         type: "p",
-        text: "Both plans include the core suite, the free suppliers, and the playbook library. Pro includes higher usage limits and additional seats compared to Starter. Full details are on the [pricing page](/pricing).",
+        text: "Beginner is $49.99 a month (monthly only, for sellers under $5,000 a month in Amazon sales), Starter is $149, Plus is $199 and Pro is $299 a month, and the repricer is on Pro. Limits differ by plan, and every plan starts with a 7 day trial with a card on file. Full details are on the [pricing page](/pricing).",
       },
     ],
   },
@@ -3128,6 +3148,7 @@ export const posts: BlogPost[] = [
       "A calm, step by step plan for the first 24 hours after an Amazon seller account suspension, from reading the notification to writing a plan of action.",
     category: "Compliance",
     publishedAt: "2026-08-02",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -3188,7 +3209,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "The overwhelming majority of wholesale related suspensions come down to whether a seller can quickly prove authorized, traceable sourcing for the flagged inventory. A seller who has organized every supplier invoice from day one, following the standards covered in our [ungating guide](/blog/amazon-ungating-guide), can typically produce this proof within minutes. A seller without organized records has to first track down the relevant paperwork before the appeal can even be written, which is often the single biggest reason one seller's case resolves in days and another's drags on for weeks over what was, at its core, the same type of issue.",
+        text: "For many wholesale related suspensions, the deciding question is whether a seller can quickly prove authorized, traceable sourcing for the flagged inventory. A seller who has organized every supplier invoice from day one, following the standards covered in our [ungating guide](/blog/amazon-ungating-guide), can typically produce this proof within minutes. A seller without organized records has to first track down the relevant paperwork before the appeal can even be written, which is often the single biggest reason one seller's case resolves in days and another's drags on for weeks over what was, at its core, the same type of issue.",
       },
       {
         type: "h2",
@@ -3228,6 +3249,7 @@ export const posts: BlogPost[] = [
       "A practical checklist of habits that keep an Amazon wholesale account off Amazon's radar: sourcing documentation, review compliance and account health.",
     category: "Compliance",
     publishedAt: "2026-08-03",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -3294,7 +3316,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Every habit on this checklist is simple individually. The reason sellers still get suspended is that none of these habits survive being manually remembered across dozens of suppliers, hundreds of SKUs, and thousands of orders without a system enforcing them. A seller who keeps invoices in a folder they occasionally forget to update, or who requests reviews manually most of the time but not always, is not protected by knowing the right habits. They are protected only once those habits are built into the actual tools running the business, which is exactly the gap [Apex Black, Blue, Green, and Red](/) are built to close.",
+        text: "Every habit on this checklist is simple individually. The reason sellers still get suspended is that none of these habits survive being manually remembered across dozens of suppliers, hundreds of SKUs, and thousands of orders without a system enforcing them. A seller who keeps invoices in a folder they occasionally forget to update, or who requests reviews manually most of the time but not always, is not protected by knowing the right habits. They are protected only once those habits are built into the actual tools running the business, which is the gap Apex is built to close with its five modules: [Apex Black](/features/black), [Blue](/features/blue), [Green](/features/green), [Gold](/features/gold) (beta, repricer on Pro) and [Red](/features/red) (beta, by invitation).",
       },
       {
         type: "h2",
@@ -3306,7 +3328,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Maintaining organized, easily retrievable invoices proving authorized sourcing for every product. The majority of wholesale related suspensions come down to inauthenticity concerns that this single habit resolves quickly when they arise.",
+        text: "Maintaining organized, easily retrievable invoices proving authorized sourcing for every product. Inauthenticity concerns are a common cause of wholesale related suspensions, and this single habit resolves them quickly when they arise.",
       },
       {
         type: "h3",
@@ -3334,11 +3356,12 @@ export const posts: BlogPost[] = [
       "Amazon wholesale can be run solo, but the sellers who scale fastest rarely build alone. Why support, mentorship and a real network change the trajectory.",
     category: "Growth",
     publishedAt: "2026-08-04",
+    updatedAt: "2026-10-07",
     readingTime: "10 min read",
     content: [
       {
         type: "p",
-        text: "It is possible to build an Amazon wholesale business entirely alone, researching every question from scratch and troubleshooting every problem in isolation. It is also, consistently, the slower path. Sellers who build real support around themselves, whether that is a mentor, a dedicated account manager, or a network of other sellers facing the same decisions, tend to move through the early, highest failure risk stage of the business meaningfully faster than sellers going it entirely alone.",
+        text: "It is possible to build an Amazon wholesale business entirely alone, researching every question from scratch and troubleshooting every problem in isolation. It is also, consistently, the slower path. Sellers who build real support around themselves, whether that is a mentor, onboarding help from a software team, or a network of other sellers facing the same decisions, tend to move through the early, highest failure risk stage of the business meaningfully faster than sellers going it entirely alone.",
       },
       {
         type: "h2",
@@ -3350,11 +3373,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "What a dedicated account manager actually changes",
+        text: "What real onboarding help changes",
       },
       {
         type: "p",
-        text: "Generic support tickets answer the question you asked. A dedicated account manager who understands your specific workflow can flag the question you did not think to ask, because they have seen the same pattern across other sellers at the same stage. This is a meaningfully different kind of support, and it is exactly why every Apex account includes direct access to a real person rather than a rotating support queue, alongside white glove onboarding that walks a new seller through both the software and roughly 160 minutes of Amazon education before they are left to figure things out solo.",
+        text: "Generic support tickets answer the question you asked. Onboarding help from people who know the software can point out the question you did not think to ask. That is why every Apex account includes onboarding help from the Apex team, along with Apex University's Amazon education, before a new seller is left to figure things out solo.",
       },
       {
         type: "h2",
@@ -3368,7 +3391,7 @@ export const posts: BlogPost[] = [
         type: "image",
         src: resourceLibraryImage.url,
         alt: "Apex University Complete Playbook Library with 10 tactical playbooks for Amazon wholesale",
-        caption: "Structured education instead of scattered forum advice: 10 tactical playbooks included free",
+        caption: "Structured education instead of scattered forum advice: 10 tactical playbooks included with every account",
       },
       {
         type: "h2",
@@ -3393,7 +3416,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "None of this requires a formal community forum to be real. It requires deliberately not trying to build the business entirely alone, which is exactly what a [7 day Apex trial](/auth?mode=signup&plan=starter&period=monthly) gives you access to from day one: a dedicated account manager, structured education, and three real supplier relationships handed to you rather than built from nothing.",
+        text: "None of this requires a formal community forum to be real. It requires deliberately not trying to build the business entirely alone, which is exactly what a [7 day Apex trial](/auth?mode=signup&plan=starter&period=monthly) gives you access to from day one: onboarding help from the Apex team, structured education, and 3 US wholesale distributors opened when your subscription starts, rather than built from nothing.",
       },
       {
         type: "h2",
@@ -3409,11 +3432,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h3",
-        text: "Is a dedicated account manager the same as a Discord or forum community?",
+        text: "Is onboarding help the same as a Discord or forum community?",
       },
       {
         type: "p",
-        text: "No. A dedicated account manager is direct, personalized support tied to your specific account and workflow, which is a different kind of value than a general peer discussion forum, though both can be useful in different ways.",
+        text: "No. Onboarding help from the Apex team is direct support tied to your account and workflow, which is a different kind of value than a general peer discussion forum, though both can be useful in different ways.",
       },
       {
         type: "h3",
@@ -3433,6 +3456,7 @@ export const posts: BlogPost[] = [
       "A practical map of every part of an Amazon wholesale operation you can automate in 2026, from review requests to margin tracking to restock alerts.",
     category: "Software & Tools",
     publishedAt: "2026-08-05",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -3473,7 +3497,7 @@ export const posts: BlogPost[] = [
         type: "image",
         src: inventoryRestockingImage.url,
         alt: "Apex inventory analytics showing items to restock",
-        caption: "Restock alerts based on real velocity, not a manually checked spreadsheet",
+        caption: "Restock suggestions based on your sales velocity, not a manually checked spreadsheet",
       },
       {
         type: "h2",
@@ -3481,7 +3505,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "Scanning a distributor's full price list against Amazon's current listing data by hand, product by product, does not scale past a handful of SKUs. Automating the landed cost, ROI, and margin calculation across an entire catalog at once, the way Apex Green's UPC Scanner and Master Catalog do, turns a task that used to take hours into one that takes minutes, without removing the human judgment of which products actually look worth pursuing.",
+        text: "Scanning a distributor's full price list against Amazon's current listing data by hand, product by product, does not scale past a handful of SKUs. Automating the landed cost, ROI, and margin calculation across an entire catalog at once, the way Apex Green's UPC Scanner and Master Catalog do, turns a task that used to take hours into one that runs through the whole file in the background, without removing the human judgment of which products actually look worth pursuing.",
       },
       {
         type: "h2",
@@ -3542,6 +3566,7 @@ export const posts: BlogPost[] = [
       "Not talent, and not luck. The repeatable habits that separate Amazon wholesale sellers running seven figure businesses from those who stall out.",
     category: "Growth",
     publishedAt: "2026-08-06",
+    updatedAt: "2026-10-07",
     readingTime: "12 min read",
     content: [
       {
@@ -3558,11 +3583,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "h2",
-        text: "They run three or more active supplier relationships, never one",
+        text: "They run several active supplier relationships, never one",
       },
       {
         type: "p",
-        text: "A single supplier relationship is a single point of failure. Sellers who reach real scale have consistently diversified across three to six active distributors, following the methods covered in our [guide to finding wholesale suppliers](/blog/find-wholesale-suppliers), which protects revenue against a single price increase, stock shortage, or change in one supplier's terms.",
+        text: "A single supplier relationship is a single point of failure. Sellers who reach real scale have diversified across several active distributors, following the methods covered in our [guide to finding wholesale suppliers](/blog/find-wholesale-suppliers), which protects revenue against a single price increase, stock shortage, or change in one supplier's terms.",
       },
       {
         type: "h2",
@@ -3616,7 +3641,7 @@ export const posts: BlogPost[] = [
       },
       {
         type: "p",
-        text: "None of these habits are secret or complicated individually. What separates the sellers who reach seven figures is that they build every one of these habits into a connected system early, rather than relying on personal discipline to remember all of them manually across a growing number of suppliers and SKUs. That is precisely the gap [Apex Black, Blue, Green, and Red](/) are built to close, and it is why the trial is structured to get a new seller operating this way from the very first purchase order rather than retrofitting these habits after the business has already outgrown a spreadsheet.",
+        text: "None of these habits are secret or complicated individually. What separates the sellers who reach seven figures is that they build every one of these habits into a connected system early, rather than relying on personal discipline to remember all of them manually across a growing number of suppliers and SKUs. That is the gap Apex is built to close with its five modules: [Apex Black](/features/black), [Blue](/features/blue), [Green](/features/green), [Gold](/features/gold) (beta, repricer on Pro) and [Red](/features/red) (beta, by invitation). Building these habits into a system from the first purchase order beats retrofitting them after the business has already outgrown a spreadsheet.",
       },
       {
         type: "h2",

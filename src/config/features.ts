@@ -17,7 +17,14 @@ export const MODULE_STATUS: Record<string, LaunchState> = {
   black: "live",
   blue: "live",
   green: "live",
-  gold: "live",
+  /**
+   * Beta on the public site, because /features/gold and the homepage map both
+   * say so and a status is only worth having if every page agrees. The app
+   * dropped its own beta notice for an intro tour on 2026-09-22, so moving
+   * this to "live" is Stefano's call; when he makes it, this one edit moves
+   * the map, the module list and the AI page together.
+   */
+  gold: "beta",
   /** Shipment building and prep workflow. Beta until the product owner says otherwise. */
   red: "beta",
 };

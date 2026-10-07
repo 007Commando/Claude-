@@ -18,6 +18,13 @@ import { fadeIn } from "./CompareShared";
  * The model is simple on purpose and its limits are printed under the result
  * rather than buried: a proportional referral fee, no category minimums, no
  * returns, taxes or overhead unless you enter them as costs.
+ *
+ * Accuracy pass 2026-10-07: inputs now use explicit label/id pairs, the
+ * referral hint no longer implies one rate, and the assumptions block states
+ * what is and is not included. The math is unchanged. Note that ROI here
+ * divides by cost + fulfillment fee + other, while the FBA calculator
+ * (lib/fba/calc.ts) divides by cost + prep + shipping + other and leaves
+ * Amazon's fees out; the page says so rather than hiding it.
  */
 
 /** The worked example from the spec: $8.50, 28.33%, 50%, $20.00 break-even. */
@@ -34,8 +41,8 @@ type Field = keyof typeof DEFAULTS;
 const FIELDS: { key: Field; label: string; hint: string; prefix: string }[] = [
   { key: "price", label: "Selling price", hint: "What the listing sells for", prefix: "$" },
   { key: "cost", label: "Unit product cost", hint: "What you pay your supplier per unit", prefix: "$" },
-  { key: "referral", label: "Referral fee", hint: "Amazon's percentage for the category", prefix: "%" },
-  { key: "fulfillment", label: "Fulfillment fee", hint: "FBA fee per unit", prefix: "$" },
+  { key: "referral", label: "Referral fee", hint: "Varies by category, commonly 8 to 15 percent. See Amazon's referral fee table", prefix: "%" },
+  { key: "fulfillment", label: "Fulfillment fee", hint: "FBA fee per unit, from Seller Central or the FBA calculator", prefix: "$" },
   { key: "other", label: "Other per-unit costs", hint: "Prep, inbound shipping, anything else", prefix: "$" },
 ];
 
@@ -151,13 +158,18 @@ export default function ProfitCalculator() {
             <p className="text-sm font-black text-slate-900">Your assumptions</p>
 
             {FIELDS.map(({ key, label, hint, prefix }) => (
-              <label key={key} className="block">
-                <span className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">
+              <div key={key} className="block">
+                <label
+                  htmlFor={`profit-${key}`}
+                  className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500"
+                >
                   {label}
-                </span>
+                </label>
                 <span className="mt-1.5 flex items-center rounded-xl border border-slate-200 bg-white focus-within:border-blue-400">
                   <span className="pl-3 text-sm font-bold text-slate-400">{prefix}</span>
                   <input
+                    id={`profit-${key}`}
+                    aria-describedby={`profit-${key}-hint`}
                     // Typed rather than spun: a number input's scroll wheel
                     // silently changes a figure somebody is about to buy on.
                     type="text"
@@ -166,11 +178,12 @@ export default function ProfitCalculator() {
                     onChange={(event) => set(key, event.target.value)}
                     onFocus={(event) => event.target.select()}
                     className="w-full bg-transparent px-2 py-2.5 text-sm font-bold tabular-nums text-slate-900 outline-none"
-                    aria-label={label}
                   />
                 </span>
-                <span className="mt-1 block text-[11px] text-slate-400">{hint}</span>
-              </label>
+                <span id={`profit-${key}-hint`} className="mt-1 block text-[11px] text-slate-400">
+                  {hint}
+                </span>
+              </div>
             ))}
 
             <button
@@ -243,11 +256,14 @@ export default function ProfitCalculator() {
                 What this leaves out
               </p>
               <p className="text-xs leading-relaxed text-slate-500">
-                These are not live Amazon fees. The model uses the assumptions you typed, and a
-                proportional referral fee. It omits category minimum fees, non-linear fees,
-                returns, storage, advertising, taxes and business overhead unless you fold them
-                into &ldquo;other per-unit costs&rdquo;. A positive contribution profit does not
-                mean the business is profitable. Check the current applicable fees before you buy.
+                These are not live Amazon fees. The model counts only what you type: the selling
+                price, product cost, a referral percentage, the FBA fulfillment fee and other
+                per-unit costs, which is where prep and shipping to Amazon go. It applies the
+                referral percentage to the whole price, so it omits category minimum fees,
+                inbound placement fees, tiered fees, returns, storage, advertising, taxes and
+                business overhead unless you fold them into &ldquo;other per-unit costs&rdquo;.
+                A positive contribution profit does not mean the business is profitable. Check
+                the current applicable fees before you buy.
               </p>
             </div>
           </div>
@@ -314,7 +330,9 @@ export default function ProfitCalculator() {
               <p className="text-sm leading-relaxed text-slate-500">
                 ROI conventions differ. This divides profit by product cost plus fulfillment plus
                 other per-unit costs, and the denominator is printed beside the figure so you can
-                compare like with like.
+                compare like with like. The free FBA calculator leaves Amazon&apos;s fees out of
+                its denominator and divides by your own costs only, so the two tools can show a
+                different ROI for the same product.
               </p>
             </div>
           </div>

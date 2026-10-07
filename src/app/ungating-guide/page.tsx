@@ -5,7 +5,7 @@ import UngatingGuide from "../../components/UngatingGuide";
 export const metadata: Metadata = pageMetadata({
   title: "Amazon Ungating Guide: Categories and Brands | Apex",
   description:
-    "How category and brand ungating works on Amazon, plus a real step-by-step way to get ungated in the Grocery category, from the Apex Applications team.",
+    "How category and brand ungating works on Amazon, plus a step-by-step walkthrough of applying for approval in the Grocery category.",
   path: "/ungating-guide",
 });
 

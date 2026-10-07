@@ -32,7 +32,7 @@ const ungatingSopBookImage = "/images/fba-starter-bundle/ungating-sop-book.png";
 const productCatalogCollageImage = "/images/fba-starter-bundle/product-catalog-collage.png";
 
 /**
- * Server route that opens Stripe Checkout: $297 today, $149.99/mo from day 91
+ * Server route that opens Stripe Checkout: $297 today, the Starter monthly price from day 91
  * (one subscription, 90-day trial). Replaced the old $297-only payment link,
  * which had no continuation.
  */
@@ -66,11 +66,16 @@ const dollars = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2));
 const THREE_MONTHS_STARTER = PRICE_LIMITED_M * 3;
 const ELITE_SAVINGS = THREE_MONTHS_STARTER - ELITE_PRICE;
 
+// Accuracy pass 2026-10-07: "Full Apex Suite" replaced with what the Starter plan gives (Black, Blue, Green; no
+// repricer; Red by invitation). "Vetted/authorized", "negotiated" and "real-time" removed, Review Booster stated as
+// "included" (no "free for life"), the Review Booster benefit bullets removed (a review request cannot ungate or win sales),
+// per-item dollar values and the total removed, and the VA experience figure dropped because this page said 9+ years
+// while the VA page said 20+ years across the team and neither is documented.
 const coreIncludes = [
   {
     icon: Building2,
     title: "3 Starting Suppliers",
-    body: "Three vetted, authorized US wholesale distributors handed to you on day one, so you skip the months most sellers spend on cold outreach just to find someone who will sell to them.",
+    body: "Three US wholesale distributors from the Distributor Vault open on day one, so you have somewhere to start instead of cold outreach to find someone who will sell to you.",
     photo: {
       src: productCatalogCollageImage,
       alt: "Real products and UPC catalogs from wholesale suppliers",
@@ -79,36 +84,35 @@ const coreIncludes = [
   {
     icon: Headphones,
     title: "7-Day VIP Trial With Our Expert VAs",
-    body: "Your first week, you are not alone: work directly with our virtual assistants -- 9+ years of Amazon experience -- giving you the push and day-by-day guidance to get your account, suppliers and first purchase order moving. Free of charge, included in Elite.",
-    highlights: ["Day-by-day guidance", "9+ years Amazon experience", "Free with Elite"],
+    body: "Your first week, you are not alone: work directly with our experienced Amazon virtual assistants, giving you the push and day-by-day guidance to get your account, suppliers and first purchase order moving. Free of charge, included in Elite.",
+    highlights: ["Day-by-day guidance", "Experienced Amazon VAs", "Free with Elite"],
   },
   {
     icon: Rocket,
-    title: "Full Apex Suite for 90 Days",
-    body: "Apex Black, Blue, Green & Red: your dashboard, financial analytics, purchase order tracking, sourcing tools, and logistics, all connected in one system instead of five separate subscriptions.",
+    title: "90 Days of the Starter Plan",
+    body: "Apex Black, Blue and Green: your dashboard, profit analytics, purchase orders and sourcing tools, connected in one system. The Starter plan does not include the repricer. Apex Red (shipments and prep) is in beta and opened by invitation.",
     image: {
       src: apexSuiteOverviewImage,
       alt: "Apex dashboard with the Tools menu open, showing Apex Black, Blue, and Green modules",
-      caption: "Apex Black, Blue, Green & Red",
+      caption: "Apex Black, Blue & Green",
     },
   },
   {
     icon: Truck,
     title: "Connect to Prep Centers",
-    body: "Access to our vetted Prep Center Network across the US with negotiated member pricing, plus real-time inventory and restock tools, so a slow prep center never turns into a stockout.",
+    body: "Access to the Prep Center Network across the US. Member pricing is offered by participating centers, and each sets its own rates. Inventory and restock suggestions in Apex sync from Amazon every few minutes.",
     map: true,
   },
   {
     icon: Star,
-    title: "Free Lifetime Review Booster",
-    body: "Our automated, Amazon-compliant review request tool, free for life, so your new listings build social proof from day one without you tracking a single order manually.",
-    highlights: ["Autopilot growth for new sellers", "Win more sales", "Ungate easier", "Earn more trust with buyers"],
+    title: "Review Booster Included",
+    body: "Sends Amazon's own Request a Review on eligible Amazon.com orders, a set number of days after the order that you choose, so you do not have to track each order by hand.",
     image: { src: reviewBoosterImage.url, alt: "Apex Review Booster automation", caption: "Apex Black Review Booster" },
   },
   {
     icon: BookOpen,
-    title: "Complete Playbook Library ($300 Value)",
-    body: "Ten tactical playbooks covering the wholesale blueprint, distributor outreach, negotiation, Keepa reading, and ungating SOPs, the exact frameworks our own team uses.",
+    title: "Complete Playbook Library",
+    body: "Ten tactical playbooks covering the wholesale blueprint, distributor outreach, negotiation, Keepa reading, and ungating SOPs.",
     books: [
       { src: keepaPlaybookBookImage, alt: "Apex Keepa Playbook book cover", label: "Keepa Playbook" },
       { src: ungatingSopBookImage, alt: "Apex Ungating SOP book cover", label: "Ungating SOP" },
@@ -124,33 +128,32 @@ const bonusIncludes = [
   },
 ];
 
-const valueStack: { label: string; value: number | null }[] = [
-  { label: "3 Starting Suppliers", value: 500 },
-  { label: "7-Day VIP Trial With Expert VAs", value: 150 },
-  { label: "Full Apex Suite (90 Days)", value: 450 },
-  { label: "Connect to Prep Centers", value: 200 },
-  { label: "Private Amazon Community", value: null },
-  { label: "Free Lifetime Review Booster", value: 300 },
-  { label: "Complete Playbook Library", value: 300 },
+const valueStack: string[] = [
+  "3 Starting Suppliers",
+  "7-Day VIP Trial With Expert VAs",
+  "90 Days of the Starter Plan",
+  "Connect to Prep Centers",
+  "Private Amazon Community",
+  "Review Booster Included",
+  "Complete Playbook Library",
 ];
-const totalValue = valueStack.reduce((sum, item) => sum + (item.value ?? 0), 0);
 
 const faqs = [
   {
     q: "How does the billing work?",
-    a: "You pay $297 today, which covers Apex Elite and your first 90 days of the full software suite. After those 90 days, your access simply continues at $149.99/month. The same standard Starter rate you would otherwise be paying from day one. Cancel anytime before or after; the suppliers, playbooks, Review Booster and community access are yours to keep either way.",
+    a: `You pay $297 today, which covers Apex Elite and your first 90 days of the Starter plan. After those 90 days, your access simply continues at $${dollars(PRICE_LIMITED_M)}/month, the standard Starter rate you would otherwise be paying from day one. Cancel anytime before or after; the playbook library stays yours either way.`,
   },
   {
     q: "I already have an Apex account. Can I still get this?",
-    a: "Yes. Existing members can add Apex Elite to layer in the additional suppliers, logistics access, and community. Reach out through Contact Us and our team will get you set up correctly.",
+    a: "Yes. Existing members can add Apex Elite to layer in the additional suppliers, prep center network access, and community. Reach out through Contact Us and our team will get you set up correctly.",
   },
   {
     q: "What exactly happens after I purchase?",
-    a: "You will get immediate access to your software setup, your suppliers, and the playbook library, plus your invite to the Private Amazon Community, so you can start moving on your first purchase order right away.",
+    a: "You will get access to your software setup, your starting suppliers, and the playbook library, plus your invite to the Private Amazon Community, so you can start moving on your first purchase order.",
   },
   {
     q: "Do I need any prior experience with Amazon or wholesale?",
-    a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, logistics, and a real community around you. The playbook library starts from first principles.",
+    a: "No. Apex Elite is built to take someone from zero to a running system: suppliers, software, prep center access, and a community around you. The playbook library starts from first principles.",
   },
 ];
 
@@ -300,7 +303,7 @@ export default function ApexElite() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-14"
@@ -314,9 +317,9 @@ export default function ApexElite() {
             <span className="text-brand">for $297</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            Suppliers, software, logistics, community, and a real team behind you. Everything it
-            takes to build a real Amazon wholesale business, in one system, instead of stitched
-            together from scratch &mdash; for less than three months of the Starter plan costs on
+            Starting suppliers, the Starter plan, prep center access, a community, and our team to
+            ask. A way to start an Amazon wholesale business in one system, instead of stitched
+            together from scratch, for less than three months of the Starter plan would cost on
             its own.
           </p>
 
@@ -379,7 +382,7 @@ export default function ApexElite() {
             </h2>
             <p className="text-slate-500 leading-relaxed">
               Same software either way. One of them also hands you the suppliers, the playbooks,
-              and the community &mdash; and costs less.
+              and the community, and costs less.
             </p>
           </div>
 
@@ -398,7 +401,7 @@ export default function ApexElite() {
               <ul className="space-y-3 text-sm text-slate-600 flex-1">
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-slate-300 shrink-0 mt-0.5" strokeWidth={3} />
-                  The Apex software suite
+                  The Starter plan (Black, Blue, Green)
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
@@ -410,7 +413,7 @@ export default function ApexElite() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
-                  Review Booster only while subscribed
+                  Review Booster included
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-4 shrink-0 text-center text-slate-300 font-black leading-5">&ndash;</span>
@@ -450,16 +453,16 @@ export default function ApexElite() {
                 <span className="text-sm font-bold text-slate-400">today</span>
               </div>
               <p className="text-sm font-bold text-slate-400 mb-6">
-                Your first 90 days &mdash; then ${PRICE_LIMITED_M}/mo. Cancel anytime.
+                Your first 90 days, then ${PRICE_LIMITED_M}/mo. Cancel anytime.
               </p>
               <ul className="space-y-3 text-sm text-slate-700 flex-1">
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  The same full suite, 90 days
+                  The same Starter plan, 90 days
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  3 vetted wholesale suppliers, day one
+                  3 wholesale distributors opened on day one
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
@@ -467,7 +470,7 @@ export default function ApexElite() {
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  Review Booster free for life
+                  Review Booster included
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
@@ -475,11 +478,11 @@ export default function ApexElite() {
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  7-day VIP trial with our expert VAs (9+ yrs Amazon)
+                  7-day VIP trial with our experienced Amazon VAs
                 </li>
                 <li className="flex items-start gap-3">
                   <Check size={16} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                  {`Continues at the same $${PRICE_LIMITED_M}/mo, everything above stays yours`}
+                  {`Continues at the same $${PRICE_LIMITED_M}/mo; the playbook library stays yours`}
                 </li>
               </ul>
               <BuyButton className="mt-6 w-full bg-brand text-white px-8 py-3.5 rounded-[18px] font-black hover:scale-[1.02] shadow-lg uppercase tracking-wide">
@@ -488,9 +491,9 @@ export default function ApexElite() {
             </div>
           </div>
           <p className="text-center text-xs text-slate-400 mt-6 max-w-xl mx-auto">
-            {`After your 90 days, your software simply continues at $${PRICE_LIMITED_M}/month. The same
-            Starter rate you would be paying anyway. Cancel anytime; the suppliers, playbooks, Review
-            Booster and community stay yours even if you do.`}
+            {`After your 90 days, your software simply continues at $${PRICE_LIMITED_M}/month, the same
+            Starter rate you would be paying anyway. Cancel anytime; the playbook library stays yours
+            even if you do.`}
           </p>
         </motion.section>
 
@@ -507,8 +510,8 @@ export default function ApexElite() {
               Everything You Need, Built In
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Not a discount trial. The complete set of suppliers, software, and logistics it
-              takes to actually run a wholesale business.
+              Not a discount trial. Starting suppliers, software, and prep center access to begin
+              running a wholesale business.
             </p>
           </div>
 
@@ -671,15 +674,14 @@ export default function ApexElite() {
         >
           <div className="relative z-10 max-w-2xl mx-auto">
             <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Your complete wholesale system
+              Your wholesale starter system
             </div>
             <h2 className="text-3xl lg:text-5xl font-black mb-3 tracking-tight leading-tight">
-              Get Everything for Just $297
+              What You Get for $297
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
-              {`$297 today gets you the complete system and your first 90 days. Then it simply
-              continues at the Starter rate, $${PRICE_LIMITED_M}/month. No experience required, real
-              support every step of the way.`}
+              {`$297 today gets you Apex Elite and your first 90 days of the Starter plan. Then it
+              simply continues at the Starter rate, $${PRICE_LIMITED_M}/month. No experience required.`}
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
@@ -703,25 +705,19 @@ export default function ApexElite() {
                 Book a 1-on-1 onboarding call
               </a>
 
+              {/* Per-item dollar "values" and the total were removed: they had no source. */}
               <div className="flex items-baseline justify-center gap-2 mb-1">
-                <span className="text-2xl font-bold text-slate-300 line-through">${totalValue}+</span>
                 <span className="text-5xl font-black text-slate-900">$297</span>
               </div>
-              <div className="text-center text-xs font-bold text-emerald-600 uppercase tracking-wide mb-1">
-                Save ${totalValue - 297}+ today
-              </div>
               <div className="text-center text-[11px] font-semibold text-slate-400 mb-6">
-                {`$297 today for everything below + 90 days of the suite, then $${PRICE_LIMITED_M}/mo. Cancel anytime.`}
+                {`$297 today for everything below + 90 days of the Starter plan, then $${PRICE_LIMITED_M}/mo. Cancel anytime.`}
               </div>
               <ul className="space-y-3 mb-8">
-                {valueStack.map((item) => (
-                  <li key={item.label} className="flex items-start justify-between gap-3">
+                {valueStack.map((label) => (
+                  <li key={label} className="flex items-start justify-between gap-3">
                     <span className="flex items-start gap-3">
                       <Check size={18} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                      <span className="text-sm font-semibold text-slate-700">{item.label}</span>
-                    </span>
-                    <span className="text-sm font-bold text-slate-400 shrink-0">
-                      {item.value === null ? "Priceless" : `$${item.value}`}
+                      <span className="text-sm font-semibold text-slate-700">{label}</span>
                     </span>
                   </li>
                 ))}

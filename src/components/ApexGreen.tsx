@@ -10,6 +10,9 @@ import greenCoreFeaturesImage from "../assets/apex-green-core-features.png.asset
 import ViewAppButton from "./ViewAppButton";
 import FeatureSection from "./FeatureSection";
 import ScrollProgressLine from "./ScrollProgressLine";
+import FeatureFacts from "./FeatureFacts";
+import { moduleByKey } from "../config/product";
+import { trialCta, trialTerms } from "../config/offer";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -32,10 +35,11 @@ export default function ApexGreen() {
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <TrendingUp size={14} className="stroke-[3]" />
-              Data Intelligence
+              Sourcing
             </div>
           </div>
-          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-green-700">UPC scanner for Amazon wholesale</h1>
+          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-green-700">Apex Green: {moduleByKey("green").label}</h1>
           <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             HUNTING <br/>
             <span className="text-green-600 italic">ALGORITHMS.</span>
@@ -44,8 +48,13 @@ export default function ApexGreen() {
             Apex Green is built for the hunt. Hand it a supplier's whole price list and it works through every row against the Amazon catalogue in the background, so the shortlist is waiting for you instead of you waiting for it.
           </p>
         </motion.div>
+      </div>
 
-        <div className="text-center mb-24">
+      {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
+      <FeatureFacts module="green" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mt-16 mb-24">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">the journey ↓</span>
         </div>
 
@@ -69,14 +78,14 @@ export default function ApexGreen() {
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Green. Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Sourcing intelligence built for volume. Scan whole supplier lists, unify them into one catalogue, and get back the products worth buying. With the ones that did not match shown rather than quietly dropped.
+                  Built for long supplier lists. Scan a whole price list, unify them into one catalogue, and get back the products worth buying. With the ones that did not match shown rather than quietly dropped.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[
                     "High-volume UPC & EAN scanning",
                     "Auto-match products to Amazon listings",
                     "Unified master catalog across every vendor",
-                    "Live profitability and competition signals"
+                    "Profit, ROI and competition signals"
                   ].map((item, i) => (
                     <div key={i} className="flex gap-3 items-start">
                       <CheckCircle2 size={20} className="text-green-600 shrink-0 mt-0.5" />
@@ -108,10 +117,10 @@ export default function ApexGreen() {
             title="High-Volume Scanning"
             description="Upload a spreadsheet of UPCs or EANs and Apex matches each row to the Amazon catalogue, returning rank, estimated sales and competition. Matches are not guaranteed: pack sizes, variations and catalogue records create ambiguity, so unmatched and uncertain rows are shown as exactly that rather than counted as opportunities."
             bullets={[
-              "Scan up to 100,000 UPCs per hour",
+              "Works through the whole file in the background",
               "Auto-match UPC/EAN to ASIN with full catalog data",
-              "BSR proxy & predictive sales velocity per listing",
-              "Competition counts and Buy Box eligibility at a glance"
+              "Sales rank and estimated sales per listing",
+              "Seller counts and who holds the Buy Box"
             ]}
             accentText="text-green-600"
             accentBg="bg-green-600"
@@ -130,9 +139,7 @@ export default function ApexGreen() {
             description="Managing multiple supplier feeds is a thing of the past. Apex Green merges every price list into a single Master Catalog, so you can see which supplier has the best price on a product you already sell."
             bullets={[
               "Cross-vendor price comparison on every SKU",
-              "Automatic stock-level reconciliation across feeds",
-              "Smart lead tagging and duplicate detection",
-              "One-click export into POs and listing builders"
+              "Add matched products to your database or a purchase order"
             ]}
             accentText="text-green-600"
             accentBg="bg-green-600"
@@ -153,11 +160,11 @@ export default function ApexGreen() {
               />
            </div>
            <div className="relative z-10 max-w-3xl mx-auto">
-              <div className="text-green-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">You've seen the hunt in action.</div>
-              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Begin sourcing like a PRO</h2>
-              <p className="text-lg lg:text-xl text-green-100 mb-8 max-w-2xl mx-auto">Join the elite sellers who have moved from spreadsheets to systems.</p>
+              <div className="text-green-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">Apex Green</div>
+              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Start with a supplier price list you already have</h2>
+              <p className="text-lg lg:text-xl text-green-100 mb-8 max-w-2xl mx-auto">{trialTerms()}</p>
               <ViewAppButton className="bg-white text-green-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
-                View Apex Green
+                {trialCta}
               </ViewAppButton>
            </div>
         </div>

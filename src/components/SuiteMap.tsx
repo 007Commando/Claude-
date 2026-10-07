@@ -32,10 +32,12 @@ import bullBlue from "../assets/bull-blue.png.asset.json";
 import bullGreen from "../assets/bull-green.png.asset.json";
 import bullRed from "../assets/bull-red.png.asset.json";
 import bullGold from "../assets/bull-gold.png.asset.json";
+import { moduleByKey, type ModuleKey } from "../config/product";
+import { isBeta } from "../config/features";
 
 type Suite = {
-  key: "core" | "blue" | "green" | "gold" | "red";
-  /** Shown on the card. Red is beta and the map has to say so where it names it. */
+  key: ModuleKey;
+  /** Unused: beta now comes from MODULE_STATUS so the map cannot disagree with the feature pages. */
   beta?: boolean;
   number: string;
   label: string;
@@ -51,11 +53,13 @@ type Suite = {
 
 const suites: Suite[] = [
   {
-    key: "core",
+    key: "black",
     number: "01",
     label: "APEX",
-    labelAccent: "CORE",
-    kicker: "The command center",
+    // "CORE" until 2026-10-07: a label from the site's first commit that the
+    // app never used. The module is Apex Black everywhere else.
+    labelAccent: "BLACK",
+    kicker: "Your home screen, reviews and training",
     bull: bullBlack.url,
     route: "/features/black",
     accent: "text-slate-900",
@@ -63,7 +67,7 @@ const suites: Suite[] = [
     iconText: "text-slate-800",
     items: [
       { icon: LayoutGrid, title: "Dashboard", desc: "Your whole Amazon business on one screen" },
-      { icon: Star, title: "Review Booster", desc: "Automate Your Order Reviews & Boost Seller Feedback" },
+      { icon: Star, title: "Review Booster", desc: "Sends Amazon's own Request a Review for your eligible orders" },
       { icon: School, title: "Apex University", desc: "The Wholesale Blueprint Learning Center" },
       { icon: BookOpen, title: "Books & Resources", desc: "Recommended Reading & Resources" },
     ],
@@ -73,7 +77,7 @@ const suites: Suite[] = [
     number: "02",
     label: "APEX",
     labelAccent: "BLUE",
-    kicker: "Operational dominance",
+    kicker: "Buying, and the numbers behind it",
     bull: bullBlue.url,
     route: "/features/blue",
     accent: "text-blue-600",
@@ -92,7 +96,7 @@ const suites: Suite[] = [
     number: "03",
     label: "APEX",
     labelAccent: "GREEN",
-    kicker: "Hunting algorithms",
+    kicker: "Finding products in supplier price lists",
     bull: bullGreen.url,
     route: "/features/green",
     accent: "text-green-600",
@@ -114,7 +118,7 @@ const suites: Suite[] = [
     number: "04",
     label: "APEX",
     labelAccent: "GOLD",
-    kicker: "Repricing with profit controls",
+    kicker: "Prices that never go below your floor",
     bull: bullGold.url,
     route: "/features/gold",
     accent: "text-amber-500",
@@ -138,7 +142,7 @@ const suites: Suite[] = [
     beta: true,
     label: "APEX",
     labelAccent: "RED",
-    kicker: "Workflow logistics",
+    kicker: "Getting stock from your supplier to Amazon",
     bull: bullRed.url,
     route: "/features/red",
     accent: "text-red-600",
@@ -163,7 +167,7 @@ const staggerContainer = {
 };
 
 const fadeInItem = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 1, y: 0 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.4 },
 };
@@ -176,13 +180,13 @@ export default function SuiteMap() {
         <div className="text-center max-w-2xl mx-auto mb-20 lg:mb-28">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-600 text-[11px] font-medium rounded-full mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-            The Apex Ecosystem
+            The five Apex modules
           </div>
           <h2 className="text-4xl lg:text-5xl font-semibold text-slate-900 mb-4 tracking-tight">
-            Five suites. One operating system.
+            Five modules, one set of data.
           </h2>
           <p className="text-base text-slate-500 leading-relaxed">
-            Every tool built for Amazon wholesale, unified under a single command layer.
+            Each module covers one part of running a wholesale business, and they all read the same products, suppliers and costs, so nothing is typed in twice.
           </p>
         </div>
 
@@ -199,7 +203,7 @@ export default function SuiteMap() {
               return (
                 <motion.div
                   key={s.key}
-                  initial={{ opacity: 0, y: 32 }}
+                  initial={false}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -220,8 +224,9 @@ export default function SuiteMap() {
                         <div className="text-lg font-black tracking-[0.15em] text-slate-900">
                           {s.label} <span className={s.accent}>{s.labelAccent}</span>
                         </div>
-                        <div className="text-sm text-slate-500 mt-1">{s.kicker}</div>
-                        {s.beta && (
+                        <div className="text-sm font-semibold text-slate-700 mt-1">{moduleByKey(s.key).label}</div>
+                        <div className="text-sm text-slate-500 mt-0.5">{s.kicker}</div>
+                        {isBeta(s.key) && (
                           <div className="mt-2 inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-amber-700">
                             Beta
                           </div>
@@ -260,7 +265,7 @@ export default function SuiteMap() {
                       href={s.route}
                       className={`inline-flex items-center gap-2 text-sm font-bold ${s.accent} hover:gap-3 transition-all`}
                     >
-                      Explore {s.label} {s.labelAccent} <ArrowRight size={16} />
+                      {moduleByKey(s.key).label} with Apex {s.labelAccent.charAt(0) + s.labelAccent.slice(1).toLowerCase()} <ArrowRight size={16} />
                     </Link>
                   </motion.div>
                 </motion.div>

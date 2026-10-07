@@ -1,9 +1,12 @@
 /**
  * The four seller types the /apex-quiz funnel sorts people into, shared by
  * the result screen and the follow-up email so the two can never say
- * different things. Every figure is from the real Bilo Distributor scan shown
- * in the ads (12,203 lines, 2,860 profitable, 120 after one filter); plan
- * prices come from offer.ts.
+ * different things. Every figure is from one supplier catalog we scanned (the
+ * Bilo Distributor price list shown in the ads: 12,203 lines, 2,860 profitable,
+ * 120 after one filter). It is a different example catalog from the one on
+ * /apex-scan (1,175 lines) and neither is presented as typical. Plan prices
+ * come from offer.ts. The plan lines are recommendations, not statistics about
+ * what other sellers choose (accuracy pass 2026-10-07).
  */
 import { formatPrice, planById } from "../config/offer";
 
@@ -25,12 +28,12 @@ export const QUIZ_RESULTS: Record<QuizResultId, QuizResult> = {
     diagnosis:
       "The fastest way to burn a first inventory budget is buying products that look good and don't make money after Amazon's fees. You need suppliers who will sell to you, and a way to see the profit before you order.",
     moves: [
-      "Get 3 vetted U.S. wholesale suppliers, sent to you when you sign up",
-      "Scan their price lists in Apex and see which products make money",
+      "Get 3 U.S. wholesale distributors from the Distributor Vault when you start",
+      "Scan a price list from one in Apex and see which products make money",
       "Build your first purchase order from the winners only",
     ],
     proof: ["2,860", "profitable products found in one supplier's price list"],
-    plan: `Sellers under $5,000 a month usually start on Beginner, ${formatPrice(planById("beginner").monthly)} a month.`,
+    plan: `Beginner, ${formatPrice(planById("beginner").monthly)} a month, is the plan for sellers under $5,000 a month in Amazon sales.`,
   },
   arbitrage: {
     name: "The Arbitrage Hunter",
@@ -43,7 +46,7 @@ export const QUIZ_RESULTS: Record<QuizResultId, QuizResult> = {
       "Keep the winners and reorder them every month",
     ],
     proof: ["12,203", "lines checked from one price list, 2,860 came back profitable"],
-    plan: "Most sellers making the move to wholesale start on Starter or Plus.",
+    plan: "Starter or Plus would suit a move into wholesale.",
   },
   spreadsheet: {
     name: "The Spreadsheet Wholesaler",
@@ -56,7 +59,7 @@ export const QUIZ_RESULTS: Record<QuizResultId, QuizResult> = {
       "Turn the short list into a purchase order with your real costs",
     ],
     proof: ["12,203 → 120", "lines to a short list worth buying, with one filter"],
-    plan: "Wholesalers at your size usually run Starter or Plus.",
+    plan: "Starter or Plus would suit a wholesaler at your size.",
   },
   scaler: {
     name: "The Scaler",
@@ -66,9 +69,9 @@ export const QUIZ_RESULTS: Record<QuizResultId, QuizResult> = {
     moves: [
       "Restock flags before a winner runs out",
       "Profit and loss by product, after every Amazon fee",
-      "The repricer on every listing, floored at your real break-even",
+      "The repricer (beta) on every listing, floored at your real break-even",
     ],
     proof: ["Every fee", "taken out, product by product, in your own P&L"],
-    plan: `Sellers your size usually run Pro, ${formatPrice(planById("pro").monthly)} a month, which includes the repricer.`,
+    plan: `Pro, ${formatPrice(planById("pro").monthly)} a month, would suit your size and includes the repricer on every listing (beta).`,
   },
 };

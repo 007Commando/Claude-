@@ -24,6 +24,9 @@ import apexBlueCtaBull from "../assets/apex-blue-cta-bull.png.asset.json";
 import ViewAppButton from "./ViewAppButton";
 import FeatureSection from "./FeatureSection";
 import ScrollProgressLine from "./ScrollProgressLine";
+import FeatureFacts from "./FeatureFacts";
+import { moduleByKey } from "../config/product";
+import { trialCta, trialTerms } from "../config/offer";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -47,20 +50,26 @@ export default function ApexBlue() {
           <div className="flex justify-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
               <TrendingUp size={14} className="stroke-[3]" />
-              Enterprise Logistics
+              Purchasing and profit
             </div>
           </div>
-          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-blue-700">Purchase orders and P&L for Amazon sellers</h1>
+          {/* Badge was "Enterprise Logistics": Blue is purchasing and analytics (logistics is Apex Red, beta), and "Enterprise" suggests a plan that is not sold. The H1 is the descriptive module label plus the brand. */}
+          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-blue-700">Apex Blue: {moduleByKey("blue").label}</h1>
           <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
             OPERATIONAL <br/>
             <span className="text-blue-600 italic">DOMINANCE.</span>
           </p>
           <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Blue is the engine room of your enterprise. Built specifically for wholesale high-volume operations, automating the complex financial and logistical workflows.
+            Apex Blue keeps your suppliers, purchase orders, landed costs, profit and loss and restock planning in one place, built for Amazon wholesale sellers.
           </p>
         </motion.div>
+      </div>
 
-        <div className="text-center mb-24">
+      {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
+      <FeatureFacts module="blue" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mt-16 mb-24">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">the journey ↓</span>
         </div>
 
@@ -84,13 +93,13 @@ export default function ApexBlue() {
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Blue: Core Features</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Experience integration across your suppliers, build purchase orders, keep stock on your inventory and analyze profit and loss all in one system.
+                  Keep your suppliers, build purchase orders, track your inventory and read profit and loss in one system.
                 </p>
                 <div className="space-y-4 mb-8">
                    {[
-                     "Experience integration across your suppliers",
+                     "Keep your suppliers in one place",
                      "Build purchase orders",
-                     "Keep stock on your inventory",
+                     "Track your inventory",
                      "Analyze profit and loss"
                    ].map((item, i) => (
                       <div key={i} className="flex gap-3 items-start">
@@ -130,7 +139,7 @@ export default function ApexBlue() {
                 </div>
                 <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em]">02 · Analytics</div>
               </div>
-              <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight">Elite <span className="italic text-slate-300">Analytics.</span></h2>
+              <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter leading-tight"><span className="italic text-slate-300">Analytics.</span></h2>
 
               <div className="inline-flex p-1 bg-slate-100 rounded-2xl">
                 {["Profit & Loss", "Inventory & Restocking"].map((tab) => (
@@ -159,7 +168,7 @@ export default function ApexBlue() {
                 >
                   <div className="max-w-xl">
                     <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4">Profit & Loss</div>
-                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Margin Clarity, Minutes Behind Amazon</h3>
+                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Profit and loss from your own costs</h3>
                     <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                       Connect your Amazon account once and stop rebuilding the same spreadsheet. Apex pulls your sales and Amazon's fees automatically, and your own costs (landed cost, prep, shipping, advertising and overhead) go in as operating expenses, so the margin you read is the one you actually made.
                     </p>
@@ -168,7 +177,7 @@ export default function ApexBlue() {
                         "Profit & Loss that follows your sales, synced from Amazon every few minutes",
                         "Amazon fees deducted automatically; advertising and overhead recorded as your own OpEx",
                         "SKU-level profitability and margin breakdown",
-                        "Portfolio-wide trend tracking with daily updates"
+                        "Profit and loss by day, week or month"
                       ].map((item, i) => (
                         <div key={i} className="flex gap-3 items-start">
                           <CheckCircle2 size={20} className="text-blue-600 shrink-0 mt-0.5" />
@@ -199,16 +208,16 @@ export default function ApexBlue() {
                 >
                   <div className="max-w-xl">
                     <div className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4">Inventory & Restocking</div>
-                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Never Miss a Restock</h3>
+                    <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Restock suggestions</h3>
                     <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                      Never miss a restock or get stuck with dead inventory. Apex reads sales velocity, on-hand quantities, and storage costs to generate precise buy recommendations and restock alerts across every SKU.
+                      {/* Was "precise buy recommendations" and "forecasting". Restock is assumption-based, not a demand forecast (matches /amazon-inventory-management-software). */}
+                      Apex reads your on-hand stock and sales velocity against the cover and lead time you set, and shows days of stock left and a restock status for each product.
                     </p>
                     <div className="space-y-4 mb-8">
                       {[
-                        "Sales velocity-driven restock alerts by SKU",
-                        "Overstock & dead inventory warnings before storage fees hit",
-                        "Days-of-inventory and days-until-next-order forecasting",
-                        "One-click export and PO creation from restock recommendations"
+                        "Restock suggestions by SKU from stock, sales velocity and the cover you set",
+                        "Days of stock left for each product",
+                        "Purchase orders started from what needs restocking"
                       ].map((item, i) => (
                         <div key={i} className="flex gap-3 items-start">
                           <CheckCircle2 size={20} className="text-blue-600 shrink-0 mt-0.5" />
@@ -239,13 +248,12 @@ export default function ApexBlue() {
             number="03"
             eyebrow="Vendors"
             icon={Globe}
-            title="Supplier Network"
-            description="Centralize your supplier network in one command center. Store contact info, negotiation history, and minimum order requirements while Apex tracks how each vendor performs against their lead time promises."
+            title="Suppliers"
+            description="Keep your suppliers in one place: contacts, terms and lead times for each vendor, so purchase orders start from the right details."
             bullets={[
-              "Global supplier profiles across US, UK, and EU markets",
-              "Auto-calculated vendor reliability and lead-time scores",
-              "Negotiation history and minimum order requirements stored per vendor",
-              "Performance alerts when vendors miss fulfillment targets"
+              "Supplier profiles with contacts, terms and lead times",
+              "Stated lead time shown against actual lead time",
+              "Supplier details feed your purchase orders"
             ]}
             accentText="text-blue-600"
             accentBg="bg-blue-600"
@@ -260,13 +268,13 @@ export default function ApexBlue() {
             number="04"
             eyebrow="Database"
             icon={Database}
-            title="Market Intelligence"
-            description="Apex's Database is the market intelligence behind your buying: what is profitable across every supplier you hold, with Buy Box pricing, fees, ROI and margins on thousands of ASINs, refreshed on a few-minute cycle rather than on request."
+            title="Products database"
+            description="Apex's Database is the market intelligence behind your buying: what is profitable across every supplier you hold, with Buy Box pricing, fees, ROI and margins for the products in your database."
             bullets={[
-              "Buy Box price and 30, 60 and 90-day sold averages, refreshed every few minutes",
+              "Buy Box price for every product, plus 30, 60 and 90 day averages on Plus and Pro",
               "Know what's profitable across every supplier at a glance",
               "Net proceeds, profit, ROI & margin calculated automatically",
-              "Build faster POs and create listings straight from the data"
+              "Build purchase orders straight from the data"
             ]}
             accentText="text-blue-600"
             accentBg="bg-blue-600"
@@ -282,9 +290,9 @@ export default function ApexBlue() {
             eyebrow="Purchase Orders"
             icon={FileText}
             title="Purchase Order Builder"
-            description="Apex's Purchase Order Builder turns sourcing into a true profit engine: build POs, run projections, and see exact revenue, expenses, and profit before you ever spend a dollar with a supplier."
+            description="Apex's Purchase Order Builder lets you build a PO, run projections, and see projected revenue, expenses and profit from your own costs and prices before you order from a supplier."
             bullets={[
-              "Live profit projections: total revenue, expenses & profit at a glance",
+              "Projected revenue, expenses and profit at a glance",
               "Per-supplier breakdowns with Margin, ROI & GPPA built in",
               "Average sale price, units, COGs, Amazon fees & shipping all tracked",
               "Switch between Buy Box and other profit data settings instantly"
@@ -329,11 +337,11 @@ export default function ApexBlue() {
               />
            </div>
            <div className="relative z-10 max-w-3xl mx-auto">
-              <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">You've seen the engine room.</div>
-              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Ready to Scale Your Amazon Reselling Business?</h2>
-              <p className="text-lg lg:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">Join the elite sellers who have moved from spreadsheets to systems.</p>
+              <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">Apex Blue</div>
+              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Start with your next purchase order</h2>
+              <p className="text-lg lg:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{trialTerms()}</p>
               <ViewAppButton className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
-                Start 7-Day Free Trial
+                {trialCta}
               </ViewAppButton>
            </div>
         </div>

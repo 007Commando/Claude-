@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "../../lib/seo";
 import ContentPage from "../../components/ContentPage";
+import { SUPPLIER_ACCESS } from "../../config/product";
+import { DISTRIBUTOR_COUNT } from "../../data/distributorStats";
 
 export const metadata: Metadata = pageMetadata({
   title: "Amazon Wholesale Suppliers: How to Vet Them | Apex",
@@ -53,7 +55,7 @@ export default function Page() {
       caveat={{
         heading: "What this page deliberately is not",
         body:
-          "This is not a supplier directory. We are not going to publish a list of company names and contact details on a public page to rank for a search term. The businesses on such a list have not agreed to it, and a directory assembled for SEO is exactly how sellers end up contacting suppliers who never wanted the introduction. Apex subscribers get authorized distributor access inside the application, where the entitlement is real and the relationship is accounted for. A supplier introduction is never an approval to sell a brand.",
+          "This is not a supplier directory. We are not going to publish a list of company names and contact details on a public page to rank for a search term. The businesses on such a list have not agreed to it, and a directory assembled for SEO is exactly how sellers end up contacting suppliers who never wanted the introduction. Apex subscribers get access to US wholesale distributors from the Distributor Vault inside the application. A supplier introduction is never an approval to sell a brand.",
       }}
       faqs={[
         {
@@ -64,7 +66,7 @@ export default function Page() {
         {
           question: "What supplier access comes with a plan?",
           answer:
-            "Subscriptions include authorized distributor access that grows the longer the subscription runs, and an annual plan opens the full roster immediately. The exact entitlement is shown in your account. We would rather you read it there than take a number from a marketing page.",
+            `The Distributor Vault lists ${DISTRIBUTOR_COUNT} US wholesale distributors. ${SUPPLIER_ACCESS} Access to a distributor is an introduction, not an approval to sell its brands.`,
         },
         {
           question: "Can I just buy a supplier list?",

@@ -7,8 +7,10 @@ export type TrustpilotFigures = { score: number; reviews: number; href: string }
  * is kept by hand: bump score and reviews when the profile moves.
  */
 export const TRUSTPILOT: TrustpilotFigures = {
+  // TrustScore 4.0 from 3 reviews, read off the live profile 2026-10-07. The
+  // reviews are all five stars; Trustpilot weights a new profile's score.
   score: 4.0,
-  reviews: 4,
+  reviews: 3,
   href: "https://www.trustpilot.com/review/apexapplications.io",
 };
 

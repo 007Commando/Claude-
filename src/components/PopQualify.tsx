@@ -22,6 +22,7 @@ import { readStoredAttribution } from "./LeadAttribution";
 import "./pop-qualify.css";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 import { DOLLAR_WEEK } from "../config/offer";
+import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
 import { liveIdentify, liveStep } from "../lib/live/client";
 
 /**
@@ -129,7 +130,7 @@ function SuppliersScene() {
         >
           <span className="pq-card-dot" />
           <span className="pq-card-name">{n}</span>
-          <span className="pq-card-meta">named contact · approves resellers</span>
+          <span className="pq-card-meta">contact details in your account</span>
         </motion.div>
       ))}
       <motion.div className="pq-card pq-card-ghost" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
@@ -216,7 +217,7 @@ function OfferScene({ heading, items, body }: { heading: string; items: string[]
   );
 }
 
-const TODAY_ITEMS = ["3 Suppliers + Practice Catalog", "3 Playbooks", "Software Demo", "9 Core Videos", "100% Ungating Roadmap"];
+const TODAY_ITEMS = ["3 Suppliers + Practice Catalog", "3 Playbooks", "Software Demo", "9 Core Videos", "Ungating Roadmap"];
 const TODAY_BODY =
   "Start the trial and explore all of our resources, and join our community where you can ask questions. Demos open up after you enable the free trial.";
 const TRIAL_ITEMS = ["Apex University, all modules", "Ungating Roadmap", "First Suppliers", "Keepa Playbook"];
@@ -242,7 +243,9 @@ const SOLUTIONS: Record<string, { headline: string; sub: string }> = {
   },
   "Find more suppliers": {
     headline: "Finding more suppliers is what Apex does best.",
-    sub: "Your directory of 389+ verified suppliers comes with your software, three are sent to you every month, and you get the outreach prep that gets them to approve you.",
+    // Accuracy pass 2026-10-07: "proven", "verified" and "vetted for 2026" removed; the count comes from distributorStats and the
+    // schedule is the one in SUPPLIER_ACCESS (3 open when the subscription starts, 3 more each month).
+    sub: `Your directory of ${DISTRIBUTOR_COUNT} US wholesale distributors comes with your software. Three open when your subscription starts and three more each month, and you get outreach prep to help your application.`,
   },
   "Going brand direct": {
     headline: "Going brand direct is the right move, and you are about to get the map.",
@@ -280,8 +283,8 @@ function obstacleScene(obstacle: string, dollarWeek: boolean) {
     case "Find more suppliers":
       return (
         <Scene
-          title="A proven FBA directory of 389+ verified suppliers, vetted for 2026."
-          body="Three are sent to you every month with your software, along with how to prepare your outreach so they say yes to you."
+          title={`A directory of ${DISTRIBUTOR_COUNT} US wholesale distributors.`}
+          body="Three open when your subscription starts and three more each month, along with how to prepare your outreach."
         >
           <SuppliersScene />
         </Scene>

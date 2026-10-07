@@ -22,7 +22,7 @@ export default function Page() {
             "Your housed products carry the stock picture beside the economics: units available, what is already inbound, and what is sitting in a warehouse or prep center rather than at Amazon. Inbound and unavailable units are counted separately from sellable stock, because a restock decision that treats a pallet in transit as available buys the same units twice.",
           points: [
             "Available, inbound and warehouse quantities shown as separate figures, not one total",
-            "Buy Box and 30, 60 and 90-day average prices on the same row as your landed cost",
+            "Buy Box price on the same row as your landed cost, plus 30, 60 and 90-day average prices on the Plus and Pro plans",
             "Profit, ROI and margin computed from your own unit cost, prep cost and shipping",
             "A filter for products that clear your thresholds on every price basis at once, not just the best one",
           ],
@@ -30,11 +30,13 @@ export default function Page() {
         {
           heading: "Make the assumptions visible",
           body:
-            "Restock planning in Apex is assumption-based rather than predictive, and the assumptions are fields you set rather than a model you cannot inspect. You choose the target days of inventory to hold, whether to use each vendor's own lead time, and how many days to allow for prep. Those three numbers drive the suggestion. There is no black-box demand forecast here, and this page is not going to describe one.",
+            "Restock planning in Apex is assumption-based rather than predictive, and the assumptions are fields you set rather than a model you cannot inspect. A suggestion uses four inputs: your current stock, your recent sales velocity, the cover and lead time you set, and whether the product is profitable at your cost. You choose the target days of inventory to hold, whether to use each vendor's own lead time, and how many days to allow for prep. It is not a forecast of future demand, there is no black-box model here, and this page is not going to describe one.",
           points: [
+            "Stock and sales velocity, synced from your Amazon account every few minutes",
             "Target days of inventory, how deep you want to be covered",
             "Vendor lead time, taken per supplier, or a single figure across all of them",
             "Prep days, added on top of the supplier's lead time",
+            "Profitability, from your own cost, so a fast seller that loses money does not top the list",
           ],
         },
         {
@@ -51,13 +53,13 @@ export default function Page() {
       caveat={{
         heading: "What this page does not claim",
         body:
-          "Apex Red, the module that builds and sends FBA shipments, is in beta. This page describes inventory planning and purchasing, which are not. Restock suggestions are arithmetic on the assumptions you enter, not a statistical forecast with a service level, and a purchase order is an accounting document, not a cash-flow plan: the profit a product shows is not the cash you will have when the invoice falls due.",
+          "Apex Red, the module that builds FBA shipments, is in beta and opened by invitation. This page describes inventory planning and purchasing, which are not. Restock suggestions are arithmetic on the assumptions you enter, not a statistical forecast with a service level, and a purchase order is an accounting document, not a cash-flow plan: the profit a product shows is not the cash you will have when the invoice falls due.",
       }}
       faqs={[
         {
           question: "Does this include FBA shipment creation?",
           answer:
-            "Apex Red covers shipment building and it is in beta. Inventory planning and purchasing, described on this page, are not in beta. Confirm fulfillment support separately before you rely on it.",
+            "Apex Red covers shipment building and it is in beta, opened by invitation. Inventory planning and purchasing, described on this page, are not in beta. Confirm fulfillment support separately before you rely on it.",
         },
         {
           question: "Can I use my own lead times?",
@@ -67,7 +69,7 @@ export default function Page() {
         {
           question: "Does it forecast demand?",
           answer:
-            "No, and we are not going to say otherwise. The restock figure comes from your target cover, your lead times and your current stock. If you want a statistical forecast with a service level, this is not that.",
+            "No, and we are not going to say otherwise. The restock figure comes from your current stock, your sales velocity, your target cover and your lead times. If you want a statistical forecast with a service level, this is not that.",
         },
       ]}
       ctaHeading="Plan your next order on your own numbers"

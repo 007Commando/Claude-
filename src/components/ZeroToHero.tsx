@@ -22,7 +22,6 @@ import {
   GraduationCap,
   ScanLine,
   ShieldCheck,
-  Star,
   Truck,
   X,
   Zap,
@@ -33,6 +32,7 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import { interceptForSignedIn } from "../lib/apexAuthClient";
 
 import { readStoredAttribution } from "./LeadAttribution";
+import TrustpilotBadge, { TRUSTPILOT } from "./TrustpilotBadge";
 import {
   TRIAL_DAYS,
   planById,
@@ -262,6 +262,8 @@ const modules = [
   },
 ];
 
+// Accuracy pass 2026-10-07: "whole Apex suite" and "logistics" replaced with the Starter plan's modules; "vetted" removed;
+// the "2,400+ customers" star row replaced with the Trustpilot badge; "sell by Christmas" removed (an outcome-by-date promise).
 const included = [
   {
     icon: CirclePlay,
@@ -274,16 +276,16 @@ const included = [
   {
     icon: ScanLine,
     eyebrow: "The Software",
-    title: "The whole Apex suite, free for your trial",
-    body: "Sourcing, analytics, purchase orders and logistics in one connected workspace. Apex Black, Blue and Green, open for the length of your trial.",
+    title: "Apex Black, Blue and Green, free for your trial",
+    body: "Sourcing, profit analytics and purchase orders in one connected workspace, on the Starter plan for the length of your trial. The Starter plan does not include the repricer.",
     img: "/images/zero-to-hero/software-suite.webp",
     alt: "The Apex dashboard showing analytics and the tools menu",
   },
   {
     icon: Truck,
     eyebrow: "The Suppliers",
-    title: "3 vetted suppliers to start with",
-    body: "Three vetted wholesale suppliers so you can launch, load real catalogues into the software and begin finding products to sell.",
+    title: "3 suppliers to start with",
+    body: "Three US wholesale distributors from the Distributor Vault, so you can load real catalogues into the software and begin finding products to sell.",
     img: "/images/zero-to-hero/suppliers.webp",
     alt: "Three wholesale supplier catalogues and their products",
   },
@@ -395,14 +397,19 @@ export default function ZeroToHero() {
                     />
                   ))}
                 </div>
-                <div className="flex gap-0.5 text-accent">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <Star key={i} className="h-3 w-3 fill-current" />
-                  ))}
+                {/* The badge's colours come from variables defined on the Apex Pop pages, so they are set here. */}
+                <div
+                  style={
+                    {
+                      "--line": "#e2e2ea",
+                      "--body": "#4a4a5a",
+                      "--ink-strong": "#111118",
+                      "--faint": "#9a9aaa",
+                    } as React.CSSProperties
+                  }
+                >
+                  <TrustpilotBadge {...TRUSTPILOT} />
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  loved by <span className="font-bold text-foreground">2,400+ customers</span>
-                </p>
               </div>
               <p className="w-full text-[11px] text-muted-foreground">
                 We respect your privacy. Your information will never be shared.
@@ -657,7 +664,7 @@ export default function ZeroToHero() {
                 Apex University
               </span>
               <h2 className="mt-6 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-                Start now &amp; sell by Christmas.
+                Start now.
                 <span className="mt-2 block text-2xl italic text-muted-foreground/60 sm:text-3xl">
                   Take the course and follow the roadmap!
                 </span>

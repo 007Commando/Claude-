@@ -45,7 +45,7 @@ const ROWS: { label: string; apex: Cell; fiverr: Cell; upwork: Cell }[] = [
     label: "Trackable performance",
     apex: {
       state: "yes",
-      text: "Guaranteed. Their work lands in your Apex account, so you see it",
+      text: "Their work lands in your Apex account, so you see it",
     },
     fiverr: { state: "varies", text: "Whatever they choose to report" },
     upwork: { state: "varies", text: "Whatever they choose to report" },
@@ -56,7 +56,7 @@ const SKILLS = [
   "Buying and purchase orders",
   "Product research",
   "Inventory management",
-  "Shipment creation",
+  "Shipment creation (Apex Red, beta)",
   "Account health",
 ];
 

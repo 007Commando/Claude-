@@ -24,11 +24,14 @@ import CheckoutLink from "./CheckoutLink";
 
 const CHECKOUT_URL = "https://buy.stripe.com/aFa3cn4YW9in5CO6eLdwc0c";
 
+// Accuracy pass 2026-10-07: "entire Apex Suite" replaced with the modules by name and status (the page does not say
+// which plan the 24 months run on, so none is named). Per-item dollar values and the total were removed, "vetted" and
+// "real-time" dropped, and the lifetime prep-center lock-in removed (each center sets its own rates).
 const coreIncludes = [
   {
     icon: CalendarDays,
     title: "2 Years of Apex Applications",
-    body: "Full access to the entire Apex Suite, Apex Black, Blue, Green & Red, for 24 months. Your dashboard, financial analytics, purchase order tracking, sourcing tools, and logistics, without a single monthly bill until your two years are up.",
+    body: "Two years of the Apex software: Apex Black, Blue and Green, your dashboard, profit analytics, purchase orders and sourcing tools. Apex Gold (the repricer) and Apex Red (shipments and prep) are in beta, and Red is opened by invitation. No monthly bill until your two years are up.",
     image: {
       src: opexDashboardImage.url,
       alt: "Apex Opex dashboard showing operating expenses and recurring monthly costs",
@@ -38,40 +41,39 @@ const coreIncludes = [
   {
     icon: Database,
     title: `All ${DISTRIBUTOR_COUNT} Suppliers in the Vault`,
-    body: `Every vetted wholesale distributor in the Apex Vault, unlocked. ${DISTRIBUTOR_COUNT} suppliers across ${DISTRIBUTOR_CATEGORIES.length} categories, from grocery and beauty to electronics and pet supplies, each with a real website and direct contact email. Normally reserved for Apex Annual members.`,
+    body: `Every distributor in the Apex Vault, opened at once. ${DISTRIBUTOR_COUNT} US wholesale distributors across ${DISTRIBUTOR_CATEGORIES.length} categories, from grocery and beauty to electronics and pet supplies, with their websites and contact emails. On a regular monthly subscription the Vault opens 3 at a time.`,
     vault: true,
   },
   {
     icon: Truck,
     title: "Full Prep Center Network Access",
-    body: `Every prep center in our vetted network unlocked, all ${prepCenters.length} partners across the US, with member pricing, priority onboarding, and real-time inventory and restock tools.`,
+    body: `Access to all ${prepCenters.length} prep centers in the Prep Center Network across the US. Member pricing is offered by participating centers, and each sets its own rates. Inventory and restock suggestions in Apex sync from Amazon every few minutes.`,
     map: true,
   },
   {
     icon: Percent,
-    title: "Membership Lifetime Discounts",
-    body: "The discount rate you lock in with a prep center partner stays locked in for as long as you work with them. As a Premium Member, that starts the day you join and carries through your entire membership.",
-    highlights: ["Locked-in pricing", "No renegotiating", "Member-only rates"],
+    title: "Prep Center Member Pricing",
+    body: "Ask participating prep centers for Apex member pricing. Each center sets its own rates and terms, so get the rate in writing from the center before you ship.",
+    highlights: ["Member pricing", "Set by each center", "Ask for a quote"],
   },
 ];
 
-const valueStack: { label: string; value: number | null }[] = [
-  { label: "2 Years of Apex Applications", value: 7176 },
-  { label: `All ${DISTRIBUTOR_COUNT} Suppliers in the Vault`, value: null },
-  { label: "Full Prep Center Network Access", value: 200 },
-  { label: "Membership Lifetime Discounts", value: null },
+const valueStack: string[] = [
+  "2 Years of Apex Applications",
+  `All ${DISTRIBUTOR_COUNT} Suppliers in the Vault`,
+  "Full Prep Center Network Access",
+  "Prep Center Member Pricing",
 ];
-const totalValue = valueStack.reduce((sum, item) => sum + (item.value ?? 0), 0);
 const PRICE = 5999;
 
 const faqs = [
   {
     q: "Is this a subscription, or a one-time payment?",
-    a: "This is a one-time payment of $5,999. It covers your first two years of full Apex Suite access, plus vault and prep center network access with discount rates that stay locked in beyond that. It is not a recurring charge.",
+    a: "This is a one-time payment of $5,999. It covers two years of the Apex software, plus the whole Distributor Vault and access to the Prep Center Network. It is not a recurring charge.",
   },
   {
     q: "What happens after the 2 years?",
-    a: "Your Apex Suite access continues on our standard Starter or Pro plans, whichever fits you at that point. Your unlocked vault access and prep center discount rates carry forward with you, they do not reset.",
+    a: "Your Apex access continues on one of our standard plans, whichever fits you at that point.",
   },
   {
     q: "I already have an Apex account. Can I still get this?",
@@ -79,11 +81,11 @@ const faqs = [
   },
   {
     q: "How is this different from Apex Elite?",
-    a: `Apex Elite is a $297 one-time entry point: 90 days of software, 3 starting suppliers, and Prep Center Network access. Premium Membership is built for sellers ready to commit further: two full years of software, all ${DISTRIBUTOR_COUNT} suppliers in the vault, full prep center network access, and discount rates locked in for the life of your membership.`,
+    a: `Apex Elite is a $297 one-time entry point: 90 days of the Starter plan, 3 starting suppliers, and Prep Center Network access. Premium Membership is built for sellers ready to commit further: two full years of software and all ${DISTRIBUTOR_COUNT} suppliers in the vault, plus Prep Center Network access.`,
   },
   {
     q: "Do I need any prior experience with Amazon or wholesale?",
-    a: "No. Premium Membership is built to take someone from zero to a running system: suppliers, software, logistics, and locked-in pricing around you. Our team is there to help you get set up correctly.",
+    a: "No. Premium Membership is built to take someone from zero to a running system: suppliers, software, and prep center access around you. Our team is there to help you get set up correctly.",
   },
 ];
 
@@ -119,10 +121,10 @@ function VaultPreview() {
     <div className="rounded-3xl border border-slate-200 shadow-sm bg-white p-6 sm:p-8">
       <div className="text-center mb-6">
         <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          {DISTRIBUTOR_COUNT}+
+          {DISTRIBUTOR_COUNT}
         </div>
         <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
-          Vetted Distributors, Fully Unlocked
+          Wholesale Distributors, Fully Unlocked
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
@@ -252,7 +254,7 @@ export default function PremiumMembership() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-14"
@@ -262,13 +264,12 @@ export default function PremiumMembership() {
             Apex Premium Membership
           </div>
           <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-[1.05]">
-            The Full Apex System, Locked In{" "}
+            Two Years of Apex, Locked In{" "}
             <span className="text-brand">for $5,999</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            Every supplier in our vault. Every prep center in our network. Two years of the
-            complete Apex Suite. One membership, built for sellers who are done piecing it
-            together.
+            Every supplier in our vault. Every prep center in our network. Two years of the Apex
+            software. One membership, built for sellers who are done piecing it together.
           </p>
 
           <div className="flex flex-col items-center gap-4">
@@ -311,11 +312,11 @@ export default function PremiumMembership() {
         >
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-              Everything, Unlocked, for Two Years
+              Two Years of Apex, Plus the Whole Vault
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Not a starter offer. The entire vault, the entire network, and the entire Apex
-              Suite, all unlocked at once.
+              Not a starter offer. The whole vault and the prep center network, plus two years of
+              the Apex software.
             </p>
           </div>
 
@@ -438,31 +439,27 @@ export default function PremiumMembership() {
               Your complete wholesale membership
             </div>
             <h2 className="text-3xl lg:text-5xl font-black mb-3 tracking-tight leading-tight">
-              Get Everything for $5,999
+              What You Get for $5,999
             </h2>
             <p className="text-lg text-slate-300 mb-8 max-w-xl mx-auto">
-              A one-time payment of $5,999 unlocks two years of Apex, the entire supplier
-              vault, and the entire prep center network, with discount rates locked in for
-              as long as you're a member.
+              A one-time payment of $5,999 covers two years of Apex, the whole supplier vault,
+              and access to the prep center network. Prep center rates are set by each center.
             </p>
 
             <div className="bg-white rounded-[28px] p-8 max-w-md mx-auto text-left shadow-2xl">
+              {/* Per-item dollar "values" and the total were removed: they had no source. */}
               <div className="flex items-baseline justify-center gap-2 mb-1">
-                <span className="text-2xl font-bold text-slate-300 line-through">${totalValue.toLocaleString()}+</span>
                 <span className="text-5xl font-black text-slate-900">${PRICE.toLocaleString()}</span>
               </div>
               <div className="text-center text-xs font-bold text-emerald-600 uppercase tracking-wide mb-6">
-                One-time payment · Save ${(totalValue - PRICE).toLocaleString()}+
+                One-time payment
               </div>
               <ul className="space-y-3 mb-8">
-                {valueStack.map((item) => (
-                  <li key={item.label} className="flex items-start justify-between gap-3">
+                {valueStack.map((label) => (
+                  <li key={label} className="flex items-start justify-between gap-3">
                     <span className="flex items-start gap-3">
                       <Check size={18} className="text-emerald-500 shrink-0 mt-0.5" strokeWidth={3} />
-                      <span className="text-sm font-semibold text-slate-700">{item.label}</span>
-                    </span>
-                    <span className="text-sm font-bold text-slate-400 shrink-0">
-                      {item.value === null ? "Priceless" : `$${item.value.toLocaleString()}`}
+                      <span className="text-sm font-semibold text-slate-700">{label}</span>
                     </span>
                   </li>
                 ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useScroll } from "motion/react";
 import {
@@ -30,13 +31,22 @@ import {
   SlidersHorizontal,
   Map,
 } from "lucide-react";
+import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
+import { SUPPLIER_ACCESS } from "../config/product";
+import { trialCta, trialTerms } from "../config/offer";
+
+// Accuracy pass 2026-10-07: invoice age, quantity, pricing and photo rules
+// vary by category, brand and account and change over time, so they are
+// phrased as "commonly" / "often", never as Amazon's universal rule. The
+// unsourced "#1 reason", "repeated submissions count against the account",
+// "100,000 UPCs/hour" and "You're Ungated" outcome promises are gone.
 
 const invoiceRequirements = [
-  "Dated within the last 180 days",
+  "Recent: often within the last 180 days, but check the window your application states",
   "Your business name and address",
   "The distributor's name and address",
   "The unit quantity your application asks for. Amazon has commonly required at least 10 units, but confirm it in your own application",
-  "Pricing on the invoice is optional; you can leave it off",
+  "Pricing: some applications accept invoices with pricing removed, others want it shown. Confirm what yours asks for",
 ];
 
 const gatedCategories = [
@@ -66,12 +76,12 @@ const generalSteps = [
   {
     icon: Receipt,
     title: "Keep the Invoice",
-    body: "The invoice's business name and address need to match what's on file with your Amazon seller account. Mismatches are the #1 reason ungating requests get rejected.",
+    body: "The invoice's business name and address need to match what's on file with your Amazon seller account. Mismatches are a common reason ungating requests get rejected.",
   },
   {
     icon: ImageIcon,
     title: "Submit Invoice + Product Photos",
-    body: "Amazon's ungating application asks for the invoice and clear photos of the physical product (and packaging) for the exact ASIN you're applying for.",
+    body: "Many ungating applications ask for the invoice and clear photos of the physical product (and packaging) for the exact ASIN you're applying for. Check what yours asks for.",
   },
 ];
 
@@ -94,7 +104,7 @@ const quickWinSteps = [
       name: "Frontier Co-op Pumpkin Pie Spice",
       size: "1.72 oz bottle",
       price: "$6.19",
-      note: "price as of 2026, always confirm current pricing",
+      note: "Example price. Always confirm current pricing.",
       photo: "/images/ungating-guide/pumpkin-pie-spice-product.png",
     },
     link: {
@@ -120,45 +130,45 @@ const quickWinSteps = [
   {
     icon: RotateCw,
     title: "If It Is Rejected, Read the Reason",
-    body: "A rejection names what Amazon could not verify. A missing address, an unreadable invoice, a quantity below the threshold. Fix that specific thing and submit again. Sending identical documents a second time does not change the answer, and repeated identical submissions can count against the account.",
+    body: "A rejection names what Amazon could not verify. A missing address, an unreadable invoice, a quantity below the threshold. Fix that specific thing and submit again. Sending the same documents a second time is unlikely to change the answer.",
   },
   {
     icon: PartyPopper,
-    title: "You're Ungated in Grocery",
-    body: "Grocery is one of the largest third-party-friendly categories on Amazon. You can now source and list in it freely.",
+    title: "If Approved, Grocery Opens Up",
+    body: "If Amazon approves the application, you can list in Grocery. Individual brands may still need their own approval, and hazmat and restricted products keep their own rules.",
   },
 ];
 
 const nextSteps = [
   {
     icon: Rocket,
-    title: "Sign Up & Get Ungated Today",
-    body: "Start your free trial and the Foundation Guide and this walkthrough are open from day one. Three authorized distributors from the Vault are open the day your subscription starts, three more each full month you stay, and an annual plan opens all of them at once.",
-    highlights: ["7-Day Free Trial", "Ungating Unlock SOP"],
-    linkLabel: "Start Free Trial",
+    title: "Start Your Application",
+    body: `Start your trial and the Foundation Guide and this walkthrough are open from day one. ${SUPPLIER_ACCESS}`,
+    highlights: ["7-Day Trial, Card Required", "Ungating Unlock SOP"],
+    linkLabel: trialCta,
     linkHref: "/auth?mode=signup&plan=starter&period=monthly",
   },
   {
     icon: Building2,
-    title: "Receive 3 Free Suppliers",
-    body: "Reach out to vetted, authorized distributors and brands, open your wholesale accounts, and start pulling their full product catalogs.",
-    highlights: ["3 Free Suppliers in the US"],
-    linkLabel: "Browse Vetted Vendors",
+    title: "Open Your First 3 Distributors",
+    body: "Reach out to US wholesale distributors from the Distributor Vault, open your wholesale accounts, and ask for their product catalogs.",
+    highlights: ["3 US Distributors Open at the Start"],
+    linkLabel: "Browse the Distributor Vault",
     linkHref: "/features/black#resource-library",
   },
   {
     icon: Barcode,
     title: "Analyze with UPC Scanner",
-    body: "Run every account's catalog through our UPC Scanner and store the profitable winners in your Master Catalog inside Apex Blue.",
-    highlights: ["Scan Up to 100,000 UPCs/Hour", "Auto-Match UPC to ASIN"],
+    body: "Run every account's catalog through our UPC Scanner, which works through the whole file in the background, and store the profitable winners in your Master Catalog inside Apex Blue.",
+    highlights: ["Whole Price Lists Scanned", "Auto-Match UPC to ASIN"],
     linkLabel: "View UPC Scanner",
     linkHref: "/features/green#upc-scanner",
   },
   {
     icon: SlidersHorizontal,
     title: "Build Purchase Order",
-    body: "Set your profitability filters and turn your best finds into real purchase orders, ready to send with confidence.",
-    highlights: ["Live Profit Projections", "Per-Supplier Margin & ROI Breakdown"],
+    body: "Set your profitability filters and turn your best finds into purchase orders you can review before you send them.",
+    highlights: ["Profit Projections on Every Line", "Per-Supplier Margin & ROI Breakdown"],
     linkLabel: "View Purchase Orders",
     linkHref: "/features/blue#purchase-orders",
   },
@@ -195,8 +205,9 @@ export default function UngatingGuide() {
     <div className="pt-28 sm:pt-32 pb-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero */}
+        {/* initial={false}: the H1 must render visible on the server (LCP). */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
@@ -209,8 +220,8 @@ export default function UngatingGuide() {
             How <span className="text-brand">Ungating</span> Works on Amazon
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            A quick primer on category and brand restrictions, and a real, step-by-step way to
-            unlock your first category today.
+            A quick primer on category and brand restrictions, and a step-by-step example of
+            applying for approval in your first category.
           </p>
         </motion.section>
 
@@ -300,7 +311,7 @@ export default function UngatingGuide() {
             The General Process
           </h2>
           <p className="text-slate-500 leading-relaxed text-center max-w-2xl mx-auto mb-10">
-            Every ungating request comes down to the same three things.
+            Most ungating requests come down to the same three things.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 mb-10">
             {generalSteps.map((s, i) => (
@@ -329,7 +340,7 @@ export default function UngatingGuide() {
               </div>
               <div>
                 <div className="font-bold text-slate-900 text-sm mb-0.5">Watch it in Apex University</div>
-                <div className="text-xs text-slate-500">Sample ungating walkthrough videos, included free.</div>
+                <div className="text-xs text-slate-500">Sample ungating walkthrough videos, included with every account.</div>
               </div>
               <ArrowRight size={16} className="text-brand shrink-0 ml-auto" />
             </button>
@@ -342,11 +353,18 @@ export default function UngatingGuide() {
               </div>
               <div>
                 <div className="font-bold text-slate-900 text-sm mb-0.5">Use the Distributor Vault</div>
-                <div className="text-xs text-slate-500">390 authorized suppliers. 3 open on subscribing, 3 more a month; annual opens all.</div>
+                <div className="text-xs text-slate-500">{DISTRIBUTOR_COUNT} US wholesale distributors. 3 open when you subscribe, more each month; an annual plan opens all.</div>
               </div>
               <ArrowRight size={16} className="text-brand shrink-0 ml-auto" />
             </button>
           </div>
+          <p className="text-sm text-slate-500 text-center mt-6">
+            Want the invoice in detail? Read the{" "}
+            <Link href="/blog/amazon-ungating-guide" className="font-bold text-brand hover:underline">
+              step-by-step ungating guide
+            </Link>
+            .
+          </p>
         </motion.section>
 
         {/* Quick Win */}
@@ -363,11 +381,11 @@ export default function UngatingGuide() {
               Quick Win
             </div>
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-              Get Ungated in Grocery
+              Apply for Approval in Grocery
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Grocery is one of the largest third-party-friendly categories on Amazon. Here's a
-              real, low-cost way to unlock it.
+              Here's a real, low-cost way to put in an application for Grocery. Approval is
+              Amazon's decision and is not guaranteed.
             </p>
           </div>
 
@@ -382,11 +400,11 @@ export default function UngatingGuide() {
             <div className="flex items-center gap-2 mb-2">
               <FileCheck size={16} className="text-brand" />
               <div className="text-xs font-black text-brand uppercase tracking-[0.2em]">
-                What Amazon Actually Checks
+                What Amazon Commonly Checks
               </div>
             </div>
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-6 tracking-tight">
-              Your invoice needs to show:
+              Your invoice commonly needs to show:
             </h3>
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
               {invoiceRequirements.map((req) => (
@@ -506,10 +524,10 @@ export default function UngatingGuide() {
               What Happens Next
             </div>
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-              From Ungated to Your First Sale
+              From Approval to Your First Sale
             </h2>
             <p className="text-slate-500 leading-relaxed">
-              Getting ungated is step one. Here's the rest of the path once you're in.
+              Approval is step one. Here's the rest of the path if you're approved.
             </p>
           </div>
 
@@ -626,20 +644,22 @@ export default function UngatingGuide() {
         >
           <div className="relative z-10 max-w-xl mx-auto">
             <div className="text-blue-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">
-              Sign Up Today
+              Get Started
             </div>
             <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">
-              Let's Embark on Winning on Amazon
+              Start Your First Application
             </h2>
-            <p className="text-lg text-blue-100 mb-8">
-              3 authorized suppliers the day your trial starts. Everything else you just saw is
-              already built into Apex.
+            <p className="text-lg text-blue-100 mb-4">
+              3 US wholesale distributors open the day your trial starts. The sourcing,
+              purchasing and profit tools you just saw are in Apex today. The repricer (Apex Gold)
+              is in beta, and Apex Red is in beta by invitation.
             </p>
+            <p className="text-sm text-blue-200 mb-8">{trialTerms("starter")}</p>
             <button
               onClick={() => router.push("/auth?mode=signup&plan=starter&period=monthly")}
               className="bg-white text-blue-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl"
             >
-              Start Free Trial
+              {trialCta}
             </button>
           </div>
         </motion.section>

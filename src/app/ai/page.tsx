@@ -4,9 +4,9 @@ import { pageMetadata } from "../../lib/seo";
 import AgentInfrastructure from "../../components/AgentInfrastructure";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Connect AI Agents to Your Amazon Business | Apex",
+  title: "Connect ChatGPT and Claude to Your Amazon Business | Apex",
   description:
-    "Apex gives Claude and other MCP-compatible AI agents read access to your Amazon wholesale data, under your own permissions. See what is live and next.",
+    "Connect Claude or ChatGPT to Apex and ask about your profit, stock, supplier scans and purchase orders. Reading works on every paid plan; draft purchase orders need Pro.",
   path: "/ai",
 });
 

@@ -9,8 +9,10 @@ import { AMAZON_PATH, CLAUDE_PATH, CURSOR_PATH, GEMINI_PATH, OPENAI_PATH } from 
  * The architecture in one picture: agents on top, the Apex layer in the middle,
  * the sources underneath. Static, with a slow dotted flow on the connectors.
  *
- * Solid means live. Dashed means planned. The captions are the same words the
- * rest of the page uses, so the diagram cannot promise more than the text does.
+ * Solid means live. The captions are the same words the rest of the page uses,
+ * so the diagram cannot promise more than the text does. It said the audit log
+ * and drafts were planned for a week after both shipped; the facts now live in
+ * config/product.ts and this picture only draws them.
  */
 
 type Tag = "live" | "beta" | "planned" | "client";
@@ -23,18 +25,18 @@ interface Item {
 }
 
 const ITEMS: Record<string, Item> = {
-  claude: { id: "claude", title: "Claude", tag: "client", caption: "Apex's connector is built for Claude.ai, Claude Desktop and Claude Code. Add it with a key from Settings." },
-  chatgpt: { id: "chatgpt", title: "ChatGPT", tag: "client", caption: "Apex speaks standard MCP over HTTP, so clients that support remote MCP servers can connect. Not individually tested yet." },
+  claude: { id: "claude", title: "Claude", tag: "client", caption: "Works on Claude on the web, the desktop app and Claude Code. Add Apex as a custom connector with the link from Connect your AI in Apex." },
+  chatgpt: { id: "chatgpt", title: "ChatGPT", tag: "client", caption: "Works on ChatGPT on the web as a custom MCP server. ChatGPT asks you to confirm before any tool that makes a draft." },
   gemini: { id: "gemini", title: "Gemini", tag: "client", caption: "Same standard endpoint. Any client that can call a remote MCP server with a bearer key can use it. Not individually tested yet." },
   cursor: { id: "cursor", title: "Cursor", tag: "client", caption: "Same standard endpoint, for coding agents and editors that support remote MCP. Not individually tested yet." },
   key: { id: "key", title: "Key check", tag: "live", caption: "Each key belongs to one account and one user, is stored hashed, shown once, and can be revoked. The account always comes from the key, never from the prompt." },
   perm: { id: "perm", title: "Permission check", tag: "live", caption: "Each tool runs the same subscription and permission rules as the page it mirrors, so an agent never sees more than the person who connected it." },
-  read: { id: "read", title: "Read-only tools", tag: "live", caption: "Thirteen tools today, and none of them can change a price, an order or a setting." },
-  approve: { id: "approve", title: "Approval gate", tag: "planned", caption: "Planned. When actions arrive, an agent will only propose a change and a signed-in person approves it first." },
-  audit: { id: "audit", title: "Audit log", tag: "planned", caption: "Planned. Every agent call recorded with the key, the tool and the time, viewable in Settings." },
+  read: { id: "read", title: "Read tools", tag: "live", caption: "Sixteen tools that only read. None of them can change a price, an order or a setting." },
+  draft: { id: "draft", title: "Drafts only", tag: "live", caption: "A separate write link, on the Pro plan, can make three kinds of draft: a purchase order, products in your database, a supplier. Nothing is submitted or sent. You review it in Apex." },
+  audit: { id: "audit", title: "Audit log", tag: "live", caption: "Every call through a write link is recorded with the link, the tool and the result, and listed under Connect your AI in Apex." },
   amazon: { id: "amazon", title: "Your Amazon data", tag: "live", caption: "Apex syncs your own account's orders, inventory and fees every few minutes. Agents read that synced data, never Amazon directly." },
-  catalog: { id: "catalog", title: "Catalog and scans", tag: "live", caption: "Your product database and supplier catalog scans, matched against Apex's catalog of 120M+ ASINs." },
-  tools: { id: "tools", title: "Apex tools", tag: "live", caption: "Reading P&L, restock, repricer and scan results works today. Creating purchase orders or changing prices from an agent is planned, behind approval." },
+  catalog: { id: "catalog", title: "Catalog and scans", tag: "live", caption: "Your product database and supplier catalog scans, matched against Apex's catalog of 122M+ Amazon products." },
+  tools: { id: "tools", title: "Apex tools", tag: "live", caption: "Profit and loss, restock, purchase orders, repricer data and scan results. Changing a live price from an assistant is not available." },
 };
 
 const TAG_LABEL: Record<Tag, string> = { live: "Live", beta: "Beta", planned: "Planned", client: "MCP client" };
@@ -75,13 +77,13 @@ export default function ArchitectureDiagram() {
   const chips: [string, string, boolean][] = [
     ["key", "Key", false],
     ["perm", "Permissions", false],
-    ["read", "Read-only", false],
-    ["approve", "Approval", true],
-    ["audit", "Audit log", true],
+    ["read", "Read", false],
+    ["draft", "Drafts only", false],
+    ["audit", "Audit log", false],
   ];
   const sources: [string, string, string][] = [
     ["amazon", "Your Amazon data", "Orders, inventory, fees"],
-    ["catalog", "Catalog and scans", "120M+ ASINs matched"],
+    ["catalog", "Catalog and scans", "122M+ products matched"],
     ["tools", "Apex tools", "P&L, restock, repricer"],
   ];
 
@@ -165,9 +167,7 @@ export default function ArchitectureDiagram() {
         {/* legend */}
         <g fontSize={11} fill={MUTED}>
           <rect x={16} y={527} width={22} height={8} rx={4} fill="#fff" stroke="#93c5fd" strokeWidth={1.5} />
-          <text x={46} y={535}>Live</text>
-          <rect x={92} y={527} width={22} height={8} rx={4} fill="#f8fafc" stroke={LINE} strokeWidth={1.5} strokeDasharray="4 3" />
-          <text x={122} y={535}>Planned</text>
+          <text x={46} y={535}>Live today</text>
         </g>
       </svg></div>
       <p className="mt-1 text-center text-[11px] text-slate-400 sm:hidden">Swipe the diagram sideways</p>

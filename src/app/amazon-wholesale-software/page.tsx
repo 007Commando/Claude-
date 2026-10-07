@@ -5,6 +5,8 @@ import { pageMetadata } from "../../lib/seo";
 import { absoluteUrl } from "../../config/site";
 import { COMPARISONS } from "../../data/comparisons";
 import { HAND_BUILT, COMPARISON_COUNT } from "../../data/compareIndexCards";
+import { ANNUAL_DISCOUNT_PERCENT, TRIAL_DAYS, formatPrice, planById, trialTerms } from "../../config/offer";
+import { REPRICER_FACTS, SUPPLIER_ACCESS } from "../../config/product";
 
 /**
  * The page that owns "Amazon wholesale software".
@@ -15,6 +17,10 @@ import { HAND_BUILT, COMPARISON_COUNT } from "../../data/compareIndexCards";
  * every comparison, so it is also the hub that gets those pages crawled.
  * Every capability named here is described on the module's own page; nothing
  * is claimed that the product page does not already say.
+ *
+ * Accuracy pass 2026-10-07: the "100,000 UPCs an hour" figure is gone (no
+ * measured speed), Gold and Red carry their beta labels, and the pricing FAQ
+ * and supplier rule are built from offer.ts / product.ts instead of retyped.
  */
 
 export const metadata: Metadata = pageMetadata({
@@ -30,7 +36,7 @@ const JOBS = [
     body: "Wholesale starts with a spreadsheet from a distributor, often thousands of rows. Software has to match each UPC to its Amazon listing and show price, sales rank, fees and profit for every row, so you only look closely at the ones that work.",
     module: "Apex Green",
     href: "/features/green",
-    points: ["Upload a whole price list and match every UPC to its ASIN", "Profit, ROI and sales rank per row", "Up to 100,000 UPCs an hour, with suppliers merged into one master catalog"],
+    points: ["Upload a whole price list and match every UPC to its ASIN", "Profit, ROI and sales rank per row", "The scan works through the whole file in the background, and matches are filed under the supplier"],
   },
   {
     job: "Turn the shortlist into purchase orders",
@@ -40,11 +46,11 @@ const JOBS = [
     points: ["Purchase orders built from the products you approved", "Supplier records and an inventory database", "Landed cost carried through to profit"],
   },
   {
-    job: "Price to win the Buy Box without selling at a loss",
+    job: "Reprice without selling below your own floor",
     body: "Wholesale listings are shared, so price moves constantly. A repricer for wholesale needs a floor worked out from your real cost and Amazon's fees, not a guess.",
-    module: "Apex Gold",
+    module: "Apex Gold (beta, Pro plan)",
     href: "/features/gold",
-    points: ["Break-even floors from your real FBA fees", "Floors set by ROI, margin or dollar profit", "Dry-run previews and a full activity log"],
+    points: ["Break-even floors from your real FBA fees", "Floors set by ROI, margin or dollar profit", "Dry-run previews and a full activity log", "Rule-based: prices change when you run your strategies from Apex"],
   },
   {
     job: "Know what you actually made",
@@ -56,16 +62,16 @@ const JOBS = [
   {
     job: "Get stock prepped and shipped to Amazon",
     body: "Most wholesale sellers use a prep center. The shipments, warehouses and prep bills belong in the same system as the orders that created them.",
-    module: "Apex Red (beta)",
+    module: "Apex Red (beta, by invitation)",
     href: "/features/red",
     points: ["Shipments, warehouses and inventory in one place", "Prep center coordination and billing", "Access to Apex's prep center network"],
   },
   {
     job: "Ask every buyer for a review",
-    body: "Amazon's own Request a Review button is the safe way to ask for reviews. Doing it by hand on every order is the part nobody keeps up with.",
+    body: "Amazon's own Request a Review button is the way Amazon lets sellers ask for reviews. Doing it by hand on every order is the part nobody keeps up with.",
     module: "Apex Black",
     href: "/features/black",
-    points: ["Amazon's review request sent on every eligible order, on a schedule", "A log of what was sent", "The seller dashboard and Apex University course"],
+    points: ["Amazon's own review request sent on eligible Amazon.com orders, a set number of days after the order", "A log of what was sent", "The seller dashboard and Apex University course"],
   },
 ];
 
@@ -73,7 +79,7 @@ const FAQ = [
   {
     question: "What is Amazon wholesale software?",
     answer:
-      "Software that runs the wholesale loop: analysing supplier price lists to find profitable products, building purchase orders, repricing shared listings, tracking profit after every cost, and managing prep and shipments to FBA. Most sellers stitch several tools together; Apex puts the loop in one place.",
+      "Software that runs the wholesale loop: analysing supplier price lists to find profitable products, building purchase orders, repricing shared listings, tracking profit after every cost, and managing prep and shipments to FBA. Most sellers stitch several tools together; Apex puts the loop in one place, with the repricer and the prep and shipment tools still in beta.",
   },
   {
     question: "What is the best software for Amazon wholesale?",
@@ -82,7 +88,8 @@ const FAQ = [
   },
   {
     question: "How much does Apex cost?",
-    answer: "The Starter plan is $149 a month and the Pro plan is $299 a month, and both start with a 7-day free trial.",
+    // Built from offer.ts. Rendered and serialized into FAQPage JSON-LD from this same string.
+    answer: `Beginner is ${formatPrice(planById("beginner").monthly)} a month (monthly billing only, for sellers under $5,000 a month in Amazon sales), Starter is ${formatPrice(planById("starter").monthly)}, Plus is ${formatPrice(planById("plus").monthly)} and Pro is ${formatPrice(planById("pro").monthly)}. Yearly billing is ${ANNUAL_DISCOUNT_PERCENT}% off on Starter, Plus and Pro. Every plan starts with a ${TRIAL_DAYS}-day trial: a card is required and nothing is charged until day ${TRIAL_DAYS + 1}. ${REPRICER_FACTS.plans} The repricer (Apex Gold) is in beta.`,
   },
   {
     question: "Can I check a product before signing up?",
@@ -149,8 +156,7 @@ export default function Page() {
         <section className="mt-12 rounded-3xl bg-slate-50 p-7">
           <h2 className="text-2xl font-black tracking-tight text-slate-900">Suppliers to start with</h2>
           <p className="mt-3 text-base leading-relaxed text-slate-600">
-            Software does not help without someone to buy from. Every Apex trial comes with three authorized US distributors from
-            the Distributor Vault, with three more each full month you stay.
+            Software does not help without someone to buy from. {SUPPLIER_ACCESS}
           </p>
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold">
             <Link href="/distributor-vault" className="text-blue-600 hover:underline">The Distributor Vault</Link>
@@ -196,9 +202,9 @@ export default function Page() {
         </section>
 
         <section className="mt-16 rounded-[2rem] bg-slate-950 px-8 py-12 text-center text-white">
-          <h2 className="text-3xl font-black tracking-tight">Try the whole loop free for 7 days.</h2>
+          <h2 className="text-3xl font-black tracking-tight">Try Apex with a 7-day trial.</h2>
           <p className="mx-auto mt-3 max-w-xl text-slate-300">
-            Bring a supplier price list and see which products are worth buying before you spend anything.
+            Bring a supplier price list and see which products are worth buying before you spend anything on stock. {trialTerms("starter")}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link

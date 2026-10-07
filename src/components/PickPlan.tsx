@@ -56,8 +56,20 @@ type Section = {
   rows: Row[];
 };
 
-const yes = <Check className="w-5 h-5 text-emerald-500 mx-auto stroke-[3]" />;
-const no = <X className="w-5 h-5 text-slate-300 mx-auto stroke-[3]" />;
+// The ticks carry their meaning in text too, for screen readers and anyone
+// who cannot tell a green tick from a grey cross.
+const yes = (
+  <>
+    <Check aria-hidden="true" className="w-5 h-5 text-emerald-500 mx-auto stroke-[3]" />
+    <span className="sr-only">Included</span>
+  </>
+);
+const no = (
+  <>
+    <X aria-hidden="true" className="w-5 h-5 text-slate-400 mx-auto stroke-[3]" />
+    <span className="sr-only">Not included</span>
+  </>
+);
 
 const sections: Section[] = [
   {
@@ -97,7 +109,6 @@ const sections: Section[] = [
       { label: "Vendors", icon: <Globe className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Database", icon: <Database className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Listings Monitored", beginner: countLabel(B.housedAsins, "listings"), limited: countLabel(PLAN_LIMITS.starter.housedAsins, "listings"), unlimited: countLabel(PLAN_LIMITS.pro.housedAsins, "listings") },
-      { label: "Prep Centre Connections", limited: String(PLAN_LIMITS.starter.prepCenterConnections), unlimited: String(PLAN_LIMITS.pro.prepCenterConnections) },
       { label: "Purchase Orders", icon: <FileText className="w-4 h-4" />, limited: yes, unlimited: yes },
       { label: "Purchase Order Discrepancy", limited: PLAN_LIMITS.starter.purchaseOrderDiscrepancy ? yes : no, unlimited: PLAN_LIMITS.pro.purchaseOrderDiscrepancy ? yes : no },
       { label: "Opex", icon: <Wallet className="w-4 h-4" />, limited: yes, unlimited: yes },
@@ -117,15 +128,25 @@ const sections: Section[] = [
     ],
   },
   /**
-   * Matched to the app's plan table (2026-10-05), which lists every Red tool
-   * as included on every plan, with prep centre connections set by plan.
+   * Red is a beta opened by invitation (the app shows an invite-only dialog to
+   * sellers without access; clients of an approved prep center get it free),
+   * so a tick here promised something a new subscriber could not open. Prep
+   * center connections are no longer limited by plan (backend 071b8fb), so
+   * that row went too.
    */
   {
-    title: "Apex Red",
+    title: "Apex Red (beta)",
     rows: [
-      { label: "Shipments & Warehouses", limited: yes, unlimited: yes },
-      { label: "Prep Centre Workflows", limited: "Unlimited", unlimited: "Unlimited" },
-      { label: "Inventory, Prep Chat & Prep Billing", limited: yes, unlimited: yes },
+      { label: "Shipments & Warehouses", beginner: "Beta, by invitation", limited: "Beta, by invitation", unlimited: "Beta, by invitation" },
+      { label: "Inventory, Prep Chat & Prep Billing", beginner: "Beta, by invitation", limited: "Beta, by invitation", unlimited: "Beta, by invitation" },
+    ],
+  },
+  /** From config/product.ts AI_CONNECTOR: reads follow each page's plan gate, drafts need Pro. */
+  {
+    title: "AI Assistants (ChatGPT & Claude)",
+    rows: [
+      { label: "Read your Apex data", beginner: yes, limited: yes, unlimited: yes },
+      { label: "Draft purchase orders, products & vendors", beginner: no, limited: no, unlimited: yes },
     ],
   },
   {
