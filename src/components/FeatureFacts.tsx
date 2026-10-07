@@ -27,8 +27,8 @@ export default function FeatureFacts({ module }: { module: ModuleKey }) {
     <section aria-labelledby={`${module}-facts`} className="border-y border-slate-200 bg-slate-50 py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 max-w-3xl">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-            {m.name}{beta ? " · Beta" : ""}
+          <p className="mb-3 text-sm font-semibold text-slate-500">
+            {m.name}{beta ? " · beta" : ""}
           </p>
           <h2 id={`${module}-facts`} className="mb-4 text-3xl font-extrabold tracking-tight text-slate-900 [text-wrap:balance]">
             {m.label}: at a glance
@@ -38,23 +38,23 @@ export default function FeatureFacts({ module }: { module: ModuleKey }) {
 
         <div className="grid gap-5 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">Who it is for</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">Who it is for</h3>
             <p className="mb-5 text-slate-700">{f.forWho}</p>
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">What you need</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">What you need</h3>
             <ul className="list-disc space-y-1.5 pl-5 text-slate-700">
               {f.needs.map((n) => <li key={n}>{n}</li>)}
             </ul>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">How it works</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">How it works</h3>
             <ol className="list-decimal space-y-1.5 pl-5 text-slate-700">
               {f.steps.map((s) => <li key={s}>{s}</li>)}
             </ol>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">What you get</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">What you get</h3>
             <p className="text-slate-700">{f.gets}</p>
             {f.syncedVsEntered && (
               <dl className="mt-5 space-y-3 text-sm">
@@ -73,7 +73,7 @@ export default function FeatureFacts({ module }: { module: ModuleKey }) {
 
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">Plans</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">Plans</h3>
             <ul className="space-y-1.5 text-slate-700">
               {f.plans.map((p) => <li key={p}>{p}</li>)}
             </ul>
@@ -83,14 +83,14 @@ export default function FeatureFacts({ module }: { module: ModuleKey }) {
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">Good to know</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">Good to know</h3>
             <ul className="list-disc space-y-1.5 pl-5 text-slate-700">
               {f.limits.map((l) => <li key={l}>{l}</li>)}
             </ul>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">With ChatGPT or Claude</h3>
+            <h3 className="mb-2 text-sm font-semibold text-slate-500">With ChatGPT or Claude</h3>
             {f.ai ? (
               <>
                 <p className="mb-2 rounded-xl bg-slate-100 px-3 py-2 text-sm font-medium text-slate-800">&ldquo;{f.ai.ask}&rdquo;</p>

@@ -177,7 +177,7 @@ export default function Navigation() {
               <img
                 src={apexBullLogo.url}
                 alt=""
-                className="h-18 w-auto object-contain"
+                className="h-12 sm:h-18 w-auto object-contain"
               />
               <span className="text-xl font-bold tracking-tight text-slate-900">
                 APEX{" "}
@@ -222,7 +222,7 @@ export default function Navigation() {
               <img
                 src={apexBullLogo.url}
                 alt=""
-                className="h-18 w-auto object-contain"
+                className="h-12 sm:h-18 w-auto object-contain"
               />
               <span className="text-xl font-bold tracking-tight text-slate-900">
                 APEX{" "}
@@ -245,7 +245,7 @@ export default function Navigation() {
             <img
               src={apexBullLogo.url}
               alt=""
-              className="h-18 w-auto object-contain"
+              className="h-12 sm:h-18 w-auto object-contain"
             />
             <span className="text-xl font-bold tracking-tight text-slate-900">
               APEX{" "}
@@ -256,9 +256,11 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Nav — centered */}
-          {/* Centred from 1280px. Narrower, it sits between the logo and the buttons,
-              because five links centred on top of the row ran into the logo. */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-10 whitespace-nowrap text-[13px] font-bold text-slate-600 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
+          {/* Centred in the space between the logo and the buttons at every width.
+              It used to be absolutely centred on the page from 1280px, which ran
+              "AI INTEGRATIONS" into the logo's wordmark at 1440px once the row
+              grew. Flex keeps it clear of both sides. */}
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-6 xl:gap-9 whitespace-nowrap px-6 text-[13px] font-bold text-slate-600">
             <Link
               href="/ai"
               className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isAiActive ? "text-brand" : ""}`}

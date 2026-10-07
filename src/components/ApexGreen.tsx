@@ -1,8 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion } from "motion/react";
-import { CheckCircle2, TrendingUp, ExternalLink, Layers, Barcode } from "lucide-react";
+import { CheckCircle2, ArrowRight, Layers, Barcode, ListChecks } from "lucide-react";
 import upcScanner from "../assets/upc-scanner.png.asset.json";
 import masterCatalog from "../assets/master-catalog.png.asset.json";
 import apexGreenCtaBull from "../assets/apex-green-cta-bull.png.asset.json";
@@ -11,74 +10,45 @@ import ViewAppButton from "./ViewAppButton";
 import FeatureSection from "./FeatureSection";
 import ScrollProgressLine from "./ScrollProgressLine";
 import FeatureFacts from "./FeatureFacts";
-import { moduleByKey } from "../config/product";
+import FeatureHero from "./FeatureHero";
 import { trialCta, trialTerms } from "../config/offer";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-};
 
 export default function ApexGreen() {
   const sectionsRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="pt-40 pb-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <motion.div
-          initial={false}
-          animate="animate"
-          variants={fadeIn}
-          className="max-w-4xl mx-auto mb-8"
-        >
-          <div className="flex justify-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
-              <TrendingUp size={14} className="stroke-[3]" />
-              Sourcing
-            </div>
-          </div>
-          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
-          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-green-700">Apex Green: {moduleByKey("green").label}</h1>
-          <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
-            HUNTING <br/>
-            <span className="text-green-600 italic">ALGORITHMS.</span>
-          </p>
-          <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Green is built for the hunt. Hand it a supplier's whole price list and it works through every row against the Amazon catalogue in the background, so the shortlist is waiting for you instead of you waiting for it.
-          </p>
-        </motion.div>
-      </div>
+    <div className="pb-24 overflow-hidden">
+      <FeatureHero
+        module="green"
+        intro="Hand Apex Green a supplier's whole price list and it works through every row against the Amazon catalogue in the background, so the shortlist is waiting for you instead of you waiting for it."
+        primary={
+          <ViewAppButton className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-3.5 font-bold text-white transition hover:bg-green-700">
+            Start my 7-day trial <ArrowRight size={18} aria-hidden="true" />
+          </ViewAppButton>
+        }
+        image={{ url: upcScanner.url, alt: "Apex UPC Scanner results for a supplier price list" }}
+        note={trialTerms()}
+      />
 
       {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
       <FeatureFacts module="green" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mt-16 mb-24">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">the journey ↓</span>
-        </div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <div ref={sectionsRef} className="relative space-y-32">
           <ScrollProgressLine containerRef={sectionsRef} colorClassName="bg-green-600" />
 
-          {/* 01 — Spotlight: Apex Green Core Features */}
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
+          {/* Spotlight: core features */}
+          <div>
             <div className="grid lg:grid-cols-[1fr_2fr] gap-16 items-center">
               <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-green-600 flex items-center justify-center shrink-0">
-                    <TrendingUp size={18} className="text-white" strokeWidth={1.75} />
+                <div className="flex items-center gap-2.5 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 ring-1 ring-slate-200 flex items-center justify-center shrink-0">
+                    <ListChecks size={16} className="text-green-600" strokeWidth={2} aria-hidden="true" />
                   </div>
-                  <div className="text-xs font-black text-green-600 uppercase tracking-[0.2em]">01 · Core Features</div>
+                  <div className="text-sm font-semibold text-slate-600">Core features</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">Apex Green. Core Features</h2>
+                <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-5 tracking-tight leading-tight [text-wrap:balance]">Everything for sourcing in one place</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Built for long supplier lists. Scan a whole price list, unify them into one catalogue, and get back the products worth buying. With the ones that did not match shown rather than quietly dropped.
+                  Built for long supplier lists. Scan a whole price list, unify them into one catalogue, and get back the products worth buying.
                 </p>
                 <div className="space-y-4 mb-8">
                   {[
@@ -93,11 +63,10 @@ export default function ApexGreen() {
                     </div>
                   ))}
                 </div>
-                <ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">View Apex Green <ExternalLink size={18} /></ViewAppButton>
+                <ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">Try Apex Green <ArrowRight size={18} /></ViewAppButton>
               </div>
               <div className="relative flex justify-center">
-                <div className="absolute inset-0 rounded-[32px] bg-green-500/30 blur-3xl animate-pulse" aria-hidden />
-                <div data-feature-image className="relative bg-white rounded-[32px] shadow-[0_20px_60px_-15px_rgba(22,163,74,0.45)] ring-1 ring-green-400/40 overflow-hidden max-w-[78%]">
+                <div data-feature-image className="bg-white rounded-2xl border border-slate-200 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)] overflow-hidden max-w-[78%]">
                   <img
                     src={greenCoreFeaturesImage.url}
                     alt="Apex Green core features overview"
@@ -106,16 +75,15 @@ export default function ApexGreen() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* 02 — UPC Scanner */}
+          {/* UPC Scanner */}
           <FeatureSection
             id="upc-scanner"
-            number="02"
             eyebrow="UPC Scanner"
             icon={Barcode}
             title="High-Volume Scanning"
-            description="Upload a spreadsheet of UPCs or EANs and Apex matches each row to the Amazon catalogue, returning rank, estimated sales and competition. Matches are not guaranteed: pack sizes, variations and catalogue records create ambiguity, so unmatched and uncertain rows are shown as exactly that rather than counted as opportunities."
+            description="Upload a spreadsheet of UPCs or EANs and Apex matches each row to the Amazon catalogue, returning rank, estimated sales and competition. Matches can be ambiguous because of pack sizes and variations, so check them before ordering."
             bullets={[
               "Works through the whole file in the background",
               "Auto-match UPC/EAN to ASIN with full catalog data",
@@ -123,16 +91,14 @@ export default function ApexGreen() {
               "Seller counts and who holds the Buy Box"
             ]}
             accentText="text-green-600"
-            accentBg="bg-green-600"
             image={{ url: upcScanner.url, alt: "Apex UPC Scanner dashboard showing product scan results with pricing and profitability metrics" }}
             imageSide="right"
-            cta={<ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">View UPC Scanner <ExternalLink size={18} /></ViewAppButton>}
+            cta={<ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">Try the UPC Scanner <ArrowRight size={18} /></ViewAppButton>}
           />
 
-          {/* 03 — Master Catalog */}
+          {/* Master Catalog */}
           <FeatureSection
             id="master-catalog"
-            number="03"
             eyebrow="Master Catalog"
             icon={Layers}
             title="Unified Data"
@@ -142,16 +108,15 @@ export default function ApexGreen() {
               "Add matched products to your database or a purchase order"
             ]}
             accentText="text-green-600"
-            accentBg="bg-green-600"
             image={{ url: masterCatalog.url, alt: "Apex Master Catalog dashboard showing vendor catalog and UPC data" }}
             imageSide="left"
-            cta={<ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">View Master Catalog <ExternalLink size={18} /></ViewAppButton>}
+            cta={<ViewAppButton data-feature-cta className="bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition-all">Try the Master Catalog <ArrowRight size={18} /></ViewAppButton>}
           />
 
         </div>
 
         {/* CTA Section */}
-        <div className="mt-32 p-12 lg:p-16 bg-green-600 rounded-[56px] text-white relative overflow-hidden text-center">
+        <div className="mt-32 p-12 lg:p-16 bg-green-600 rounded-3xl text-white relative overflow-hidden text-center">
            <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 h-[90%] w-auto opacity-40 brightness-125 scale-x-[-1] pointer-events-none">
               <img
                 src={apexGreenCtaBull.url}
@@ -160,10 +125,10 @@ export default function ApexGreen() {
               />
            </div>
            <div className="relative z-10 max-w-3xl mx-auto">
-              <div className="text-green-200 text-sm font-bold uppercase tracking-[0.2em] mb-4">Apex Green</div>
-              <h2 className="text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight">Start with a supplier price list you already have</h2>
+              <div className="text-green-200 text-sm font-semibold mb-3">Apex Green</div>
+              <h2 className="text-3xl lg:text-4xl font-extrabold mb-4 tracking-tight leading-tight [text-wrap:balance]">Start with a supplier price list you already have</h2>
               <p className="text-lg lg:text-xl text-green-100 mb-8 max-w-2xl mx-auto">{trialTerms()}</p>
-              <ViewAppButton className="bg-white text-green-600 px-10 py-4 rounded-[20px] font-black hover:scale-105 transition-all text-lg shadow-2xl">
+              <ViewAppButton className="bg-white text-green-600 px-10 py-4 rounded-xl font-bold hover:bg-green-50 transition-colors text-lg">
                 {trialCta}
               </ViewAppButton>
            </div>

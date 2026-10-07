@@ -1,17 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
-import { ArrowRight, Check, Container, Minus } from "lucide-react";
+import { ArrowRight, Check, Minus } from "lucide-react";
 import Link from "next/link";
 import FeatureFacts from "./FeatureFacts";
-import { moduleByKey } from "../config/product";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.6 },
-} as const;
+import FeatureHero from "./FeatureHero";
 
 /**
  * The date this page's scope list was checked against the application.
@@ -43,38 +35,26 @@ const NOT_IN_BETA: string[] = [
 
 export default function ApexRed() {
   return (
-    <div className="pt-32 pb-24">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* initial={false}: the hero must be visible in the server HTML, before any script runs. */}
-        <motion.div {...fadeIn} initial={false} className="max-w-3xl mx-auto text-center">
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 border border-red-100 text-red-600 text-[11px] font-bold rounded-full uppercase tracking-[0.1em] shadow-sm">
-              <Container size={14} className="stroke-[3]" />
-              Beta, by invitation. Not a finished product
-            </div>
-          </div>
-
-          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
-          <h1 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-red-700">Apex Red: {moduleByKey("red").label} (Beta)</h1>
-          <p className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tighter leading-[1.02]">
-            Help shape the next Apex{" "}
-            <span className="text-red-600">fulfillment workflow</span>.
-          </p>
-
-          <p className="text-lg text-slate-600 leading-relaxed mb-4 max-w-2xl mx-auto">
-            Apex Red brings shipments, warehouses, prep centres and their billing into the same
-            system that buys and prices your stock. It is in beta and opened by invitation: the list
-            below is what works today, not what is planned.
-          </p>
-        </motion.div>
-      </div>
+    <div className="pb-24">
+      <FeatureHero
+        module="red"
+        intro="Apex Red brings shipments, warehouses, prep centres and their billing into the same system that buys and prices your stock. It is in beta and opened by invitation: the list below is what works today, not what is planned."
+        primary={
+          <Link
+            href="/contact-us"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 font-bold text-white transition hover:bg-red-700"
+          >
+            Ask for a beta invitation <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        }
+      />
 
       {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
       <FeatureFacts module="red" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <motion.div {...fadeIn} className="mt-16 grid gap-6 md:grid-cols-2">
+        <div className="mt-16 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl border-2 border-red-100 bg-red-50/30 p-8">
             <h2 className="text-lg font-black tracking-tight text-slate-900 mb-1">
               Working in the beta today
@@ -109,9 +89,9 @@ export default function ApexRed() {
               ))}
             </ul>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div {...fadeIn} className="mt-16 rounded-3xl border border-slate-200 bg-white p-8 md:p-12">
+        <div className="mt-16 rounded-3xl border border-slate-200 bg-white p-8 md:p-12">
           <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-3">
             Tell us how your operation actually works
           </h2>
@@ -137,9 +117,9 @@ export default function ApexRed() {
             This opens our contact form. It does not start a subscription, take a card, or begin a
             trial, it sends us a message and we reply.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div {...fadeIn} className="mt-16">
+        <div className="mt-16">
           <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-4">
             Most of Apex is not in beta
           </h2>
@@ -164,9 +144,9 @@ export default function ApexRed() {
               </Link>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div {...fadeIn} className="mt-16 space-y-4">
+        <div className="mt-16 space-y-4">
           <h2 className="text-2xl font-black tracking-tight text-slate-900">Common questions</h2>
           {[
             {
@@ -191,9 +171,9 @@ export default function ApexRed() {
               <p className="text-sm leading-relaxed text-slate-500">{faq.a}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div {...fadeIn} className="mt-16 border-t border-slate-200 pt-8">
+        <div className="mt-16 border-t border-slate-200 pt-8">
           <p className="text-[11px] font-black uppercase tracking-[0.15em] text-slate-400 mb-3">
             Comparing shipping tools
           </p>
@@ -213,7 +193,7 @@ export default function ApexRed() {
               </Link>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

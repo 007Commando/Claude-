@@ -2,14 +2,13 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
 import {
   Activity,
   ArrowDown,
   ArrowUp,
   CheckCircle2,
   Crosshair,
-  ExternalLink,
+  ArrowRight,
   Gauge,
   ShieldCheck,
   Sliders,
@@ -18,34 +17,18 @@ import {
 import ViewAppButton from "./ViewAppButton";
 import ScrollProgressLine from "./ScrollProgressLine";
 import FeatureFacts from "./FeatureFacts";
-import { moduleByKey, REPRICER_FACTS } from "../config/product";
-import { TRIAL_DAYS, formatPrice, planById, trialTerms } from "../config/offer";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-} as const;
-
-const sectionReveal = {
-  initial: { opacity: 0, y: 32 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
-} as const;
+import FeatureHero from "./FeatureHero";
+import { REPRICER_FACTS } from "../config/product";
+import { trialTerms } from "../config/offer";
 
 /** A mock repricer row: the concept art for a page with no screenshots yet. Every panel that uses it carries an "Example, not real data" label. */
 function RepriceRow({
-  sku, floor, price, delta, up, winning, delay,
+  sku, floor, price, delta, up, winning,
 }: {
-  sku: string; floor: string; price: string; delta: string; up: boolean; winning: boolean; delay: number;
+  sku: string; floor: string; price: string; delta: string; up: boolean; winning: boolean;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay }}
+    <div
       className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"
     >
       <div className="min-w-0">
@@ -59,47 +42,34 @@ function RepriceRow({
         </span>
         <span className="text-[11px] font-bold text-slate-400 tabular-nums">{delta}</span>
         {winning && (
-          <span className="rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-black px-2 py-0.5 uppercase">
+          <span className="rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold px-2 py-0.5">
             Buy Box
           </span>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function ApexGold() {
   const sectionsRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="pt-40 pb-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero */}
-        <motion.div initial={false} animate="animate" variants={fadeIn} className="max-w-4xl mx-auto mb-8">
-          <div className="flex justify-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black rounded-full uppercase tracking-[0.2em] shadow-sm">
-              <Zap size={14} className="stroke-[3]" />
-              Repricer · Beta · Pro plan
-            </div>
-          </div>
-          {/* The H1 is the descriptive module label plus the brand (SEO); the big slogan below is decoration. */}
-          <h1 className="mb-6 text-center text-sm font-black uppercase tracking-[0.2em] text-amber-700">Apex Gold: {moduleByKey("gold").label} (Beta)</h1>
-          <p className="text-[clamp(3rem,8vw,5rem)] font-black text-slate-900 mb-10 tracking-tight text-center leading-[0.95]">
-            PRICING <br />
-            <span className="text-amber-500 italic">REFLEXES.</span>
-          </p>
-          <p className="text-2xl text-slate-500 leading-relaxed text-center font-medium opacity-80 mb-12">
-            Apex Gold works out what every listing should sell for, anchored to true break-evens
-            computed from your real Amazon fees, never a guess. Preview each move before it
-            goes anywhere near your storefront. {REPRICER_FACTS.plans}
-          </p>
-        </motion.div>
-      </div>
+    <div className="pb-24 overflow-hidden">
+      <FeatureHero
+        module="gold"
+        intro="Apex Gold works out what each listing should sell for, using break-evens worked out from your real Amazon fees, and lets you preview every price move before it reaches your storefront."
+        primary={
+          <ViewAppButton plan="pro" className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-3.5 font-bold text-white transition hover:bg-amber-600">
+            Start a 7-day Pro trial <ArrowRight size={18} aria-hidden="true" />
+          </ViewAppButton>
+        }
+        note={trialTerms("pro")}
+      />
 
       {/* What it is, who it is for, what it needs and which plan: one shared block per module (config/product.ts MODULE_FACTS). */}
       <FeatureFacts module="gold" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-16" aria-hidden="true" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
 
         {/*
           The same thing the application says to a first-time Gold user, said
@@ -108,7 +78,7 @@ export default function ApexGold() {
           confident in the results", and a marketing page that promised a
           finished autopilot was contradicting our own product.
         */}
-        <motion.div {...sectionReveal} initial={false} className="max-w-3xl mx-auto mb-24 rounded-2xl border border-amber-200 bg-amber-50/50 p-6">
+        <div className="max-w-3xl mx-auto mb-24 rounded-2xl border border-amber-200 bg-amber-50/50 p-6">
           <p className="text-sm font-black text-amber-900 mb-1.5">Apex Gold is in beta</p>
           <p className="text-sm leading-relaxed text-amber-900/80">
             Set a floor on every listing before switching repricing on, keep an eye on your
@@ -117,26 +87,22 @@ export default function ApexGold() {
             selection. No repricer can promise you the Buy Box, and this one does not.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-amber-900/80">{REPRICER_FACTS.howPricesMove}</p>
-        </motion.div>
-
-        <div className="text-center mb-24">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">the journey ↓</span>
         </div>
 
         <div ref={sectionsRef} className="relative space-y-32">
           <ScrollProgressLine containerRef={sectionsRef} colorClassName="bg-amber-500" />
 
-          {/* 01 — Repricer core */}
-          <motion.div {...sectionReveal} id="repricer">
+          {/* Repricer core */}
+          <div id="repricer">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
-                    <Zap size={18} className="text-white" strokeWidth={1.75} />
+                <div className="flex items-center gap-2.5 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 ring-1 ring-slate-200 flex items-center justify-center shrink-0">
+                    <Zap size={16} className="text-amber-600" strokeWidth={2} aria-hidden="true" />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">01 · The Repricer</div>
+                  <div className="text-sm font-semibold text-slate-600">The repricer</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-5 tracking-tight leading-tight [text-wrap:balance]">
                   A floor under every listing, before anything moves
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
@@ -158,36 +124,34 @@ export default function ApexGold() {
                   ))}
                 </div>
                 <ViewAppButton plan="pro" data-feature-cta className="bg-amber-500 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 hover:bg-amber-600 transition-all">
-                  View Apex Gold <ExternalLink size={18} />
+                  Try Apex Gold <ArrowRight size={18} />
                 </ViewAppButton>
               </div>
               <div className="relative">
-                <div className="absolute inset-0 rounded-[32px] bg-amber-400/25 blur-3xl" aria-hidden />
-                <div className="relative space-y-2.5 rounded-[28px] border border-amber-200/70 bg-amber-50/40 p-5">
-                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</p>
-                  <RepriceRow sku="B08KHQ · Facial Serum 1oz" floor="$7.29" price="$18.90" delta="+$0.35" up winning delay={0.1} />
-                  <RepriceRow sku="B0CRSN · Tea Tree Oil 2oz" floor="$9.14" price="$21.40" delta="-$0.22" up={false} winning={false} delay={0.2} />
-                  <RepriceRow sku="B006IF · Wave Serum 5.3oz" floor="$11.02" price="$26.15" delta="+$1.10" up winning delay={0.3} />
-                  <RepriceRow sku="B018D3 · Hair Pack 8.4oz" floor="$8.61" price="$19.75" delta="+$0.18" up winning={false} delay={0.4} />
+                <div className="space-y-2.5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <p className="text-sm font-semibold text-slate-600">Example, not real data</p>
+                  <RepriceRow sku="B08KHQ · Facial Serum 1oz" floor="$7.29" price="$18.90" delta="+$0.35" up winning />
+                  <RepriceRow sku="B0CRSN · Tea Tree Oil 2oz" floor="$9.14" price="$21.40" delta="-$0.22" up={false} winning={false} />
+                  <RepriceRow sku="B006IF · Wave Serum 5.3oz" floor="$11.02" price="$26.15" delta="+$1.10" up winning />
+                  <RepriceRow sku="B018D3 · Hair Pack 8.4oz" floor="$8.61" price="$19.75" delta="+$0.18" up winning={false} />
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* 02 — Break-even floors & goals */}
-          <motion.div {...sectionReveal} id="floor-goals">
+          {/* Break-even floors & goals */}
+          <div id="floor-goals">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="relative order-last lg:order-first">
-                <div className="absolute inset-0 rounded-[32px] bg-amber-400/20 blur-3xl" aria-hidden />
-                <div className="relative rounded-[28px] border border-slate-200 bg-white p-7">
-                  <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Set floors by goal</div>
-                  <p className="mb-5 text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</p>
+              <div className="order-last lg:order-first">
+                <div className="rounded-2xl border border-slate-200 bg-white p-7">
+                  <div className="text-sm font-semibold text-slate-900 mb-1">Set floors by goal</div>
+                  <p className="mb-5 text-sm font-semibold text-slate-600">Example, not real data</p>
                   {[
                     { label: "Minimum 10% ROI", detail: "floor computed per SKU from cost + real FBA fees", active: true },
                     { label: "Minimum 15% margin", detail: "solved from referral rate and fulfillment fee", active: false },
                     { label: "Minimum $1.00 profit", detail: "a hard dollar floor under every unit sold", active: false },
                   ].map((goal) => (
-                    <div key={goal.label} className={`flex items-start gap-3 rounded-xl px-4 py-3.5 mb-2 border ${goal.active ? "border-amber-300 bg-amber-50" : "border-slate-100 bg-slate-50/60"}`}>
+                    <div key={goal.label} className={`flex items-start gap-3 rounded-xl px-4 py-3.5 mb-2 border ${goal.active ? "border-slate-300 bg-slate-100" : "border-slate-100 bg-slate-50/60"}`}>
                       <Crosshair size={18} className={goal.active ? "text-amber-600 mt-0.5" : "text-slate-300 mt-0.5"} />
                       <div>
                         <div className="text-sm font-black text-slate-900">{goal.label}</div>
@@ -201,13 +165,13 @@ export default function ApexGold() {
                 </div>
               </div>
               <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
-                    <Gauge size={18} className="text-white" strokeWidth={1.75} />
+                <div className="flex items-center gap-2.5 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 ring-1 ring-slate-200 flex items-center justify-center shrink-0">
+                    <Gauge size={16} className="text-amber-600" strokeWidth={2} aria-hidden="true" />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">02 · Break-Even Floors</div>
+                  <div className="text-sm font-semibold text-slate-600">Break-even floors</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-5 tracking-tight leading-tight [text-wrap:balance]">
                   Floors built from your real fees
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
@@ -230,19 +194,19 @@ export default function ApexGold() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* 03 — Strategy & safety */}
-          <motion.div {...sectionReveal} id="strategies">
+          {/* Strategy & safety */}
+          <div id="strategies">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="max-w-xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
-                    <Sliders size={18} className="text-white" strokeWidth={1.75} />
+                <div className="flex items-center gap-2.5 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 ring-1 ring-slate-200 flex items-center justify-center shrink-0">
+                    <Sliders size={16} className="text-amber-600" strokeWidth={2} aria-hidden="true" />
                   </div>
-                  <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em]">03 · Strategies & Safety</div>
+                  <div className="text-sm font-semibold text-slate-600">Strategies and safety</div>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-5 tracking-tight leading-tight [text-wrap:balance]">
                   Aggressive where you win, disciplined where you don&apos;t
                 </h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
@@ -264,13 +228,12 @@ export default function ApexGold() {
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute inset-0 rounded-[32px] bg-amber-400/20 blur-3xl" aria-hidden />
-                <div className="relative rounded-[28px] border border-slate-200 bg-white p-7">
+                <div className="rounded-2xl border border-slate-200 bg-white p-7">
                   <div className="flex items-center gap-2 mb-5">
                     <Activity size={16} className="text-amber-600" />
-                    <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Activity log</span>
+                    <span className="text-sm font-semibold text-slate-900">Activity log</span>
                     {/* Invented rows (concept art, not output): labelled so they cannot be read as real Buy Box results. */}
-                    <span className="ml-auto text-[11px] font-black uppercase tracking-[0.18em] text-amber-700">Example, not real data</span>
+                    <span className="ml-auto text-sm font-semibold text-slate-600">Example, not real data</span>
                   </div>
                   {[
                     { t: "2m ago", line: "Raised B006IF to $26.15; competitor left the Buy Box" },
@@ -286,18 +249,18 @@ export default function ApexGold() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* 04 — Connected to the suite */}
-          <motion.div {...sectionReveal} id="connected">
+          {/* Connected to the suite */}
+          <div id="connected">
             <div className="max-w-3xl mx-auto text-center">
-              <div className="flex justify-center mb-4">
-                <div className="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center">
-                  <ShieldCheck size={18} className="text-white" strokeWidth={1.75} />
+              <div className="flex items-center justify-center gap-2.5 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-slate-100 ring-1 ring-slate-200 flex items-center justify-center shrink-0">
+                  <ShieldCheck size={16} className="text-amber-600" strokeWidth={2} aria-hidden="true" />
                 </div>
+                <div className="text-sm font-semibold text-slate-600">Part of the suite</div>
               </div>
-              <div className="text-xs font-black text-amber-600 uppercase tracking-[0.2em] mb-4">04 · Part of the Suite</div>
-              <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-5 tracking-tight leading-tight [text-wrap:balance]">
                 A repricer that knows your whole business
               </h2>
               <p className="text-lg text-slate-600 mb-10 leading-relaxed">
@@ -308,7 +271,7 @@ export default function ApexGold() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <ViewAppButton plan="pro" data-feature-cta className="bg-amber-500 text-white px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-amber-600 transition-all">
-                  Start a 7-day Pro trial <ExternalLink size={18} />
+                  Start a 7-day Pro trial <ArrowRight size={18} />
                 </ViewAppButton>
                 <Link href="/pricing" className="rounded-xl border border-amber-300 px-8 py-4 font-bold text-amber-800 hover:bg-amber-50 transition-all">
                   See the Pro plan
@@ -319,7 +282,7 @@ export default function ApexGold() {
                 {trialTerms("pro")}
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

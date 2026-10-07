@@ -23,7 +23,6 @@ import {
   FileDown,
   Tag,
 } from "lucide-react";
-import apexBrandCollage from "../assets/apex-brand-collage.png.asset.json";
 import { ANNUAL_DISCOUNT, PRICE_LIMITED_M, PRICE_UNLIMITED_M } from "../data/planPricing";
 import {
   ANNUAL_DISCOUNT_PERCENT,
@@ -35,8 +34,10 @@ import {
   PLAN_LIMITS,
   planById,
   salesCeilingLabel,
+  TAX_SUFFIX,
   TRIAL_DAYS,
 } from "../config/offer";
+import { REPRICER_FACTS, SUPPLIER_ACCESS, moduleByKey, type ModuleKey } from "../config/product";
 
 type Row = {
   label: string;
@@ -83,7 +84,8 @@ const sections: Section[] = [
        */
       { label: "Monthly Sales", icon: <DollarSign className="w-4 h-4" />, beginner: `Under $${(B.monthlySales! / 1000).toFixed(0)}K/mo in revenue`, limited: salesCeilingLabel("starter"), unlimited: salesCeilingLabel("pro") },
       { label: "Marketplaces", icon: <ShoppingBag className="w-4 h-4" />, limited: String(PLAN_LIMITS.starter.marketplaces), unlimited: String(PLAN_LIMITS.pro.marketplaces) },
-      { label: "Listings", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
+      // "Listings" read as a second listing limit beside "Listings Monitored". This is how many you can sell.
+      { label: "Listings You Can Sell", icon: <Store className="w-4 h-4" />, limited: "Unlimited", unlimited: "Unlimited" },
     ],
   },
   {
@@ -174,7 +176,7 @@ const faqs = [
   },
   {
     question: "Who is the Beginner plan for?",
-    answer: `New sellers doing under $${(B.monthlySales! / 1000).toFixed(0)},000 a month in Amazon sales. It includes ${B.housedAsins.toLocaleString("en-US")} monitored listings, ${B.upcScansPerMonth} UPC scans, ${B.brandSearchesPerMonth} brand searches and ${B.reviewRequestsPerMonth} review requests a month, and one listing on the repricer. Once your sales stay above $${(B.monthlySales! / 1000).toFixed(0)},000 a month for two months in a row, you move up to Starter.`,
+    answer: `New sellers doing under $${(B.monthlySales! / 1000).toFixed(0)},000 a month in Amazon sales. It includes ${B.housedAsins.toLocaleString("en-US")} monitored listings, ${B.upcScansPerMonth} UPC scans, ${B.brandSearchesPerMonth} brand searches and ${B.reviewRequestsPerMonth} review requests a month, and one listing on the repricer. If your sales grow past that, Starter is the next step.`,
   },
   {
     question: "How does the trial work?",
@@ -185,12 +187,12 @@ const faqs = [
      */
     answer: PAID_TRIALS.starter
       ? `Starter starts at ${formatPrice(PAID_TRIALS.starter.price)} for your first ${PAID_TRIALS.starter.days} days, then ${formatPrice(planById("starter").monthly)} a month. Pro includes a ${TRIAL_DAYS}-day free trial. Either way we take a card when you start so billing can continue automatically, every trial comes with 3 free authorized US wholesale suppliers, and you can cancel before the first monthly charge.`
-      : `Yes. Every plan, Beginner, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and every trial comes with 3 free authorized US wholesale suppliers to get you sourcing from day one. We take a card when you start so billing can begin automatically, and nothing is charged until the trial ends.`,
+      : `Yes. Every plan, Beginner, Starter and Pro, includes a ${TRIAL_DAYS}-day free trial, and ${SUPPLIER_ACCESS.replace(/^Every subscription, trial included,/, "every trial")} We take a card when you start so billing can begin automatically, and nothing is charged until day ${TRIAL_DAYS + 1}.`,
   },
   {
     question: "Is the repricer included?",
     answer:
-      "Apex Gold, the repricer, is a Pro feature: Pro reprices every listing. Beginner can switch it on for 1 listing to try it, and Starter doesn't include it.",
+      `Apex Gold, the repricer, is in beta. ${REPRICER_FACTS.plans} ${REPRICER_FACTS.howPricesMove}`,
   },
   {
     question: "What's the difference between the Starter and Pro plans?",
@@ -216,268 +218,277 @@ const faqJsonLd = {
   })),
 };
 
+/**
+ * Section titles in the table read as jobs, with the brand name beside them.
+ * "Apex Black" alone told a new visitor nothing about what the rows were for.
+ */
+const SECTION_MODULE: Record<string, ModuleKey> = {
+  "Apex Black": "black",
+  "Apex Green": "green",
+  "Apex Blue": "blue",
+  "Apex Gold": "gold",
+  "Apex Red (beta)": "red",
+};
+
+type PlanColumn = {
+  id: "beginner" | "starter" | "pro";
+  name: string;
+  /** The per-month figure shown large. */
+  price: string;
+  /** What is actually billed, in words, under the price. */
+  billed: string;
+  fit: string;
+  /** A factual tag; never a popularity claim we cannot back. */
+  tag?: string;
+  featured?: boolean;
+};
+
+/**
+ * The pricing page, polished 2026-10-07.
+ *
+ * Removed: the brand collage and the gradient "business growth" headline,
+ * the dotted texture, a "Best Seller" badge on Annual and "Most Popular" on
+ * Pro (no sales data behind either; Pro now carries the factual "Includes the
+ * repricer"), and the per-row icons that only some rows had, which threw the
+ * label column out of line. The plan header now really sticks under the nav
+ * while the table scrolls: it sat inside an overflow container, which is
+ * the one place `position: sticky` cannot work.
+ */
 export default function PickPlan() {
   const router = useRouter();
   const [isAnnual, setIsAnnual] = useState(false);
 
-  const limitedPrice = isAnnual
-    ? (PRICE_LIMITED_M * (1 - ANNUAL_DISCOUNT)).toFixed(2)
-    : PRICE_LIMITED_M.toFixed(2);
-  const unlimitedPrice = isAnnual
-    ? (PRICE_UNLIMITED_M * (1 - ANNUAL_DISCOUNT)).toFixed(2) // $239.20, as Stripe charges
-    : PRICE_UNLIMITED_M.toString();
-  const annualSavingsPct = Math.round(ANNUAL_DISCOUNT * 100);
+  const yearly = (monthly: number) => monthly * 12 * (1 - ANNUAL_DISCOUNT);
+  const money2 = (n: number) =>
+    `$${n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`;
+
+  const plans: PlanColumn[] = [
+    {
+      id: "beginner",
+      name: "Beginner",
+      price: formatPrice(planById("beginner").monthly),
+      billed: isAnnual ? "Monthly only" : "Billed monthly",
+      fit: planById("beginner").fitsWho,
+    },
+    {
+      id: "starter",
+      name: "Starter",
+      price: isAnnual ? money2(yearly(PRICE_LIMITED_M) / 12) : formatPrice(PRICE_LIMITED_M),
+      billed: isAnnual ? `${money2(yearly(PRICE_LIMITED_M))} billed yearly` : "Billed monthly",
+      fit: planById("starter").fitsWho,
+    },
+    {
+      id: "pro",
+      name: "Pro",
+      price: isAnnual ? money2(yearly(PRICE_UNLIMITED_M) / 12) : formatPrice(PRICE_UNLIMITED_M),
+      billed: isAnnual ? `${money2(yearly(PRICE_UNLIMITED_M))} billed yearly` : "Billed monthly",
+      fit: planById("pro").fitsWho,
+      tag: "Includes the repricer",
+      featured: true,
+    },
+  ];
 
   // Beginner is sold monthly only, so it ignores the annual toggle.
-  const handleStart = (plan: "beginner" | "starter" | "pro") =>
+  const handleStart = (plan: PlanColumn["id"]) =>
     router.push(
       `/auth?mode=signup&plan=${plan}&period=${isAnnual && plan !== "beginner" ? "yearly" : "monthly"}`,
     );
 
+  const startButton = (plan: PlanColumn, size: "sm" | "md" = "sm") => (
+    <button
+      type="button"
+      onClick={() => handleStart(plan.id)}
+      className={`w-full rounded-xl font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+        size === "md" ? "py-3 text-sm" : "py-2.5 text-sm"
+      } ${
+        plan.featured
+          ? "bg-blue-600 text-white hover:bg-blue-700"
+          : "border border-slate-300 bg-white text-slate-900 hover:border-slate-400"
+      }`}
+    >
+      Start my {TRIAL_DAYS}-day trial
+    </button>
+  );
+
   return (
-    <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen pt-24 pb-24 text-slate-900">
-      {/* Dotted texture */}
-      <div
-        className="absolute inset-0 opacity-[0.15] pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #94a3b8 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
+    <div className="bg-white pb-24 pt-32 text-slate-900 lg:pt-36">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <p className="mb-3 text-sm font-semibold text-blue-700">Pricing</p>
+          <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-slate-900 [text-wrap:balance] sm:text-5xl">
+            Plans for every stage of a wholesale business
+          </h1>
+          <p className="text-lg leading-relaxed text-slate-600">
+            Every plan starts with a {TRIAL_DAYS}-day trial. A card is required, nothing is charged until day{" "}
+            {TRIAL_DAYS + 1}, and you can cancel any time before then.
+          </p>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-        {/* Brand collage */}
-          <div className="relative flex items-center justify-center">
-            <img
-              src={apexBrandCollage.url}
-              alt="Apex Applications suite"
-              className="w-full max-w-[420px] h-auto drop-shadow-xl"
-            />
-          </div>
-
-          {/* Headline */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight">
-              Invest in your{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
-                business growth
+          <div className="mt-8 inline-flex items-center rounded-full border border-slate-200 bg-slate-50 p-1" role="group" aria-label="Billing period">
+            <button
+              type="button"
+              aria-pressed={!isAnnual}
+              onClick={() => setIsAnnual(false)}
+              className={`rounded-full px-5 py-2 text-sm font-bold transition ${!isAnnual ? "bg-white text-slate-900 shadow-sm ring-1 ring-slate-200" : "text-slate-600 hover:text-slate-900"}`}
+            >
+              Monthly
+            </button>
+            <button
+              type="button"
+              aria-pressed={isAnnual}
+              onClick={() => setIsAnnual(true)}
+              className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold transition ${isAnnual ? "bg-white text-slate-900 shadow-sm ring-1 ring-slate-200" : "text-slate-600 hover:text-slate-900"}`}
+            >
+              Yearly
+              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">
+                Save {ANNUAL_DISCOUNT_PERCENT}%
               </span>
-            </h1>
-            <p className="text-slate-500 text-base font-medium mt-5 max-w-xl mx-auto lg:mx-0">
-              Choose a plan that fits your Amazon Wholesale business. Cancel anytime.
-            </p>
-
-            {/* Monthly/Annual Toggle */}
-            <div className="mt-8 inline-flex items-center gap-3 bg-white border border-slate-200 rounded-full p-1.5 shadow-sm">
-              <button
-                onClick={() => setIsAnnual(false)}
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${
-                  !isAnnual ? "bg-slate-900 text-white" : "text-slate-500"
-                }`}
-              >
-                Monthly
-              </button>
-              <div className="relative">
-                <span className="absolute -top-5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap shadow-sm">
-                  Best Seller
-                </span>
-                <button
-                  onClick={() => setIsAnnual(true)}
-                  className={`px-5 py-2 rounded-full text-sm font-bold transition-all border-2 ${
-                    isAnnual
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "text-blue-600 border-blue-600 bg-blue-50"
-                  }`}
-                >
-                  Annual
-                </button>
-              </div>
-            </div>
-            {/* The reason to pick Annual, stated next to the switch rather than
-              left for the badge to imply. Stefano, 2026-10-05: drive annual. */}
-            <p className="mt-4 text-sm text-slate-600">
-              <span className="font-bold text-emerald-600">Save {ANNUAL_DISCOUNT_PERCENT}% with Annual</span>
-              , more than 2 months free. {ANNUAL_MEMBER_PERK}
-            </p>
+            </button>
           </div>
+          {/* Stefano, 2026-10-05: drive annual. The reason sits beside the switch. */}
+          <p className="mt-4 text-sm text-slate-600">
+            Yearly billing takes {ANNUAL_DISCOUNT_PERCENT}% off Starter and Pro. {ANNUAL_MEMBER_PERK}
+          </p>
         </div>
 
-        {/* Unified comparison container */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
-        <div className="overflow-x-auto">
-        <div className="min-w-[900px]">
-          {/* Sticky plan headers */}
-          <div className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
-            <div className={COLS}>
-              <div />
-              {/* Beginner Plan: monthly only, whatever the toggle says. */}
-              <div className="p-6 border-l border-slate-100">
-                <div className="text-sm font-bold text-slate-900">Beginner Plan</div>
-                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
-                  <span className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-slate-900">{formatPrice(planById("beginner").monthly)}</span>
-                    <span className="text-xs text-slate-400 font-semibold">/month</span>
-                  </span>
-                  {isAnnual && (
-                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      Monthly only
-                    </span>
-                  )}
-                </div>
-                <div className="text-[11px] font-bold text-blue-600 mt-1">
-                  {TRIAL_DAYS}-Day Free Trial, Then {formatPrice(planById("beginner").monthly)}/month
-                </div>
-                <p className="text-[11px] text-slate-500 mt-2 leading-snug">
-                  For new sellers under $5,000 a month in Amazon sales.
-                </p>
-                <button
-                  onClick={() => handleStart("beginner")}
-                  className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
-                >
-                  Start Free Trial
-                </button>
+        {/*
+          Phones and small tablets: one card per plan, the full comparison
+          folded inside it. A 900px table scrolling sideways in a 390px screen
+          was hard to read, and Chrome counted its width against the page, so
+          the whole page scrolled sideways too.
+        */}
+        <div className="grid gap-5 md:grid-cols-3 lg:hidden">
+          {plans.map((plan) => (
+            <div key={plan.id} className={`rounded-2xl border bg-white p-6 ${plan.featured ? "border-blue-300 ring-1 ring-blue-200" : "border-slate-200"}`}>
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-lg font-bold text-slate-900">{plan.name}</h2>
+                {plan.tag && <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">{plan.tag}</span>}
               </div>
-              {/* Starter Plan */}
-              <div className="p-6 border-l border-slate-100">
-                <div className="text-sm font-bold text-slate-900">Starter Plan</div>
-                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
-                  <span className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-slate-900">${limitedPrice}</span>
-                    <span className="text-xs text-slate-400 font-semibold">/month</span>
-                  </span>
-                  {isAnnual && (
-                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `$${(PRICE_LIMITED_M * 12).toLocaleString("en-US")} billed yearly`}
-                    </span>
-                  )}
+              <p className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold tracking-tight text-slate-900">{plan.price}</span>
+                <span className="text-sm text-slate-500">/month</span>
+              </p>
+              <p className="mt-1 text-xs font-medium text-slate-500">{plan.billed}</p>
+              <p className="mt-3 text-sm leading-snug text-slate-600">{plan.fit}</p>
+              <div className="mt-4">{startButton(plan, "md")}</div>
+              <details className="group mt-5 border-t border-slate-100 pt-4">
+                <summary className="cursor-pointer list-none text-sm font-semibold text-slate-900">
+                  <span className="group-open:hidden">See everything in {plan.name}</span>
+                  <span className="hidden group-open:inline">Hide the details</span>
+                </summary>
+                <div className="mt-3 space-y-5">
+                  {sections.map((section) => {
+                    const key = SECTION_MODULE[section.title];
+                    const m = key ? moduleByKey(key) : null;
+                    return (
+                      <div key={section.title}>
+                        <h3 className="mb-1.5 text-sm font-bold text-slate-900">{m ? m.label : section.title}</h3>
+                        <dl className="divide-y divide-slate-100 text-sm">
+                          {section.rows.map((row) => (
+                            <div key={row.label} className="flex items-center justify-between gap-4 py-1.5">
+                              <dt className="text-slate-600">{row.label}</dt>
+                              <dd className="text-right font-medium text-slate-900">
+                                {plan.id === "beginner" ? row.beginner ?? row.limited : plan.id === "starter" ? row.limited : row.unlimited}
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="text-[11px] font-bold text-blue-600 mt-1">
-                  7-Day Free Trial, Then ${limitedPrice}/month
-                </div>
-                <p className="text-[11px] text-slate-500 mt-2 leading-snug">
-                  Perfect for Amazon Wholesale businesses just getting started.
-                </p>
-                <button
-                  onClick={() => handleStart("starter")}
-                  className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
-                >
-                  Start Free Trial
-                </button>
-              </div>
-              {/* Pro Plan */}
-              <div className="p-6 border-l border-slate-100 bg-gradient-to-b from-indigo-50/40 to-white relative">
-                <span className="absolute top-3 right-3 bg-orange-400 text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider">
-                  Most Popular
-                </span>
-                <div className="text-sm font-bold text-slate-900">Pro Plan</div>
-                <div className="mt-1 flex items-baseline gap-2 flex-wrap">
-                  <span className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-slate-900">${unlimitedPrice}</span>
-                    <span className="text-xs text-slate-400 font-semibold">/month</span>
-                  </span>
-                  {isAnnual && (
-                    <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      {annualSavingsPct ? `Save ${annualSavingsPct}%` : `$${(PRICE_UNLIMITED_M * 12).toLocaleString("en-US")} billed yearly`}
-                    </span>
-                  )}
-                </div>
-                <div className="text-[11px] font-bold text-indigo-600 mt-1">
-                  7-Day Free Trial, Then ${unlimitedPrice}/month
-                </div>
-                <p className="text-[11px] text-slate-500 mt-2 leading-snug">
-                  For serious Amazon Wholesale sellers looking to scale their business.
-                </p>
-                <button
-                  onClick={() => handleStart("pro")}
-                  className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md hover:shadow-lg transition-all"
-                >
-                  Start Free Trial
-                </button>
-              </div>
+              </details>
             </div>
-          </div>
+          ))}
+          <p className="text-sm text-slate-500 md:col-span-3">Prices in USD{TAX_SUFFIX}.</p>
+        </div>
 
-          {/* Sections */}
-          {sections.map((section) => (
-            <div key={section.title}>
-              <div className="px-6 lg:px-8 pt-8 pb-4">
-                <h3 className="text-xl lg:text-2xl font-black tracking-tight text-slate-900">
-                  {section.title}
-                </h3>
+        {/* Large screens: the full table, with the plan header sticking under the nav. */}
+        <div className="hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_12px_32px_-16px_rgba(15,23,42,0.18)] lg:block">
+          <div>
+            <div>
+              <div className="sticky top-20 z-20 rounded-t-2xl border-b border-slate-200 bg-white">
+                <div className={COLS}>
+                  <div className="flex flex-col justify-end p-6">
+                    <p className="text-lg font-bold text-slate-900">Compare plans</p>
+                    <p className="mt-1 text-sm text-slate-500">Prices in USD{TAX_SUFFIX}.</p>
+                  </div>
+                  {plans.map((plan) => (
+                    <div key={plan.id} className={`flex flex-col border-l border-slate-200 p-6 ${plan.featured ? "bg-blue-50/50" : ""}`}>
+                      <div className="flex items-center justify-between gap-2">
+                        <h2 className="text-base font-bold text-slate-900">{plan.name}</h2>
+                        {plan.tag && (
+                          <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">{plan.tag}</span>
+                        )}
+                      </div>
+                      <p className="mt-2 flex items-baseline gap-1">
+                        <span className="text-3xl font-extrabold tracking-tight text-slate-900">{plan.price}</span>
+                        <span className="text-sm text-slate-500">/month</span>
+                      </p>
+                      <p className="mt-1 text-xs font-medium text-slate-500">{plan.billed}</p>
+                      <p className="mt-3 text-sm leading-snug text-slate-600">{plan.fit}</p>
+                      <div className="mt-auto pt-4">{startButton(plan)}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div>
-                {section.rows.map((row, i) => (
-                  <div
-                    key={i}
-                    className={`${COLS} border-t border-slate-100 hover:bg-slate-50/50 transition-colors`}
-                  >
-                    <div className="px-6 lg:px-8 py-4 flex items-center gap-3 text-sm font-bold text-slate-900">
-                      {row.icon && <span className="text-slate-500">{row.icon}</span>}
-                      <span>{row.label}</span>
+
+              {sections.map((section) => {
+                const key = SECTION_MODULE[section.title];
+                const m = key ? moduleByKey(key) : null;
+                return (
+                  <div key={section.title}>
+                    <div className="flex items-baseline gap-3 px-6 pb-3 pt-8 lg:px-8">
+                      <h3 className="text-lg font-bold tracking-tight text-slate-900">{m ? m.label : section.title}</h3>
+                      {m && (
+                        <span className="text-sm text-slate-500">
+                          {m.name}
+                          {section.title.includes("beta") || m.status === "beta" ? " · beta" : ""}
+                        </span>
+                      )}
                     </div>
-                    <div className="px-6 py-4 border-l border-slate-100 flex items-center justify-center text-center text-sm font-semibold text-slate-700">
-                      {row.beginner ?? row.limited}
-                    </div>
-                    <div className="px-6 py-4 border-l border-slate-100 flex items-center justify-center text-sm font-semibold text-slate-700">
-                      {row.limited}
-                    </div>
-                    <div className="px-6 py-4 border-l border-slate-100 bg-indigo-50/20 flex items-center justify-center text-sm font-semibold text-slate-700">
-                      {row.unlimited}
-                    </div>
+                    {section.rows.map((row) => (
+                      <div key={row.label} className={`${COLS} border-t border-slate-100`}>
+                        <div className="flex items-center px-6 py-3.5 text-sm font-medium text-slate-700 lg:px-8">{row.label}</div>
+                        <div className="flex items-center justify-center border-l border-slate-100 px-4 py-3.5 text-center text-sm text-slate-700">
+                          {row.beginner ?? row.limited}
+                        </div>
+                        <div className="flex items-center justify-center border-l border-slate-100 px-4 py-3.5 text-center text-sm text-slate-700">
+                          {row.limited}
+                        </div>
+                        <div className="flex items-center justify-center border-l border-slate-100 bg-blue-50/30 px-4 py-3.5 text-center text-sm text-slate-700">
+                          {row.unlimited}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+
+              <div className={`${COLS} border-t border-slate-200 bg-slate-50/60`}>
+                <div />
+                {plans.map((plan) => (
+                  <div key={plan.id} className="border-l border-slate-200 p-6">
+                    {startButton(plan, "md")}
                   </div>
                 ))}
               </div>
             </div>
-          ))}
-
-          {/* Bottom CTAs */}
-          <div className={`${COLS} border-t border-slate-100 bg-slate-50/40`}>
-            <div />
-            <div className="p-6 border-l border-slate-100">
-              <button
-                onClick={() => handleStart("beginner")}
-                className="w-full py-3 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
-              >
-                Start Free Trial
-              </button>
-            </div>
-            <div className="p-6 border-l border-slate-100">
-              <button
-                onClick={() => handleStart("starter")}
-                className="w-full py-3 rounded-xl text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 transition-all"
-              >
-                Start Free Trial
-              </button>
-            </div>
-            <div className="p-6 border-l border-slate-100">
-              <button
-                onClick={() => handleStart("pro")}
-                className="w-full py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md hover:shadow-lg transition-all"
-              >
-                Start Free Trial
-              </button>
-            </div>
           </div>
-        </div>
-        </div>
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <div className="mx-auto mt-20 max-w-3xl px-4 sm:px-6 lg:px-8">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
-        <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-slate-900 text-center mb-10">
-          Pricing Questions
-        </h2>
-        <div className="space-y-6">
+        <h2 className="mb-8 text-2xl font-extrabold tracking-tight text-slate-900 lg:text-3xl">Pricing questions</h2>
+        <div className="divide-y divide-slate-200 border-y border-slate-200">
           {faqs.map((faq) => (
-            <div key={faq.question} className="border-b border-slate-100 pb-6">
-              <h3 className="text-base font-bold text-slate-900 mb-2">{faq.question}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{faq.answer}</p>
+            <div key={faq.question} className="py-6">
+              <h3 className="mb-2 text-base font-bold text-slate-900">{faq.question}</h3>
+              <p className="text-[15px] leading-relaxed text-slate-600">{faq.answer}</p>
             </div>
           ))}
         </div>
