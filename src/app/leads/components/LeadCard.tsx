@@ -89,6 +89,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
           </span>
         )}
         {lead.stripeOnly && <span className="ld-tag" title="Paying in Stripe under an email no account matches">Stripe only</span>}
+        {lead.tags.includes("private-client") && <span className="ld-tag">Private client</span>}
         {lead.sellerType !== "unknown" && <span className="ld-tag">{SELLER_TYPE_LABELS[lead.sellerType]}</span>}
       </div>
       <div className="ld-card-line2">

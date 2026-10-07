@@ -110,6 +110,18 @@ const INTERNAL_EMAILS = new Set(
     .filter(Boolean),
 );
 
+/**
+ * Clients Stefano signs himself, outside the funnels (2026-10-07). They pay
+ * through Stripe under emails no account or GHL contact carries, so they are
+ * labelled for what they are instead of being flagged as unmatched.
+ */
+const PRIVATE_CLIENT_EMAILS = new Set(
+  (process.env.LEAD_DESK_PRIVATE_CLIENTS ?? "empowered.blessed.llc@gmail.com")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean),
+);
+
 /** A GHL contact record as one step of the lead's history: the day it was created, and where it says it came from. */
 function contactTouch(contact: NormalisedContact): LeadTouch {
   if (contact.ghlLocation === "primewell") {
@@ -578,6 +590,7 @@ function reconcileWithStripe(
 /** A row for someone Stripe knows and nothing else does. */
 function stripeOnlyLead(email: string | null, name: string | null, at: string): Lead {
   const e = email ? lower(email) : null;
+  const privateClient = e ? PRIVATE_CLIENT_EMAILS.has(e) : false;
   return {
     id: `stripe:${e ?? name ?? at}`,
     ghlContactId: null,
@@ -586,7 +599,7 @@ function stripeOnlyLead(email: string | null, name: string | null, at: string): 
     email: e,
     phone: null,
     source: "direct",
-    sourceDetail: "Stripe only: no account or GHL contact has this email",
+    sourceDetail: privateClient ? "Private client" : "Stripe only: no account or GHL contact has this email",
     sellerType: "unknown",
     obstacle: null,
     demoTiming: null,
@@ -600,7 +613,7 @@ function stripeOnlyLead(email: string | null, name: string | null, at: string): 
     planName: null,
     mrr: 0,
     stage: "lead",
-    tags: [],
+    tags: privateClient ? ["private-client"] : [],
     lastOutreachAt: null,
     outreachCount: 0,
     ghlUrl: null,
@@ -625,7 +638,7 @@ function stripeOnlyLead(email: string | null, name: string | null, at: string): 
     convertedVia: null,
     convertedViaDetail: null,
     internal: e ? INTERNAL_EMAILS.has(e) : false,
-    stripeOnly: true,
+    stripeOnly: !privateClient,
   };
 }
 
