@@ -26,6 +26,8 @@ interface GhlContact {
   // a lead who replied STOP. A clean contact has dndSettings: {}.
   dndSettings?: Record<string, { status?: string }>;
   attributions?: GhlAttribution[];
+  /** Where GHL says the contact came from: "PrimeWell landing page", "external_form", a form name. */
+  source?: string;
   tags?: string[];
   customFields?: { id: string; value: unknown }[];
 }
@@ -38,6 +40,8 @@ export interface PrimewellContact {
   dateAdded: string;
   optedOut: boolean;
   sourceLabel: string;
+  /** GHL's own "source" text for the contact, when it has one. Lead Desk shows it in the journey. */
+  ghlSource: string | null;
   /** Raw GHL tags (e.g. "primewell-applied") — Lead Desk reads these. */
   tags: string[];
   /** Raw {id, value} custom fields — decode with src/lib/leads/ghlFields.ts. */
@@ -179,6 +183,7 @@ export async function getPrimewellLeads(): Promise<PrimewellLeadsResult> {
       dateAdded: c.dateAdded ?? "",
       optedOut: Object.keys(c.dndSettings ?? {}).length > 0,
       sourceLabel: deriveTrafficSource(c.attributions),
+      ghlSource: c.source ?? null,
       tags: c.tags ?? [],
       customFields: c.customFields ?? [],
     })),

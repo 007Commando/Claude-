@@ -194,7 +194,12 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
   const q = f.q.trim().toLowerCase();
   const window = dateWindow(f.datePreset, f.from, f.to);
   return leads.filter((l) => {
-    if (l.source === "ash" && !f.ash) return false;
+    // Our own accounts never show. Webinar imports hide only while they are
+    // plain leads: once one makes an account, trials or pays, it is a real
+    // conversion and belongs on the board (2026-10-07: two trials and three
+    // paying customers were hidden by this toggle).
+    if (l.internal) return false;
+    if (l.source === "ash" && l.stage === "lead" && !f.ash) return false;
     if (f.source.length && !f.source.includes(l.source)) return false;
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
     // The single-stage filter only means something in the Table; the Board is split by stage already.

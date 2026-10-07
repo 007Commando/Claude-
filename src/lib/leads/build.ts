@@ -10,6 +10,9 @@ import {
   type LeadSource,
   type Stage,
   type ApexJoin,
+  type LeadTouch,
+  attributeTouches,
+  channelFromGhlSource,
   furthestStage,
   sourceFromTags,
   sourceFromAcquisition,
@@ -90,8 +93,43 @@ interface NormalisedContact {
   email: string | null;
   phone: string | null;
   dateAdded: string;
+  /** GHL's own source text for the contact ("PrimeWell landing page", a form name). */
+  ghlSource: string | null;
   tags: string[];
   fields: Record<string, string>;
+}
+
+/**
+ * Our own accounts. They are real rows (Stefano's account is a real customer
+ * record) but counting them as conversions inflates every rate on the page.
+ */
+const INTERNAL_EMAILS = new Set(
+  (process.env.LEAD_DESK_INTERNAL_EMAILS ?? "info@apexapplications.io,s.sciuto4business@gmail.com")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+/** A GHL contact record as one step of the lead's history: the day it was created, and where it says it came from. */
+function contactTouch(contact: NormalisedContact): LeadTouch {
+  if (contact.ghlLocation === "primewell") {
+    return {
+      at: contact.dateAdded,
+      kind: "lead",
+      channel: "primewell",
+      label: "Applied on PrimeWell",
+      detail: contact.ghlSource,
+    };
+  }
+  const fromTags = sourceFromTags(contact.tags);
+  const channel = channelFromGhlSource(contact.ghlSource) ?? fromTags?.source ?? "other";
+  return {
+    at: contact.dateAdded,
+    kind: "lead",
+    channel,
+    label: fromTags?.sourceDetail ?? (contact.ghlSource ? `Added to GHL: ${contact.ghlSource}` : "Added to Apex GHL"),
+    detail: contact.ghlSource,
+  };
 }
 
 function normalise(
@@ -106,6 +144,7 @@ function normalise(
     email: c.email ? lower(c.email) : null,
     phone: normalisePhone(c.phone),
     dateAdded: toIso(c.dateAdded) ?? new Date(0).toISOString(),
+    ghlSource: c.ghlSource ?? null,
     tags: c.tags,
     fields: decodeCustomFields(c.customFields, idToKey),
   }));
@@ -151,6 +190,8 @@ type LeadPrimary = { kind: "ghl"; contact: NormalisedContact } | { kind: "apexOn
 /** Builds one Lead from a primary contact record (GHL or Apex-only), joining in whatever the other sources know about the same email. */
 function buildLead(params: {
   primary: LeadPrimary;
+  /** Every GHL record for this person (the primary contact and any twin in the other location). */
+  contacts: NormalisedContact[];
   extraTags: string[];
   extraFields: Record<string, string>;
   extraLeadAt: string[];
@@ -159,7 +200,8 @@ function buildLead(params: {
   trialOnlyCancelEmails: Set<string>;
   churnReasonByEmail: Map<string, string>;
 }): Lead {
-  const { primary, extraTags, extraFields, extraLeadAt, apexMember, mrrByEmail, trialOnlyCancelEmails, churnReasonByEmail } = params;
+  const { primary, contacts, extraTags, extraFields, extraLeadAt, apexMember, mrrByEmail, trialOnlyCancelEmails, churnReasonByEmail } =
+    params;
 
   const isGhl = primary.kind === "ghl";
   const contact = primary.kind === "ghl" ? primary.contact : null;
@@ -207,6 +249,25 @@ function buildLead(params: {
   const ghlContactId = contact ? contact.ghlContactId : null;
   const ghlLocation = contact ? contact.ghlLocation : null;
 
+  const accountSource = acquisition
+    ? acquisition.source?.trim().toLowerCase() === "reddit"
+      ? ({ source: "reddit", sourceDetail: acquisition.campaign ?? null } as const)
+      : sourceFromAcquisition(acquisition.source, acquisition.campaign)
+    : null;
+  const accountDetail = [acquisition?.campaign, acquisition?.content].filter(Boolean).join(" · ") || null;
+  const touches = buildTouches({
+    contacts,
+    registeredAt: apexDerived.registeredAt,
+    accountChannel: accountSource?.source ?? null,
+    accountDetail,
+    trialStartedAt: apexDerived.trialStartedAt,
+    customerSince: apexDerived.customerSince,
+    churnedAt: apexDerived.churnedAt,
+    planName: apexDerived.planName,
+    churnReason: apexDerived.churnReason,
+  });
+  const attribution = attributeTouches(touches, apexDerived.registeredAt, tagOrAcqSource);
+
   return {
     id: contact ? contact.ghlContactId : `acct:${apexOnly!.accountId ?? email}`,
     ghlContactId,
@@ -241,7 +302,35 @@ function buildLead(params: {
     ltv: null,
     grade,
     score: qualifiedScore({ sellerType, demoTiming, stage, activation, grade }),
+    touches,
+    firstSource: attribution.firstSource,
+    convertedVia: attribution.convertedVia,
+    convertedViaDetail: attribution.convertedViaDetail,
+    internal: email ? INTERNAL_EMAILS.has(email) : false,
+    stripeOnly: false,
   };
+}
+
+/** The dated steps of one person's history, oldest first. */
+function buildTouches(p: {
+  contacts: NormalisedContact[];
+  registeredAt: string | null;
+  accountChannel: LeadSource | null;
+  accountDetail: string | null;
+  trialStartedAt: string | null;
+  customerSince: string | null;
+  churnedAt: string | null;
+  planName: string | null;
+  churnReason: string | null;
+}): LeadTouch[] {
+  const touches: LeadTouch[] = p.contacts.map(contactTouch);
+  if (p.registeredAt) {
+    touches.push({ at: p.registeredAt, kind: "account", channel: p.accountChannel, label: "Created Apex account", detail: p.accountDetail });
+  }
+  if (p.trialStartedAt) touches.push({ at: p.trialStartedAt, kind: "trial", channel: null, label: "Started trial", detail: p.planName });
+  if (p.customerSince) touches.push({ at: p.customerSince, kind: "customer", channel: null, label: "Became a paying customer", detail: p.planName });
+  if (p.churnedAt) touches.push({ at: p.churnedAt, kind: "churned", channel: null, label: "Cancelled", detail: p.churnReason });
+  return touches.sort((a, b) => ((a.at ?? "") < (b.at ?? "") ? -1 : (a.at ?? "") > (b.at ?? "") ? 1 : 0));
 }
 
 async function build(): Promise<LeadsPayload> {
@@ -318,6 +407,7 @@ async function build(): Promise<LeadsPayload> {
     const apexMember = contact.email ? apexByEmail.get(contact.email) : undefined;
     const lead = buildLead({
       primary: { kind: "ghl", contact },
+      contacts: twin ? [contact, twin] : [contact],
       extraTags: twin?.tags ?? [],
       extraFields: twin?.fields ?? {},
       extraLeadAt: twin ? [twin.dateAdded] : [],
@@ -337,6 +427,7 @@ async function build(): Promise<LeadsPayload> {
     const apexMember = contact.email ? apexByEmail.get(contact.email) : undefined;
     const lead = buildLead({
       primary: { kind: "ghl", contact },
+      contacts: [contact],
       extraTags: [],
       extraFields: {},
       extraLeadAt: [],
@@ -360,6 +451,7 @@ async function build(): Promise<LeadsPayload> {
     if (consumedEmails.has(email)) continue;
     const lead = buildLead({
       primary: { kind: "apexOnly", member },
+      contacts: [],
       extraTags: [],
       extraFields: {},
       extraLeadAt: [],
@@ -371,6 +463,8 @@ async function build(): Promise<LeadsPayload> {
     leads.push(lead);
     consumedEmails.add(email);
   }
+
+  reconcileWithStripe(leads, stripe, apexAccounts.accounts);
 
   leads.sort((a, b) => (a.leadAt < b.leadAt ? 1 : -1));
 
@@ -388,12 +482,151 @@ async function build(): Promise<LeadsPayload> {
   }
 
   // Amazon Success Hub webinar imports are real contacts but not sales leads
-  // in any funnel sense — they're excluded from every aggregate (conversion,
-  // weekly trend, bySourceStage) though they still appear in `leads` itself
-  // for the All Leads table, gated there behind its own "include ASH" filter.
-  const totals = computeTotals(leads.filter((l) => l.source !== "ash"));
+  // until they do something: an imported name that never signed up is left
+  // out of every aggregate, but one who made an account, trialed or paid is a
+  // conversion like any other and counts. Our own accounts never count.
+  const totals = computeTotals(leads.filter(countsTowardTotals));
 
   return { generatedAt: new Date().toISOString(), leads, totals, warnings };
+}
+
+/** Whether a lead belongs in the page's totals: not ours, and not a webinar import that never signed up. */
+export function countsTowardTotals(lead: Lead): boolean {
+  if (lead.internal) return false;
+  return !(lead.source === "ash" && lead.stage === "lead");
+}
+
+/**
+ * Stripe has the final word on who is paying and who is trialing.
+ *
+ * The stage above comes from the Apex account's own subscription record,
+ * which misses subscriptions bought under a different email or not linked to
+ * the account (2026-10-07: five paying customers read as "account, no trial"
+ * or were missing, and two trials were hidden). Each live Stripe subscription
+ * is matched to a lead by email, then by the account id our checkout writes
+ * into the subscription; a match is moved up to the stage Stripe says, and no
+ * match becomes its own row, flagged Stripe only, so nothing paid is ever
+ * invisible here.
+ */
+function reconcileWithStripe(
+  leads: Lead[],
+  stripe: Awaited<ReturnType<typeof getStripeMetrics>>,
+  members: ApexMember[],
+): void {
+  const byEmail = new Map<string, Lead>();
+  for (const lead of leads) if (lead.email) byEmail.set(lead.email, lead);
+  const byAccount = new Map<string, Lead>();
+  for (const m of members) {
+    const lead = byEmail.get(lower(m.email));
+    if (lead && m.accountId) byAccount.set(m.accountId, lead);
+  }
+  const find = (email: string | null, accountId: string | null) =>
+    (email ? byEmail.get(lower(email)) : undefined) ?? (accountId ? byAccount.get(accountId) : undefined);
+  const addTouch = (lead: Lead, touch: LeadTouch) => {
+    if (lead.touches.some((t) => t.kind === touch.kind)) return;
+    lead.touches = [...lead.touches, touch].sort((a, b) => ((a.at ?? "") < (b.at ?? "") ? -1 : 1));
+  };
+
+  for (const sub of stripe.subscriptions) {
+    const lead = find(sub.customerEmail, sub.accountId);
+    if (lead) {
+      if (lead.stage !== "customer") {
+        lead.stage = "customer";
+        lead.customerSince = lead.customerSince ?? sub.startedAt;
+        lead.churnedAt = null;
+      }
+      lead.planName = lead.planName ?? sub.planName;
+      if (sub.mrrContribution > 0) lead.mrr = sub.mrrContribution;
+      addTouch(lead, { at: lead.customerSince, kind: "customer", channel: null, label: "Became a paying customer", detail: lead.planName });
+    } else if (sub.customerEmail || sub.customerName) {
+      const row = stripeOnlyLead(sub.customerEmail, sub.customerName, sub.startedAt);
+      row.stage = "customer";
+      row.customerSince = sub.startedAt;
+      row.planName = sub.planName;
+      row.mrr = sub.mrrContribution;
+      row.touches.push({ at: sub.startedAt, kind: "customer", channel: null, label: "Became a paying customer", detail: sub.planName });
+      leads.push(row);
+      if (row.email) byEmail.set(row.email, row);
+    }
+  }
+
+  for (const trial of stripe.trials) {
+    const lead = find(trial.customerEmail, trial.accountId);
+    if (lead) {
+      if (lead.stage === "lead" || lead.stage === "registered" || lead.stage === "churned") {
+        lead.stage = "trial";
+        lead.churnedAt = null;
+      }
+      lead.trialStartedAt = lead.trialStartedAt ?? trial.trialStartAt;
+      lead.trialEndsAt = lead.trialEndsAt ?? trial.trialEndAt;
+      lead.planName = lead.planName ?? trial.planName;
+      addTouch(lead, { at: lead.trialStartedAt, kind: "trial", channel: null, label: "Started trial", detail: lead.planName });
+    } else if (trial.customerEmail || trial.customerName) {
+      const at = trial.trialStartAt ?? new Date().toISOString();
+      const row = stripeOnlyLead(trial.customerEmail, trial.customerName, at);
+      row.stage = "trial";
+      row.trialStartedAt = trial.trialStartAt;
+      row.trialEndsAt = trial.trialEndAt;
+      row.planName = trial.planName;
+      row.touches.push({ at, kind: "trial", channel: null, label: "Started trial", detail: trial.planName });
+      leads.push(row);
+      if (row.email) byEmail.set(row.email, row);
+    }
+  }
+}
+
+/** A row for someone Stripe knows and nothing else does. */
+function stripeOnlyLead(email: string | null, name: string | null, at: string): Lead {
+  const e = email ? lower(email) : null;
+  return {
+    id: `stripe:${e ?? name ?? at}`,
+    ghlContactId: null,
+    ghlLocation: null,
+    name: name || e || "Unknown",
+    email: e,
+    phone: null,
+    source: "direct",
+    sourceDetail: "Stripe only: no account or GHL contact has this email",
+    sellerType: "unknown",
+    obstacle: null,
+    demoTiming: null,
+    leadAt: at,
+    registeredAt: null,
+    trialStartedAt: null,
+    trialEndsAt: null,
+    customerSince: null,
+    churnedAt: null,
+    churnReason: null,
+    planName: null,
+    mrr: 0,
+    stage: "lead",
+    tags: [],
+    lastOutreachAt: null,
+    outreachCount: 0,
+    ghlUrl: null,
+    activation: {
+      vendorEmailSent: false,
+      vendorEmailRequested: false,
+      firstScanAt: null,
+      scans: 0,
+      databaseProducts: 0,
+      databaseUpdatedAt: null,
+      amazonConnectedAt: null,
+    },
+    campaign: null,
+    ad: null,
+    adset: null,
+    angle: null,
+    ltv: null,
+    grade: null,
+    score: 0,
+    touches: [],
+    firstSource: "direct",
+    convertedVia: null,
+    convertedViaDetail: null,
+    internal: e ? INTERNAL_EMAILS.has(e) : false,
+    stripeOnly: true,
+  };
 }
 
 function emptyConversion(): ConversionRates {

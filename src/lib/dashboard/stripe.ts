@@ -166,6 +166,7 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
           mrrContribution: monthlyTotal / 100,
           arrContribution: annualTotal / 100,
           status: sub.status,
+          accountId: sub.metadata?.accountId ?? null,
           startedAt: new Date(sub.start_date * 1000).toISOString(),
           // Stripe moved current_period_end to the item level (each item can
           // have its own billing cycle) — using the first item, consistent
@@ -193,6 +194,7 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
           interval: planItem?.price.recurring?.interval ?? null,
           amount: (planItem?.price.unit_amount ?? 0) / 100,
           predictedMrrContribution: monthlyTotal / 100,
+          accountId: sub.metadata?.accountId ?? null,
           predictedArrContribution: annualTotal / 100,
           trialStartAt: sub.trial_start ? new Date(sub.trial_start * 1000).toISOString() : null,
           trialEndAt: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,

@@ -2181,3 +2181,35 @@
 @media (max-width: 900px) {
   .ld-exp-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* Journey (lead drawer) and the converted-via mark on cards */
+.ld-via {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--ld-text-faint);
+  font-size: 11px;
+  flex: none;
+}
+.ld-journey-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11.5px;
+  color: var(--ld-text-muted);
+  margin-bottom: 10px;
+}
+.ld-journey-summary strong {
+  color: var(--ld-text);
+  font-weight: 600;
+}
+.ld-journey-detail {
+  font-size: 11px;
+  color: var(--ld-text-faint);
+  overflow-wrap: anywhere;
+}
+.ld-journey-note {
+  font-size: 11px;
+  color: var(--ld-text-faint);
+  margin-top: 6px;
+}

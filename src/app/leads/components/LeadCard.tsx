@@ -6,6 +6,7 @@ import { activationTier } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
+  SOURCE_LABELS,
   fmtDateShort,
   fmtDuration,
   isRecentLead,
@@ -81,7 +82,13 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       {isRecentLead(lead) && <span className="ld-card-new-dot" style={{ background: stageColorVar(lead.stage) }} />}
       <div className="ld-card-line1">
         <span className="ld-card-name">{identity}</span>
-        <SourceLogo source={lead.source} />
+        <SourceLogo source={lead.firstSource} />
+        {lead.convertedVia && lead.convertedVia !== lead.firstSource && (
+          <span className="ld-via" title={`First came from ${SOURCE_LABELS[lead.firstSource]}, converted via ${SOURCE_LABELS[lead.convertedVia]}`}>
+            →<SourceLogo source={lead.convertedVia} />
+          </span>
+        )}
+        {lead.stripeOnly && <span className="ld-tag" title="Paying in Stripe under an email no account matches">Stripe only</span>}
         {lead.sellerType !== "unknown" && <span className="ld-tag">{SELLER_TYPE_LABELS[lead.sellerType]}</span>}
       </div>
       <div className="ld-card-line2">

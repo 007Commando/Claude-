@@ -1,9 +1,9 @@
 "use client";
 
-import { fmtDuration, spanMs } from "./shared";
+import LeadJourney from "./LeadJourney";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, X } from "lucide-react";
-import type { ActivationTier, Lead, LeadGrade, Stage } from "../../../lib/leads/model";
+import type { ActivationTier, Lead, LeadGrade } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
@@ -14,14 +14,6 @@ import {
   outreachDates,
   todayNY,
 } from "./shared";
-
-const TIMELINE: { stage: Stage; label: string; getDate: (l: Lead) => string | null }[] = [
-  { stage: "lead", label: "Lead", getDate: (l) => l.leadAt },
-  { stage: "registered", label: "Account", getDate: (l) => l.registeredAt },
-  { stage: "trial", label: "Trial", getDate: (l) => l.trialStartedAt },
-  { stage: "customer", label: "Customer", getDate: (l) => l.customerSince },
-  { stage: "churned", label: "Churned", getDate: (l) => l.churnedAt },
-];
 
 const ACTIVATION_ROWS: { tier: ActivationTier; label: string; reached: (l: Lead) => boolean; detail: (l: Lead) => string }[] = [
   {
@@ -221,35 +213,7 @@ export default function LeadDrawer({
             </div>
           )}
 
-          <div className="ld-drawer-section">
-            <div className="ld-drawer-section-title">Timeline</div>
-            <div className="ld-timeline">
-              {TIMELINE.map((step, i) => {
-                const date = step.getDate(lead);
-                const reached = Boolean(date);
-                return (
-                  <div key={step.stage} className="ld-timeline-step" data-reached={reached}>
-                    <div className="ld-timeline-dot-col">
-                      <div className="ld-timeline-dot" />
-                      {i < TIMELINE.length - 1 && <div className="ld-timeline-line" />}
-                    </div>
-                    <div>
-                      <div className="ld-timeline-label">{step.label}</div>
-                      <div className="ld-timeline-date">
-                        {reached ? fmtDate(date) : "Not reached"}
-                        {reached && i > 0 && (() => {
-                          const prev = TIMELINE.slice(0, i).reverse().map((s) => s.getDate(lead)).find(Boolean) ?? null;
-                          const ms = spanMs(prev, date);
-                          return ms == null ? null : <span className="ld-time-tag ld-time-tag-jump" style={{ marginLeft: 6 }}>+{fmtDuration(ms)}</span>;
-                        })()}
-                      </div>
-                      {step.stage === "churned" && lead.churnReason && <div className="ld-timeline-date">{lead.churnReason}</div>}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <LeadJourney lead={lead} />
 
           <div className="ld-drawer-section">
             <div className="ld-drawer-section-title">Activation</div>

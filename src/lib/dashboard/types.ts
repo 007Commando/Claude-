@@ -13,6 +13,8 @@ export interface StripeSubscriptionRow {
   /** 0 for non-annual subscriptions — the true yearly amount for annual ones. */
   arrContribution: number;
   status: string;
+  /** The Apex account the subscription was bought for (subscription metadata), when our checkout made it. */
+  accountId: string | null;
   startedAt: string;
   /** ISO date of this subscription's next billing/invoice date, null if unavailable. */
   nextInvoiceAt: string | null;
@@ -30,6 +32,8 @@ export interface TrialRow {
   predictedMrrContribution: number;
   /** What this trial would add to ARR if it converts (0 for non-annual plans). */
   predictedArrContribution: number;
+  /** The Apex account the trial belongs to (subscription metadata), when our checkout made it. */
+  accountId: string | null;
   trialStartAt: string | null;
   trialEndAt: string | null;
   source: LeadSource;

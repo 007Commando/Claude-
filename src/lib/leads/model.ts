@@ -82,6 +82,33 @@ export interface Lead {
   grade: LeadGrade | null;
   /** 0 to 100: how qualified this lead looks, see qualifiedScore. */
   score: number;
+  /** Every dated step, oldest first. See LeadTouch. */
+  touches: LeadTouch[];
+  /** Where they came from the very first time (the earliest touch). */
+  firstSource: LeadSource;
+  /** What brought them back to sign up: the touch closest before the account, or the account's own acquisition. Null before an account exists. */
+  convertedVia: LeadSource | null;
+  convertedViaDetail: string | null;
+  /** Our own accounts (Stefano, staff, tests): never counted. */
+  internal: boolean;
+  /** Paying or trialing in Stripe under an email no account or GHL contact matches. */
+  stripeOnly: boolean;
+}
+
+/**
+ * One step in a lead's history: each time they came in (a GHL contact in one
+ * of the two locations, with the date it was created), the account, the trial
+ * and payment. A person who applied on PrimeWell in August and signed up from
+ * a Facebook ad in October has two "lead" touches, and that is the point:
+ * where they first came from and what finally converted them are different
+ * questions with different answers.
+ */
+export interface LeadTouch {
+  at: string | null;
+  kind: "lead" | "account" | "trial" | "customer" | "churned";
+  channel: LeadSource | null;
+  label: string;
+  detail: string | null;
 }
 
 export type LeadGrade = "A" | "B" | "C";
@@ -442,4 +469,55 @@ export function stageFromApex(apex: ApexJoin | null): ApexDerived {
     };
   }
   return { ...EMPTY_APEX_DERIVED, stage: "registered", registeredAt: apex.createdAt };
+}
+
+/**
+ * A channel from GHL's free-text contact source ("PrimeWell landing page",
+ * "Facebook Lead Form", "external_form"), when it names one. Null when the
+ * text says nothing about where the person came from.
+ */
+export function channelFromGhlSource(text: string | null | undefined): LeadSource | null {
+  const s = (text ?? "").toLowerCase();
+  if (!s) return null;
+  if (s.includes("primewell")) return "primewell";
+  if (s.includes("reddit")) return "reddit";
+  if (s.includes("chatgpt") || s.includes("openai")) return "chatgpt";
+  if (s.includes("google") || s.includes("organic search") || s.includes("adwords")) return "google";
+  if (s.includes("facebook") || s.includes("instagram") || s.includes("meta") || s.startsWith("fb")) {
+    return s.includes("form") ? "facebook-form" : "facebook-web";
+  }
+  return null;
+}
+
+/**
+ * Where they first came from and what converted them, from a lead's touches.
+ *
+ * First source: the earliest dated "lead" or "account" touch.
+ * Converted via: only once an account exists. The account's own acquisition
+ * wins when it names a real channel (it is recorded at the moment of signup);
+ * otherwise the latest "lead" touch at or before the account (with ten
+ * minutes' grace, because a form submit and the signup it leads to land a
+ * moment apart and in either order).
+ */
+export function attributeTouches(
+  touches: LeadTouch[],
+  registeredAt: string | null,
+  fallback: LeadSource,
+): { firstSource: LeadSource; convertedVia: LeadSource | null; convertedViaDetail: string | null } {
+  const entries = touches.filter((t) => t.at && (t.kind === "lead" || t.kind === "account") && t.channel);
+  const first = entries.reduce<LeadTouch | null>((best, t) => (!best || (t.at as string) < (best.at as string) ? t : best), null);
+  const firstSource = first?.channel ?? fallback;
+  if (!registeredAt) return { firstSource, convertedVia: null, convertedViaDetail: null };
+
+  const account = touches.find((t) => t.kind === "account");
+  if (account?.channel && account.channel !== "direct" && account.channel !== "other") {
+    return { firstSource, convertedVia: account.channel, convertedViaDetail: account.detail ?? account.label };
+  }
+  const cutoff = new Date(new Date(registeredAt).getTime() + 10 * 60 * 1000).toISOString();
+  const before = entries.filter((t) => t.kind === "lead" && (t.at as string) <= cutoff);
+  const latest = before.reduce<LeadTouch | null>((best, t) => (!best || (t.at as string) > (best.at as string) ? t : best), null);
+  if (latest && latest.channel !== "other") return { firstSource, convertedVia: latest.channel, convertedViaDetail: latest.label };
+  // Nothing more specific is known about what brought them back: say where
+  // they came from rather than inventing "other".
+  return { firstSource, convertedVia: firstSource, convertedViaDetail: null };
 }
