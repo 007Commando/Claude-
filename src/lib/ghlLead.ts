@@ -186,3 +186,42 @@ export async function removeGhlContactTags(
     throw new Error(`GHL untag failed: ${res.status} ${detail.slice(0, 300)}`);
   }
 }
+
+/**
+ * Sends one email to a contact through GHL's own conversations API, so it
+ * goes out from Apex's sending domain and sits in the contact's conversation
+ * history like any workflow email. Used where a reply has to follow a form
+ * instantly and a workflow (which the API cannot create) would be overkill:
+ * the /apex-quiz result email.
+ */
+export async function sendGhlEmail(
+  contactId: string,
+  email: { subject: string; html: string; emailFrom?: string },
+  location: GhlLocationName = "apex",
+): Promise<void> {
+  const token = tokenFor(location);
+  if (!token) throw new GhlNotConfigured("GHL is not configured");
+  const res = await fetch(`${GHL_BASE_URL}/conversations/messages`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // The conversations API is versioned separately from contacts.
+      Version: "2021-04-15",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "Email",
+      contactId,
+      subject: email.subject,
+      html: email.html,
+      emailFrom: email.emailFrom ?? "Stefano at Apex <info@apexapplications.io>",
+    }),
+    cache: "no-store",
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`GHL email failed: ${res.status} ${detail.slice(0, 300)}`);
+  }
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, upsertGhlContact, utmCustomFields } from "../../../lib/ghlLead";
+import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, sendGhlEmail, upsertGhlContact, utmCustomFields } from "../../../lib/ghlLead";
+import { quizResultEmail } from "../../../lib/quizEmail";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -72,6 +73,17 @@ export async function POST(req: NextRequest) {
         .filter(Boolean)
         .join("\n"),
     );
+    /**
+     * The follow-up: their plan, by email, at once. Best effort, after the
+     * contact is safe in GHL: a failed send must not cost us the lead or
+     * keep the visitor from their result. Tagged so GHL shows who got it.
+     */
+    try {
+      await sendGhlEmail(contact.id, quizResultEmail(firstName, lead.result));
+      await addGhlTags(contact.id, ["quiz-email-sent"]);
+    } catch (err) {
+      console.error("quiz-lead: result email failed", err);
+    }
   } catch (err) {
     if (err instanceof GhlNotConfigured) {
       return NextResponse.json({ error: "Lead capture is not configured." }, { status: 503 });
