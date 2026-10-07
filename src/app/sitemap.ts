@@ -52,6 +52,7 @@ const ENTRIES: Entry[] = [
   { path: "/ungating-guide", changeFrequency: "monthly", priority: 0.7 },
   { path: "/rewards-benefits", changeFrequency: "monthly", priority: 0.7 },
   { path: "/prep-center-network", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/for-prep-centers", changeFrequency: "monthly", priority: 0.7 },
   // `/apex-vas` sells the same service and stays noindex, so it is not here.
   { path: "/virtual-assistants", changeFrequency: "monthly", priority: 0.6 },
   { path: "/distributor-vault", changeFrequency: "monthly", priority: 0.6 },

@@ -197,6 +197,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/for-prep-centers" className="hover:text-brand transition-colors">
+                  For Prep Centers
+                </Link>
+              </li>
+              <li>
                 <Link href="/rewards-benefits" className="hover:text-brand transition-colors">
                   Rewards &amp; Benefits
                 </Link>
