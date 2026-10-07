@@ -83,6 +83,10 @@ const FAQ = [
     a: "Yes. There is no plan, no card and no trial for prep centers. Your sellers are Amazon businesses, and Apex earns its living from the sourcing, pricing and profit tools they use to run them. Making your side free is how we get to be the software you both share.",
   },
   {
+    q: "Do my clients have to pay for Apex?",
+    a: "No. Your clients use Apex Red with you for free: they send you their inbound, see your receiving counts and their FBA shipments, get your invoices and chat with you. They only need a paid plan if they want the rest of Apex, like sourcing, purchase orders or repricing.",
+  },
+  {
     q: "Why do I need an onboarding call before I can use it?",
     a: "Prep work is different in every warehouse, and the first week decides whether software sticks. We would rather spend half an hour with you getting your rates, clients and first shipment right than hand you a login and hope. It also means we can keep Apex for prep centers that are actually doing FBA prep.",
   },
