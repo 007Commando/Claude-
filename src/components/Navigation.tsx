@@ -73,6 +73,7 @@ export default function Navigation() {
   const hasOwnHeader =
     pathname === "/apex-pop" ||
     pathname === "/apex-scan" ||
+    pathname === "/apex-quiz" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works";
 

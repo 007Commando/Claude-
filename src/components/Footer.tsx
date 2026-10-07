@@ -52,6 +52,7 @@ export default function Footer() {
   const hasOwnFooter =
     pathname === "/apex-pop" ||
     pathname === "/apex-scan" ||
+    pathname === "/apex-quiz" ||
     pathname === "/purchase-order-program" ||
     pathname === "/how-apex-works" ||
     pathname === "/first-order-roadmap" ||
