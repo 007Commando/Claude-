@@ -41,6 +41,71 @@ const apexGreenLogo = "/images/nav-logos/apex-green-logo.png";
 const apexRedLogo = "/images/nav-logos/apex-red-logo.png";
 const apexGoldLogo = "/images/nav-logos/apex-gold-logo.png";
 
+/** The Features menu, in the order a seller meets the modules. */
+const MENU: {
+  key: "green" | "blue" | "gold" | "red" | "black";
+  logo: string;
+  accent: string;
+  items: { title: string; hash: string; free?: boolean }[];
+}[] = [
+  {
+    key: "green",
+    logo: apexGreenLogo,
+    accent: "text-mod-green",
+    items: [
+      { title: "UPC Scanner", hash: "upc-scanner" },
+      { title: "Master Catalog", hash: "master-catalog" },
+      { title: "Brands", hash: "brands" },
+      { title: "Products", hash: "products" },
+    ],
+  },
+  {
+    key: "blue",
+    logo: apexBlueLogo,
+    accent: "text-mod-blue",
+    items: [
+      { title: "Purchase Orders", hash: "purchase-orders" },
+      { title: "Profit & Loss", hash: "analytics" },
+      { title: "Vendors", hash: "vendors" },
+      { title: "Databases", hash: "databases" },
+      { title: "Opex", hash: "opex" },
+    ],
+  },
+  {
+    key: "gold",
+    logo: apexGoldLogo,
+    accent: "text-mod-gold",
+    items: [
+      { title: "Listings", hash: "repricer" },
+      { title: "Strategies", hash: "strategies" },
+      { title: "Break-even Floors", hash: "floor-goals" },
+    ],
+  },
+  {
+    key: "red",
+    logo: apexRedLogo,
+    accent: "text-mod-red",
+    items: [
+      { title: "Shipments", hash: "shipments" },
+      { title: "Warehouses", hash: "warehouses" },
+      { title: "Inventory", hash: "inventory" },
+      { title: "Prep Chat", hash: "prep-chat" },
+      { title: "Prep Billing", hash: "prep-billing" },
+    ],
+  },
+  {
+    key: "black",
+    logo: apexBlackLogo,
+    accent: "text-ink",
+    items: [
+      { title: "Dashboard", hash: "dashboard" },
+      { title: "Review Booster", hash: "review-booster", free: true },
+      { title: "Apex University", hash: "apex-university", free: true },
+      { title: "Books & Resources", hash: "resource-library" },
+    ],
+  },
+];
+
 const FOCUS =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
@@ -311,11 +376,11 @@ export default function Navigation() {
                 {isFeaturesOpen && (
                   <motion.div
                     id="features-menu"
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
+                    exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 w-[1080px] pt-3"
+                    className="fixed left-0 right-0 top-20 whitespace-normal"
                     onMouseEnter={() => {
                       if (featuresTimeoutRef.current)
                         clearTimeout(featuresTimeoutRef.current);
@@ -328,441 +393,61 @@ export default function Navigation() {
                       );
                     }}
                   >
-                    <div className="bg-white rounded-2xl shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-200/70 overflow-hidden">
-                      <div className="grid grid-cols-5 divide-x divide-slate-100">
-                        {/* Column 1: Apex Black */}
-                        <div className="p-6">
-                          <Link
-                            href="/features/black"
-                            onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                          >
-                            <img
-                              src={apexBlackLogo}
-                              alt="Apex Black"
-                              className="h-11 w-auto object-contain"
-                            />
-                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
-                              <span className="text-[12px] font-semibold text-slate-700">
-                                {moduleByKey("black").label}
-                              </span>
-                              {isBeta("black") && (
-                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                                  Beta
+                    <div className="border-b border-hairline bg-white shadow-[0_24px_48px_-24px_rgba(0,0,0,0.18)]">
+                      <div className="mx-auto grid max-w-[1100px] grid-cols-5 gap-8 px-6 pb-10 pt-8">
+                        {MENU.map((col) => {
+                          const m = moduleByKey(col.key);
+                          return (
+                            <div key={col.key}>
+                              <Link
+                                href={m.path}
+                                onClick={closeMenus}
+                                className={`group block rounded-lg ${FOCUS}`}
+                              >
+                                <img src={col.logo} alt="" className="h-7 w-auto object-contain mix-blend-multiply" />
+                                <span className={`mt-3 block text-[15px] font-semibold ${col.accent}`}>
+                                  {m.name}
+                                  {isBeta(col.key) && (
+                                    <span className="ml-1.5 text-[12px] font-medium text-quiet">
+                                      {col.key === "red" ? "Beta, invite" : "Beta"}
+                                    </span>
+                                  )}
                                 </span>
-                              )}
-                            </span>
-                          </Link>
-                          <div className="border-t border-slate-200 mb-3" />
-                          <div className="space-y-1">
-                            {[
-                              {
-                                title: "Dashboard",
-                                desc: "Your whole Amazon business on one screen",
-                                icon: LayoutGrid,
-                                hash: "dashboard",
-                              },
-                              {
-                                title: "Review Booster",
-                                desc: "Sends Amazon's Request a Review for your orders",
-                                icon: Star,
-                                hash: "review-booster",
-                                free: true,
-                              },
-                              {
-                                title: "Apex University",
-                                desc: "The Wholesale Blueprint Learning Center",
-                                icon: School,
-                                hash: "apex-university",
-                                free: true,
-                              },
-                              {
-                                title: "Books & Resources",
-                                desc: "Recommended Reading & Resources",
-                                icon: BookOpen,
-                                hash: "resource-library",
-                              },
-                            ].map((item, i) => {
-                              const Icon = item.icon;
-                              return (
-                                <Link
-                                  key={i}
-                                  href={`/features/black#${item.hash}`}
-                                  onClick={closeMenus}
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-orange-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                                >
-                                  <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 bg-slate-50 shrink-0">
-                                    <Icon
-                                      className="text-slate-400 group-hover:text-orange-500 transition-colors"
-                                      size={18}
-                                      strokeWidth={1.5}
-                                    />
-                                  </div>
-                                  <div className="min-w-0">
-                                    <div className="flex items-center gap-1.5 mb-0.5">
-                                      <div className="text-slate-900 font-semibold text-[13px] leading-none tracking-tight">
-                                        {item.title}
-                                      </div>
-                                      {item.free && (
-                                        <span className="px-1.5 py-0.5 bg-slate-900 text-white text-[8px] font-bold rounded uppercase tracking-wider leading-none">
-                                          Free
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 leading-snug">
-                                      {item.desc}
-                                    </div>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Column 2: Apex Blue */}
-                        <div className="p-6">
-                          <Link
-                            href="/features/blue"
-                            onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                          >
-                            <img
-                              src={apexBlueLogo}
-                              alt="Apex Blue"
-                              className="h-11 w-auto object-contain"
-                            />
-                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
-                              <span className="text-[12px] font-semibold text-slate-700">
-                                {moduleByKey("blue").label}
-                              </span>
-                              {isBeta("blue") && (
-                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                                  Beta
-                                </span>
-                              )}
-                            </span>
-                          </Link>
-                          <div className="border-t border-slate-200 mb-3" />
-                          <div className="space-y-1">
-                            {[
-                              {
-                                title: "Analytics",
-                                desc: "Financial Analytics & Restock Management Dashboard",
-                                icon: BarChart,
-                                hash: "analytics",
-                              },
-                              {
-                                title: "Vendors",
-                                desc: "Add & Organize Your Suppliers",
-                                icon: Globe,
-                                hash: "vendors",
-                              },
-                              {
-                                title: "Databases",
-                                desc: "Market Intelligence For Your Listings",
-                                icon: Database,
-                                hash: "databases",
-                              },
-                              {
-                                title: "Purchase Orders",
-                                desc: "Create & Manage Your Purchasing",
-                                icon: FileText,
-                                hash: "purchase-orders",
-                              },
-                              {
-                                title: "Opex",
-                                desc: "View & Manage Operating Expenses",
-                                icon: CreditCard,
-                                hash: "opex",
-                              },
-                            ].map((item, i) => {
-                              const Icon = item.icon;
-                              return (
-                                <Link
-                                  key={i}
-                                  href={`/features/blue#${item.hash}`}
-                                  onClick={closeMenus}
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-blue-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                                >
-                                  <Icon
-                                    className="text-slate-400 group-hover:text-blue-600 transition-colors mt-0.5 shrink-0"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                  />
-                                  <div className="min-w-0">
-                                    <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">
+                                <span className="mt-0.5 block text-[12px] leading-snug text-quiet">{m.label}</span>
+                              </Link>
+                              <ul className="mt-5 space-y-2.5">
+                                {col.items.map((item) => (
+                                  <li key={item.title}>
+                                    <Link
+                                      href={`${m.path}#${item.hash}`}
+                                      onClick={closeMenus}
+                                      className={`text-[14px] font-medium text-graphite transition-colors hover:text-ink ${FOCUS}`}
+                                    >
                                       {item.title}
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 leading-snug">
-                                      {item.desc}
-                                    </div>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Column 3: Apex Green */}
-                        <div className="p-6">
-                          <Link
-                            href="/features/green"
-                            onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                          >
-                            <img
-                              src={apexGreenLogo}
-                              alt="Apex Green"
-                              className="h-11 w-auto object-contain"
-                            />
-                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
-                              <span className="text-[12px] font-semibold text-slate-700">
-                                {moduleByKey("green").label}
-                              </span>
-                              {isBeta("green") && (
-                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                                  Beta
-                                </span>
-                              )}
-                            </span>
-                          </Link>
-                          <div className="border-t border-slate-200 mb-3" />
-                          <div className="space-y-1">
-                            {[
-                              {
-                                title: "Master Catalog",
-                                desc: "Merge and Manage Your Vendors Catalogs",
-                                icon: Layers,
-                                hash: "master-catalog",
-                              },
-                              {
-                                title: "UPC Scanner",
-                                desc: "Find Matching Listings to a UPC List",
-                                icon: Barcode,
-                                hash: "upc-scanner",
-                              },
-                              {
-                                title: "Brands",
-                                desc: "View Brands in the Amazon Platform",
-                                icon: BookText,
-                                hash: "brands",
-                              },
-                              {
-                                title: "Products",
-                                desc: "Discover New Listings and Opportunities",
-                                icon: GraduationCap,
-                                hash: "products",
-                              },
-                            ].map((item, i) => {
-                              const Icon = item.icon;
-                              return (
-                                <Link
-                                  key={i}
-                                  href={`/features/green#${item.hash}`}
-                                  onClick={closeMenus}
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-green-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                                >
-                                  <Icon
-                                    className="text-slate-400 group-hover:text-green-600 transition-colors mt-0.5 shrink-0"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                  />
-                                  <div className="min-w-0">
-                                    <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">
-                                      {item.title}
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 leading-snug">
-                                      {item.desc}
-                                    </div>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Column 4: Apex Red */}
-                        <div className="p-6">
-                          <Link
-                            href="/features/red"
-                            onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                          >
-                            <img
-                              src={apexRedLogo}
-                              alt="Apex Red"
-                              className="h-11 w-auto object-contain"
-                            />
-                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
-                              <span className="text-[12px] font-semibold text-slate-700">
-                                {moduleByKey("red").label}
-                              </span>
-                              {isBeta("red") && (
-                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                                  Beta
-                                </span>
-                              )}
-                            </span>
-                          </Link>
-                          <div className="border-t border-slate-200 mb-3" />
-                          <div className="space-y-1">
-                            {[
-                              {
-                                title: "Shipments",
-                                desc: "View or Create New Shipments",
-                                icon: Truck,
-                                hash: "shipments",
-                              },
-                              {
-                                title: "Warehouses",
-                                desc: "Manage Your Ship From Address & Connect To Multiple Prep Centers",
-                                icon: Warehouse,
-                                hash: "warehouses",
-                              },
-                              {
-                                title: "Inventory",
-                                desc: "Manage Your Warehouse Inventory",
-                                icon: Package,
-                                hash: "inventory",
-                              },
-                              {
-                                title: "Prep Chat",
-                                desc: "Live Chat With Your Prep Centers",
-                                icon: MessageSquare,
-                                hash: "prep-chat",
-                              },
-                              {
-                                title: "Prep Billing",
-                                desc: "View & Manage Your Prep Center Bills",
-                                icon: Receipt,
-                                hash: "prep-billing",
-                              },
-                            ].map((item, i) => {
-                              const Icon = item.icon;
-                              return (
-                                <Link
-                                  key={i}
-                                  href={`/features/red#${item.hash}`}
-                                  onClick={closeMenus}
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-red-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                                >
-                                  <Icon
-                                    className="text-slate-400 group-hover:text-red-600 transition-colors mt-0.5 shrink-0"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                  />
-                                  <div className="min-w-0">
-                                    <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">
-                                      {item.title}
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 leading-snug">
-                                      {item.desc}
-                                    </div>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Column 5: Apex Gold */}
-                        <div className="p-6">
-                          <Link
-                            href="/features/gold"
-                            onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                          >
-                            <img
-                              src={apexGoldLogo}
-                              alt="Apex Gold"
-                              className="h-11 w-auto object-contain"
-                            />
-                            <span className="flex flex-wrap items-center justify-center gap-1.5 text-center">
-                              <span className="text-[12px] font-semibold text-slate-700">
-                                {moduleByKey("gold").label}
-                              </span>
-                              {isBeta("gold") && (
-                                <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
-                                  Beta
-                                </span>
-                              )}
-                            </span>
-                          </Link>
-                          <div className="border-t border-slate-200 mb-3" />
-                          <div className="space-y-1">
-                            {[
-                              /*
-                                Named as the app names them. These read
-                                Repricer / Break-Even Floors / Strategies,
-                                which are things the repricer does rather than
-                                screens anyone can go and open.
-                              */
-                              {
-                                title: "Listings",
-                                desc: "Set Repricing Rules On Your Live Listings",
-                                icon: Zap,
-                                hash: "repricer",
-                              },
-                              {
-                                title: "Strategy",
-                                desc: "Manage & Create New Repricing Strategies",
-                                icon: Sliders,
-                                hash: "strategies",
-                              },
-                              {
-                                title: "Price Activity",
-                                desc: "Every Price Decision The Repricer Has Made",
-                                icon: Gauge,
-                                hash: "floor-goals",
-                              },
-                            ].map((item, i) => {
-                              const Icon = item.icon;
-                              return (
-                                <Link
-                                  key={i}
-                                  href={`/features/gold#${item.hash}`}
-                                  onClick={closeMenus}
-                                  className="flex gap-3 items-start group text-left w-full p-2 rounded-lg transition-all hover:bg-amber-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                                >
-                                  <Icon
-                                    className="text-slate-400 group-hover:text-amber-600 transition-colors mt-0.5 shrink-0"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                  />
-                                  <div className="min-w-0">
-                                    <div className="text-slate-900 font-semibold text-[13px] leading-none mb-1 tracking-tight">
-                                      {item.title}
-                                    </div>
-                                    <div className="text-[11px] text-slate-500 leading-snug">
-                                      {item.desc}
-                                    </div>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
+                                      {item.free && <span className="ml-1.5 text-[12px] font-medium text-mod-green">Free</span>}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })}
                       </div>
-
-                      {/* Auth CTA strip */}
-                      <div className="px-6 py-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between">
-                        <div className="text-[12px] text-slate-500">
-                          Ready to scale your Amazon business?
-                        </div>
-                        <div className="flex items-center gap-5">
+                      <div className="border-t border-hairline/70">
+                        <div className="mx-auto flex max-w-[1100px] items-center justify-between px-6 py-4">
+                          <Link
+                            href="/pricing"
+                            onClick={closeMenus}
+                            className="text-[14px] font-medium text-link hover:underline underline-offset-4"
+                          >
+                            Compare plans ›
+                          </Link>
                           <Link
                             href="/auth?mode=signup&plan=starter&period=monthly"
-                            onClick={() => setIsFeaturesOpen(false)}
-                            className="text-brand hover:text-brand-dark font-semibold text-[13px] transition-colors"
+                            onClick={closeMenus}
+                            className="rounded-full bg-ink px-5 py-2 text-[13px] font-medium text-white transition hover:bg-graphite"
                           >
-                            Create an Account
-                          </Link>
-                          <Link
-                            href="/auth"
-                            onClick={() => setIsFeaturesOpen(false)}
-                            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-full font-semibold text-[13px] transition-all"
-                          >
-                            Sign In
+                            Start my trial
                           </Link>
                         </div>
                       </div>
