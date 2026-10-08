@@ -282,7 +282,7 @@ export function getFriendlyAuthError(err: unknown): string {
   // arrives as auth/internal-error, which read as "Google sign-in isn't
   // available" to someone who never touched Google.
   if (/email-not-verified/i.test(message)) {
-    return "Please verify your email first. We just sent you a new link: open it, then log in here.";
+    return "Please verify your email first. We just sent you a 6-digit code. Trouble getting in? Email support@apexapplications.io.";
   }
 
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
@@ -574,6 +574,11 @@ export default function Auth() {
     ticket: string | null;
     cooldownMs: number;
     signup: SignupResult | null;
+    /**
+     * Someone coming back to an account they never verified (a refused log-in,
+     * or signing up again). After the code they are signed in with this.
+     */
+    password?: string;
   } | null>(null);
 
   const [name, setName] = useState("");
@@ -958,6 +963,34 @@ export default function Auth() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
       /**
+       * Back at an account whose email was never verified: on a log-in the
+       * server refuses with email-not-verified, on a second signup it answers
+       * email-unverified-code-sent. Either way a fresh code is on its way (or
+       * one went out a minute ago), so open the code screen right here instead
+       * of leaving them to dig through their inbox for a link.
+       */
+      const backendCode = (err as { data?: { code?: string } })?.data?.code;
+      if (
+        backendCode === "auth/email-unverified-code-sent" ||
+        /email-not-verified/i.test(msg)
+      ) {
+        const address = email.trim().toLowerCase();
+        try {
+          const apex = await waitForApexAuth();
+          // Inside the cooldown this answers 429; the code already sent works.
+          await apex.sendVerificationCode?.({ email: address });
+        } catch {}
+        setError(null);
+        setPending({
+          email: address,
+          ticket: null,
+          cooldownMs: 60_000,
+          signup: null,
+          password,
+        });
+        return;
+      }
+      /**
        * Paid, then found out they already have an account. Being told to try
        * logging in is not enough here -- they have just been charged, so put
        * them on the login tab with their email still in the field and say
@@ -1216,6 +1249,24 @@ export default function Auth() {
                       email: pending.email,
                       code,
                     });
+                    // Came back to an unfinished account: sign them in now.
+                    if (!pending.signup) {
+                      try {
+                        await withAuthRetry(() =>
+                          apex.signIn(pending.email, pending.password ?? "", {
+                            redirect: true,
+                          }),
+                        );
+                      } catch {
+                        setPending(null);
+                        setModeOverride("login");
+                        setPassword("");
+                        setInfo(
+                          "Your email is verified. Log in with the password you chose when you first signed up, or use Forgot? to reset it.",
+                        );
+                      }
+                      return;
+                    }
                     // Verified: go wherever this signup was always going.
                     if (
                       !apex.completeSignup?.(pending.signup as SignupResult)

@@ -275,6 +275,17 @@ export default function VerifyCode({
       >
         Resend code
       </button>
+
+      <p className="mt-6 text-xs text-slate-400">
+        Trouble getting in? Email{" "}
+        <a
+          href="mailto:support@apexapplications.io"
+          className="font-semibold text-slate-500 underline"
+        >
+          support@apexapplications.io
+        </a>{" "}
+        and we will sort it out.
+      </p>
     </div>
   );
 }
