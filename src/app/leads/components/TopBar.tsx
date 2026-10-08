@@ -242,8 +242,8 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
           Funnels
         </button>
-        <button type="button" data-active={filters.view === "experiments"} onClick={() => filters.setView("experiments")}>
-          Experiments
+        <button type="button" data-active={filters.view === "ads"} onClick={() => filters.setView("ads")}>
+          Facebook ads
         </button>
         <button type="button" data-active={filters.view === "live"} onClick={() => filters.setView("live")}>
           <span className="ld-live-tabdot" aria-hidden="true" />

@@ -76,6 +76,10 @@ export interface Lead {
   ad: string | null;
   /** utm_term: the Meta ad set name, the audience. Lowercased. */
   adset: string | null;
+  /** Meta ids for the campaign, ad set and ad, when GHL recorded them (instant-form leads). */
+  campaignId?: string | null;
+  adsetId?: string | null;
+  adId?: string | null;
   /** The angle part of the ad name (before the first underscore), when it follows the convention. */
   angle: string | null;
   /** What this person has actually paid, from Stripe's charge history. Null when they never paid. */

@@ -18,7 +18,7 @@ import Board from "./components/Board";
 import LeadTable from "./components/LeadTable";
 import { STAGE_LABELS } from "./components/shared";
 import LivePanel from "./components/LivePanel";
-import ExperimentsView from "./components/ExperimentsView";
+import AdsView from "./components/AdsView";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
 import { useLeadFilters, filterLeads, todayStartIso } from "./components/useLeadFilters";
@@ -259,8 +259,8 @@ export default function LeadDesk() {
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
             <LivePanel />
-          ) : filters.view === "experiments" ? (
-            <ExperimentsView leads={effectiveLeads} />
+          ) : filters.view === "ads" ? (
+            <AdsView leads={effectiveLeads} />
           ) : (
             <>
             {filters.stage && (

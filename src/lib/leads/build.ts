@@ -3,6 +3,7 @@ import { getFacebookLeads, type FacebookContact } from "../dashboard/ghlFacebook
 import { getApexAccounts, type ApexMember } from "../dashboard/apex";
 import { getStripeMetrics } from "../dashboard/stripe";
 import { getCustomerValues } from "./stripeLtv";
+import { getFacebookAttribution } from "./ghlAttribution";
 import { normalisePhone } from "../ghlLead";
 import { getCustomFieldKeyMap, decodeCustomFields } from "./ghlFields";
 import {
@@ -365,13 +366,15 @@ function buildTouches(p: {
 async function build(): Promise<LeadsPayload> {
   const warnings: string[] = [];
 
-  const [primewellRaw, apexLocationRaw, apexAccounts, stripe, values] = await Promise.all([
+  const [primewellRaw, apexLocationRaw, apexAccounts, stripe, values, fbAttribution] = await Promise.all([
     getPrimewellLeads(),
     getFacebookLeads(),
     getApexAccounts(),
     getStripeMetrics(),
     getCustomerValues(),
+    getFacebookAttribution(),
   ]);
+  if (fbAttribution.error) warnings.push(`Facebook ad attribution: ${fbAttribution.error}`);
   if (values.error) warnings.push(`Stripe payments: ${values.error} (lifetime value missing)`);
 
   if (!primewellRaw.connected) warnings.push(`PrimeWell GHL: ${primewellRaw.error ?? "not connected"}`);
@@ -510,6 +513,23 @@ async function build(): Promise<LeadsPayload> {
         firstPaidAt: value.firstPaidAt,
       };
     }
+  }
+
+  // Instant-form leads carry no utm fields; GHL's own attribution names the ad.
+  // The utm fields still win when both exist, since they were written by our form.
+  for (const lead of leads) {
+    const a = lead.ghlContactId ? fbAttribution.byContact.get(lead.ghlContactId) : undefined;
+    if (!a) continue;
+    const low = (v: string | null) => (v ? v.toLowerCase() : null);
+    if (!lead.campaign) lead.campaign = low(a.campaign);
+    if (!lead.ad) {
+      lead.ad = low(a.ad);
+      lead.angle = parseAngle(lead.ad);
+    }
+    if (!lead.adset) lead.adset = low(a.adset);
+    lead.campaignId = a.campaignId;
+    lead.adsetId = a.adsetId;
+    lead.adId = a.adId;
   }
 
   // Amazon Success Hub webinar imports are real contacts but not sales leads
