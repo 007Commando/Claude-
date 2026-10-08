@@ -235,7 +235,7 @@ export default function Navigation() {
 
   if (isLeanHeaderPage) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
@@ -251,21 +251,21 @@ export default function Navigation() {
                 </span>
               </span>
             </Link>
-            <div className="flex items-center gap-4 sm:gap-6 uppercase tracking-wider text-[13px]">
+            <div className="flex items-center gap-4 sm:gap-6 text-[14px]">
               {!isPopWebJourney && (
                 <Link
                   href="/auth"
-                  className="text-slate-900 hover:text-brand transition-colors font-bold"
+                  className="font-medium text-slate-700 transition-colors hover:text-slate-900"
                 >
-                  LOG IN
+                  Log in
                 </Link>
               )}
               <Link
                 href={leanSignupHref}
-                className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
+                className="rounded-full bg-slate-900 px-5 py-2.5 font-medium text-white transition hover:bg-slate-800"
               >
                 {/* The Facebook page sells the $1 week once it is on; "free" beside it is the mismatch. */}
-                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "SIGN UP"}
+                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "Start my trial"}
               </Link>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function Navigation() {
   if (isDistractionFreePage) {
     return (
       <nav
-        className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 ${
+        className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/70 ${
           isApexElitePage ? "top-10" : "top-0"
         }`}
       >
@@ -303,7 +303,7 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 relative">
           <Link href="/" className="flex items-center gap-2">
@@ -323,16 +323,16 @@ export default function Navigation() {
           {/* Desktop Nav — centered */}
           {/* Centred in the space between the logo and the buttons at every width.
               It used to be absolutely centred on the page from 1280px, which ran
-              "AI INTEGRATIONS" into the logo's wordmark at 1440px once the row
+              "AI Integrations" into the logo's wordmark at 1440px once the row
               grew. Flex keeps it clear of both sides. */}
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-6 xl:gap-9 whitespace-nowrap px-6 text-[13px] font-bold text-slate-600">
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-6 xl:gap-9 whitespace-nowrap px-6 text-[14px] font-medium text-slate-600">
             <Link
               href="/ai"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isAiActive ? "text-brand" : ""}`}
+              className={`hover:text-slate-900 transition-colors ${FOCUS} ${isAiActive ? "text-slate-900" : ""}`}
             >
               {/* Short below 1280px, where the full row pushed LOG IN onto two lines. */}
               <span className="xl:hidden">AI</span>
-              <span className="hidden xl:inline">AI INTEGRATIONS</span>
+              <span className="hidden xl:inline">AI Integrations</span>
             </Link>
 
             <div
@@ -363,9 +363,9 @@ export default function Navigation() {
                 aria-controls="features-menu"
                 aria-haspopup="true"
                 onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}
-                className={`flex items-center gap-1.5 transition-colors uppercase tracking-wider ${FOCUS} ${isFeaturesOpen || isFeatureActive ? "text-brand" : "hover:text-brand"}`}
+                className={`flex items-center gap-1.5 transition-colors ${FOCUS} ${isFeaturesOpen || isFeatureActive ? "text-slate-900" : "hover:text-slate-900"}`}
               >
-                FEATURES{" "}
+                Features{" "}
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-300 ${isFeaturesOpen ? "rotate-180" : ""}`}
@@ -458,45 +458,45 @@ export default function Navigation() {
             </div>
             <Link
               href="/pricing"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isPricingActive ? "text-brand" : ""}`}
+              className={`hover:text-slate-900 transition-colors ${FOCUS} ${isPricingActive ? "text-slate-900" : ""}`}
             >
-              PRICING
+              Pricing
             </Link>
             <Link
               href="/tools/fba-calculator"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isCalculatorActive ? "text-brand" : ""}`}
+              className={`hover:text-slate-900 transition-colors ${FOCUS} ${isCalculatorActive ? "text-slate-900" : ""}`}
             >
-              FBA CALCULATOR
+              FBA Calculator
             </Link>
             <Link
               href="/rewards-benefits"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isRewardsActive ? "text-brand" : ""}`}
+              className={`hover:text-slate-900 transition-colors ${FOCUS} ${isRewardsActive ? "text-slate-900" : ""}`}
             >
-              <span className="xl:hidden">REWARDS</span>
-              <span className="hidden xl:inline">REWARDS & BENEFITS</span>
+              <span className="xl:hidden">Rewards</span>
+              <span className="hidden xl:inline">Rewards & Benefits</span>
             </Link>
           </div>
 
           {/* Right-side auth */}
-          <div className="hidden lg:flex items-center gap-6 whitespace-nowrap uppercase tracking-wider text-[13px]">
+          <div className="hidden lg:flex items-center gap-6 whitespace-nowrap text-[14px]">
             <Link
               href="/auth"
-              className="text-slate-900 hover:text-brand transition-colors font-bold"
+              className="font-medium text-slate-700 transition-colors hover:text-slate-900"
             >
-              LOG IN
+              Log in
             </Link>
             <Link
               href="/auth?mode=signup&plan=starter&period=monthly"
-              className="bg-brand text-white px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
+              className="rounded-full bg-slate-900 px-5 py-2.5 font-medium text-white transition hover:bg-slate-800"
             >
-              SIGN UP
+              Start my trial
             </Link>
           </div>
 
           {/* Mobile Nav Toggle */}
           <div className="lg:hidden flex items-center gap-4">
-            <Link href="/auth" className="whitespace-nowrap text-sm font-bold text-slate-900">
-              LOG IN
+            <Link href="/auth" className="whitespace-nowrap text-sm font-medium text-slate-700">
+              Log in
             </Link>
             <button
               type="button"
@@ -621,21 +621,21 @@ export default function Navigation() {
               <Link
                 href="/auth?mode=signup&plan=starter&period=monthly"
                 onClick={() => setIsMenuOpen(false)}
-                className="block w-full text-center bg-brand text-white px-5 py-4 rounded-2xl font-bold shadow-lg shadow-brand/20"
+                className="block w-full rounded-full bg-slate-900 px-5 py-3.5 text-center font-medium text-white"
               >
-                SIGN UP
+                Start my trial
               </Link>
               <Link
                 href="/features/black#apex-university"
                 onClick={closeMenus}
-                className="block w-full text-center border border-brand/20 text-brand px-5 py-4 rounded-2xl font-bold hover:bg-brand/5 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                className="block w-full rounded-full border border-slate-300 px-5 py-3.5 text-center font-medium text-slate-900 transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
               >
-                FREE AMAZON COURSE
+                Free Amazon course
               </Link>
               <Link
                 href="/contact-us"
                 onClick={() => setIsMenuOpen(false)}
-                className="block w-full text-center bg-slate-50 text-slate-900 px-5 py-4 rounded-2xl font-bold"
+                className="block w-full rounded-full bg-slate-100 px-5 py-3.5 text-center font-medium text-slate-900"
               >
                 Contact Support
               </Link>
