@@ -71,6 +71,11 @@ function MultiSelectDropdown<T extends string>({
   );
 }
 
+const SCOPE_OPTIONS: { value: LeadFilters["scope"]; label: string }[] = [
+  { value: "new", label: "New leads only" },
+  { value: "activity", label: "All activity" },
+];
+
 function DateDropdown({ filters }: { filters: LeadFilters }) {
   const [open, setOpen] = useState(false);
   const ref = useOutsideClose(() => setOpen(false));
@@ -80,6 +85,7 @@ function DateDropdown({ filters }: { filters: LeadFilters }) {
     <div className="ld-popover-anchor" ref={ref}>
       <button type="button" className="ld-dd-btn" data-active={filters.datePreset !== DEFAULT_DATE_PRESET} onClick={() => setOpen((o) => !o)}>
         {activeLabel}
+        {filters.datePreset !== "all" && filters.scope === "activity" && <span className="ld-dd-sub"> · all activity</span>}
         <ChevronDown size={12} />
       </button>
       {open && (
@@ -93,6 +99,17 @@ function DateDropdown({ filters }: { filters: LeadFilters }) {
                 filters.setDatePreset(opt.value);
                 if (opt.value !== "custom") setOpen(false);
               }}
+            >
+              {opt.label}
+            </div>
+          ))}
+          <div className="ld-popover-divider" />
+          {SCOPE_OPTIONS.map((opt) => (
+            <div
+              key={opt.value}
+              className="ld-popover-option"
+              data-active={filters.scope === opt.value}
+              onClick={() => filters.setScope(opt.value)}
             >
               {opt.label}
             </div>

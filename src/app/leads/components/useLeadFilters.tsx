@@ -42,6 +42,7 @@ export const DATE_PRESET_OPTIONS: { value: LeadDatePreset; label: string }[] = [
 ];
 
 const BOARD_SORT_KEYS: BoardSortKey[] = ["newest", "oldest", "az", "lastOutreach"];
+export type DateScope = "new" | "activity";
 const DATE_PRESETS: LeadDatePreset[] = ["today", "7d", "14d", "30d", "45d", "60d", "90d", "all", "custom"];
 
 export interface LeadFilters {
@@ -53,6 +54,12 @@ export interface LeadFilters {
   from: string;
   to: string;
   ash: boolean;
+  /**
+   * What a date range means (Stefano, 2026-10-08). "new": only the leads that came in during the range,
+   * so every column counts that same group and First scan can never exceed the leads it came from.
+   * "activity": anyone who did something in the range, plus everyone trialing or paying now.
+   */
+  scope: DateScope;
   /** Single-stage filter, set by clicking a Funnels stage — see goToStageInTable. Not shown as a top-bar control. */
   stage: Stage | null;
   boardSort: Partial<Record<Stage, BoardSortKey>>;
@@ -65,6 +72,7 @@ export interface LeadFilters {
   setDatePreset: (v: LeadDatePreset) => void;
   setCustomRange: (from: string, to: string) => void;
   setAsh: (v: boolean) => void;
+  setScope: (v: DateScope) => void;
   setStage: (v: Stage | null) => void;
   /** Jumps to the Table view pre-filtered to one source group and one stage — used by a Funnels stage click. One combined URL update so the three params land together instead of stomping each other. */
   goToStageInTable: (sources: LeadSource[], stage: Stage) => void;
@@ -147,6 +155,7 @@ export function useLeadFilters(): LeadFilters {
     from: searchParams.get("from") ?? "",
     to: searchParams.get("to") ?? "",
     ash: searchParams.get("ash") === "1",
+    scope: searchParams.get("scope") === "activity" ? "activity" : "new",
     stage,
     boardSort,
     tableSort,
@@ -159,12 +168,13 @@ export function useLeadFilters(): LeadFilters {
     setDatePreset: (v) => setParams(v === "custom" ? { date: v } : { date: v === DEFAULT_DATE_PRESET ? null : v, from: null, to: null }),
     setCustomRange: (from, to) => setParams({ date: "custom", from: from || null, to: to || null }),
     setAsh: (v) => setParams({ ash: v ? "1" : null }),
+    setScope: (v) => setParams({ scope: v === "activity" ? "activity" : null }),
     setStage: (v) => setParams({ stage: v }),
     goToStageInTable: (sources, targetStage) => setParams({ view: "table", source: sources, stage: targetStage }),
     setBoardSort: (stage, key) => setParams({ bsort: encodeBoardSort({ ...boardSort, [stage]: key ?? undefined }) }),
     setTableSort: (sort) => setParams({ tsort: sort ? `${sort.columnId}.${sort.dir}` : null }),
     clearAll: () =>
-      setParams({ source: null, sellerType: null, date: null, from: null, to: null, ash: null, q: null, stage: null }),
+      setParams({ source: null, sellerType: null, date: null, from: null, to: null, ash: null, q: null, stage: null, scope: null }),
   };
 }
 
@@ -226,8 +236,12 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
     // The single-stage filter only means something in the Table; the Board is split by stage already.
     if (f.stage && f.view === "table" && l.stage !== f.stage) return false;
-    if ((window.from || window.to) && !isLiveStage(l.stage)) {
-      // Every range keeps anyone who did something in it, plus everyone trialing or paying now:
+    const inWindow = (d: string | null | undefined) => Boolean(d) && (!window.from || (d as string) >= window.from) && (!window.to || (d as string) <= window.to);
+    if ((window.from || window.to) && f.scope === "new") {
+      // A cohort: only leads that came in during the range, at whatever stage they have reached since.
+      if (!inWindow(l.leadAt)) return false;
+    } else if ((window.from || window.to) && !isLiveStage(l.stage)) {
+      // "activity": anyone who did something in the range, plus everyone trialing or paying now:
       // a PrimeWell lead from August who started a trial this week must show (2026-10-08, gambitgoods).
       const dates = activityDates(l);
       const inside = dates.some((d) => d && (!window.from || d >= window.from) && (!window.to || d <= window.to));

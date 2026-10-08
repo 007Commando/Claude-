@@ -2259,3 +2259,8 @@
   color: #dc2626;
   border-color: #fca5a5;
 }
+
+.ld-dd-sub {
+  color: var(--ld-text-faint);
+  font-weight: 400;
+}

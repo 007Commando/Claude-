@@ -133,6 +133,7 @@ export default function LeadDesk() {
       filters.to,
       filters.ash,
       filters.stage,
+      filters.scope,
     ],
   );
 
@@ -242,7 +243,7 @@ export default function LeadDesk() {
         <KpiStrip
           leads={filteredLeads}
           goalLeads={goalLeads}
-          todaySince={filters.datePreset === "today" ? todayStartIso() : null}
+          todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null}
           goalTrials={data.goalTrials}
           goalMonth={data.goalMonth}
         />
@@ -253,7 +254,7 @@ export default function LeadDesk() {
           <SkeletonBoard />
         ) : data ? (
           filters.view === "board" ? (
-            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
+            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
