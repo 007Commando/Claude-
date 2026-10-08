@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, RefreshCw, Search, UserPlus, X } from "lucide-react";
 import type { LeadSource, SellerType } from "../../../lib/leads/model";
 import { ALL_SELLER_TYPES, ALL_SOURCES, SELLER_TYPE_LABELS, SOURCE_LABELS } from "./shared";
-import { DATE_PRESET_OPTIONS, type LeadFilters } from "./useLeadFilters";
+import { DATE_PRESET_OPTIONS, DEFAULT_DATE_PRESET, type LeadFilters } from "./useLeadFilters";
 
 function useOutsideClose(onClose: () => void) {
   const ref = useRef<HTMLDivElement>(null);
@@ -74,11 +74,11 @@ function MultiSelectDropdown<T extends string>({
 function DateDropdown({ filters }: { filters: LeadFilters }) {
   const [open, setOpen] = useState(false);
   const ref = useOutsideClose(() => setOpen(false));
-  const activeLabel = DATE_PRESET_OPTIONS.find((o) => o.value === filters.datePreset)?.label ?? "All time";
+  const activeLabel = DATE_PRESET_OPTIONS.find((o) => o.value === filters.datePreset)?.label ?? "Today";
 
   return (
     <div className="ld-popover-anchor" ref={ref}>
-      <button type="button" className="ld-dd-btn" data-active={filters.datePreset !== "all"} onClick={() => setOpen((o) => !o)}>
+      <button type="button" className="ld-dd-btn" data-active={filters.datePreset !== DEFAULT_DATE_PRESET} onClick={() => setOpen((o) => !o)}>
         {activeLabel}
         <ChevronDown size={12} />
       </button>

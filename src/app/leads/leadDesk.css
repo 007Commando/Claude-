@@ -605,9 +605,11 @@
   min-height: 0;
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  /* Up to ten columns now: they keep a readable width and the board scrolls sideways. */
+  grid-auto-columns: minmax(190px, 1fr);
   gap: 10px;
   padding: 10px;
+  overflow-x: auto;
 }
 
 .ld-board-col {

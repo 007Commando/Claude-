@@ -13,7 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
 export type ViewMode = "board" | "table" | "funnels" | "live" | "experiments";
-export type LeadDatePreset = "7d" | "14d" | "30d" | "45d" | "60d" | "90d" | "all" | "custom";
+export type LeadDatePreset = "today" | "7d" | "14d" | "30d" | "45d" | "60d" | "90d" | "all" | "custom";
 export type BoardSortKey = "newest" | "oldest" | "az" | "lastOutreach";
 export type SortDir = "asc" | "desc";
 
@@ -30,6 +30,7 @@ export const BOARD_SORT_OPTIONS: { value: BoardSortKey; label: string }[] = [
 ];
 
 export const DATE_PRESET_OPTIONS: { value: LeadDatePreset; label: string }[] = [
+  { value: "today", label: "Today" },
   { value: "7d", label: "Last 7 days" },
   { value: "14d", label: "Last 14 days" },
   { value: "30d", label: "Last 30 days" },
@@ -41,7 +42,7 @@ export const DATE_PRESET_OPTIONS: { value: LeadDatePreset; label: string }[] = [
 ];
 
 const BOARD_SORT_KEYS: BoardSortKey[] = ["newest", "oldest", "az", "lastOutreach"];
-const DATE_PRESETS: LeadDatePreset[] = ["7d", "14d", "30d", "45d", "60d", "90d", "all", "custom"];
+const DATE_PRESETS: LeadDatePreset[] = ["today", "7d", "14d", "30d", "45d", "60d", "90d", "all", "custom"];
 
 export interface LeadFilters {
   view: ViewMode;
@@ -130,7 +131,8 @@ export function useLeadFilters(): LeadFilters {
   const sellerType =
     useMemo(() => searchParams.get("sellerType")?.split(",").filter(Boolean) as SellerType[] | undefined, [searchParams]) ?? [];
   const datePresetRaw = searchParams.get("date");
-  const datePreset: LeadDatePreset = (DATE_PRESETS as string[]).includes(datePresetRaw ?? "") ? (datePresetRaw as LeadDatePreset) : "all";
+  // Opening the desk lands on today (Stefano, 2026-10-08); "all" now has to be asked for in the URL.
+  const datePreset: LeadDatePreset = (DATE_PRESETS as string[]).includes(datePresetRaw ?? "") ? (datePresetRaw as LeadDatePreset) : DEFAULT_DATE_PRESET;
   const boardSort = useMemo(() => parseBoardSort(searchParams.get("bsort")), [searchParams]);
   const tableSort = useMemo(() => parseTableSort(searchParams.get("tsort")), [searchParams]);
   const stageParam = searchParams.get("stage");
@@ -149,12 +151,12 @@ export function useLeadFilters(): LeadFilters {
     boardSort,
     tableSort,
     activeFilterCount:
-      source.length + sellerType.length + (datePreset !== "all" ? 1 : 0) + (searchParams.get("ash") === "1" ? 1 : 0) + (stage ? 1 : 0),
+      source.length + sellerType.length + (datePreset !== DEFAULT_DATE_PRESET ? 1 : 0) + (searchParams.get("ash") === "1" ? 1 : 0) + (stage ? 1 : 0),
     setView: (v) => setParams({ view: v === "board" ? null : v, stage: v === "table" ? stage : null }),
     setQuery: (q) => setParams({ q: q || null }),
     setSource: (v) => setParams({ source: v }),
     setSellerType: (v) => setParams({ sellerType: v }),
-    setDatePreset: (v) => setParams(v === "custom" ? { date: v } : { date: v === "all" ? null : v, from: null, to: null }),
+    setDatePreset: (v) => setParams(v === "custom" ? { date: v } : { date: v === DEFAULT_DATE_PRESET ? null : v, from: null, to: null }),
     setCustomRange: (from, to) => setParams({ date: "custom", from: from || null, to: to || null }),
     setAsh: (v) => setParams({ ash: v ? "1" : null }),
     setStage: (v) => setParams({ stage: v }),
@@ -166,11 +168,31 @@ export function useLeadFilters(): LeadFilters {
   };
 }
 
+export const DEFAULT_DATE_PRESET: LeadDatePreset = "today";
+
+/** Midnight at the start of the viewer's day, as an ISO string. */
+export function todayStartIso(): string {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+}
+
+/** Trialing and paying are states, not events: on "Today" they show everyone currently in them. */
+export function isLiveStage(stage: Stage): boolean {
+  return stage === "trial" || stage === "customer";
+}
+
+function activityDates(l: Lead): (string | null)[] {
+  return [l.leadAt, l.registeredAt, l.trialStartedAt, l.customerSince, l.churnedAt, l.activation.firstScanAt, l.activation.amazonConnectedAt];
+}
+
 /** The lead-date window implied by a preset (or custom from/to), as ISO-comparable bounds. */
 export function dateWindow(preset: LeadDatePreset, from: string, to: string): { from: string | null; to: string | null } {
   const now = Date.now();
   const MS_DAY = 86_400_000;
   switch (preset) {
+    case "today":
+      return { from: todayStartIso(), to: null };
     case "all":
       return { from: null, to: null };
     case "7d":
@@ -204,8 +226,12 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
     // The single-stage filter only means something in the Table; the Board is split by stage already.
     if (f.stage && f.view === "table" && l.stage !== f.stage) return false;
-    if (window.from && l.leadAt < window.from) return false;
-    if (window.to && l.leadAt > window.to) return false;
+    if ((window.from || window.to) && !(f.datePreset === "today" && isLiveStage(l.stage))) {
+      // "Today" keeps anyone who did something today; the other ranges are lead-date cohorts.
+      const dates = f.datePreset === "today" ? activityDates(l) : [l.leadAt];
+      const inside = dates.some((d) => d && (!window.from || d >= window.from) && (!window.to || d <= window.to));
+      if (!inside) return false;
+    }
     if (q) {
       const hay = `${l.name} ${l.email ?? ""} ${l.phone ?? ""}`.toLowerCase();
       if (!hay.includes(q)) return false;

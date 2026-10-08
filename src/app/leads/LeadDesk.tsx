@@ -21,7 +21,7 @@ import LivePanel from "./components/LivePanel";
 import ExperimentsView from "./components/ExperimentsView";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
-import { useLeadFilters, filterLeads } from "./components/useLeadFilters";
+import { useLeadFilters, filterLeads, todayStartIso } from "./components/useLeadFilters";
 import { apiUrl, STAGES } from "./components/shared";
 import "./leadDesk.css";
 
@@ -136,6 +136,9 @@ export default function LeadDesk() {
     ],
   );
 
+  // The monthly goal counts the whole month whatever range is picked.
+  const goalLeads = useMemo(() => effectiveLeads.filter((l) => !l.internal), [effectiveLeads]);
+
   const leadsByStage = useMemo(() => {
     const out = {} as Record<Stage, Lead[]>;
     for (const stage of STAGES) out[stage] = [];
@@ -235,14 +238,22 @@ export default function LeadDesk() {
         <div className="ld-banner ld-banner-warning">{data.warnings.join(" · ")}</div>
       )}
 
-      {data && <KpiStrip leads={filteredLeads} goalTrials={data.goalTrials} goalMonth={data.goalMonth} />}
+      {data && (
+        <KpiStrip
+          leads={filteredLeads}
+          goalLeads={goalLeads}
+          todaySince={filters.datePreset === "today" ? todayStartIso() : null}
+          goalTrials={data.goalTrials}
+          goalMonth={data.goalMonth}
+        />
+      )}
 
       <div className="ld-main">
         {loading && !data ? (
           <SkeletonBoard />
         ) : data ? (
           filters.view === "board" ? (
-            <Board leadsByStage={leadsByStage} filters={filters} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
+            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (

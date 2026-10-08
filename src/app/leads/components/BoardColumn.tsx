@@ -22,7 +22,7 @@ interface BoardColumnProps {
   style?: React.CSSProperties;
   dragAttributes?: React.HTMLAttributes<HTMLElement>;
   dragListeners?: Record<string, unknown>;
-  /** Sub-column (activation milestone inside "Account, no trial"): own title and colour, no sort menu, not draggable. */
+  /** Activation milestone column: own title and colour, dashed, no sort menu. */
   subTitle?: string;
   subColor?: string;
   /** Extra control rendered at the right of the header, e.g. the expand toggle. */
@@ -203,8 +203,8 @@ export default function BoardColumn({
 
   return (
     <div className={subTitle ? "ld-board-col ld-board-col-sub" : "ld-board-col"} ref={setNodeRef} style={style}>
-      <div className="ld-board-col-header" {...dragAttributes} {...dragListeners} style={subTitle ? { cursor: "default" } : undefined}>
-        {!subTitle && <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />}
+      <div className="ld-board-col-header" {...dragAttributes} {...dragListeners} style={dragListeners ? undefined : { cursor: "default" }}>
+        {dragListeners && <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />}
         <span className="ld-board-col-dot" style={{ background: subColor ?? titleColor ?? stageColorVar(stage) }} />
         <span className="ld-board-col-name">{subTitle ?? title ?? STAGE_SHORT_LABELS[stage]}</span>
         <span className="ld-board-col-count">{leads.length}</span>

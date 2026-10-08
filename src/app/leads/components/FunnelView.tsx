@@ -24,6 +24,7 @@ import FunnelCard from "./FunnelCard";
 import SourceLeaderboard from "./SourceLeaderboard";
 
 const FUNNEL_PERIODS: { value: LeadDatePreset; short: string }[] = [
+  { value: "today", short: "Today" },
   { value: "7d", short: "7 days" },
   { value: "14d", short: "14 days" },
   { value: "30d", short: "30 days" },

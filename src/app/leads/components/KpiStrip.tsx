@@ -86,12 +86,37 @@ function ActivationLegend() {
   );
 }
 
+/**
+ * "Today" counts (Stefano, 2026-10-08): what happened since midnight, next to who is
+ * trialing and paying right now. `leads` is already narrowed to today's activity plus
+ * everyone live, so each tile only has to test its own date.
+ */
+function todayStats(leads: Lead[], since: string) {
+  const on = (iso: string | null) => Boolean(iso && iso >= since);
+  return {
+    leads: leads.filter((l) => on(l.leadAt)).length,
+    accounts: leads.filter((l) => on(l.registeredAt)).length,
+    trialingNow: leads.filter((l) => l.stage === "trial").length,
+    customersNow: leads.filter((l) => l.stage === "customer").length,
+    newTrials: leads.filter((l) => on(l.trialStartedAt)).length,
+    connected: leads.filter((l) => on(l.activation.amazonConnectedAt)).length,
+    scanned: leads.filter((l) => on(l.activation.firstScanAt)).length,
+    churned: leads.filter((l) => on(l.churnedAt)).length,
+  };
+}
+
 export default function KpiStrip({
   leads,
+  goalLeads,
+  todaySince,
   goalTrials,
   goalMonth,
 }: {
   leads: Lead[];
+  /** Everyone the date filter would otherwise cut, so the month goal never shrinks to today. */
+  goalLeads: Lead[];
+  /** Start of today when the Today range is on, else null. */
+  todaySince: string | null;
   goalTrials: number;
   goalMonth: string;
 }) {
@@ -127,25 +152,41 @@ export default function KpiStrip({
     };
   }, [leads]);
 
-  const goal = useMemo(() => computeGoal(leads, goalTrials, goalMonth), [leads, goalTrials, goalMonth]);
+  const goal = useMemo(() => computeGoal(goalLeads, goalTrials, goalMonth), [goalLeads, goalTrials, goalMonth]);
+  const today = useMemo(() => (todaySince ? todayStats(leads, todaySince) : null), [leads, todaySince]);
   const goalPct = goalTrials > 0 ? Math.min(100, Math.round((goal.achieved / goalTrials) * 100)) : 0;
 
   return (
     <div className="ld-kpi-strip">
-      <Tile label="Leads" value={stats.total} />
-      <Tile label="Accounts" value={stats.counts.registered} />
-      <Tile label="Trialing" value={stats.counts.trial} />
-      <Tile label="Customers" value={stats.counts.customer} />
-      <Tile label="Churned" value={stats.counts.churned} />
-      <Tile label="Lead→Acct" value={pctLabel(stats.leadToAccountPct)} small />
-      <Tile label="Acct→Trial" value={pctLabel(stats.accountToTrialPct)} small />
-      <Tile label="Trial→Paid" value={pctLabel(stats.trialToPaidPct)} small />
-      <Tile
-        label="Churn %"
-        value={pctLabel(stats.churnPct)}
-        small
-        tooltip={`${stats.churnedThisMonth} churned this month · ${stats.churnedLastMonth} last month`}
-      />
+      {today ? (
+        <>
+          <Tile label="Leads today" value={today.leads} />
+          <Tile label="Accounts today" value={today.accounts} />
+          <Tile label="Amazon connected" value={today.connected} tooltip="Connected today" />
+          <Tile label="First scan" value={today.scanned} tooltip="Scanned today" />
+          <Tile label="New trials" value={today.newTrials} tooltip="Started today" />
+          <Tile label="Trialing now" value={today.trialingNow} tooltip="Live trials" />
+          <Tile label="Customers now" value={today.customersNow} tooltip="Live customers" />
+          <Tile label="Churned today" value={today.churned} />
+        </>
+      ) : (
+        <>
+          <Tile label="Leads" value={stats.total} />
+          <Tile label="Accounts" value={stats.counts.registered} />
+          <Tile label="Trialing" value={stats.counts.trial} />
+          <Tile label="Customers" value={stats.counts.customer} />
+          <Tile label="Churned" value={stats.counts.churned} />
+          <Tile label="Lead→Acct" value={pctLabel(stats.leadToAccountPct)} small />
+          <Tile label="Acct→Trial" value={pctLabel(stats.accountToTrialPct)} small />
+          <Tile label="Trial→Paid" value={pctLabel(stats.trialToPaidPct)} small />
+          <Tile
+            label="Churn %"
+            value={pctLabel(stats.churnPct)}
+            small
+            tooltip={`${stats.churnedThisMonth} churned this month · ${stats.churnedLastMonth} last month`}
+          />
+        </>
+      )}
       <div className="ld-kpi-tile ld-kpi-goal">
         <div className="ld-kpi-label">Goal</div>
         {goal.hasStarted ? (
