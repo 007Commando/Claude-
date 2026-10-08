@@ -117,7 +117,11 @@ const INTERNAL_EMAILS = new Set(
  * every count ("I don't want her to be on this leads table").
  */
 const PRIVATE_CLIENT_EMAILS = new Set(
-  (process.env.LEAD_DESK_PRIVATE_CLIENTS ?? "empowered.blessed.llc@gmail.com")
+  (
+    process.env.LEAD_DESK_PRIVATE_CLIENTS ??
+    // John Griffin and Sachia Venter: individual arrangements with extended trials (Stefano, 2026-10-08).
+    "empowered.blessed.llc@gmail.com,griffijw@outlook.com,sachia@edptradingco.com"
+  )
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
