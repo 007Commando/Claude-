@@ -2,9 +2,14 @@
 
 import { trackReddit } from "../lib/redditPixel";
 import {
+  Banknote,
   Check,
   Compass,
   DollarSign,
+  Gem,
+  Landmark,
+  PiggyBank,
+  Wallet,
   Handshake,
   ListChecks,
   Pencil,
@@ -24,6 +29,7 @@ import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 import { DOLLAR_WEEK } from "../config/offer";
 import { DISTRIBUTOR_COUNT } from "../data/distributorStats";
 import { liveIdentify, liveStep } from "../lib/live/client";
+import { QUIZ_QUESTIONS } from "../lib/quizQuestions";
 
 /**
  * The website arm of the Apex Pop A/B, in the PrimeWell application's shape:
@@ -61,6 +67,17 @@ const NEW_OBSTACLES: Card[] = [
   { value: "Knowing the right steps", title: "Knowing the right steps", body: "I want the order of operations.", icon: ListChecks },
   { value: STARTER_KIT, title: "Less than $1,000 to invest", body: "I want to start small.", icon: DollarSign },
 ];
+
+/**
+ * How much they could put into inventory (Stefano, 2026-10-08): the quiz's
+ * five answers, so a $10,000+ lead earns the gold star on this inflow too.
+ * Values are the quiz slugs; the API stores the label in `inventory_budget`.
+ */
+const BUDGET_ICONS: LucideIcon[] = [DollarSign, Wallet, PiggyBank, Banknote, Landmark];
+const BUDGET_BODIES = ["Starting small.", "A first real order.", "A few suppliers at once.", "Ready to buy in volume.", "Scaling with real capital."];
+const BUDGETS: Card[] = QUIZ_QUESTIONS.budget.options.map((o, i) => ({ value: o.slug, title: o.label, body: BUDGET_BODIES[i] ?? "", icon: BUDGET_ICONS[i] ?? Gem }));
+/** The new-seller answer that already says under $1,000, so that visitor isn't asked twice. */
+const budgetFromObstacle = (obstacle: string | null) => (obstacle === STARTER_KIT ? "under-1k" : null);
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -476,6 +493,7 @@ export default function PopQualify() {
   const [phone, setPhone] = useState("");
   const [sells, setSells] = useState<Sells | null>(null);
   const [obstacle, setObstacle] = useState<string | null>(null);
+  const [budget, setBudget] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -533,7 +551,7 @@ export default function PopQualify() {
   };
 
   const finish = async () => {
-    if (!sells || !obstacle) return;
+    if (!sells || !obstacle || !budget) return;
     setBusy(true);
     setError(null);
     const attribution = readStoredAttribution();
@@ -542,6 +560,7 @@ export default function PopQualify() {
         stage: "complete",
         sellsOnAmazon: sells,
         obstacle,
+        budget,
         ...(dollarWeek ? { offer: "dollar-week" } : {}),
       });
       window.fbq?.("track", "Lead", { content_name: "apex-pop-web" });
@@ -589,7 +608,7 @@ export default function PopQualify() {
    * reads 100% on this page: that happens when the account exists.
    */
   const typed = [name, email, phone].filter((v) => v.trim().length > 1).length;
-  const progress = busy && step === 3 ? 0.95 : step === 1 ? 0.1 + typed * 0.05 : step === 2 ? 0.3 + (sells ? 0.15 : 0) + (obstacle ? 0.15 : 0) : 0.8;
+  const progress = busy && step === 3 ? 0.95 : step === 1 ? 0.1 + typed * 0.05 : step === 2 ? 0.3 + (sells ? 0.1 : 0) + (obstacle ? 0.1 : 0) + (budget ? 0.1 : 0) : 0.8;
   const progressLabel =
     progress < 0.3 ? "About 2 minutes" : progress < 0.6 ? "About 1 minute" : progress < 0.8 ? "Under a minute" : "Almost there";
 
@@ -650,7 +669,7 @@ export default function PopQualify() {
           <StepCard
             number={2}
             title="Where are you in your Amazon journey?"
-            summary={[journeyTitle, obstacle].filter(Boolean).join(" · ")}
+            summary={[journeyTitle, obstacle, budget && budgetFromObstacle(obstacle) !== budget ? BUDGETS.find((b) => b.value === budget)?.title : null].filter(Boolean).join(" · ")}
             state={stateOf(2)}
             onEdit={() => setStep(2)}
           >
@@ -664,6 +683,7 @@ export default function PopQualify() {
                   onPick={() => {
                     setSells(j.value);
                     setObstacle(null);
+                    setBudget(null);
                     // Tag the contact now, so a seller who stops here is still sorted.
                     post({ stage: "journey", sellsOnAmazon: j.value }).catch(() => {});
                   }}
@@ -685,6 +705,10 @@ export default function PopQualify() {
                         selected={obstacle === o.value}
                         onPick={() => {
                           setObstacle(o.value);
+                          // "Less than $1,000 to invest" answers the budget question already.
+                          const implied = budgetFromObstacle(o.value);
+                          setBudget(implied ?? (budgetFromObstacle(obstacle) ? null : budget));
+                          if (implied) post({ stage: "budget", sellsOnAmazon: sells, obstacle: o.value, budget: implied }).catch(() => {});
                           setScrollNonce((n) => n + 1);
                           // Field and tag land now, so the follow-up can speak to this obstacle.
                           post({ stage: "obstacle", sellsOnAmazon: sells, obstacle: o.value }).catch(() => {});
@@ -696,13 +720,35 @@ export default function PopQualify() {
                   <div ref={sceneRef}>
                     <AnimatePresence mode="wait">{obstacle && obstacleScene(obstacle, dollarWeek)}</AnimatePresence>
                   </div>
+                  {obstacle && !budgetFromObstacle(obstacle) && (
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease }}>
+                      <hr className="my-6 border-slate-100" />
+                      <p className="text-base font-bold text-slate-900">How much could you put into inventory?</p>
+                      <p className="mb-4 text-sm text-slate-500">So we match you with suppliers that fit, from low minimum orders to bigger accounts.</p>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {BUDGETS.map((b) => (
+                          <ChoiceCard
+                            key={b.value}
+                            card={b}
+                            selected={budget === b.value}
+                            onPick={() => {
+                              setBudget(b.value);
+                              setScrollNonce((n) => n + 1);
+                              post({ stage: "budget", sellsOnAmazon: sells, obstacle, budget: b.value }).catch(() => {});
+                            }}
+                            compact
+                          />
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
 
             {error && step === 2 && <p className="mt-4 text-sm font-medium text-red-600">{error}</p>}
             <div className="mt-6 flex justify-end">
-              <button ref={continueRef} type="button" disabled={!sells || !obstacle} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
+              <button ref={continueRef} type="button" disabled={!sells || !obstacle || !budget} onClick={() => setStep(3)} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:opacity-50">
                 Continue
               </button>
             </div>

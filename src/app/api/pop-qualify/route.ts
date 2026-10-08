@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, removeGhlTags, upsertGhlContact, utmCustomFields } from "../../../lib/ghlLead";
+import { HOT_BUDGETS, QUIZ_QUESTIONS } from "../../../lib/quizQuestions";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -31,6 +32,19 @@ const OBSTACLE_NEW = [
 const TIMING = ["Today", "Tomorrow", "Next week"] as const;
 
 /**
+ * How much they could put into inventory (Stefano, 2026-10-08): the seller
+ * quiz's five answers, asked on every inflow so a $10,000+ lead earns the gold
+ * star wherever they came in. Stored as the answer's words in the
+ * `inventory_budget` field, which the Facebook instant forms fill too.
+ */
+const BUDGETS = QUIZ_QUESTIONS.budget.options.map((o) => o.slug) as [string, ...string[]];
+const budgetLabel = (slug: string) => QUIZ_QUESTIONS.budget.options.find((o) => o.slug === slug)?.label ?? slug;
+const BUDGET_TAGS = BUDGETS.map((b) => `budget:${b}`);
+function budgetTags(slug: string) {
+  return [`budget:${slug}`, ...(HOT_BUDGETS.includes(slug) ? ["hot-lead"] : [])];
+}
+
+/**
  * Two stages, because the page asks for details first (the PrimeWell
  * application's order): "details" lands the contact the moment they are
  * typed, tagged `pop-web-started`, so a lead who leaves at question two is
@@ -38,13 +52,14 @@ const TIMING = ["Today", "Tomorrow", "Next week"] as const;
  * the follow-up. Same email both times, so it is one contact.
  */
 const schema = z.object({
-  stage: z.enum(["details", "journey", "obstacle", "complete"]).default("complete"),
+  stage: z.enum(["details", "journey", "obstacle", "budget", "complete"]).default("complete"),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().min(7).max(40),
   sellsOnAmazon: z.enum(SELLS).optional(),
   obstacle: z.enum([...OBSTACLE_SELLER, ...OBSTACLE_NEW]).optional(),
   demoTiming: z.enum(TIMING).optional(),
+  budget: z.enum(BUDGETS).optional(),
   from: z.string().trim().max(80).optional(),
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
@@ -94,6 +109,16 @@ async function setObstacleTag(contactId: string, obstacle: string) {
     console.warn("pop-qualify: GHL obstacle untag failed", err);
   }
   await addGhlTags(contactId, [tag]);
+}
+
+/** Swap the budget tag; a $10,000+ answer adds hot-lead (never removed here, a hot lead stays starred). */
+async function setBudgetTags(contactId: string, budget: string) {
+  try {
+    await removeGhlTags(contactId, BUDGET_TAGS.filter((t) => t !== `budget:${budget}`));
+  } catch (err) {
+    console.warn("pop-qualify: GHL budget untag failed", err);
+  }
+  await addGhlTags(contactId, budgetTags(budget));
 }
 
 /** Untag the side the lead did not pick. Never fatal: a failed untag must not cost the lead. */
@@ -207,6 +232,30 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ ok: true });
   }
+  /** The budget card tapped: field and tags at once. A changed answer swaps the budget tag. */
+  if (lead.stage === "budget") {
+    if (!lead.budget) return NextResponse.json({ error: "Pick an answer." }, { status: 400 });
+    try {
+      const contact = await upsertGhlContact({
+        firstName,
+        lastName: rest.join(" ") || undefined,
+        name: lead.name,
+        email: lead.email.toLowerCase(),
+        phone,
+        source: "apex-pop-web",
+        customFields: [{ key: "inventory_budget", value: budgetLabel(lead.budget) }],
+      });
+      await setBudgetTags(contact.id, lead.budget);
+    } catch (err) {
+      if (err instanceof GhlNotConfigured) {
+        return NextResponse.json({ error: "Lead capture is not configured." }, { status: 503 });
+      }
+      console.error("pop-qualify: GHL budget write failed", err);
+      return NextResponse.json({ error: "We could not save your answer. Please try again." }, { status: 502 });
+    }
+    return NextResponse.json({ ok: true });
+  }
+
   const starterKit = lead.obstacle === STARTER_KIT_ANSWER;
   const isSeller = lead.sellsOnAmazon === "Yes";
 
@@ -222,11 +271,13 @@ export async function POST(req: NextRequest) {
         { key: "sells_on_amazon", value: lead.sellsOnAmazon },
         { key: isSeller ? "biggest_obstacle_seller" : "biggest_obstacle_new", value: lead.obstacle },
         ...(lead.demoTiming ? [{ key: "demo_timing", value: lead.demoTiming }] : []),
+        ...(lead.budget ? [{ key: "inventory_budget", value: budgetLabel(lead.budget) }] : []),
         ...utmCustomFields(lead),
       ],
     });
     await dropOtherSide(contact.id, lead.sellsOnAmazon);
     await setObstacleTag(contact.id, lead.obstacle);
+    if (lead.budget) await setBudgetTags(contact.id, lead.budget);
     await addGhlTags(contact.id, [
       ...journeyTags(lead.sellsOnAmazon),
       "pop-web-lead",
@@ -239,6 +290,7 @@ export async function POST(req: NextRequest) {
         `Apex Pop website qualifier (${lead.from ?? "apex-pop"})`,
         `Sells on Amazon: ${lead.sellsOnAmazon}`,
         `Biggest obstacle: ${lead.obstacle}`,
+        lead.budget ? `${HOT_BUDGETS.includes(lead.budget) ? "🔴 HOT LEAD: " : ""}Inventory budget: ${budgetLabel(lead.budget)}` : null,
         lead.demoTiming ? `Demo timing: ${lead.demoTiming}` : null,
         lead.utmCampaign ? `Campaign: ${lead.utmSource ?? ""}/${lead.utmMedium ?? ""}/${lead.utmCampaign}` : null,
       ]

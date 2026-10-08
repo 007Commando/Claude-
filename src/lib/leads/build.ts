@@ -237,8 +237,12 @@ function buildLead(params: {
   const contact = primary.kind === "ghl" ? primary.contact : null;
   const apexOnly = primary.kind === "apexOnly" ? primary.member : null;
 
-  const tags = contact ? [...new Set([...contact.tags, ...extraTags])] : [];
   const fields = contact ? { ...extraFields, ...contact.fields } : extraFields;
+  // A $10,000+ inventory budget is a gold star wherever it was answered: the
+  // quiz tags hot-lead itself, the instant forms only fill inventory_budget.
+  const budgetText = (fields["inventory_budget"] ?? "").replace(/[$,\s]/g, "").toLowerCase();
+  const hotByBudget = budgetText.startsWith("10000") || budgetText.startsWith("over25000");
+  const tags = contact ? [...new Set([...contact.tags, ...extraTags, ...(hotByBudget ? ["hot-lead"] : [])])] : [];
 
   const email = contact ? contact.email : lower(apexOnly!.email);
   const name = (contact ? contact.name : apexOnly!.email) || email || "Unknown";
