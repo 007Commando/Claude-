@@ -256,6 +256,14 @@ export function getFriendlyAuthError(err: unknown): string {
     return "Something went wrong on our side. Please try again. If it keeps happening, email info@apexapplications.io and we'll set you up directly.";
   }
 
+  // A password log-in before the address is verified is refused by the
+  // server's sign-in check, which also emails a fresh verification link. It
+  // arrives as auth/internal-error, which read as "Google sign-in isn't
+  // available" to someone who never touched Google.
+  if (/email-not-verified/i.test(message)) {
+    return "Please verify your email first. We just sent you a new link: open it, then log in here.";
+  }
+
   const codeMatch = message.match(/\(auth\/([a-z-]+)\)/);
   if (!codeMatch) {
     if (isBackendMessage(err) || SAFE_AUTH_MESSAGES.has(message))
