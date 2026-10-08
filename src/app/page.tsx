@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "../lib/seo";
-import LandingPage from "../components/LandingPage";
+import HomeV2 from "../components/v2/Home";
 
 /**
  * The homepage had no metadata of its own and lived off the root layout's,
@@ -16,5 +16,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  return <LandingPage />;
+  return <HomeV2 />;
 }

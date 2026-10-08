@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "../../../lib/seo";
-import ApexBlack from "../../../components/ApexBlack";
+import ModulePage from "../../../components/v2/ModulePage";
 
 export const metadata: Metadata = pageMetadata({
   title: "Apex Black: Seller Dashboard, Review Requests & Apex University",
@@ -10,5 +10,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  return <ApexBlack />;
+  return <ModulePage module="black" />;
 }

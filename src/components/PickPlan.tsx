@@ -298,12 +298,12 @@ export default function PickPlan() {
     <button
       type="button"
       onClick={() => handleStart(plan.id)}
-      className={`w-full rounded-xl font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+      className={`w-full rounded-full font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
         size === "md" ? "py-3 text-sm" : "py-2.5 text-sm"
       } ${
         plan.featured
-          ? "bg-blue-600 text-white hover:bg-blue-700"
-          : "border border-slate-300 bg-white text-slate-900 hover:border-slate-400"
+          ? "bg-ink text-white hover:bg-graphite"
+          : "border border-hairline bg-white text-ink hover:border-quiet"
       }`}
     >
       Start my {TRIAL_DAYS}-day trial
@@ -315,11 +315,11 @@ export default function PickPlan() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <p className="mb-3 text-sm font-semibold text-blue-700">Pricing</p>
-          <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-slate-900 [text-wrap:balance] sm:text-5xl">
-            Plans for every stage of a wholesale business
+          <p className="mb-3 text-[17px] font-semibold text-quiet">Pricing</p>
+          <h1 className="type-display mb-6 text-[44px] text-ink sm:text-[64px]">
+            A plan for every stage of a wholesale business.
           </h1>
-          <p className="text-lg leading-relaxed text-slate-600">
+          <p className="text-[19px] leading-relaxed text-quiet sm:text-[21px]">
             Every plan starts with a {TRIAL_DAYS}-day trial. A card is required, nothing is charged until day{" "}
             {TRIAL_DAYS + 1}, and you can cancel any time before then.
           </p>
@@ -359,10 +359,10 @@ export default function PickPlan() {
         */}
         <div className="grid gap-5 md:grid-cols-3 lg:hidden">
           {plans.map((plan) => (
-            <div key={plan.id} className={`rounded-2xl border bg-white p-6 ${plan.featured ? "border-blue-300 ring-1 ring-blue-200" : "border-slate-200"}`}>
+            <div key={plan.id} className={`rounded-2xl border bg-white p-6 ${plan.featured ? "border-ink ring-1 ring-ink" : "border-hairline"}`}>
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-lg font-bold text-slate-900">{plan.name}</h2>
-                {plan.tag && <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">{plan.tag}</span>}
+                {plan.tag && <span className="rounded-full bg-ink px-2 py-0.5 text-xs font-medium text-white">{plan.tag}</span>}
               </div>
               <p className="mt-2 flex items-baseline gap-1">
                 <span className="text-3xl font-extrabold tracking-tight text-slate-900">{plan.price}</span>
@@ -414,11 +414,11 @@ export default function PickPlan() {
                     <p className="mt-1 text-sm text-slate-500">Prices in USD{TAX_SUFFIX}.</p>
                   </div>
                   {plans.map((plan) => (
-                    <div key={plan.id} className={`flex flex-col border-l border-slate-200 p-6 ${plan.featured ? "bg-blue-50/50" : ""}`}>
+                    <div key={plan.id} className={`flex flex-col border-l border-slate-200 p-6 ${plan.featured ? "bg-mist" : ""}`}>
                       <div className="flex items-center justify-between gap-2">
                         <h2 className="text-base font-bold text-slate-900">{plan.name}</h2>
                         {plan.tag && (
-                          <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">{plan.tag}</span>
+                          <span className="rounded-full bg-ink px-2 py-0.5 text-xs font-medium text-white">{plan.tag}</span>
                         )}
                       </div>
                       <p className="mt-2 flex items-baseline gap-1">
@@ -456,7 +456,7 @@ export default function PickPlan() {
                         <div className="flex items-center justify-center border-l border-slate-100 px-4 py-3.5 text-center text-sm text-slate-700">
                           {row.limited}
                         </div>
-                        <div className="flex items-center justify-center border-l border-slate-100 bg-blue-50/30 px-4 py-3.5 text-center text-sm text-slate-700">
+                        <div className="flex items-center justify-center border-l border-slate-100 bg-mist/60 px-4 py-3.5 text-center text-sm text-slate-700">
                           {row.unlimited}
                         </div>
                       </div>

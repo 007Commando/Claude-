@@ -170,7 +170,7 @@ export default function Navigation() {
 
   if (isLeanHeaderPage) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-hairline/70">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
@@ -186,21 +186,21 @@ export default function Navigation() {
                 </span>
               </span>
             </Link>
-            <div className="flex items-center gap-4 sm:gap-6 uppercase tracking-wider text-[13px]">
+            <div className="flex items-center gap-4 sm:gap-6 text-[14px]">
               {!isPopWebJourney && (
                 <Link
                   href="/auth"
-                  className="text-slate-900 hover:text-brand transition-colors font-bold"
+                  className="font-medium text-graphite transition-colors hover:text-ink"
                 >
-                  LOG IN
+                  Log in
                 </Link>
               )}
               <Link
                 href={leanSignupHref}
-                className="bg-brand text-white px-5 sm:px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
+                className="rounded-full bg-ink px-5 py-2.5 font-medium text-white transition hover:bg-graphite"
               >
                 {/* The Facebook page sells the $1 week once it is on; "free" beside it is the mismatch. */}
-                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "SIGN UP"}
+                {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "Start my trial"}
               </Link>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function Navigation() {
   if (isDistractionFreePage) {
     return (
       <nav
-        className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 ${
+        className={`fixed left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-hairline/70 ${
           isApexElitePage ? "top-10" : "top-0"
         }`}
       >
@@ -238,7 +238,7 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-hairline/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 relative">
           <Link href="/" className="flex items-center gap-2">
@@ -258,16 +258,16 @@ export default function Navigation() {
           {/* Desktop Nav — centered */}
           {/* Centred in the space between the logo and the buttons at every width.
               It used to be absolutely centred on the page from 1280px, which ran
-              "AI INTEGRATIONS" into the logo's wordmark at 1440px once the row
+              "AI Integrations" into the logo's wordmark at 1440px once the row
               grew. Flex keeps it clear of both sides. */}
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-6 xl:gap-9 whitespace-nowrap px-6 text-[13px] font-bold text-slate-600">
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-6 xl:gap-9 whitespace-nowrap px-6 text-[14px] font-medium text-graphite/80">
             <Link
               href="/ai"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isAiActive ? "text-brand" : ""}`}
+              className={`hover:text-ink transition-colors ${FOCUS} ${isAiActive ? "text-ink" : ""}`}
             >
               {/* Short below 1280px, where the full row pushed LOG IN onto two lines. */}
               <span className="xl:hidden">AI</span>
-              <span className="hidden xl:inline">AI INTEGRATIONS</span>
+              <span className="hidden xl:inline">AI Integrations</span>
             </Link>
 
             <div
@@ -298,9 +298,9 @@ export default function Navigation() {
                 aria-controls="features-menu"
                 aria-haspopup="true"
                 onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}
-                className={`flex items-center gap-1.5 transition-colors uppercase tracking-wider ${FOCUS} ${isFeaturesOpen || isFeatureActive ? "text-brand" : "hover:text-brand"}`}
+                className={`flex items-center gap-1.5 transition-colors ${FOCUS} ${isFeaturesOpen || isFeatureActive ? "text-ink" : "hover:text-ink"}`}
               >
-                FEATURES{" "}
+                Features{" "}
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-300 ${isFeaturesOpen ? "rotate-180" : ""}`}
@@ -335,7 +335,7 @@ export default function Navigation() {
                           <Link
                             href="/features/black"
                             onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 hover:shadow-[0_0_28px_-2px_rgba(15,23,42,0.45)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-slate-900/30 hover:bg-slate-900/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexBlackLogo}
@@ -424,7 +424,7 @@ export default function Navigation() {
                           <Link
                             href="/features/blue"
                             onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 hover:shadow-[0_0_28px_-2px_rgba(37,99,235,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexBlueLogo}
@@ -508,7 +508,7 @@ export default function Navigation() {
                           <Link
                             href="/features/green"
                             onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 hover:shadow-[0_0_28px_-2px_rgba(34,197,94,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-green-500/40 hover:bg-green-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexGreenLogo}
@@ -586,7 +586,7 @@ export default function Navigation() {
                           <Link
                             href="/features/red"
                             onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 hover:shadow-[0_0_28px_-2px_rgba(239,68,68,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexRedLogo}
@@ -670,7 +670,7 @@ export default function Navigation() {
                           <Link
                             href="/features/gold"
                             onClick={closeMenus}
-                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 hover:shadow-[0_0_28px_-2px_rgba(245,158,11,0.5)] flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                            className="w-full flex items-center justify-center mb-4 p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-amber-500/40 hover:bg-amber-500/5 flex-col gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                           >
                             <img
                               src={apexGoldLogo}
@@ -773,45 +773,45 @@ export default function Navigation() {
             </div>
             <Link
               href="/pricing"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isPricingActive ? "text-brand" : ""}`}
+              className={`hover:text-ink transition-colors ${FOCUS} ${isPricingActive ? "text-ink" : ""}`}
             >
-              PRICING
+              Pricing
             </Link>
             <Link
               href="/tools/fba-calculator"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isCalculatorActive ? "text-brand" : ""}`}
+              className={`hover:text-ink transition-colors ${FOCUS} ${isCalculatorActive ? "text-ink" : ""}`}
             >
-              FBA CALCULATOR
+              FBA Calculator
             </Link>
             <Link
               href="/rewards-benefits"
-              className={`hover:text-brand transition-colors uppercase tracking-wider ${FOCUS} ${isRewardsActive ? "text-brand" : ""}`}
+              className={`hover:text-ink transition-colors ${FOCUS} ${isRewardsActive ? "text-ink" : ""}`}
             >
-              <span className="xl:hidden">REWARDS</span>
-              <span className="hidden xl:inline">REWARDS & BENEFITS</span>
+              <span className="xl:hidden">Rewards</span>
+              <span className="hidden xl:inline">Rewards & Benefits</span>
             </Link>
           </div>
 
           {/* Right-side auth */}
-          <div className="hidden lg:flex items-center gap-6 whitespace-nowrap uppercase tracking-wider text-[13px]">
+          <div className="hidden lg:flex items-center gap-6 whitespace-nowrap text-[14px]">
             <Link
               href="/auth"
-              className="text-slate-900 hover:text-brand transition-colors font-bold"
+              className="font-medium text-graphite transition-colors hover:text-ink"
             >
-              LOG IN
+              Log in
             </Link>
             <Link
               href="/auth?mode=signup&plan=starter&period=monthly"
-              className="bg-brand text-white px-7 py-3 rounded-xl hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 font-bold"
+              className="rounded-full bg-ink px-5 py-2.5 font-medium text-white transition hover:bg-graphite"
             >
-              SIGN UP
+              Start my trial
             </Link>
           </div>
 
           {/* Mobile Nav Toggle */}
           <div className="lg:hidden flex items-center gap-4">
-            <Link href="/auth" className="whitespace-nowrap text-sm font-bold text-slate-900">
-              LOG IN
+            <Link href="/auth" className="whitespace-nowrap text-sm font-medium text-graphite">
+              Log in
             </Link>
             <button
               type="button"
@@ -938,7 +938,7 @@ export default function Navigation() {
                 onClick={() => setIsMenuOpen(false)}
                 className="block w-full text-center bg-brand text-white px-5 py-4 rounded-2xl font-bold shadow-lg shadow-brand/20"
               >
-                SIGN UP
+                Start my trial
               </Link>
               <Link
                 href="/features/black#apex-university"
