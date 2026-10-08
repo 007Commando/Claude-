@@ -48,10 +48,10 @@ const PRIMEWELL_COLOR = "#1d4ed8";
 
 /**
  * PrimeWell's whole job is getting people into Apex (Stefano, 2026-10-08). So the PrimeWell column
- * keeps every PrimeWell contact, and anyone who has since come into Apex's CRM or opened an account
- * gets a light green outline: mission accomplished.
+ * keeps every PrimeWell contact, and anyone who has since opened an Apex account gets a light green
+ * outline: mission accomplished. Joining an Apex funnel without an account doesn't count yet.
  */
-const reachedApex = (l: Lead) => l.ghlLocation === "apex" || l.stage !== "lead";
+const reachedApex = (l: Lead) => l.stage !== "lead";
 const REACHED_APEX_RING = "#86efac";
 const primewellRing = (l: Lead) => (reachedApex(l) ? REACHED_APEX_RING : null);
 
