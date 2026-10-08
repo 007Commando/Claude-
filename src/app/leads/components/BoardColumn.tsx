@@ -30,6 +30,10 @@ interface BoardColumnProps {
   /** A full column's own name and dot colour in place of the stage's, e.g. the two kinds of Leads. */
   title?: string;
   titleColor?: string;
+  /** Per-card outline colour, e.g. PrimeWell leads who made it into Apex. */
+  ringFor?: (lead: Lead) => string | null;
+  /** A control row under the header, e.g. the PrimeWell signed-up switch. */
+  subHeader?: React.ReactNode;
 }
 
 function useOutsideClose(onClose: () => void) {
@@ -162,6 +166,8 @@ export default function BoardColumn({
   headerExtra,
   title,
   titleColor,
+  ringFor,
+  subHeader,
 }: BoardColumnProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -214,6 +220,11 @@ export default function BoardColumn({
           {headerExtra}
         </div>
       </div>
+      {subHeader && (
+        <div className="ld-board-col-subheader" onPointerDown={(e) => e.stopPropagation()}>
+          {subHeader}
+        </div>
+      )}
       <SourceSplit leads={leads} />
 
       <div
@@ -244,6 +255,7 @@ export default function BoardColumn({
                     else cardRefs.current.delete(item.index);
                   }}
                   lead={lead}
+                  ring={ringFor?.(lead) ?? null}
                   selected={lead.id === selectedLeadId}
                   tabIndex={item.index === (focusedIndex ?? 0) ? 0 : -1}
                   onFocus={() => setFocusedIndex(item.index)}

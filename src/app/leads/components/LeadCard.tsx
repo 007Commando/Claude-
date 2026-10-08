@@ -27,6 +27,8 @@ interface LeadCardProps {
   onSelect: (lead: Lead) => void;
   tabIndex: number;
   onFocus?: () => void;
+  /** A column's own outline, drawn in place of the activation one. */
+  ring?: string | null;
 }
 
 function stageSuffix(lead: Lead): string | null {
@@ -45,7 +47,7 @@ function stageSuffix(lead: Lead): string | null {
 }
 
 const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
-  { lead, selected, style, onSelect, tabIndex, onFocus },
+  { lead, selected, style, onSelect, tabIndex, onFocus, ring },
   ref,
 ) {
   const identity = lead.name || lead.email || "Unknown";
@@ -57,9 +59,8 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
   const total = lead.stage === "customer" ? leadToPaidMs(lead) : null;
 
   const tier = activationTier(lead.activation);
-  const cardStyle: React.CSSProperties = tier
-    ? { ...style, boxShadow: `inset 0 0 0 1.5px ${ACTIVATION_COLORS[tier]}` }
-    : (style ?? {});
+  const outline = ring ?? (tier ? ACTIVATION_COLORS[tier] : null);
+  const cardStyle: React.CSSProperties = outline ? { ...style, boxShadow: `inset 0 0 0 ${ring ? 2 : 1.5}px ${outline}` } : (style ?? {});
 
   return (
     <div

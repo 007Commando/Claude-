@@ -445,6 +445,7 @@ async function build(): Promise<LeadsPayload> {
       trialOnlyCancelEmails,
       churnReasonByEmail,
     });
+    if (twin) lead.inPrimewell = true;
     leads.push(lead);
     if (contact.email) consumedEmails.add(contact.email);
   }
@@ -468,6 +469,7 @@ async function build(): Promise<LeadsPayload> {
     // Standalone PrimeWell-location leads are PrimeWell leads by definition,
     // per spec, regardless of what (if any) tags/acquisition otherwise resolved to.
     lead.source = "primewell";
+    lead.inPrimewell = true;
     if (!lead.sourceDetail) lead.sourceDetail = "PrimeWell application";
     if (lead.sellerType === "unknown") lead.sellerType = "selling";
     leads.push(lead);

@@ -45,6 +45,8 @@ export interface Lead {
   id: string;
   ghlContactId: string | null;
   ghlLocation: "apex" | "primewell" | null;
+  /** Has a contact in PrimeWell's GHL location, whether or not it was also copied into Apex's. */
+  inPrimewell?: boolean;
   name: string;
   email: string | null;
   phone: string | null;

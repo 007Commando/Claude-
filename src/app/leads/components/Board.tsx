@@ -46,6 +46,23 @@ function onOrAfter(iso: string | null, since: string | null): boolean {
 const isPrimewellDirect = (l: Lead) => l.ghlLocation === "primewell";
 const PRIMEWELL_COLOR = "#1d4ed8";
 
+/**
+ * PrimeWell's whole job is getting people into Apex (Stefano, 2026-10-08). So the PrimeWell column
+ * keeps every PrimeWell contact, and anyone who has since come into Apex's CRM or opened an account
+ * gets a light green outline: mission accomplished.
+ */
+const reachedApex = (l: Lead) => l.ghlLocation === "apex" || l.stage !== "lead";
+const REACHED_APEX_RING = "#86efac";
+const primewellRing = (l: Lead) => (reachedApex(l) ? REACHED_APEX_RING : null);
+
+type PrimewellView = "all" | "signed" | "not";
+const PRIMEWELL_VIEW_KEY = "leadDesk.primewellView.v1";
+const PRIMEWELL_VIEWS: { value: PrimewellView; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "signed", label: "Signed up" },
+  { value: "not", label: "Not yet" },
+];
+
 const ACTIVATION_IDS = ACTIVATION_COLUMNS.map((c) => c.id);
 const DEFAULT_ORDER = ["lead", "primewell", "registered", ...ACTIVATION_IDS, "trial", "customer", "churned"];
 const COLUMN_LABELS: Record<string, string> = {
@@ -125,10 +142,26 @@ export default function Board({
   onSelectLead: (lead: Lead) => void;
 }) {
   const [layout, setLayout] = useState<ColumnLayout>({ order: DEFAULT_ORDER, hidden: [] });
+  const [primewellView, setPrimewellView] = useState<PrimewellView>("all");
 
   useEffect(() => {
     setLayout(loadLayout());
+    try {
+      const saved = window.localStorage.getItem(PRIMEWELL_VIEW_KEY);
+      if (saved === "signed" || saved === "not") setPrimewellView(saved);
+    } catch {
+      // localStorage unavailable: starts on All.
+    }
   }, []);
+
+  const choosePrimewellView = (v: PrimewellView) => {
+    setPrimewellView(v);
+    try {
+      window.localStorage.setItem(PRIMEWELL_VIEW_KEY, v);
+    } catch {
+      // not persisted
+    }
+  };
 
   const updateLayout = (next: ColumnLayout) => {
     setLayout(next);
@@ -180,7 +213,32 @@ export default function Board({
           stage="lead"
           title={COLUMN_LABELS.primewell}
           titleColor={PRIMEWELL_COLOR}
-          leads={sortedByStage.lead.filter(isPrimewellDirect)}
+          leads={sortBoardColumn(
+            STAGES.flatMap((st) => leadsByStage[st] ?? []).filter(
+              (l) =>
+                (l.inPrimewell || isPrimewellDirect(l)) &&
+                (primewellView === "all" || (primewellView === "signed") === reachedApex(l)),
+            ),
+            "lead",
+            filters.boardSort.lead,
+          )}
+          ringFor={primewellRing}
+          subHeader={
+            <div className="ld-view-switch ld-col-switch" role="tablist" aria-label="PrimeWell leads">
+              {PRIMEWELL_VIEWS.map((v) => (
+                <button
+                  key={v.value}
+                  type="button"
+                  role="tab"
+                  aria-selected={primewellView === v.value}
+                  data-active={primewellView === v.value}
+                  onClick={() => choosePrimewellView(v.value)}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          }
           sortKey={filters.boardSort.lead}
           {...common}
         />

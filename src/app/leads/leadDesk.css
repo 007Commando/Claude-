@@ -140,6 +140,23 @@
   color: var(--ld-accent);
 }
 
+.ld-board-col-subheader {
+  flex: none;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--ld-border);
+}
+
+.ld-col-switch {
+  display: flex;
+  width: 100%;
+}
+
+.ld-col-switch button {
+  flex: 1;
+  padding: 3px 4px;
+  font-size: 11px;
+}
+
 .ld-search {
   position: relative;
   flex: 1 1 240px;
