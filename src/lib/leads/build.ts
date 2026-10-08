@@ -241,7 +241,9 @@ function buildLead(params: {
   // A $10,000+ inventory budget is a gold star wherever it was answered: the
   // quiz tags hot-lead itself, the instant forms only fill inventory_budget.
   const budgetText = (fields["inventory_budget"] ?? "").replace(/[$,\s]/g, "").toLowerCase();
-  const hotByBudget = budgetText.startsWith("10000") || budgetText.startsWith("over25000");
+  // The PrimeWell application asks MOQ instead (2026-10-08); "15,000 and up" is its gold star.
+  const hotByBudget =
+    budgetText.startsWith("10000") || budgetText.startsWith("over25000") || (fields["moq_fit"] ?? "").startsWith("15,000");
   const tags = contact ? [...new Set([...contact.tags, ...extraTags, ...(hotByBudget ? ["hot-lead"] : [])])] : [];
 
   const email = contact ? contact.email : lower(apexOnly!.email);
