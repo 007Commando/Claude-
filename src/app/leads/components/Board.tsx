@@ -297,7 +297,7 @@ export default function Board({
     <>
       <div className="ld-table-toolbar">
         <span className="ld-table-toolbar-count">
-          {todaySince ? "Today, plus everyone trialing or paying right now" : `${visibleOrder.length} columns`}
+          {todaySince ? "Today, plus everyone trialing or paying right now" : "This range, plus everyone trialing or paying right now"}
         </span>
         <div style={{ flex: 1 }} />
         <ColumnChooser

@@ -177,7 +177,7 @@ export function todayStartIso(): string {
   return d.toISOString();
 }
 
-/** Trialing and paying are states, not events: on "Today" they show everyone currently in them. */
+/** Trialing and paying are states, not events: every range shows everyone currently in them. */
 export function isLiveStage(stage: Stage): boolean {
   return stage === "trial" || stage === "customer";
 }
@@ -226,9 +226,10 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     if (f.sellerType.length && !f.sellerType.includes(l.sellerType)) return false;
     // The single-stage filter only means something in the Table; the Board is split by stage already.
     if (f.stage && f.view === "table" && l.stage !== f.stage) return false;
-    if ((window.from || window.to) && !(f.datePreset === "today" && isLiveStage(l.stage))) {
-      // "Today" keeps anyone who did something today; the other ranges are lead-date cohorts.
-      const dates = f.datePreset === "today" ? activityDates(l) : [l.leadAt];
+    if ((window.from || window.to) && !isLiveStage(l.stage)) {
+      // Every range keeps anyone who did something in it, plus everyone trialing or paying now:
+      // a PrimeWell lead from August who started a trial this week must show (2026-10-08, gambitgoods).
+      const dates = activityDates(l);
       const inside = dates.some((d) => d && (!window.from || d >= window.from) && (!window.to || d <= window.to));
       if (!inside) return false;
     }
