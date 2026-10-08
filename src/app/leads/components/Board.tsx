@@ -53,11 +53,11 @@ const PRIMEWELL_COLOR = "#1d4ed8";
 const reachedApex = (l: Lead) => l.stage !== "lead";
 
 /**
- * Greyed out in the PrimeWell column (Stefano, 2026-10-08, replacing the green ring): anyone Apex
- * already has, meaning a contact in Apex's own GHL location or an Apex account. The cards left
- * white are the PrimeWell applicants Apex doesn't have yet, the ones to work.
+ * Greyed out in the PrimeWell column (Stefano, 2026-10-08, replacing the green ring): anyone with a
+ * contact in Apex's own GHL location. Everyone else stays white to be worked, including Apex account
+ * holders with no Apex GHL contact, so they can be added to the CRM.
  */
-const inApexCrm = (l: Lead) => l.ghlLocation === "apex" || reachedApex(l);
+const inApexCrm = (l: Lead) => l.ghlLocation === "apex";
 const primewellMuted = (l: Lead) => (inApexCrm(l) ? "In Apex CRM" : null);
 
 type PrimewellView = "all" | "signed" | "not";
