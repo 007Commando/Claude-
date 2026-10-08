@@ -27,8 +27,8 @@ interface LeadCardProps {
   onSelect: (lead: Lead) => void;
   tabIndex: number;
   onFocus?: () => void;
-  /** A column's own outline, drawn in place of the activation one. */
-  ring?: string | null;
+  /** Greys the card out under this label, in place of the activation outline. */
+  muted?: string | null;
 }
 
 function stageSuffix(lead: Lead): string | null {
@@ -47,7 +47,7 @@ function stageSuffix(lead: Lead): string | null {
 }
 
 const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
-  { lead, selected, style, onSelect, tabIndex, onFocus, ring },
+  { lead, selected, style, onSelect, tabIndex, onFocus, muted },
   ref,
 ) {
   const identity = lead.name || lead.email || "Unknown";
@@ -59,8 +59,8 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
   const total = lead.stage === "customer" ? leadToPaidMs(lead) : null;
 
   const tier = activationTier(lead.activation);
-  const outline = ring ?? (tier ? ACTIVATION_COLORS[tier] : null);
-  const cardStyle: React.CSSProperties = outline ? { ...style, boxShadow: `inset 0 0 0 ${ring ? 2 : 1.5}px ${outline}` } : (style ?? {});
+  const outline = muted ? null : tier ? ACTIVATION_COLORS[tier] : null;
+  const cardStyle: React.CSSProperties = outline ? { ...style, boxShadow: `inset 0 0 0 1.5px ${outline}` } : (style ?? {});
 
   return (
     <div
@@ -68,6 +68,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       className="ld-card"
       style={cardStyle}
       data-selected={selected ? "true" : "false"}
+      data-muted={muted ? "true" : undefined}
       role="button"
       tabIndex={tabIndex}
       onFocus={onFocus}
@@ -78,7 +79,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
           onSelect(lead);
         }
       }}
-      title={`${identity} — ${fmtDateShort(lead.leadAt)}`}
+      title={`${identity} — ${fmtDateShort(lead.leadAt)}${muted ? ` · ${muted}` : ""}`}
     >
       {isRecentLead(lead) && <span className="ld-card-new-dot" style={{ background: stageColorVar(lead.stage) }} />}
       <div className="ld-card-line1">
@@ -92,6 +93,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
         {lead.stripeOnly && <span className="ld-tag" title="Paying in Stripe under an email no account matches">Stripe only</span>}
         {lead.tags.includes("private-client") && <span className="ld-tag">Private client</span>}
         {lead.sellerType !== "unknown" && <span className="ld-tag">{SELLER_TYPE_LABELS[lead.sellerType]}</span>}
+        {muted && <span className="ld-tag ld-tag-muted">{muted}</span>}
       </div>
       <div className="ld-card-line2">
         {age != null && (

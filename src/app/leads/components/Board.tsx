@@ -47,13 +47,18 @@ const isPrimewellDirect = (l: Lead) => l.ghlLocation === "primewell";
 const PRIMEWELL_COLOR = "#1d4ed8";
 
 /**
- * PrimeWell's whole job is getting people into Apex (Stefano, 2026-10-08). So the PrimeWell column
- * keeps every PrimeWell contact, and anyone who has since opened an Apex account gets a light green
- * outline: mission accomplished. Joining an Apex funnel without an account doesn't count yet.
+ * PrimeWell's whole job is getting people into Apex (Stefano, 2026-10-08). The "Signed up" switch
+ * counts an Apex account only; joining an Apex funnel without an account doesn't count yet.
  */
 const reachedApex = (l: Lead) => l.stage !== "lead";
-const REACHED_APEX_RING = "#86efac";
-const primewellRing = (l: Lead) => (reachedApex(l) ? REACHED_APEX_RING : null);
+
+/**
+ * Greyed out in the PrimeWell column (Stefano, 2026-10-08, replacing the green ring): anyone Apex
+ * already has, meaning a contact in Apex's own GHL location or an Apex account. The cards left
+ * white are the PrimeWell applicants Apex doesn't have yet, the ones to work.
+ */
+const inApexCrm = (l: Lead) => l.ghlLocation === "apex" || reachedApex(l);
+const primewellMuted = (l: Lead) => (inApexCrm(l) ? "In Apex CRM" : null);
 
 type PrimewellView = "all" | "signed" | "not";
 const PRIMEWELL_VIEW_KEY = "leadDesk.primewellView.v1";
@@ -222,7 +227,7 @@ export default function Board({
             "lead",
             filters.boardSort.lead,
           )}
-          ringFor={primewellRing}
+          mutedFor={primewellMuted}
           subHeader={
             <div className="ld-view-switch ld-col-switch" role="tablist" aria-label="PrimeWell leads">
               {PRIMEWELL_VIEWS.map((v) => (

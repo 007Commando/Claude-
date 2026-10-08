@@ -732,6 +732,18 @@
   background: var(--ld-accent-soft);
 }
 
+/* PrimeWell leads Apex already has: greyed out, so the white cards are the ones to work. */
+.ld-card[data-muted="true"] {
+  background: var(--ld-bg);
+}
+.ld-card[data-muted="true"] .ld-card-line1,
+.ld-card[data-muted="true"] .ld-card-line2 {
+  opacity: 0.5;
+}
+.ld-card[data-muted="true"][data-selected="true"] {
+  background: var(--ld-accent-soft);
+}
+
 .ld-card:focus-visible {
   box-shadow: inset 0 0 0 2px var(--ld-accent);
 }

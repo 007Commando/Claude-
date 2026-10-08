@@ -31,7 +31,8 @@ interface BoardColumnProps {
   title?: string;
   titleColor?: string;
   /** Per-card outline colour, e.g. PrimeWell leads who made it into Apex. */
-  ringFor?: (lead: Lead) => string | null;
+  /** Greys a card out and labels it, e.g. PrimeWell leads Apex already has. */
+  mutedFor?: (lead: Lead) => string | null;
   /** A control row under the header, e.g. the PrimeWell signed-up switch. */
   subHeader?: React.ReactNode;
 }
@@ -166,7 +167,7 @@ export default function BoardColumn({
   headerExtra,
   title,
   titleColor,
-  ringFor,
+  mutedFor,
   subHeader,
 }: BoardColumnProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -255,7 +256,7 @@ export default function BoardColumn({
                     else cardRefs.current.delete(item.index);
                   }}
                   lead={lead}
-                  ring={ringFor?.(lead) ?? null}
+                  muted={mutedFor?.(lead) ?? null}
                   selected={lead.id === selectedLeadId}
                   tabIndex={item.index === (focusedIndex ?? 0) ? 0 : -1}
                   onFocus={() => setFocusedIndex(item.index)}
