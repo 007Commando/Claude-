@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "../../../lib/seo";
-import ApexGreen from "../../../components/ApexGreen";
+import ModulePage from "../../../components/v2/ModulePage";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
@@ -13,7 +13,7 @@ export const metadata: Metadata = pageMetadata({
 export default function Page() {
   return (
     <>
-      <ApexGreen />
+      <ModulePage module="green" />
       <RelatedComparisons module="Apex Green" slugs={["smartscout", "selleramp", "scan-unlimited", "rocket-source", "tactical-arbitrage", "seller-assistant", "helium10", "junglescout"]} />
     </>
   );

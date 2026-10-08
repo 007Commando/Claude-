@@ -26,6 +26,32 @@
   --color-border: hsl(220 13% 91%);
   --color-accent: hsl(28 100% 55%);
   --color-accent-foreground: hsl(0 0% 100%);
+
+  /*
+   * Design v2 (October 2026): the "Apple finish" palette. Ink and paper, one
+   * quiet grey for alternating sections, hairline borders, and a single accent
+   * per module. Named rather than reaching for slate-*, so the whole site can
+   * be retuned from here.
+   */
+  --color-ink: #0b0b0d;
+  --color-graphite: #1d1d1f;
+  --color-quiet: #6e6e73;
+  --color-mist: #f5f5f7;
+  --color-hairline: #d2d2d7;
+  --color-link: #0066cc;
+  --color-mod-green: #15803d;
+  --color-mod-blue: #2563eb;
+  --color-mod-gold: #a16207;
+  --color-mod-red: #dc2626;
+  --color-mod-black: #0b0b0d;
+}
+
+/* Display type: Inter at heavy weight with Apple-tight tracking. */
+@utility type-display {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
 }
 
 @layer base {

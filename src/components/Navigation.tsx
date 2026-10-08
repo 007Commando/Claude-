@@ -262,7 +262,7 @@ export default function Navigation() {
               )}
               <Link
                 href={leanSignupHref}
-                className="rounded-full bg-slate-900 px-5 py-2.5 font-medium text-white transition hover:bg-slate-800"
+                className="rounded-full bg-ink px-5 py-2.5 font-medium text-white transition hover:bg-graphite"
               >
                 {/* The Facebook page sells the $1 week once it is on; "free" beside it is the mismatch. */}
                 {isPopWebJourney && DOLLAR_WEEK.live ? `START FOR $${DOLLAR_WEEK.price}` : "Start my trial"}
@@ -445,7 +445,7 @@ export default function Navigation() {
                           <Link
                             href="/auth?mode=signup&plan=starter&period=monthly"
                             onClick={closeMenus}
-                            className="rounded-full bg-slate-900 px-5 py-2 text-[13px] font-medium text-white transition hover:bg-slate-800"
+                            className="rounded-full bg-ink px-5 py-2 text-[13px] font-medium text-white transition hover:bg-graphite"
                           >
                             Start my trial
                           </Link>
@@ -487,7 +487,7 @@ export default function Navigation() {
             </Link>
             <Link
               href="/auth?mode=signup&plan=starter&period=monthly"
-              className="rounded-full bg-slate-900 px-5 py-2.5 font-medium text-white transition hover:bg-slate-800"
+              className="rounded-full bg-ink px-5 py-2.5 font-medium text-white transition hover:bg-graphite"
             >
               Start my trial
             </Link>
@@ -621,7 +621,7 @@ export default function Navigation() {
               <Link
                 href="/auth?mode=signup&plan=starter&period=monthly"
                 onClick={() => setIsMenuOpen(false)}
-                className="block w-full rounded-full bg-slate-900 px-5 py-3.5 text-center font-medium text-white"
+                className="block w-full rounded-full bg-ink px-5 py-3.5 text-center font-medium text-white"
               >
                 Start my trial
               </Link>

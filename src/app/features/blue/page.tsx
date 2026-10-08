@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "../../../lib/seo";
-import ApexBlue from "../../../components/ApexBlue";
+import ModulePage from "../../../components/v2/ModulePage";
 import RelatedComparisons from "../../../components/RelatedComparisons";
 
 export const metadata: Metadata = pageMetadata({
@@ -13,7 +13,7 @@ export const metadata: Metadata = pageMetadata({
 export default function Page() {
   return (
     <>
-      <ApexBlue />
+      <ModulePage module="blue" />
       <RelatedComparisons module="Apex Blue" slugs={["sellerboard", "third-party-profits", "inventorylab"]} />
     </>
   );

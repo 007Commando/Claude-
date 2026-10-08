@@ -79,7 +79,7 @@ export default function Footer() {
             <img
               src={apexBullLogo.url}
               alt="Apex Applications"
-              className="h-16 w-auto object-contain"
+              className="h-16 w-auto object-contain mix-blend-multiply"
             />
             <img
               src={amazonPartnerBadge.url}
@@ -104,7 +104,7 @@ export default function Footer() {
               <img
                 src={apexBullLogo.url}
                 alt="Apex Applications"
-                className="h-16 w-auto object-contain"
+                className="h-16 w-auto object-contain mix-blend-multiply"
               />
             </Link>
             <img
@@ -113,21 +113,21 @@ export default function Footer() {
               className="h-24 w-auto object-contain"
             />
             <div className="w-full pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-center items-center gap-4">
-              <div className="flex gap-8 text-slate-600 text-sm">
+              <div className="flex gap-8 text-quiet text-[13px]">
                 <Link
                   href="/terms"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Terms of Service
                 </Link>
                 <Link
                   href="/privacy"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Privacy Policy
                 </Link>
               </div>
-              <div className="text-slate-500 text-sm">
+              <div className="text-quiet text-[13px]">
                 © 2026 Apex Applications. All rights reserved.
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-white text-slate-900 py-16">
+    <footer className="border-t border-hairline bg-mist py-16 text-graphite">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
@@ -148,24 +148,24 @@ export default function Footer() {
               <img
                 src={apexBullLogo.url}
                 alt="Apex Applications"
-                className="h-16 w-auto object-contain"
+                className="h-16 w-auto object-contain mix-blend-multiply"
               />
             </Link>
           </div>
 
           {/* Company */}
           <div className="md:col-span-2">
-            <p className="font-semibold text-slate-900 mb-5">Company</p>
-            <ul className="space-y-3 text-slate-600">
+            <p className="mb-4 text-[13px] font-semibold text-ink">Company</p>
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               <li>
-                <Link href="/" className="hover:text-brand transition-colors">
+                <Link href="/" className="transition-colors hover:text-ink">
                   Home
                 </Link>
               </li>
               <li>
                 <Link
                   href="/review-booster"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Review Booster
                 </Link>
@@ -182,40 +182,40 @@ export default function Footer() {
                 */}
                 <Link
                   href="/virtual-assistants"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Apex VAs
                 </Link>
               </li>
               <li>
-                <Link href="/distributor-vault" className="hover:text-brand transition-colors">
+                <Link href="/distributor-vault" className="transition-colors hover:text-ink">
                   Distributor Vault
                 </Link>
               </li>
               <li>
-                <Link href="/prep-center-network" className="hover:text-brand transition-colors">
+                <Link href="/prep-center-network" className="transition-colors hover:text-ink">
                   Prep Center Network
                 </Link>
               </li>
               <li>
-                <Link href="/for-prep-centers" className="hover:text-brand transition-colors">
+                <Link href="/for-prep-centers" className="transition-colors hover:text-ink">
                   For Prep Centers
                 </Link>
               </li>
               <li>
-                <Link href="/rewards-benefits" className="hover:text-brand transition-colors">
+                <Link href="/rewards-benefits" className="transition-colors hover:text-ink">
                   Rewards &amp; Benefits
                 </Link>
               </li>
               <li>
-                <Link href="/docs/mcp" className="hover:text-brand transition-colors">
+                <Link href="/docs/mcp" className="transition-colors hover:text-ink">
                   MCP Developer Docs
                 </Link>
               </li>
               <li>
                 <Link
                   href="/contact-us"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Contact Us
                 </Link>
@@ -225,28 +225,28 @@ export default function Footer() {
 
           {/* Features */}
           <div className="md:col-span-2">
-            <p className="font-semibold text-slate-900 mb-5">Features</p>
+            <p className="mb-4 text-[13px] font-semibold text-ink">Features</p>
             {/* Descriptive labels first: "Apex Green" alone tells a new visitor
                 nothing about what is behind the link. */}
-            <ul className="space-y-3 text-slate-600">
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               {MODULES.map((m) => (
                 <li key={m.key}>
-                  <Link href={m.path} className="hover:text-brand transition-colors">
+                  <Link href={m.path} className="transition-colors hover:text-ink">
                     {m.label}
                     <span className="block text-xs text-slate-500">{m.name}</span>
                   </Link>
                 </li>
               ))}
               <li>
-                <Link href="/ai" className="hover:text-brand transition-colors">
+                <Link href="/ai" className="transition-colors hover:text-ink">
                   AI Integrations
                   <span className="block text-xs text-slate-500">ChatGPT and Claude</span>
                 </Link>
               </li>
             </ul>
             {/* Free tools get their own heading so the calculator is easy to find. */}
-            <p className="font-semibold text-slate-900 mb-5 mt-8">Free Tools</p>
-            <ul className="space-y-3 text-slate-600">
+            <p className="mb-4 text-[13px] font-semibold text-ink mt-8">Free Tools</p>
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               <li>
                 <Link
                   href="/tools/fba-calculator"
@@ -262,19 +262,19 @@ export default function Footer() {
               <li>
                 <Link
                   href="/tools/amazon-profit-calculator"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Profit &amp; ROI Calculator
                 </Link>
               </li>
               <li>
-                <Link href="/tools#chrome-extension" className="hover:text-brand transition-colors">
+                <Link href="/tools#chrome-extension" className="transition-colors hover:text-ink">
                   Chrome Extension
                   <span className="block text-xs text-slate-500">Free when you finish Apex University</span>
                 </Link>
               </li>
               <li>
-                <Link href="/tools" className="hover:text-brand transition-colors">
+                <Link href="/tools" className="transition-colors hover:text-ink">
                   All Free Tools
                 </Link>
               </li>
@@ -283,23 +283,23 @@ export default function Footer() {
 
           {/* Pricing */}
           <div className="md:col-span-2">
-            <p className="font-semibold text-slate-900 mb-5">Pricing</p>
-            <ul className="space-y-3 text-slate-600">
+            <p className="mb-4 text-[13px] font-semibold text-ink">Pricing</p>
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               <li>
                 <Link
                   href="/pricing"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Plans
                 </Link>
               </li>
             </ul>
-            <p className="font-semibold text-slate-900 mb-5 mt-8">Compare</p>
-            <ul className="space-y-3 text-slate-600">
+            <p className="mb-4 text-[13px] font-semibold text-ink mt-8">Compare</p>
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               <li>
                 <Link
                   href="/compare/helium10"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   vs Helium 10
                 </Link>
@@ -307,7 +307,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/compare/junglescout"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   vs Jungle Scout
                 </Link>
@@ -315,7 +315,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/compare/smartscout"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   vs SmartScout
                 </Link>
@@ -323,7 +323,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/compare/sellersnap"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   vs Seller Snap
                 </Link>
@@ -331,7 +331,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/compare"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   All comparisons
                 </Link>
@@ -341,14 +341,14 @@ export default function Footer() {
 
           {/* How Amazon Wholesale Works */}
           <div className="md:col-span-2">
-            <p className="font-semibold text-slate-900 mb-5">
+            <p className="mb-4 text-[13px] font-semibold text-ink">
               How Amazon Wholesale Works
             </p>
-            <ul className="space-y-3 text-slate-600">
+            <ul className="space-y-2.5 text-[13px] text-quiet">
               <li>
                 <Link
                   href="/how-it-works"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   The Roadmap
                 </Link>
@@ -356,7 +356,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/ungating-guide"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Ungating Guide
                 </Link>
@@ -364,30 +364,30 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/amazon-wholesale-software" className="hover:text-brand transition-colors">
+                <Link href="/amazon-wholesale-software" className="transition-colors hover:text-ink">
                   Amazon Wholesale Software
                 </Link>
               </li>
               <li>
-                <Link href="/free-course" className="hover:text-brand transition-colors">
+                <Link href="/free-course" className="transition-colors hover:text-ink">
                   Free Wholesale Course
                 </Link>
               </li>
               <li>
-                <Link href="/zero-to-hero" className="hover:text-brand transition-colors">
+                <Link href="/zero-to-hero" className="transition-colors hover:text-ink">
                   Zero to Hero Course
                 </Link>
               </li>
               <li>
                 <Link
                   href="/amazon-inventory-management-software"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Inventory &amp; Restock Planning
                 </Link>
@@ -395,7 +395,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/amazon-wholesale-suppliers"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Vetting Wholesale Suppliers
                 </Link>
@@ -403,7 +403,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/amazon-fba-prep-centers"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Choosing a Prep Center
                 </Link>
@@ -411,7 +411,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/amazon-review-automation"
-                  className="hover:text-brand transition-colors"
+                  className="transition-colors hover:text-ink"
                 >
                   Review Request Automation
                 </Link>
@@ -424,25 +424,25 @@ export default function Footer() {
             <img
               src={amazonPartnerBadge.url}
               alt="Amazon Selling Partner Appstore Software Partner"
-              className="h-28 w-auto object-contain"
+              className="h-28 w-auto object-contain mix-blend-multiply"
             />
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex gap-8 text-slate-600 text-sm">
-            <Link href="/terms" className="hover:text-brand transition-colors">
+        <div className="pt-8 border-t border-hairline flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex gap-8 text-quiet text-[13px]">
+            <Link href="/terms" className="transition-colors hover:text-ink">
               Terms of Service
             </Link>
             <Link
               href="/privacy"
-              className="hover:text-brand transition-colors"
+              className="transition-colors hover:text-ink"
             >
               Privacy Policy
             </Link>
           </div>
-          <div className="text-slate-500 text-sm">
+          <div className="text-quiet text-[13px]">
             © 2026 Apex Applications. All rights reserved.
           </div>
         </div>
