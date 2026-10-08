@@ -88,6 +88,14 @@ export default function ApexQuiz() {
     };
   }, []);
 
+  // Visitors from the Review Booster ads (Stefano, 2026-10-08) were promised free Review
+  // Booster for answering, so the quiz says so; matched on the ad's campaign or ad name.
+  const fromReviewBooster = useMemo(() => {
+    const u = utm as Record<string, string>;
+    const here = typeof window === "undefined" ? "" : decodeURIComponent(window.location.search);
+    return /review.?booster|rbfree/i.test(`${u.utmCampaign ?? ""} ${u.utmContent ?? ""} ${here}`);
+  }, [utm]);
+
   // Keyboard: 1-5 or A-E picks an option on a question screen.
   useEffect(() => {
     if (!Q) return;
@@ -180,6 +188,11 @@ export default function ApexQuiz() {
         <AnimatePresence mode="wait">
           {step === -1 && (
             <motion.section key="intro" {...slide} className="pt-10 text-center sm:pt-16">
+              {fromReviewBooster && (
+                <p className="mx-auto mb-6 max-w-md rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-base font-semibold text-emerald-800">
+                  Claim free Review Booster: 4 quick questions first.
+                </p>
+              )}
               <p className="text-sm font-semibold text-blue-600">60-second quiz for Amazon sellers</p>
               <h1 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
                 What kind of Amazon seller are you?
@@ -332,6 +345,13 @@ export default function ApexQuiz() {
                   {R.proof[1]}. <span className="text-slate-400">One supplier catalog we scanned (12,203 lines), an example and not a typical result; yours will differ.</span>
                 </p>
               </div>
+
+              {fromReviewBooster && (
+                <p className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-slate-700">
+                  <span className="font-semibold">Review Booster is free until October 31.</span> Once your account is
+                  made and your Amazon store is connected, switch it on and every delivered order gets a review request.
+                </p>
+              )}
 
               {wantsUniversity && (
                 <p className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-slate-700">
