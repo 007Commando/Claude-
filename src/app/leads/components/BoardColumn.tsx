@@ -27,6 +27,9 @@ interface BoardColumnProps {
   subColor?: string;
   /** Extra control rendered at the right of the header, e.g. the expand toggle. */
   headerExtra?: React.ReactNode;
+  /** A full column's own name and dot colour in place of the stage's, e.g. the two kinds of Leads. */
+  title?: string;
+  titleColor?: string;
 }
 
 function useOutsideClose(onClose: () => void) {
@@ -157,6 +160,8 @@ export default function BoardColumn({
   subTitle,
   subColor,
   headerExtra,
+  title,
+  titleColor,
 }: BoardColumnProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -200,8 +205,8 @@ export default function BoardColumn({
     <div className={subTitle ? "ld-board-col ld-board-col-sub" : "ld-board-col"} ref={setNodeRef} style={style}>
       <div className="ld-board-col-header" {...dragAttributes} {...dragListeners} style={subTitle ? { cursor: "default" } : undefined}>
         {!subTitle && <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />}
-        <span className="ld-board-col-dot" style={{ background: subColor ?? stageColorVar(stage) }} />
-        <span className="ld-board-col-name">{subTitle ?? STAGE_SHORT_LABELS[stage]}</span>
+        <span className="ld-board-col-dot" style={{ background: subColor ?? titleColor ?? stageColorVar(stage) }} />
+        <span className="ld-board-col-name">{subTitle ?? title ?? STAGE_SHORT_LABELS[stage]}</span>
         <span className="ld-board-col-count">{leads.length}</span>
         <div className="ld-board-col-header-actions">
           {stage === "churned" && !subTitle && <ReasonsMenu leads={leads} />}

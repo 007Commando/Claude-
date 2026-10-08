@@ -476,6 +476,21 @@ export function stageFromApex(apex: ApexJoin | null): ApexDerived {
  * "Facebook Lead Form", "external_form"), when it names one. Null when the
  * text says nothing about where the person came from.
  */
+/**
+ * The channel a lead's own utm_source names, for funnels that save the ad's UTM tags on the
+ * GHL contact but have no funnel tag of their own (the /apex-quiz and /apex-scan landers).
+ * "fb", "ig", "facebook", "instagram" and "meta" are all Meta ads.
+ */
+export function channelFromUtm(utmSource: string | null | undefined): LeadSource | null {
+  const s = (utmSource ?? "").trim().toLowerCase();
+  if (!s) return null;
+  if (["facebook", "fb", "ig", "instagram", "meta"].includes(s) || s.startsWith("facebook") || s.startsWith("instagram")) return "facebook-web";
+  if (s === "google" || s.startsWith("google")) return "google";
+  if (s === "reddit") return "reddit";
+  if (s === "chatgpt" || s === "openai") return "chatgpt";
+  return null;
+}
+
 export function channelFromGhlSource(text: string | null | undefined): LeadSource | null {
   const s = (text ?? "").toLowerCase();
   if (!s) return null;

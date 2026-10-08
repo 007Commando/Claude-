@@ -31,6 +31,14 @@ const ACTIVATION_SUBCOLUMNS: {
   { key: "database", title: "Database", color: "#2563eb", stages: ["registered"], test: (l) => l.activation.databaseProducts > 0 },
 ];
 
+/**
+ * Leads arrive two ways (Stefano, 2026-10-08). "Apex CRM Leads" is everyone in Apex's own GHL
+ * location. "PrimeWell GHL Leads" is the direct PrimeWell flow: applicants in PrimeWell's own GHL
+ * location who were never copied into Apex's, so they sit beside the CRM column, not inside it.
+ */
+const isPrimewellDirect = (l: Lead) => l.ghlLocation === "primewell";
+const PRIMEWELL_COLOR = "#1d4ed8";
+
 function loadColumnOrder(): Stage[] {
   if (typeof window === "undefined") return STAGES;
   try {
@@ -53,6 +61,7 @@ function SortableBoardColumn(props: {
   selectedLeadId: string | null;
   onSelectLead: (lead: Lead) => void;
   headerExtra?: React.ReactNode;
+  title?: string;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: props.stage });
   return (
@@ -137,7 +146,8 @@ export default function Board({
             <Fragment key={stage}>
               <SortableBoardColumn
                 stage={stage}
-                leads={sortedByStage[stage]}
+                title={stage === "lead" ? "Apex CRM Leads" : undefined}
+                leads={stage === "lead" ? sortedByStage.lead.filter((l) => !isPrimewellDirect(l)) : sortedByStage[stage]}
                 sortKey={filters.boardSort[stage]}
                 onSetSort={filters.setBoardSort}
                 selectedLeadId={selectedLeadId}
@@ -159,6 +169,18 @@ export default function Board({
                   ) : undefined
                 }
               />
+              {stage === "lead" && (
+                <BoardColumn
+                  stage="lead"
+                  title="PrimeWell GHL Leads"
+                  titleColor={PRIMEWELL_COLOR}
+                  leads={sortedByStage.lead.filter(isPrimewellDirect)}
+                  sortKey={filters.boardSort.lead}
+                  onSetSort={filters.setBoardSort}
+                  selectedLeadId={selectedLeadId}
+                  onSelectLead={onSelectLead}
+                />
+              )}
               {stage === "registered" &&
                 expanded &&
                 ACTIVATION_SUBCOLUMNS.map((sub) => (

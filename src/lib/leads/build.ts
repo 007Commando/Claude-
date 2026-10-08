@@ -15,6 +15,7 @@ import {
   channelFromGhlSource,
   furthestStage,
   sourceFromTags,
+  channelFromUtm,
   sourceFromAcquisition,
   deriveSellerType,
   deriveObstacle,
@@ -134,7 +135,8 @@ function contactTouch(contact: NormalisedContact): LeadTouch {
     };
   }
   const fromTags = sourceFromTags(contact.tags);
-  const channel = channelFromGhlSource(contact.ghlSource) ?? fromTags?.source ?? "other";
+  const channel =
+    channelFromGhlSource(contact.ghlSource) ?? fromTags?.source ?? channelFromUtm(contact.fields["utm_source"]) ?? "other";
   return {
     at: contact.dateAdded,
     kind: "lead",
@@ -167,13 +169,24 @@ function resolveSource(
   acquisitionSource: string | null | undefined,
   acquisitionCampaign: string | null | undefined,
   utmSource?: string,
+  utmCampaign?: string,
 ): { source: LeadSource; sourceDetail: string | null } {
   // A Reddit ad lands on the same qualifier as Facebook's web ads, which
   // tags every finisher pop-web-lead; the ad's own utm_source says Reddit.
   if ([utmSource, acquisitionSource].some((s) => (s ?? "").trim().toLowerCase() === "reddit")) {
     return { source: "reddit", sourceDetail: acquisitionCampaign ?? null };
   }
-  return sourceFromTags(tags) ?? sourceFromAcquisition(acquisitionSource, acquisitionCampaign);
+  const fromTags = sourceFromTags(tags);
+  if (fromTags) return fromTags;
+  // Funnels with no tag of their own (the seller quiz, the catalog-scan lander) still save the
+  // ad's UTM tags on the contact. Without an account to say otherwise, those name the channel:
+  // a quiz lead from the "Apex Quiz" Facebook ad is a Facebook lead, not "Other".
+  const acq = (acquisitionSource ?? "").trim().toLowerCase();
+  const utmChannel = channelFromUtm(utmSource);
+  if (utmChannel && (acq === "" || acq === "direct")) {
+    return { source: utmChannel, sourceDetail: utmCampaign ?? null };
+  }
+  return sourceFromAcquisition(acquisitionSource, acquisitionCampaign);
 }
 
 function buildApexJoin(
@@ -234,7 +247,7 @@ function buildLead(params: {
       : (apexCreatedAt ?? new Date().toISOString());
 
   const acquisition = apexMember?.acquisition ?? apexOnly?.acquisition;
-  const { source: tagOrAcqSource, sourceDetail } = resolveSource(tags, acquisition?.source, acquisition?.campaign, fields["utm_source"]);
+  const { source: tagOrAcqSource, sourceDetail } = resolveSource(tags, acquisition?.source, acquisition?.campaign, fields["utm_source"], fields["utm_campaign"]);
 
   const isPrimewellSource = tagOrAcqSource === "primewell";
   const sellerType = deriveSellerType(fields, tags, isPrimewellSource);
