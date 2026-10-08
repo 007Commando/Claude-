@@ -349,6 +349,9 @@ export interface PlanLimits {
  * against 4,000), Review Booster (Starter 50 a month against unlimited) and
  * priority onboarding (Pro yes against no plan). Change the app's table and
  * this together.
+ *
+ * Database caps raised 2026-10-08 (Stefano): Starter 2,000, Plus 10,000, Pro
+ * 50,000, enforced by services/plans/entitlements.ts in the backend.
  */
 export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   /**
@@ -374,7 +377,7 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   starter: {
     monthlySales: 10_000,
     marketplaces: 1,
-    housedAsins: 1_000,
+    housedAsins: 2_000,
     brandSearchesPerMonth: 25,
     priorityOnboarding: false,
     prepCenterConnections: 1,
@@ -389,7 +392,7 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   plus: {
     monthlySales: null,
     marketplaces: 1,
-    housedAsins: 2_000,
+    housedAsins: 10_000,
     brandSearchesPerMonth: 200,
     priorityOnboarding: false,
     prepCenterConnections: 2,
@@ -404,7 +407,7 @@ export const PLAN_LIMITS: Record<Plan["id"], PlanLimits> = {
   pro: {
     monthlySales: null,
     marketplaces: 2,
-    housedAsins: 4_000,
+    housedAsins: 50_000,
     brandSearchesPerMonth: null,
     priorityOnboarding: false,
     prepCenterConnections: 3,

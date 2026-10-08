@@ -51,7 +51,7 @@ export type Comparison = {
  *
  * The caption used to read "Every module, no listing or revenue caps", and it
  * rendered on every comparison page carrying price bars. It was not true:
- * `PLAN_LIMITS.starter` enforces a $10K monthly sales ceiling and 1,000 housed
+ * `PLAN_LIMITS.starter` enforces a $10K monthly sales ceiling and 2,000 housed
  * ASINs, and crossing the sales figure moves the customer onto Plus rather than
  * warning them. Telling a competitor's customer we have no caps, three inches
  * above a table criticising theirs, is the one claim on these pages a rival

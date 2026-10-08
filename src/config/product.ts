@@ -409,9 +409,9 @@ export const MODULE_FACTS: Record<ModuleKey, ModuleFacts> = {
     },
     plans: [
       "Beginner: 500 products in your database, 1 user",
-      "Starter: 1,000 products, 1 user",
-      "Plus: 2,000 products, 3 users",
-      "Pro: 4,000 products, 5 users",
+      "Starter: 2,000 products, 1 user",
+      "Plus: 10,000 products, 3 users",
+      "Pro: 50,000 products, 5 users",
       "Purchase order discrepancy tracking, exports and 30, 60 and 90 day Buy Box averages are on Plus and Pro",
     ],
     limits: [
