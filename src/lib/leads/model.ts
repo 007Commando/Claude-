@@ -538,3 +538,12 @@ export function attributeTouches(
   // they came from rather than inventing "other".
   return { firstSource, convertedVia: firstSource, convertedViaDetail: null };
 }
+
+/**
+ * A hot lead: told the seller quiz they have $10,000 or more for inventory
+ * (Stefano, 2026-10-08). The quiz tags them `hot-lead` in GHL; Lead Desk shows
+ * a red star.
+ */
+export function isHotLead(lead: Pick<Lead, "tags">): boolean {
+  return lead.tags.some((t) => t.toLowerCase() === "hot-lead");
+}

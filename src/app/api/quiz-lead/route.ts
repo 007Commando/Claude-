@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { GhlNotConfigured, addGhlNote, addGhlTags, normalisePhone, sendGhlEmail, upsertGhlContact, utmCustomFields } from "../../../lib/ghlLead";
 import { quizResultEmail } from "../../../lib/quizEmail";
+import { HOT_BUDGETS, QUIZ_SLUGS, quizTags } from "../../../lib/quizQuestions";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -23,7 +24,9 @@ const schema = z.object({
   result: z.enum(RESULTS),
   /** Whether they sell on Amazon yet, from the first question. */
   selling: z.boolean(),
-  answers: z.record(z.string().max(60), z.string().max(120)),
+  answers: z.record(z.string().max(200), z.string().max(120)),
+  /** The slug behind each answer; these become the quiz tags. Unknown slugs are dropped. */
+  slugs: z.record(z.string().max(20), z.string().max(30)).optional(),
   utmSource: z.string().max(200).optional(),
   utmMedium: z.string().max(200).optional(),
   utmCampaign: z.string().max(200).optional(),
@@ -46,6 +49,10 @@ export async function POST(req: NextRequest) {
   const phone = lead.phone ? normalisePhone(lead.phone) : null;
   const [firstName, ...rest] = lead.name.split(/\s+/);
   const selling = lead.selling;
+  const slugs = Object.fromEntries(
+    Object.entries(lead.slugs ?? {}).filter(([id, slug]) => (QUIZ_SLUGS as Record<string, string[]>)[id]?.includes(slug)),
+  );
+  const hot = Boolean(slugs.budget && HOT_BUDGETS.includes(slugs.budget));
 
   try {
     const contact = await upsertGhlContact({
@@ -61,11 +68,12 @@ export async function POST(req: NextRequest) {
       "quiz-lead",
       `quiz:${lead.result}`,
       ...(selling ? ["sells on amazon", "already-selling"] : ["just-getting-started"]),
+      ...quizTags(slugs),
     ]);
     await addGhlNote(
       contact.id,
       [
-        `Apex seller quiz: result "${lead.result}"`,
+        `${hot ? "🔴 HOT LEAD: $10,000+ for inventory. " : ""}Apex seller quiz: result "${lead.result}"`,
         ...Object.entries(lead.answers).map(([q, a]) => `${q}: ${a}`),
         lead.utmCampaign ? `Campaign: ${lead.utmSource ?? ""}/${lead.utmMedium ?? ""}/${lead.utmCampaign}` : null,
         lead.utmContent ? `Ad: ${lead.utmContent}` : null,

@@ -4,8 +4,9 @@
  * /apex-quiz: the third ad funnel, and a different shape from the other two
  * (Stefano, 2026-10-07: "build the next funnel with a different style").
  * /apex-pop is a long page that sells a meeting, /apex-scan is a long page
- * built around a video. This one asks instead of tells: five one-tap
- * questions, one per screen, then the visitor's own result.
+ * built around a video. This one asks instead of tells: four one-tap
+ * questions, one per screen, then the visitor's own result. The questions
+ * and the tags they become live in lib/quizQuestions.ts.
  *
  * Why a quiz for cold Meta traffic: answering costs nothing and feels like
  * progress, the result is about them rather than about Apex, and the answers
@@ -24,53 +25,37 @@ import { ArrowLeft, ArrowRight, Check, Clock, Lock } from "lucide-react";
 
 import { DOLLAR_WEEK } from "../config/offer";
 import { QUIZ_RESULTS as RESULTS, type QuizResultId as ResultId } from "../lib/quizResults";
+import { LANDING_PREF_KEY, QUIZ_QUESTIONS, slugsFor, type QuizQuestionId } from "../lib/quizQuestions";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
 import { liveIdentify } from "../lib/live/client";
 import { readStoredAttribution } from "./LeadAttribution";
 
 const ORIGIN = "https://www.apexapplications.io";
 
-type QuestionId = "stage" | "source" | "check" | "headache" | "budget";
+type QuestionId = QuizQuestionId;
 
-const QUESTIONS: { id: QuestionId; title: string; options: string[] }[] = [
-  {
-    id: "stage",
-    title: "Where are you on Amazon right now?",
-    options: ["Not selling yet", "Selling, under $5k a month", "$5k to $50k a month", "Over $50k a month"],
-  },
-  {
-    id: "source",
-    title: "How do you find products to sell?",
-    options: ["I haven't started sourcing", "Retail or online arbitrage", "Wholesale from distributors", "Private label"],
-  },
-  {
-    id: "check",
-    title: "How do you check a product is profitable before you buy?",
-    options: ["Honestly, I mostly guess", "By hand, one product at a time", "A spreadsheet", "A tool like Keepa or SellerAmp"],
-  },
-  {
-    id: "headache",
-    title: "What's the biggest headache right now?",
-    options: [
-      "Finding suppliers who'll open an account",
-      "Knowing what's actually profitable",
-      "Restocking without running out",
-      "Knowing my real profit",
-    ],
-  },
-  {
-    id: "budget",
-    title: "How much do you have for inventory?",
-    options: ["Under $1,000", "$1,000 to $5,000", "$5,000 to $25,000", "Over $25,000"],
-  },
-];
+/**
+ * Four questions, and the second depends on the first (Stefano, 2026-10-08).
+ * Someone not selling yet skips the method question and is offered Apex
+ * University instead: say yes and the course is the first thing they see
+ * once their account is made. Everyone else says how they sell. The last
+ * question sizes their inventory money, which matches them to suppliers with
+ * the right minimum orders and marks the high-intent ones: $10,000 or more
+ * makes a hot lead (a red star in Lead Desk, `hot-lead` in GHL).
+ */
+const flowFor = (a: Partial<Record<QuestionId, string>>): QuestionId[] =>
+  a.stage === QUIZ_QUESTIONS.stage.options[0].label
+    ? ["stage", "university", "headache", "budget"]
+    : ["stage", "method", "headache", "budget"];
 
+const QUESTION_COUNT = 4;
 
 function resultFor(a: Partial<Record<QuestionId, string>>): ResultId {
-  if (a.stage === QUESTIONS[0].options[0] || a.budget === QUESTIONS[4].options[0]) return "starter";
-  const scaleHeadache = a.headache === QUESTIONS[3].options[2] || a.headache === QUESTIONS[3].options[3];
-  if (a.stage === QUESTIONS[0].options[3] || (a.stage === QUESTIONS[0].options[2] && scaleHeadache)) return "scaler";
-  if (a.source === QUESTIONS[1].options[1]) return "arbitrage";
+  const s = slugsFor(a);
+  if (s.stage === "not-selling" || s.budget === "under-1k") return "starter";
+  const scaleHeadache = s.headache === "restocking" || s.headache === "real-profit";
+  if (s.stage === "over-50k" || (s.stage === "5k-50k" && scaleHeadache) || s.method === "private-label") return "scaler";
+  if (s.method === "arbitrage") return "arbitrage";
   return "spreadsheet";
 }
 
@@ -86,6 +71,9 @@ export default function ApexQuiz() {
   const [error, setError] = useState<string | null>(null);
   const result = resultFor(answers);
   const R = RESULTS[result];
+  const flow = flowFor(answers);
+  const Q = step >= 0 && step < QUESTION_COUNT ? QUIZ_QUESTIONS[flow[step]] : null;
+  const wantsUniversity = slugsFor(answers).university === "yes";
 
   const utm = useMemo(() => {
     if (typeof window === "undefined") return {};
@@ -100,20 +88,26 @@ export default function ApexQuiz() {
     };
   }, []);
 
-  // Keyboard: 1-4 or A-D picks an option on a question screen.
+  // Keyboard: 1-5 or A-E picks an option on a question screen.
   useEffect(() => {
-    if (step < 0 || step > 4) return;
+    if (!Q) return;
     const onKey = (e: KeyboardEvent) => {
-      const i = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
-      if (i >= 0 && !(e.target instanceof HTMLInputElement)) pick(QUESTIONS[step].options[i]);
+      const i = "12345".indexOf(e.key) >= 0 ? "12345".indexOf(e.key) : "abcde".indexOf(e.key.toLowerCase());
+      const option = Q.options[i];
+      if (i >= 0 && option && !(e.target instanceof HTMLInputElement)) pick(option.label);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
 
   const pick = (option: string) => {
-    const q = QUESTIONS[step];
-    setAnswers((a) => ({ ...a, [q.id]: option }));
+    const id = flow[step];
+    setAnswers((a) => {
+      const next = { ...a, [id]: option };
+      // Changing the first answer changes the route: drop the other branch's answer.
+      if (id === "stage") delete next[next.stage === QUIZ_QUESTIONS.stage.options[0].label ? "method" : "university"];
+      return next;
+    });
     // A beat so the tap registers before the screen moves on.
     window.setTimeout(() => setStep((s) => s + 1), reduce ? 0 : 260);
   };
@@ -131,8 +125,9 @@ export default function ApexQuiz() {
           email,
           phone: phone || undefined,
           result,
-          selling: answers.stage !== QUESTIONS[0].options[0],
-          answers: Object.fromEntries(QUESTIONS.map((q) => [q.title, answers[q.id] ?? ""])),
+          selling: slugsFor(answers).stage !== "not-selling",
+          slugs: slugsFor(answers),
+          answers: Object.fromEntries(flow.map((id) => [QUIZ_QUESTIONS[id].title, answers[id] ?? ""])),
           ...utm,
         }),
       });
@@ -140,7 +135,7 @@ export default function ApexQuiz() {
       if (!res.ok) throw new Error(data.error ?? "Something went wrong. Please try again.");
       liveIdentify(email, name);
       (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.("track", "Lead", { content_name: "apex-quiz" });
-      setStep(6);
+      setStep(QUESTION_COUNT + 1);
       window.scrollTo({ top: 0 });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -152,13 +147,16 @@ export default function ApexQuiz() {
   const start = () => {
     try {
       sessionStorage.setItem(SIGNUP_PREFILL_KEY, JSON.stringify({ name, email }));
+      // Read by sign-up and kept on the account; the app opens Apex University first.
+      if (wantsUniversity) sessionStorage.setItem(LANDING_PREF_KEY, "university");
+      else sessionStorage.removeItem(LANDING_PREF_KEY);
     } catch {}
     const u = utm as Record<string, string>;
     const q = `utm_source=${encodeURIComponent(u.utmSource ?? "")}&utm_medium=${encodeURIComponent(u.utmMedium ?? "")}&utm_campaign=${encodeURIComponent(u.utmCampaign ?? "")}`;
     window.location.href = `${ORIGIN}/auth?mode=signup&plan=${DOLLAR_WEEK.plan}&period=${DOLLAR_WEEK.period}&offer=${DOLLAR_WEEK.offer}&from=apex-quiz&${q}`;
   };
 
-  const progress = step < 0 ? 0 : Math.min(1, (step + 1) / 6);
+  const progress = step < 0 ? 0 : Math.min(1, (step + 1) / (QUESTION_COUNT + 1));
   const slide = reduce
     ? {}
     : { initial: { opacity: 0, x: 40 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -40 }, transition: { duration: 0.28 } };
@@ -168,12 +166,12 @@ export default function ApexQuiz() {
       <header className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-5">
         <img src="/assets/bull.png" alt="Apex Applications" width={40} height={31} />
         <span className="font-bold">Apex</span>
-        {step >= 0 && step < 6 && (
+        {step >= 0 && step <= QUESTION_COUNT && (
           <div className="ml-auto flex w-40 items-center gap-2">
             <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
               <motion.div className="h-full rounded-full bg-blue-600" animate={{ width: `${progress * 100}%` }} transition={{ duration: 0.4 }} />
             </div>
-            <span className="text-xs tabular-nums text-slate-500">{Math.min(step + 1, 5)}/5</span>
+            <span className="text-xs tabular-nums text-slate-500">{Math.min(step + 1, QUESTION_COUNT)}/{QUESTION_COUNT}</span>
           </div>
         )}
       </header>
@@ -187,7 +185,7 @@ export default function ApexQuiz() {
                 What kind of Amazon seller are you?
               </h1>
               <p className="mx-auto mt-5 max-w-lg text-lg text-slate-600">
-                Five quick questions. You get the one thing to fix first, and the plan we would suggest.
+                Four quick questions. You get the one thing to fix first, and the plan we would suggest.
               </p>
               <button
                 onClick={() => setStep(0)}
@@ -213,13 +211,14 @@ export default function ApexQuiz() {
             </motion.section>
           )}
 
-          {step >= 0 && step <= 4 && (
-            <motion.section key={`q${step}`} {...slide} className="pt-8 sm:pt-14">
-              <p className="text-sm font-semibold text-blue-600">Question {step + 1} of 5</p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{QUESTIONS[step].title}</h2>
+          {Q && (
+            <motion.section key={`q${step}-${Q.id}`} {...slide} className="pt-8 sm:pt-14">
+              <p className="text-sm font-semibold text-blue-600">Question {step + 1} of {QUESTION_COUNT}</p>
+              {Q.note && <p className="mt-3 text-lg text-slate-600">{Q.note}</p>}
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{Q.title}</h2>
               <div className="mt-8 grid gap-3">
-                {QUESTIONS[step].options.map((o, i) => {
-                  const chosen = answers[QUESTIONS[step].id] === o;
+                {Q.options.map(({ label: o }, i) => {
+                  const chosen = answers[Q.id] === o;
                   return (
                     <motion.button
                       key={o}
@@ -234,7 +233,7 @@ export default function ApexQuiz() {
                           chosen ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500"
                         }`}
                       >
-                        {chosen ? <Check className="size-4" aria-hidden /> : "ABCD"[i]}
+                        {chosen ? <Check className="size-4" aria-hidden /> : "ABCDE"[i]}
                       </span>
                       {o}
                     </motion.button>
@@ -249,7 +248,7 @@ export default function ApexQuiz() {
             </motion.section>
           )}
 
-          {step === 5 && (
+          {step === QUESTION_COUNT && (
             <motion.section key="gate" {...slide} className="pt-8 sm:pt-14">
               <p className="text-sm font-semibold text-blue-600">Your result is ready</p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Where should we send your plan?</h2>
@@ -300,7 +299,7 @@ export default function ApexQuiz() {
             </motion.section>
           )}
 
-          {step === 6 && (
+          {step === QUESTION_COUNT + 1 && (
             <motion.section key="result" {...slide} className="pt-8 sm:pt-12">
               <p className="text-sm font-semibold text-blue-600">Your result{name ? `, ${name.split(" ")[0]}` : ""}</p>
               <h2 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">{R.name}</h2>
@@ -333,6 +332,13 @@ export default function ApexQuiz() {
                   {R.proof[1]}. <span className="text-slate-400">One supplier catalog we scanned (12,203 lines), an example and not a typical result; yours will differ.</span>
                 </p>
               </div>
+
+              {wantsUniversity && (
+                <p className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-slate-700">
+                  <span className="font-semibold">Apex University opens first.</span> Once your account is made, the free
+                  Amazon wholesale course is the first thing you&rsquo;ll see.
+                </p>
+              )}
 
               <p className="mt-6 text-slate-600">{R.plan}</p>
 

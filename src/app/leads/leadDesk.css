@@ -2244,3 +2244,18 @@
   color: var(--ld-text-faint);
   margin-top: 6px;
 }
+
+/* Hot lead: $10k+ for inventory on the seller quiz (2026-10-08). */
+.ld-hot-star {
+  flex: none;
+  color: #dc2626;
+  fill: #dc2626;
+  margin-right: 3px;
+  vertical-align: -2px;
+}
+
+.ld-hot-tag {
+  margin-left: 6px;
+  color: #dc2626;
+  border-color: #fca5a5;
+}

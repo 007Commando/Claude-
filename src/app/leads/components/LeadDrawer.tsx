@@ -2,8 +2,9 @@
 
 import LeadJourney from "./LeadJourney";
 import { useEffect, useState } from "react";
-import { Check, Copy, ExternalLink, Minus, Phone, X } from "lucide-react";
+import { Check, Copy, ExternalLink, Minus, Phone, Star, X } from "lucide-react";
 import type { ActivationTier, Lead, LeadGrade } from "../../../lib/leads/model";
+import { isHotLead } from "../../../lib/leads/model";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
@@ -116,7 +117,11 @@ export default function LeadDrawer({
       <div className="ld-drawer" role="dialog" aria-label={`${lead.name} details`}>
         <div className="ld-drawer-header">
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="ld-drawer-title">{lead.name}</div>
+            <div className="ld-drawer-title">
+              {isHotLead(lead) && <Star size={15} className="ld-hot-star" aria-label="Hot lead" />}
+              {lead.name}
+              {isHotLead(lead) && <span className="ld-tag ld-hot-tag">Hot lead: $10k+ for inventory</span>}
+            </div>
             <div style={{ fontSize: 11, color: "var(--ld-text-muted)", marginTop: 2 }}>
               {SOURCE_LABELS[lead.source]}
               {lead.sourceDetail ? ` · ${lead.sourceDetail}` : ""}

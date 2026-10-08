@@ -2,7 +2,8 @@
 
 import { forwardRef } from "react";
 import type { Lead } from "../../../lib/leads/model";
-import { activationTier } from "../../../lib/leads/model";
+import { activationTier, isHotLead } from "../../../lib/leads/model";
+import { Star } from "lucide-react";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
@@ -83,6 +84,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
     >
       {isRecentLead(lead) && <span className="ld-card-new-dot" style={{ background: stageColorVar(lead.stage) }} />}
       <div className="ld-card-line1">
+        {isHotLead(lead) && <Star size={13} className="ld-hot-star" aria-label="Hot lead" />}
         <span className="ld-card-name">{identity}</span>
         <SourceLogo source={lead.firstSource} />
         {lead.convertedVia && lead.convertedVia !== lead.firstSource && (

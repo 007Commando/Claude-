@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import TrialTimeline from "./TrialTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SIGNUP_PREFILL_KEY } from "../config/signupPrefill";
+import { LANDING_PREF_KEY } from "../lib/quizQuestions";
 import { DOLLAR_WEEK } from "../config/offer";
 import { motion } from "motion/react";
 import { z } from "zod";
@@ -36,6 +37,22 @@ import { liveAccount } from "../lib/live/client";
  * have to send it. "direct" says nothing and is left out.
  */
 function acquisitionFromLanding() {
+  const base = acquisitionFromAttribution();
+  // A quiz beginner who asked for Apex University first (Stefano, 2026-10-08).
+  // It rides on the acquisition record, which the app reads on the dashboard.
+  let landing: string | null = null;
+  try {
+    landing = sessionStorage.getItem(LANDING_PREF_KEY);
+  } catch {}
+  if (landing !== "university") return base;
+  const acquisition: { source: string; landing: string } & Record<string, string | undefined> = {
+    ...(base.acquisition ?? { source: "direct" }),
+    landing,
+  };
+  return { acquisition };
+}
+
+function acquisitionFromAttribution(): { acquisition?: { source: string } & Record<string, string | undefined> } {
   const landed = readStoredAttribution();
   const fbp = readCookie("_fbp");
   const rdtUuid = readCookie("_rdt_uuid");
@@ -109,6 +126,8 @@ declare global {
           fbp?: string;
           rdtCid?: string;
           rdtUuid?: string;
+          /** Where the new account should open first, e.g. "university". */
+          landing?: string;
         };
       }) => Promise<SignupResult>;
       /** Replays the redirect signUp held back, once the code is accepted. */
@@ -140,6 +159,8 @@ declare global {
           fbp?: string;
           rdtCid?: string;
           rdtUuid?: string;
+          /** Where the new account should open first, e.g. "university". */
+          landing?: string;
         };
       }) => Promise<{
         adoptionStatus?: "adopted" | "duplicate" | "ignored" | null;
