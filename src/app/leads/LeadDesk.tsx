@@ -359,6 +359,7 @@ export default function LeadDesk() {
           onClose={() => setSelectedLeadId(null)}
           onMarkContacted={markContacted}
           onSetGrade={setGrade}
+          repName={data?.loggedInAs && !data.loggedInAs.includes("@") ? data.loggedInAs : ""}
           pending={selectedLead ? pendingIds.has(selectedLead.id) : false}
           error={actionError}
           callsByContact={callsByContact}

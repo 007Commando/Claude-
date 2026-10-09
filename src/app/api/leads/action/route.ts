@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findLead } from "../../../../lib/leads/build";
-import { addGhlTags, addGhlNote, removeGhlContactTags, GhlNotConfigured } from "../../../../lib/ghlLead";
+import {
+  addGhlTags,
+  addGhlNote,
+  removeGhlContactTags,
+  sendGhlEmail,
+  upsertGhlContact,
+  GhlNotConfigured,
+} from "../../../../lib/ghlLead";
+import { offerEmail } from "../../../../lib/leads/offerEmail";
 import { auth } from "../../../../auth";
 
 export const dynamic = "force-dynamic";
@@ -8,8 +16,10 @@ export const runtime = "nodejs";
 
 interface ActionBody {
   leadId: string;
-  action: "contacted" | "note" | "grade";
+  action: "contacted" | "note" | "grade" | "send-offer";
   note?: string;
+  /** send-offer: the opening line the rep edited in the preview. */
+  intro?: string;
   grade?: "A" | "B" | "C" | null;
   by?: string;
 }
@@ -43,7 +53,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { leadId, action, note, grade } = body;
-  if (!leadId || (action !== "contacted" && action !== "note" && action !== "grade")) {
+  if (!leadId || !["contacted", "note", "grade", "send-offer"].includes(action)) {
     return NextResponse.json({ error: "leadId and a valid action are required" }, { status: 400 });
   }
   if (action === "note" && !note?.trim()) {
@@ -60,6 +70,42 @@ export async function POST(req: NextRequest) {
   const lead = await findLead(leadId);
   if (!lead) {
     return NextResponse.json({ error: `Lead ${leadId} not found` }, { status: 404 });
+  }
+
+  /**
+   * The rep's one-click email: the $1 week offer and Stefano's booking link,
+   * sent through the Apex GHL location so it lands in the contact's
+   * conversation like any other email and replies come back there. A lead
+   * whose only contact is in PrimeWell's location, or who has an Apex account
+   * but no contact at all, gets an Apex contact first (by email; an upsert,
+   * so nothing existing is overwritten).
+   */
+  if (action === "send-offer") {
+    if (!lead.email) {
+      return NextResponse.json({ error: "This lead has no email address" }, { status: 409 });
+    }
+    const repName = session?.user?.name || by.split("@")[0];
+    const repFirst = repName.trim().split(/\s+/)[0] || "Apex";
+    const today = todayInNewYork();
+    try {
+      const contactId =
+        lead.ghlLocation === "apex" && lead.ghlContactId
+          ? lead.ghlContactId
+          : (await upsertGhlContact({ email: lead.email, name: lead.name, source: "Lead Desk offer email" })).id;
+      const email = offerEmail({ firstName: lead.name.includes("@") ? "" : lead.name, repName, intro: body.intro, note });
+      await sendGhlEmail(contactId, { ...email, emailFrom: `${repFirst} at Apex <info@apexapplications.io>` });
+      await addGhlTags(contactId, [`offer-sent:${today}`, `outreach:${today}`]);
+      await addGhlNote(contactId, `$1 week offer email sent by ${by} on ${today}`);
+      return NextResponse.json({ ok: true, sentAt: new Date().toISOString(), outreachDate: today });
+    } catch (err) {
+      if (err instanceof GhlNotConfigured) {
+        return NextResponse.json({ error: "GHL is not configured" }, { status: 503 });
+      }
+      return NextResponse.json(
+        { error: err instanceof Error ? err.message : "Failed to send the email" },
+        { status: 502 },
+      );
+    }
   }
   if (!lead.ghlContactId || !lead.ghlLocation) {
     return NextResponse.json(

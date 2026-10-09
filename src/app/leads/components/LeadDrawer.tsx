@@ -2,6 +2,7 @@
 
 import LeadJourney from "./LeadJourney";
 import CallsSection from "./CallsSection";
+import OfferEmailSection from "./OfferEmailSection";
 import { callsForLead, type SalesCall } from "../../../lib/leads/calls";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, Star, X } from "lucide-react";
@@ -86,6 +87,7 @@ export default function LeadDrawer({
   pending,
   error,
   callsByContact,
+  repName = "",
 }: {
   lead: Lead | null;
   onClose: () => void;
@@ -95,6 +97,8 @@ export default function LeadDrawer({
   error: string | null;
   /** Sales calls by GHL contact id, from the list Lead Desk already loaded. */
   callsByContact?: Record<string, SalesCall[]>;
+  /** The signed-in Lead Desk user, who signs the offer email. */
+  repName?: string;
 }) {
   const [note, setNote] = useState("");
 
@@ -262,6 +266,8 @@ export default function LeadDrawer({
           </div>
 
           <CallsSection key={lead.id} lead={lead} listed={callsForLead(lead, callsByContact)} />
+
+          <OfferEmailSection lead={lead} repName={repName} />
 
           <div className="ld-drawer-section">
             <div className="ld-drawer-section-title">Note</div>

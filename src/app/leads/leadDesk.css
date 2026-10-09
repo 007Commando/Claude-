@@ -2513,3 +2513,14 @@
   .ld-calls-row { grid-template-columns: 100px minmax(0, 1fr) 56px auto; }
   .ld-calls-row .ld-calls-caller, .ld-calls-row .ld-calls-text { display: none; }
 }
+
+/* Offer email (drawer) */
+.ld-offer { display: flex; flex-direction: column; gap: 10px; }
+.ld-offer-label { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; font-weight: 600; color: var(--ld-text-muted); }
+.ld-offer-label .ld-note-textarea { min-height: 52px; }
+.ld-offer-subject { font-size: 12.5px; color: var(--ld-text); }
+.ld-offer-subject span { color: var(--ld-text-faint); font-weight: 600; margin-right: 6px; }
+.ld-offer-preview { width: 100%; height: 420px; border: 1px solid var(--ld-border); border-radius: 10px; background: var(--ld-surface, #fff); }
+.ld-offer-muted { font-size: 11.5px; color: var(--ld-text-faint); margin: 0 0 8px; }
+.ld-offer-sent { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ld-success); margin: 0; }
+.ld-offer-error { font-size: 11.5px; color: var(--ld-danger); margin: 0; }
