@@ -2524,3 +2524,51 @@
 .ld-offer-muted { font-size: 11.5px; color: var(--ld-text-faint); margin: 0 0 8px; }
 .ld-offer-sent { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ld-success); margin: 0; }
 .ld-offer-error { font-size: 11.5px; color: var(--ld-danger); margin: 0; }
+
+/* Call list view (2026-10-09) */
+.ld-cl { height: 100%; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+.ld-cl-top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.ld-cl-total { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--ld-text); }
+.ld-cl .ld-live-block { padding: 14px 16px; border-radius: 12px; box-shadow: none; }
+.ld-cl-count { margin-left: 4px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; color: var(--ld-text-muted); background: var(--ld-bg); border: 1px solid var(--ld-border); }
+.ld-cl-table { table-layout: fixed; min-width: 1040px; }
+.ld-cl-table td, .ld-cl-table th { vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
+.ld-cl-table th:nth-child(1) { width: 22%; }
+.ld-cl-table th:nth-child(2) { width: 11%; }
+.ld-cl-table th:nth-child(3) { width: 12%; }
+.ld-cl-table th:nth-child(4) { width: 9%; }
+.ld-cl-table th:nth-child(5) { width: 11%; }
+.ld-cl-table th:nth-child(6) { width: 8%; }
+.ld-cl-table th:nth-child(7) { width: 12%; }
+.ld-cl-table th:nth-child(8) { width: 15%; }
+.ld-cl-name { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.ld-cl-name b { overflow: hidden; text-overflow: ellipsis; }
+.ld-cl-name b { font-weight: 650; }
+.ld-cl-ends { margin-left: 6px; font-size: 11px; font-weight: 700; color: var(--ld-warning); background: var(--ld-warning-soft); border: 1px solid var(--ld-warning-border); border-radius: 999px; padding: 1px 7px; }
+.ld-cl-ends[data-soon="true"] { color: var(--ld-danger); background: var(--ld-danger-soft); border-color: var(--ld-danger-border); }
+.ld-cl-phone { color: var(--ld-accent); text-decoration: none; }
+.ld-cl-phone:hover { text-decoration: underline; }
+.ld-cl-none { color: var(--ld-text-faint); }
+.ld-cl-actions { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+.ld-cl-ghl { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ld-text-muted); text-decoration: none; }
+.ld-cl-ghl:hover { color: var(--ld-accent); }
+.ld-cl-more { margin-top: 10px; }
+
+/* Commissions, bottom of the Calls view */
+.ld-cm-rep + .ld-cm-rep { margin-top: 16px; }
+.ld-cm-rep-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.ld-cm-rep-head > b { font-size: 14px; font-weight: 800; }
+.ld-cm-totals { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ld-text-muted); }
+.ld-cm-totals b { color: var(--ld-text); font-weight: 800; margin-left: 4px; }
+.ld-cm-table td:nth-child(4), .ld-cm-table th:nth-child(4),
+.ld-cm-table td:nth-child(6), .ld-cm-table th:nth-child(6) { text-align: right; }
+.ld-cm-table tr[data-lapsed="true"] td { color: var(--ld-text-faint); }
+.ld-cm-commission span[data-struck="true"] { text-decoration: line-through; }
+.ld-cm-error { margin: 0 0 8px; font-size: 12.5px; color: var(--ld-danger); }
+.ld-cm-note { margin: 10px 0 0; font-size: 11.5px; color: var(--ld-text-faint); }
+
+/* Yearly checkout links in the lead drawer */
+.ld-links { display: flex; flex-direction: column; gap: 8px; }
+.ld-links-row { display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; align-items: center; gap: 8px; font-size: 12px; }
+.ld-links-label { font-weight: 700; color: var(--ld-text); }
+.ld-links-url { color: var(--ld-text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

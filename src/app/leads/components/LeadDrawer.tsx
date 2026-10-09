@@ -3,6 +3,7 @@
 import LeadJourney from "./LeadJourney";
 import CallsSection from "./CallsSection";
 import OfferEmailSection from "./OfferEmailSection";
+import CheckoutLinksSection from "./CheckoutLinksSection";
 import { callsForLead, type SalesCall } from "../../../lib/leads/calls";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, Star, X } from "lucide-react";
@@ -268,6 +269,8 @@ export default function LeadDrawer({
           <CallsSection key={lead.id} lead={lead} listed={callsForLead(lead, callsByContact)} />
 
           <OfferEmailSection lead={lead} repName={repName} />
+
+          <CheckoutLinksSection lead={lead} repName={repName} />
 
           <div className="ld-drawer-section">
             <div className="ld-drawer-section-title">Note</div>

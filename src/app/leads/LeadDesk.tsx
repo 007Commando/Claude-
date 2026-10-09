@@ -22,6 +22,7 @@ import LivePanel from "./components/LivePanel";
 import AdsView from "./components/AdsView";
 import FunnelView from "./components/FunnelView";
 import CallsView from "./components/CallsView";
+import CallListView from "./components/CallListView";
 import LeadDrawer from "./components/LeadDrawer";
 import JourneyOverlay from "./components/JourneyOverlay";
 import ChangesBanner, { changedIds as idsOf, takeChanges, type Changes } from "./components/ChangesBanner";
@@ -310,6 +311,8 @@ export default function LeadDesk() {
         ) : data ? (
           filters.view === "board" ? (
             <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} callsByContact={callsByContact} />
+          ) : filters.view === "call-list" ? (
+            <CallListView leads={effectiveLeads} callsByContact={callsByContact} onOpenLead={(l) => setSelectedLeadId(l.id)} />
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (

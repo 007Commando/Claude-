@@ -239,6 +239,9 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "table"} onClick={() => filters.setView("table")}>
           Table
         </button>
+        <button type="button" data-active={filters.view === "call-list"} onClick={() => filters.setView("call-list")}>
+          Call list
+        </button>
         <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
           Funnels
         </button>

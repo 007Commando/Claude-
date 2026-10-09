@@ -113,6 +113,8 @@ declare global {
         plan?: "beginner" | "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         offer?: string;
+        /** Sales rep id from a rep link (`?rep=`): lets the backend credit the deal. */
+        rep?: string;
         /** Hold the redirect so the code screen can run first. */
         deferRedirect?: boolean;
         /** Where they came from, captured on landing; kept on the account. */
@@ -149,6 +151,8 @@ declare global {
         plan?: "beginner" | "starter" | "plus" | "pro" | "enterprise";
         period?: "monthly" | "yearly";
         offer?: string;
+        /** Sales rep id from a rep link (`?rep=`). */
+        rep?: string;
         acquisition?: {
           source: string;
           medium?: string;
@@ -513,6 +517,12 @@ export default function Auth() {
    */
   const isDollarWeek = !isFreeSignup && params.get("offer") === DOLLAR_WEEK.offer;
   const offerOpt = isDollarWeek ? { offer: DOLLAR_WEEK.offer } : {};
+  /**
+   * A sales rep's link carries `rep=<id>`. Only a plain slug is passed on, so
+   * nothing else a link can carry reaches the signup call.
+   */
+  const repParam = params.get("rep");
+  const repOpt = repParam && /^[a-z0-9-]{2,32}$/.test(repParam) ? { rep: repParam } : {};
   const planTier = PLAN_TIERS.find((p) => p === planParam) ?? "starter";
   const periodParam = params.get("period");
   // Beginner is sold monthly only; a yearly link for it would reach a price
@@ -829,6 +839,7 @@ export default function Auth() {
             password: parsed.data.password,
             ...(isFreeSignup ? {} : { plan: planTier, period }),
             ...offerOpt,
+            ...repOpt,
             ...acquisitionFromLanding(),
             // Held so the code screen runs between making the account and
             // entering it. Where the signup was going travels back untouched.
@@ -1031,6 +1042,7 @@ export default function Auth() {
         auth.signInWithGoogle!({
           ...(isFreeSignup ? {} : { plan: planTier, period }),
           ...offerOpt,
+          ...repOpt,
           ...acquisitionFromLanding(),
         }),
       );

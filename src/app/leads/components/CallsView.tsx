@@ -23,6 +23,7 @@ import {
 } from "../../../lib/leads/calls";
 import { todayNY } from "./shared";
 import { OutcomeChip } from "./callUi";
+import CommissionsSection from "./CommissionsSection";
 
 type Range = "today" | "7d" | "30d";
 const RANGES: { id: Range; label: string }[] = [
@@ -254,6 +255,8 @@ export default function CallsView({
           </div>
         )}
       </section>
+
+      <CommissionsSection />
     </div>
   );
 }
