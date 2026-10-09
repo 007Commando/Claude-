@@ -3,7 +3,8 @@
 import { forwardRef } from "react";
 import type { Lead } from "../../../lib/leads/model";
 import { activationTier, isHotLead } from "../../../lib/leads/model";
-import { Star } from "lucide-react";
+import { Phone, Star } from "lucide-react";
+import { formatDurationShort, sinceLabel, type SalesCall } from "../../../lib/leads/calls";
 import {
   ACTIVATION_COLORS,
   SELLER_TYPE_LABELS,
@@ -32,6 +33,8 @@ interface LeadCardProps {
   onFocus?: () => void;
   /** Greys the card out under this label, in place of the activation outline. */
   muted?: string | null;
+  /** The most recent sales call with this lead, if any. */
+  lastCall?: SalesCall | null;
 }
 
 function stageSuffix(lead: Lead): string | null {
@@ -50,7 +53,7 @@ function stageSuffix(lead: Lead): string | null {
 }
 
 const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
-  { lead, selected, style, onSelect, tabIndex, onFocus, muted, changed },
+  { lead, selected, style, onSelect, tabIndex, onFocus, muted, changed, lastCall },
   ref,
 ) {
   const identity = lead.name || lead.email || "Unknown";
@@ -114,6 +117,12 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
         {total != null && (
           <span className="ld-time-tag ld-time-tag-total" title={`Lead to paid in ${fmtDuration(total)}`}>
             Σ {fmtDuration(total)}
+          </span>
+        )}
+        {lastCall && (
+          <span className="ld-time-tag ld-call-tag" data-interest={lastCall.summary?.interest ?? "none"} title="Last call">
+            <Phone size={9} aria-hidden="true" />
+            {sinceLabel(lastCall.startedAt)} · {formatDurationShort(lastCall.durationSec)}
           </span>
         )}
         <span className="ld-card-line2-text">{line2Parts.join(" · ")}</span>

@@ -1,6 +1,8 @@
 "use client";
 
 import LeadJourney from "./LeadJourney";
+import CallsSection from "./CallsSection";
+import { callsForLead, type SalesCall } from "../../../lib/leads/calls";
 import { useEffect, useState } from "react";
 import { Check, Copy, ExternalLink, Minus, Phone, Star, X } from "lucide-react";
 import type { ActivationTier, Lead, LeadGrade } from "../../../lib/leads/model";
@@ -83,6 +85,7 @@ export default function LeadDrawer({
   onSetGrade,
   pending,
   error,
+  callsByContact,
 }: {
   lead: Lead | null;
   onClose: () => void;
@@ -90,6 +93,8 @@ export default function LeadDrawer({
   onSetGrade: (lead: Lead, grade: LeadGrade | null) => Promise<void>;
   pending: boolean;
   error: string | null;
+  /** Sales calls by GHL contact id, from the list Lead Desk already loaded. */
+  callsByContact?: Record<string, SalesCall[]>;
 }) {
   const [note, setNote] = useState("");
 
@@ -255,6 +260,8 @@ export default function LeadDrawer({
               </div>
             )}
           </div>
+
+          <CallsSection key={lead.id} lead={lead} listed={callsForLead(lead, callsByContact)} />
 
           <div className="ld-drawer-section">
             <div className="ld-drawer-section-title">Note</div>

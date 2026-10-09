@@ -9,6 +9,7 @@ import type { Lead, Stage } from "../../../lib/leads/model";
 import { STAGES, STAGE_SHORT_LABELS } from "./shared";
 import { sortBoardColumn, type BoardSortKey, type LeadFilters } from "./useLeadFilters";
 import BoardColumn from "./BoardColumn";
+import type { SalesCall } from "../../../lib/leads/calls";
 import ColumnChooser from "./ColumnChooser";
 
 const COLUMNS_KEY = "leadDesk.boardColumns.v2";
@@ -140,6 +141,7 @@ export default function Board({
   selectedLeadId,
   onSelectLead,
   changedIds,
+  callsByContact,
 }: {
   leadsByStage: Record<Stage, Lead[]>;
   filters: LeadFilters;
@@ -148,6 +150,8 @@ export default function Board({
   selectedLeadId: string | null;
   onSelectLead: (lead: Lead) => void;
   changedIds?: Set<string>;
+  /** Sales calls by GHL contact id, for the last-call tag on each card. */
+  callsByContact?: Record<string, SalesCall[]>;
 }) {
   const [layout, setLayout] = useState<ColumnLayout>({ order: DEFAULT_ORDER, hidden: [] });
   const [primewellView, setPrimewellView] = useState<PrimewellView>("all");
@@ -210,7 +214,7 @@ export default function Board({
     updateLayout({ ...layout, order: arrayMove(layout.order, oldIndex, newIndex) });
   };
 
-  const common = { onSetSort: filters.setBoardSort, selectedLeadId, onSelectLead, changedIds };
+  const common = { onSetSort: filters.setBoardSort, selectedLeadId, onSelectLead, changedIds, callsByContact };
 
   const renderColumn = (id: string) => {
     if (id === "primewell") {

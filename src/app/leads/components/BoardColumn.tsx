@@ -7,6 +7,7 @@ import type { Lead, Stage } from "../../../lib/leads/model";
 import { BOARD_SORT_OPTIONS, type BoardSortKey } from "./useLeadFilters";
 import { STAGE_SHORT_LABELS, stageColorVar } from "./shared";
 import LeadCard from "./LeadCard";
+import { callsForLead, type SalesCall } from "../../../lib/leads/calls";
 import SourceSplit from "./SourceSplit";
 
 const CARD_HEIGHT = 52;
@@ -22,6 +23,8 @@ interface BoardColumnProps {
   colId?: string;
   /** Cards that moved since the last visit. */
   changedIds?: Set<string>;
+  /** Sales calls by GHL contact id. */
+  callsByContact?: Record<string, SalesCall[]>;
   setNodeRef?: (node: HTMLElement | null) => void;
   style?: React.CSSProperties;
   dragAttributes?: React.HTMLAttributes<HTMLElement>;
@@ -164,6 +167,7 @@ export default function BoardColumn({
   onSelectLead,
   colId,
   changedIds,
+  callsByContact,
   setNodeRef,
   style,
   dragAttributes,
@@ -265,6 +269,7 @@ export default function BoardColumn({
                   muted={mutedFor?.(lead) ?? null}
                   selected={lead.id === selectedLeadId}
                   changed={changedIds?.has(lead.id)}
+                  lastCall={callsForLead(lead, callsByContact)[0] ?? null}
                   tabIndex={item.index === (focusedIndex ?? 0) ? 0 : -1}
                   onFocus={() => setFocusedIndex(item.index)}
                   onSelect={onSelectLead}

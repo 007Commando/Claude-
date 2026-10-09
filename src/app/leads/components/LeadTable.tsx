@@ -15,6 +15,7 @@ import { downloadCsv } from "../../../lib/dashboard/csv";
 import { ACTIVATION_COLORS, fmtDateShort, money, SELLER_TYPE_LABELS, SOURCE_LABELS, STAGE_LABELS } from "./shared";
 import type { TableSort } from "./useLeadFilters";
 import ColumnChooser from "./ColumnChooser";
+import { callsForLead, formatDurationShort, type SalesCall } from "../../../lib/leads/calls";
 
 const ROW_HEIGHT = 32;
 import { accountToTrialMs, fmtDuration, leadAgeMs, leadToAccountMs, leadToPaidMs, trialToPaidMs } from "./shared";
@@ -29,10 +30,11 @@ interface ColumnSpec {
   kind: FilterKind;
   width: number;
   lowPriority?: boolean;
-  text: (l: Lead) => string;
-  sortValue: (l: Lead) => string | number;
+  /** `call` is the lead's most recent sales call, for the one column that reads it. */
+  text: (l: Lead, call?: SalesCall | null) => string;
+  sortValue: (l: Lead, call?: SalesCall | null) => string | number;
   selectValue?: (l: Lead) => string;
-  dateValue?: (l: Lead) => string | null;
+  dateValue?: (l: Lead, call?: SalesCall | null) => string | null;
   render?: (l: Lead) => React.ReactNode;
 }
 
@@ -241,6 +243,15 @@ const COLUMNS: ColumnSpec[] = [
     dateValue: (l) => l.lastOutreachAt,
   },
   {
+    id: "lastCall",
+    label: "Last call",
+    kind: "date",
+    width: 120,
+    text: (_l, c) => (c ? `${fmtDateShort(c.startedAt)} · ${formatDurationShort(c.durationSec)}` : "–"),
+    sortValue: (_l, c) => c?.startedAt ?? "",
+    dateValue: (_l, c) => c?.startedAt ?? null,
+  },
+  {
     id: "outreachCount",
     label: "Outreach count",
     kind: "text",
@@ -349,17 +360,19 @@ function distinctValues(leads: Lead[], getter: (l: Lead) => string): string[] {
   return [...new Set(leads.map(getter))].sort((a, b) => a.localeCompare(b));
 }
 
-function applyColumnFilters(leads: Lead[], filters: Record<string, ColumnFilterValue>): Lead[] {
+type LastCallOf = (lead: Lead) => SalesCall | null;
+
+function applyColumnFilters(leads: Lead[], filters: Record<string, ColumnFilterValue>, callOf: LastCallOf): Lead[] {
   const specs = Object.entries(filters);
   if (specs.length === 0) return leads;
   return leads.filter((lead) =>
     specs.every(([id, f]) => {
       const spec = COLUMNS_BY_ID[id];
       if (!spec) return true;
-      if (f.kind === "text") return !f.value.trim() || spec.text(lead).toLowerCase().includes(f.value.trim().toLowerCase());
+      if (f.kind === "text") return !f.value.trim() || spec.text(lead, callOf(lead)).toLowerCase().includes(f.value.trim().toLowerCase());
       if (f.kind === "select") return f.values.length === 0 || (spec.selectValue && f.values.includes(spec.selectValue(lead)));
       if (f.kind === "date") {
-        const v = spec.dateValue?.(lead) ?? null;
+        const v = spec.dateValue?.(lead, callOf(lead)) ?? null;
         if (f.from && (!v || v < f.from)) return false;
         if (f.to && (!v || v > `${f.to}T23:59:59.999`)) return false;
         return true;
@@ -369,14 +382,14 @@ function applyColumnFilters(leads: Lead[], filters: Record<string, ColumnFilterV
   );
 }
 
-function sortRows(leads: Lead[], sort: TableSort | null): Lead[] {
+function sortRows(leads: Lead[], sort: TableSort | null, callOf: LastCallOf): Lead[] {
   const effective = sort ?? { columnId: "leadAt", dir: "desc" as const };
   const spec = COLUMNS_BY_ID[effective.columnId];
   if (!spec) return leads;
   const dir = effective.dir === "asc" ? 1 : -1;
   return [...leads].sort((a, b) => {
-    const av = spec.sortValue(a);
-    const bv = spec.sortValue(b);
+    const av = spec.sortValue(a, callOf(a));
+    const bv = spec.sortValue(b, callOf(b));
     if (av < bv) return -1 * dir;
     if (av > bv) return 1 * dir;
     return 0;
@@ -631,6 +644,7 @@ export default function LeadTable({
   selectedLeadId,
   onBulkMarkContacted,
   bulkPending,
+  callsByContact,
 }: {
   leads: Lead[];
   tableSort: TableSort | null;
@@ -639,6 +653,8 @@ export default function LeadTable({
   selectedLeadId: string | null;
   onBulkMarkContacted: (leads: Lead[]) => Promise<void>;
   bulkPending: boolean;
+  /** Sales calls by GHL contact id, for the Last call column. */
+  callsByContact?: Record<string, SalesCall[]>;
 }) {
   const [columnOrder, setColumnOrderState] = useState<string[]>(() => ["select", ...DEFAULT_DATA_ORDER]);
   const [columnVisibility, setColumnVisibilityState] = useState<Record<string, boolean>>({});
@@ -694,8 +710,9 @@ export default function LeadTable({
     return cols;
   }, []);
 
-  const filteredRows = useMemo(() => applyColumnFilters(leads, columnFilters), [leads, columnFilters]);
-  const sortedRows = useMemo(() => sortRows(filteredRows, tableSort), [filteredRows, tableSort]);
+  const callOf = useMemo<LastCallOf>(() => (lead) => callsForLead(lead, callsByContact)[0] ?? null, [callsByContact]);
+  const filteredRows = useMemo(() => applyColumnFilters(leads, columnFilters, callOf), [leads, columnFilters, callOf]);
+  const sortedRows = useMemo(() => sortRows(filteredRows, tableSort, callOf), [filteredRows, tableSort, callOf]);
 
   const table = useLegacyTable({
     data: sortedRows,
@@ -877,7 +894,7 @@ export default function LeadTable({
                         role="cell"
                         onClick={() => onSelectLead(lead)}
                       >
-                        {spec.render ? spec.render(lead) : spec.text(lead)}
+                        {spec.render ? spec.render(lead) : spec.text(lead, callOf(lead))}
                       </div>
                     );
                   })}

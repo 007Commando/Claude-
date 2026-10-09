@@ -12,7 +12,7 @@ import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
-export type ViewMode = "board" | "table" | "funnels" | "live" | "ads";
+export type ViewMode = "board" | "table" | "funnels" | "live" | "ads" | "calls";
 export type LeadDatePreset = "today" | "7d" | "14d" | "30d" | "45d" | "60d" | "90d" | "all" | "custom";
 export type BoardSortKey = "newest" | "oldest" | "az" | "lastOutreach";
 export type SortDir = "asc" | "desc";
@@ -134,7 +134,7 @@ export function useLeadFilters(): LeadFilters {
 
   const viewParam = searchParams.get("view");
   const view: ViewMode =
-    viewParam === "table" ? "table" : viewParam === "funnels" ? "funnels" : viewParam === "live" ? "live" : viewParam === "ads" || viewParam === "experiments" ? "ads" : "board";
+    viewParam === "table" ? "table" : viewParam === "funnels" ? "funnels" : viewParam === "live" ? "live" : viewParam === "calls" ? "calls" : viewParam === "ads" || viewParam === "experiments" ? "ads" : "board";
   const source = useMemo(() => searchParams.get("source")?.split(",").filter(Boolean) as LeadSource[] | undefined, [searchParams]) ?? [];
   const sellerType =
     useMemo(() => searchParams.get("sellerType")?.split(",").filter(Boolean) as SellerType[] | undefined, [searchParams]) ?? [];

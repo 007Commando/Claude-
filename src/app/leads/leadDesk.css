@@ -2386,3 +2386,130 @@
   .ld-card[data-changed="true"], .ld-journey-overlay, .ld-journey-node, .ld-changes { animation: none; }
   .ld-journey-node { opacity: 1; }
 }
+
+/* Sales calls (2026-10-09): card tag, drawer section, Calls view */
+.ld-call-tag {
+  gap: 3px;
+  color: var(--ld-text-faint);
+}
+.ld-call-tag[data-interest="cold"] { color: var(--ld-text-muted); background: var(--ld-bg); border-color: var(--ld-border-strong); }
+.ld-call-tag[data-interest="warm"] { color: var(--ld-warning); background: var(--ld-warning-soft); border-color: var(--ld-warning-border); }
+.ld-call-tag[data-interest="hot"] { color: var(--ld-danger); background: var(--ld-danger-soft); border-color: var(--ld-danger-border); }
+
+.ld-calls-chip {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ld-text-muted);
+  background: var(--ld-bg);
+  border: 1px solid var(--ld-border);
+}
+.ld-calls-chip[data-tone="good"] { color: var(--ld-success); background: var(--ld-success-soft); border-color: var(--ld-success-border); }
+.ld-calls-chip[data-tone="open"] { color: var(--ld-warning); background: var(--ld-warning-soft); border-color: var(--ld-warning-border); }
+.ld-calls-chip[data-tone="closed"] { color: var(--ld-danger); background: var(--ld-danger-soft); border-color: var(--ld-danger-border); }
+.ld-calls-chip[data-interest="hot"] { color: var(--ld-danger); background: var(--ld-danger-soft); border-color: var(--ld-danger-border); }
+.ld-calls-chip[data-interest="warm"] { color: var(--ld-warning); background: var(--ld-warning-soft); border-color: var(--ld-warning-border); }
+
+.ld-calls-list { display: flex; flex-direction: column; gap: 8px; }
+.ld-calls-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--ld-surface);
+  border: 1px solid var(--ld-border);
+  border-radius: var(--ld-radius);
+}
+.ld-calls-card-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ld-calls-card-when { font-weight: 700; font-size: 12px; }
+.ld-calls-card-meta { font-size: 11.5px; color: var(--ld-text-muted); margin-right: auto; }
+.ld-calls-summary { margin: 0; font-size: 12.5px; line-height: 1.45; }
+.ld-calls-line-item { margin: 0; font-size: 12px; color: var(--ld-text-muted); line-height: 1.4; }
+.ld-calls-note { margin: 0; font-size: 11.5px; color: var(--ld-text-faint); }
+.ld-calls-audio { width: 100%; height: 32px; }
+.ld-calls-toggle {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ld-accent);
+}
+.ld-calls-toggle:focus-visible { outline: 2px solid var(--ld-accent); outline-offset: 2px; border-radius: 4px; }
+.ld-calls-transcript { display: flex; flex-direction: column; gap: 6px; }
+.ld-calls-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px 10px;
+  background: var(--ld-bg);
+  border: 1px solid var(--ld-border);
+  border-radius: var(--ld-radius-sm);
+}
+.ld-calls-line { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; font-size: 12px; line-height: 1.4; }
+.ld-calls-line-time { color: var(--ld-text-faint); font-variant-numeric: tabular-nums; }
+.ld-calls-line b { font-weight: 700; }
+
+.ld-calls { height: 100%; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+.ld-calls-top { display: flex; align-items: center; gap: 14px; }
+.ld-calls .ld-live-block { padding: 14px 16px; border-radius: 12px; box-shadow: none; }
+.ld-calls-sub { font-weight: 500; color: var(--ld-text-faint); }
+.ld-calls-table { max-width: 960px; }
+.ld-calls-table td, .ld-calls-table th { text-align: right; }
+.ld-calls-table th:first-child, .ld-calls-table td:first-child { text-align: left; }
+.ld-calls-table tr[data-total="true"] td { border-top: 1px solid var(--ld-border-strong); color: var(--ld-text-muted); font-weight: 700; }
+.ld-calls-rows { display: flex; flex-direction: column; }
+.ld-calls-row,
+.ld-calls-followup {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--ld-border);
+  font-size: 12.5px;
+  min-width: 0;
+  width: 100%;
+}
+.ld-calls-row { grid-template-columns: 118px minmax(120px, 190px) 110px 62px auto minmax(0, 1fr); cursor: pointer; }
+.ld-calls-row[data-static="true"] { cursor: default; }
+.ld-calls-row:not([data-static="true"]):hover { background: var(--ld-bg); }
+.ld-calls-row:focus-visible { outline: 2px solid var(--ld-accent); outline-offset: -2px; }
+.ld-calls-rows > :last-child { border-bottom: 0; }
+.ld-calls-when { color: var(--ld-text-muted); font-variant-numeric: tabular-nums; }
+.ld-calls-who { font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-calls-caller { color: var(--ld-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-calls-dur { color: var(--ld-text-muted); font-variant-numeric: tabular-nums; }
+.ld-calls-text { color: var(--ld-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-calls-followup { grid-template-columns: 70px minmax(0, 1fr) 110px auto; }
+.ld-calls-followup-day { font-weight: 700; font-size: 12px; }
+.ld-calls-followup-day[data-late="true"] { color: var(--ld-danger); }
+.ld-calls-followup-body { display: flex; flex-direction: column; min-width: 0; }
+.ld-calls-followup-body b { font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-calls-followup-body small { font-size: 11.5px; color: var(--ld-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ld-calls-open {
+  all: unset;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ld-accent);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.ld-calls-open:hover { background: var(--ld-accent-soft); }
+.ld-calls-open:focus-visible { outline: 2px solid var(--ld-accent); outline-offset: 1px; }
+@media (max-width: 900px) {
+  .ld-calls-row { grid-template-columns: 100px minmax(0, 1fr) 56px auto; }
+  .ld-calls-row .ld-calls-caller, .ld-calls-row .ld-calls-text { display: none; }
+}

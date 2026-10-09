@@ -10,6 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { qualifiedScore } from "../../lib/leads/model";
+import { indexCallsByContact, type SalesCall } from "../../lib/leads/calls";
 import type { Lead, LeadGrade, Stage } from "../../lib/leads/model";
 import type { LeadsTotals } from "../../lib/leads/build";
 import TopBar from "./components/TopBar";
@@ -20,6 +21,7 @@ import { STAGE_LABELS } from "./components/shared";
 import LivePanel from "./components/LivePanel";
 import AdsView from "./components/AdsView";
 import FunnelView from "./components/FunnelView";
+import CallsView from "./components/CallsView";
 import LeadDrawer from "./components/LeadDrawer";
 import JourneyOverlay from "./components/JourneyOverlay";
 import ChangesBanner, { changedIds as idsOf, takeChanges, type Changes } from "./components/ChangesBanner";
@@ -69,12 +71,34 @@ export default function LeadDesk() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   // Board clicks open the journey path; the drawer opens from there or from the table.
   const [journeyLeadId, setJourneyLeadId] = useState<string | null>(null);
+  // Sales calls from the last 90 days. Empty (never an error) until the backend job that stores them is deployed.
+  const [calls, setCalls] = useState<SalesCall[]>([]);
+  const [callsLoading, setCallsLoading] = useState(false);
   const [changes, setChanges] = useState<Changes | null>(null);
   const [changesShown, setChangesShown] = useState(true);
   const mainRef = useRef<HTMLDivElement>(null);
 
   const filters = useLeadFilters();
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const loadCalls = useCallback(async () => {
+    setCallsLoading(true);
+    try {
+      const res = await fetch(apiUrl("/api/leads/calls?days=90"), { cache: "no-store" });
+      if (!res.ok) {
+        console.warn(`[sales-calls] list answered ${res.status}`);
+        setCalls([]);
+        return;
+      }
+      const json = (await res.json()) as { calls?: SalesCall[] };
+      setCalls(Array.isArray(json.calls) ? json.calls : []);
+    } catch (err) {
+      console.warn("[sales-calls] could not load calls", err);
+      setCalls([]);
+    } finally {
+      setCallsLoading(false);
+    }
+  }, []);
 
   const load = useCallback(async (fresh: boolean) => {
     setLoading(true);
@@ -87,12 +111,13 @@ export default function LeadDesk() {
       // What moved since this browser last loaded the desk, then remember today's picture.
       setChanges(takeChanges(json.leads ?? []));
       setChangesShown(true);
+      void loadCalls();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load leads");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loadCalls]);
 
   useEffect(() => {
     load(false);
@@ -163,6 +188,8 @@ export default function LeadDesk() {
     [effectiveLeads, journeyLeadId],
   );
   const changed = useMemo(() => idsOf(changes), [changes]);
+  // Calls by GHL contact id; the board, table and drawer look a lead up through callsForLead.
+  const callsByContact = useMemo(() => indexCallsByContact(calls), [calls]);
 
   const selectedLead = useMemo(
     () => (selectedLeadId ? effectiveLeads.find((l) => l.id === selectedLeadId) ?? null : null),
@@ -282,13 +309,15 @@ export default function LeadDesk() {
           <SkeletonBoard />
         ) : data ? (
           filters.view === "board" ? (
-            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} />
+            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} callsByContact={callsByContact} />
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
             <LivePanel />
           ) : filters.view === "ads" ? (
             <AdsView leads={effectiveLeads} />
+          ) : filters.view === "calls" ? (
+            <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} />
           ) : (
             <>
             {filters.stage && (
@@ -307,6 +336,7 @@ export default function LeadDesk() {
               selectedLeadId={selectedLeadId}
               onBulkMarkContacted={bulkMarkContacted}
               bulkPending={bulkPending}
+              callsByContact={callsByContact}
             />
             </>
           )
@@ -331,6 +361,7 @@ export default function LeadDesk() {
           onSetGrade={setGrade}
           pending={selectedLead ? pendingIds.has(selectedLead.id) : false}
           error={actionError}
+          callsByContact={callsByContact}
         />
       </div>
     </section>
