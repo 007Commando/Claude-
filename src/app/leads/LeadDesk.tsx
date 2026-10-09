@@ -21,6 +21,8 @@ import LivePanel from "./components/LivePanel";
 import AdsView from "./components/AdsView";
 import FunnelView from "./components/FunnelView";
 import LeadDrawer from "./components/LeadDrawer";
+import JourneyOverlay from "./components/JourneyOverlay";
+import ChangesBanner, { changedIds as idsOf, takeChanges, type Changes } from "./components/ChangesBanner";
 import { useLeadFilters, filterLeads, todayStartIso } from "./components/useLeadFilters";
 import { apiUrl, STAGES } from "./components/shared";
 import "./leadDesk.css";
@@ -65,6 +67,11 @@ export default function LeadDesk() {
   const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
   const [actionError, setActionError] = useState<string | null>(null);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  // Board clicks open the journey path; the drawer opens from there or from the table.
+  const [journeyLeadId, setJourneyLeadId] = useState<string | null>(null);
+  const [changes, setChanges] = useState<Changes | null>(null);
+  const [changesShown, setChangesShown] = useState(true);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   const filters = useLeadFilters();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -75,7 +82,11 @@ export default function LeadDesk() {
     try {
       const res = await fetch(apiUrl(`/api/leads${fresh ? "?fresh=1" : ""}`), { cache: "no-store" });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-      setData(await res.json());
+      const json = await res.json();
+      setData(json);
+      // What moved since this browser last loaded the desk, then remember today's picture.
+      setChanges(takeChanges(json.leads ?? []));
+      setChangesShown(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load leads");
     } finally {
@@ -146,6 +157,12 @@ export default function LeadDesk() {
     for (const lead of filteredLeads) out[lead.stage].push(lead);
     return out;
   }, [filteredLeads]);
+
+  const journeyLead = useMemo(
+    () => (journeyLeadId ? effectiveLeads.find((l) => l.id === journeyLeadId) ?? null : null),
+    [effectiveLeads, journeyLeadId],
+  );
+  const changed = useMemo(() => idsOf(changes), [changes]);
 
   const selectedLead = useMemo(
     () => (selectedLeadId ? effectiveLeads.find((l) => l.id === selectedLeadId) ?? null : null),
@@ -239,6 +256,17 @@ export default function LeadDesk() {
         <div className="ld-banner ld-banner-warning">{data.warnings.join(" · ")}</div>
       )}
 
+      {changes && changesShown && (
+        <ChangesBanner
+          changes={changes}
+          onOpenLead={(l) => {
+            if (filters.view !== "board") filters.setView("board");
+            setJourneyLeadId(l.id);
+          }}
+          onDismiss={() => setChangesShown(false)}
+        />
+      )}
+
       {data && (
         <KpiStrip
           leads={filteredLeads}
@@ -249,12 +277,12 @@ export default function LeadDesk() {
         />
       )}
 
-      <div className="ld-main">
+      <div className="ld-main" ref={mainRef}>
         {loading && !data ? (
           <SkeletonBoard />
         ) : data ? (
           filters.view === "board" ? (
-            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setSelectedLeadId(l.id)} />
+            <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} />
           ) : filters.view === "funnels" ? (
             <FunnelView leads={effectiveLeads} filters={filters} />
           ) : filters.view === "live" ? (
@@ -283,6 +311,18 @@ export default function LeadDesk() {
             </>
           )
         ) : null}
+
+        {journeyLead && filters.view === "board" && (
+          <JourneyOverlay
+            lead={journeyLead}
+            container={mainRef.current}
+            onClose={() => setJourneyLeadId(null)}
+            onOpenDetails={() => {
+              setSelectedLeadId(journeyLead.id);
+              setJourneyLeadId(null);
+            }}
+          />
+        )}
 
         <LeadDrawer
           lead={selectedLead}

@@ -18,6 +18,10 @@ interface BoardColumnProps {
   onSetSort: (stage: Stage, key: BoardSortKey | null) => void;
   selectedLeadId: string | null;
   onSelectLead: (lead: Lead) => void;
+  /** The board column id (lead, primewell, act:scan...), for the journey overlay to find the column. */
+  colId?: string;
+  /** Cards that moved since the last visit. */
+  changedIds?: Set<string>;
   setNodeRef?: (node: HTMLElement | null) => void;
   style?: React.CSSProperties;
   dragAttributes?: React.HTMLAttributes<HTMLElement>;
@@ -158,6 +162,8 @@ export default function BoardColumn({
   onSetSort,
   selectedLeadId,
   onSelectLead,
+  colId,
+  changedIds,
   setNodeRef,
   style,
   dragAttributes,
@@ -209,7 +215,7 @@ export default function BoardColumn({
   };
 
   return (
-    <div className={subTitle ? "ld-board-col ld-board-col-sub" : "ld-board-col"} ref={setNodeRef} style={style}>
+    <div className={subTitle ? "ld-board-col ld-board-col-sub" : "ld-board-col"} ref={setNodeRef} style={style} data-col-id={colId}>
       <div className="ld-board-col-header" {...dragAttributes} {...dragListeners} style={dragListeners ? undefined : { cursor: "default" }}>
         {dragListeners && <GripVertical size={12} style={{ color: "var(--ld-text-faint)", flex: "none" }} />}
         <span className="ld-board-col-dot" style={{ background: subColor ?? titleColor ?? stageColorVar(stage) }} />
@@ -258,6 +264,7 @@ export default function BoardColumn({
                   lead={lead}
                   muted={mutedFor?.(lead) ?? null}
                   selected={lead.id === selectedLeadId}
+                  changed={changedIds?.has(lead.id)}
                   tabIndex={item.index === (focusedIndex ?? 0) ? 0 : -1}
                   onFocus={() => setFocusedIndex(item.index)}
                   onSelect={onSelectLead}

@@ -124,6 +124,7 @@ function SortableBoardColumn(props: React.ComponentProps<typeof BoardColumn> & {
   return (
     <BoardColumn
       {...rest}
+      colId={id}
       setNodeRef={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.5 : 1 }}
       dragAttributes={attributes}
@@ -138,6 +139,7 @@ export default function Board({
   todaySince,
   selectedLeadId,
   onSelectLead,
+  changedIds,
 }: {
   leadsByStage: Record<Stage, Lead[]>;
   filters: LeadFilters;
@@ -145,6 +147,7 @@ export default function Board({
   todaySince: string | null;
   selectedLeadId: string | null;
   onSelectLead: (lead: Lead) => void;
+  changedIds?: Set<string>;
 }) {
   const [layout, setLayout] = useState<ColumnLayout>({ order: DEFAULT_ORDER, hidden: [] });
   const [primewellView, setPrimewellView] = useState<PrimewellView>("all");
@@ -207,7 +210,7 @@ export default function Board({
     updateLayout({ ...layout, order: arrayMove(layout.order, oldIndex, newIndex) });
   };
 
-  const common = { onSetSort: filters.setBoardSort, selectedLeadId, onSelectLead };
+  const common = { onSetSort: filters.setBoardSort, selectedLeadId, onSelectLead, changedIds };
 
   const renderColumn = (id: string) => {
     if (id === "primewell") {

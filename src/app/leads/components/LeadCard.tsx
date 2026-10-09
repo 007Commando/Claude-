@@ -24,6 +24,8 @@ import SourceLogo from "./SourceLogo";
 interface LeadCardProps {
   lead: Lead;
   selected: boolean;
+  /** Moved or arrived since this browser last loaded Lead Desk: pulses once. */
+  changed?: boolean;
   style?: React.CSSProperties;
   onSelect: (lead: Lead) => void;
   tabIndex: number;
@@ -48,7 +50,7 @@ function stageSuffix(lead: Lead): string | null {
 }
 
 const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
-  { lead, selected, style, onSelect, tabIndex, onFocus, muted },
+  { lead, selected, style, onSelect, tabIndex, onFocus, muted, changed },
   ref,
 ) {
   const identity = lead.name || lead.email || "Unknown";
@@ -70,6 +72,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       style={cardStyle}
       data-selected={selected ? "true" : "false"}
       data-muted={muted ? "true" : undefined}
+      data-changed={changed ? "true" : undefined}
       role="button"
       tabIndex={tabIndex}
       onFocus={onFocus}
