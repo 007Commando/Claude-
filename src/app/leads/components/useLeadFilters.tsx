@@ -239,7 +239,9 @@ export function filterLeads(leads: Lead[], f: LeadFilters): Lead[] {
     const inWindow = (d: string | null | undefined) => Boolean(d) && (!window.from || (d as string) >= window.from) && (!window.to || (d as string) <= window.to);
     if ((window.from || window.to) && f.scope === "new") {
       // A cohort: only leads that came in during the range, at whatever stage they have reached since.
-      if (!inWindow(l.leadAt)) return false;
+      // Except everyone trialing or paying right now, who always shows: they are the people being worked to
+      // close, and a trial whose lead dates from August was disappearing from Today (Nicholas Mondell, 2026-10-08).
+      if (!isLiveStage(l.stage) && !inWindow(l.leadAt)) return false;
     } else if ((window.from || window.to) && !isLiveStage(l.stage)) {
       // "activity": anyone who did something in the range, plus everyone trialing or paying now:
       // a PrimeWell lead from August who started a trial this week must show (2026-10-08, gambitgoods).
