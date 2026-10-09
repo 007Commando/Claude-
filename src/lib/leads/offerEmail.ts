@@ -37,29 +37,29 @@ export function offerEmail(opts: {
   const rep = opts.repName.trim() || "The Apex team";
   const intro = (opts.intro ?? DEFAULT_OFFER_INTRO).trim();
   const note = (opts.note ?? "").trim();
-  const p = (t: string) => `<p style="margin:0 0 16px">${t}</p>`;
-  const li = (t: string) => `<li style="margin:0 0 8px">${t}</li>`;
-  const button = (href: string, label: string, primary: boolean) =>
-    `<a href="${href}" style="display:inline-block;${
-      primary ? "background:#2563eb;color:#fff;" : "background:#fff;color:#2563eb;border:1px solid #2563eb;"
-    }text-decoration:none;font-weight:600;padding:12px 20px;border-radius:10px">${label}</a>`;
+  const p = (t: string) => `<p>${t}</p>`;
+  const a = (href: string, text: string) => `<a href="${href}">${text}</a>`;
 
-  const html = `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#1e293b;max-width:560px">
+  /**
+   * Plain on purpose (Stefano, 2026-10-09): the first version, with two
+   * styled buttons and a bulleted list, landed in Gmail's Promotions tab.
+   * A note that looks typed by the rep, with the links inside sentences,
+   * has a better chance at the Primary inbox. Same facts, same links.
+   */
+  const html = `<div>
 ${p(hi)}
 ${intro ? p(esc(intro)) : ""}
-${p(`<b>Try Apex for $${DOLLAR_WEEK.price} for ${DOLLAR_WEEK.days} days.</b> Here's what that gets you:`)}
-<ul style="margin:0 0 16px;padding-left:22px">
-${li("Upload any supplier price list and see which items make money on Amazon, checked against real fees and sales rank in minutes")}
-${li("Build your purchase order straight from the results")}
-${li("3 vetted US wholesale distributors when you sign up, then 3 more every month")}
-</ul>
-${p(`After the week it's Apex ${DOLLAR_WEEK.planLabel} at $${DOLLAR_WEEK.thenPrice}/month. Not for you? Cancel inside the ${DOLLAR_WEEK.days} days and we refund the dollar automatically.`)}
-<p style="margin:0 0 24px">${button(offerSignupLink(), `Start my $${DOLLAR_WEEK.price} week`, true)}</p>
-${p("Rather go through it together first? Pick a time with Stefano, our founder, and he'll walk you through it on your own price list.")}
-<p style="margin:0 0 24px">${button(BOOKING_LINK, "Book a call", false)}</p>
+${p(
+  `You can try Apex for $${DOLLAR_WEEK.price} for the first ${DOLLAR_WEEK.days} days. Upload any supplier price list and it shows you which items make money on Amazon, using real fees and sales rank, and you can build your purchase order straight from the results. You also get 3 vetted US wholesale distributors when you sign up, and 3 more every month.`,
+)}
+${p(
+  `After the week it's $${DOLLAR_WEEK.thenPrice}/month on the ${DOLLAR_WEEK.planLabel} plan. If it's not for you, cancel inside the ${DOLLAR_WEEK.days} days and the dollar is refunded automatically.`,
+)}
+${p(`You can ${a(offerSignupLink(), `start your $${DOLLAR_WEEK.price} week here`)}.`)}
+${p(`If you'd rather go through it together first, ${a(BOOKING_LINK, "grab a time with Stefano, our founder, here")}.`)}
 ${note ? p(esc(note).replace(/\n/g, "<br>")) : ""}
-<p style="margin:0">${esc(rep)}<br><span style="color:#64748b">Apex Applications</span></p>
+${p(`${esc(rep)}<br>Apex Applications`)}
 </div>`;
 
-  return { subject: `Your $${DOLLAR_WEEK.price} week with Apex (and a time to talk)`, html };
+  return { subject: first ? `Following up, ${esc(first)}` : "Following up from Apex", html };
 }
