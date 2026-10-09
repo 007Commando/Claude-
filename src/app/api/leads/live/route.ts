@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ownerOnly } from "../../../../lib/leadDesk/ownerOnly";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -13,6 +14,8 @@ export const runtime = "nodejs";
 const LIVE_URL = process.env.APEX_LIVE_URL || "https://us-central1-apex-apps-parent.cloudfunctions.net/live";
 
 export async function GET(req: NextRequest) {
+  const denied = await ownerOnly();
+  if (denied) return denied;
   // ?view=app reads the signed-in app users instead of website visitors.
   // ?view=traffic&days=N reads the per-platform and per-hour day counters.
   const view = req.nextUrl.searchParams.get("view");

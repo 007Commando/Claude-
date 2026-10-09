@@ -88,11 +88,14 @@ export default function CallsView({
   loading,
   leads,
   onOpenLead,
+  showCommissions = false,
 }: {
   calls: SalesCall[];
   loading: boolean;
   leads: Lead[];
   onOpenLead: (lead: Lead) => void;
+  /** Commissions are the owner's view; team members don't see them. */
+  showCommissions?: boolean;
 }) {
   const [range, setRange] = useState<Range>("7d");
 
@@ -256,7 +259,7 @@ export default function CallsView({
         )}
       </section>
 
-      <CommissionsSection />
+      {showCommissions && <CommissionsSection />}
     </div>
   );
 }

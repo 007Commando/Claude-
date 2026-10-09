@@ -13,6 +13,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
 export type ViewMode = "board" | "table" | "call-list" | "funnels" | "live" | "ads" | "calls";
+/**
+ * What a team member (anyone signed in who is not the owner, i.e. Aliza and
+ * the sales rep) sees: the leads and the calls, nothing about the business's
+ * numbers, ads or live traffic (Stefano, 2026-10-09: "make their UI as simple
+ * as possible ... to view the leads and work with them").
+ */
+export const TEAM_VIEWS: ViewMode[] = ["board", "table", "call-list", "calls"];
+
 export type LeadDatePreset = "today" | "7d" | "14d" | "30d" | "45d" | "60d" | "90d" | "all" | "custom";
 export type BoardSortKey = "newest" | "oldest" | "az" | "lastOutreach";
 export type SortDir = "asc" | "desc";

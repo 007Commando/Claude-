@@ -26,7 +26,7 @@ import CallListView from "./components/CallListView";
 import LeadDrawer from "./components/LeadDrawer";
 import JourneyOverlay from "./components/JourneyOverlay";
 import ChangesBanner, { changedIds as idsOf, takeChanges, type Changes } from "./components/ChangesBanner";
-import { useLeadFilters, filterLeads, todayStartIso } from "./components/useLeadFilters";
+import { useLeadFilters, filterLeads, todayStartIso, TEAM_VIEWS } from "./components/useLeadFilters";
 import { apiUrl, STAGES } from "./components/shared";
 import "./leadDesk.css";
 
@@ -295,7 +295,7 @@ export default function LeadDesk() {
         />
       )}
 
-      {data && (
+      {data?.isOwner && (
         <KpiStrip
           leads={filteredLeads}
           goalLeads={goalLeads}
@@ -309,7 +309,9 @@ export default function LeadDesk() {
         {loading && !data ? (
           <SkeletonBoard />
         ) : data ? (
-          filters.view === "board" ? (
+          // A team member who opens an owner-only view (an old link, a typed
+          // ?view=) gets the board instead.
+          (filters.view === "board" || (!data.isOwner && !TEAM_VIEWS.includes(filters.view))) ? (
             <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} callsByContact={callsByContact} />
           ) : filters.view === "call-list" ? (
             <CallListView leads={effectiveLeads} callsByContact={callsByContact} onOpenLead={(l) => setSelectedLeadId(l.id)} />
@@ -320,7 +322,7 @@ export default function LeadDesk() {
           ) : filters.view === "ads" ? (
             <AdsView leads={effectiveLeads} />
           ) : filters.view === "calls" ? (
-            <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} />
+            <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} showCommissions={data.isOwner} />
           ) : (
             <>
             {filters.stage && (

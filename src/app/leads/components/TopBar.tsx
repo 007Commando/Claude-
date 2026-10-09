@@ -242,19 +242,25 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "call-list"} onClick={() => filters.setView("call-list")}>
           Call list
         </button>
-        <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
-          Funnels
-        </button>
-        <button type="button" data-active={filters.view === "ads"} onClick={() => filters.setView("ads")}>
-          Facebook ads
-        </button>
+        {isOwner && (
+          <>
+            <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
+              Funnels
+            </button>
+            <button type="button" data-active={filters.view === "ads"} onClick={() => filters.setView("ads")}>
+              Facebook ads
+            </button>
+          </>
+        )}
         <button type="button" data-active={filters.view === "calls"} onClick={() => filters.setView("calls")}>
           Calls
         </button>
-        <button type="button" data-active={filters.view === "live"} onClick={() => filters.setView("live")}>
-          <span className="ld-live-tabdot" aria-hidden="true" />
-          Live
-        </button>
+        {isOwner && (
+          <button type="button" data-active={filters.view === "live"} onClick={() => filters.setView("live")}>
+            <span className="ld-live-tabdot" aria-hidden="true" />
+            Live
+          </button>
+        )}
       </div>
 
       <div className="ld-search">
@@ -289,10 +295,12 @@ export default function TopBar({
       />
       <DateDropdown filters={filters} />
 
-      <label className="ld-toggle-label">
-        <span className="ld-switch" data-on={filters.ash} onClick={() => filters.setAsh(!filters.ash)} />
-        Include Amazon Success Hub
-      </label>
+      {isOwner && (
+        <label className="ld-toggle-label">
+          <span className="ld-switch" data-on={filters.ash} onClick={() => filters.setAsh(!filters.ash)} />
+          Include Amazon Success Hub
+        </label>
+      )}
 
       <div className="ld-topbar-right">
         <button type="button" className={`ld-icon-btn ${loading ? "spinning" : ""}`} onClick={onRefresh} title="Refresh" disabled={loading}>
@@ -305,9 +313,11 @@ export default function TopBar({
           </a>
         )}
         {isOwner && <InvitePopover allowedEmails={allowedEmails} />}
-        <a href="/dashboard" className="ld-dd-btn">
-          Dashboard
-        </a>
+        {isOwner && (
+          <a href="/dashboard" className="ld-dd-btn">
+            Dashboard
+          </a>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ownerOnly } from "../../../../lib/leadDesk/ownerOnly";
 import { getCommissions } from "../../../../lib/leads/stripeCommissions";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,8 @@ export const runtime = "nodejs";
  * Calls view shows the reason instead of breaking.
  */
 export async function GET(req: NextRequest) {
+  const denied = await ownerOnly();
+  if (denied) return denied;
   const fresh = req.nextUrl.searchParams.get("fresh") === "1";
   return NextResponse.json(await getCommissions(fresh), { headers: { "Cache-Control": "no-store" } });
 }
