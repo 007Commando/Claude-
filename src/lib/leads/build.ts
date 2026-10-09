@@ -584,9 +584,13 @@ function reconcileWithStripe(
     lead.touches = [...lead.touches, touch].sort((a, b) => ((a.at ?? "") < (b.at ?? "") ? -1 : 1));
   };
 
+  /** Leads with a real paid subscription; a $1 week never moves these back to trial. */
+  const paying = new Set<Lead>();
+
   for (const sub of stripe.subscriptions) {
     const lead = find(sub.customerEmail, sub.accountId);
     if (lead) {
+      paying.add(lead);
       if (lead.stage !== "customer") {
         lead.stage = "customer";
         lead.customerSince = lead.customerSince ?? sub.startedAt;
@@ -610,9 +614,21 @@ function reconcileWithStripe(
   for (const trial of stripe.trials) {
     const lead = find(trial.customerEmail, trial.accountId);
     if (lead) {
-      if (lead.stage === "lead" || lead.stage === "registered" || lead.stage === "churned") {
+      /**
+       * A $1 week reads as a customer everywhere else, because the dollar is
+       * a real charge and the account's subscription is active. It is a
+       * trial until the week ends and the first full month is paid, so it is
+       * moved back here unless the lead also pays for something else.
+       */
+      const dollarWeekOnly = trial.dollarWeek && lead.stage === "customer" && !paying.has(lead);
+      if (lead.stage === "lead" || lead.stage === "registered" || lead.stage === "churned" || dollarWeekOnly) {
         lead.stage = "trial";
         lead.churnedAt = null;
+      }
+      if (dollarWeekOnly) {
+        lead.customerSince = null;
+        lead.mrr = 0;
+        lead.touches = lead.touches.filter((t) => t.kind !== "customer");
       }
       lead.trialStartedAt = lead.trialStartedAt ?? trial.trialStartAt;
       lead.trialEndsAt = lead.trialEndsAt ?? trial.trialEndAt;

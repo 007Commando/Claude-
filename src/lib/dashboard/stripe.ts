@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import type { StripeMetrics } from "./types";
+import { DOLLAR_WEEK } from "../../config/offer";
 
 // A canceled subscription only counts as a "cancelled trial" if it was
 // canceled at or shortly after its trial ended — this grace window covers
@@ -71,6 +72,19 @@ function annualAmount(item: Stripe.SubscriptionItem): number {
   return amount / intervalCount;
 }
 
+/**
+ * A subscription still in its $1 week: on the $1 weekly price (live, or the
+ * test-mode one), or failing that any weekly price of a dollar or less, which
+ * Apex only uses for the week.
+ */
+const DOLLAR_WEEK_PRICE_IDS = new Set(["price_1UMFEG09vRtiSO1RDxceQ7v8", "price_1ULEHb09vRtiSO1Rl688h233"]);
+function isDollarWeek(sub: Stripe.Subscription): boolean {
+  const price = sub.items.data[0]?.price;
+  if (!price) return false;
+  if (DOLLAR_WEEK_PRICE_IDS.has(price.id)) return true;
+  return price.recurring?.interval === "week" && (price.unit_amount ?? 0) <= DOLLAR_WEEK.price * 100;
+}
+
 export async function getStripeMetrics(): Promise<StripeMetrics> {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   const empty: StripeMetrics = {
@@ -113,17 +127,28 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
         getProductNameMap(stripe),
       ]);
 
+    /**
+     * The $1 week is a paid subscription, so Stripe calls it active, but it
+     * is a trial in everything that matters: a dollar, seven days, then the
+     * real price. It is counted as one here, ending when the paid week does,
+     * and kept out of MRR and the active count. When the week ends its
+     * schedule moves it onto the monthly price and it reads as a customer
+     * with no help from here.
+     */
+    const dollarWeekSubs = subscriptions.data.filter(isDollarWeek);
+    const paidSubs = subscriptions.data.filter((sub) => !isDollarWeek(sub));
+
     const cancelledTrialSubs = canceledSubscriptions.data.filter((sub) => {
       if (sub.trial_end == null || sub.canceled_at == null) return false;
       return sub.canceled_at <= sub.trial_end + CANCELLED_TRIAL_GRACE_SECONDS;
     });
 
-    const mrr = subscriptions.data.reduce((sum, sub) => {
+    const mrr = paidSubs.reduce((sum, sub) => {
       const itemTotal = sub.items.data.reduce((itemSum, item) => itemSum + monthlyAmount(item), 0);
       return sum + itemTotal;
     }, 0);
 
-    const arr = subscriptions.data.reduce((sum, sub) => {
+    const arr = paidSubs.reduce((sum, sub) => {
       const itemTotal = sub.items.data.reduce((itemSum, item) => itemSum + annualAmount(item), 0);
       return sum + itemTotal;
     }, 0);
@@ -135,7 +160,7 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
       connected: true,
       mrr: mrr / 100,
       arr: arr / 100,
-      activeSubscriptions: subscriptions.data.length,
+      activeSubscriptions: paidSubs.length,
       newCustomers30d: customers30d.data.length,
       revenue7d: sumCharges(charges7d.data),
       revenue30d: sumCharges(charges30d.data),
@@ -148,7 +173,7 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
           customerEmail: c.billing_details?.email ?? null,
           created: c.created,
         })),
-      subscriptions: subscriptions.data.map((sub) => {
+      subscriptions: paidSubs.map((sub) => {
         const customer = sub.customer;
         const planItem = sub.items.data[0];
         const productId = typeof planItem?.price.product === "string" ? planItem.price.product : undefined;
@@ -202,13 +227,39 @@ export async function getStripeMetrics(): Promise<StripeMetrics> {
           // this file has no knowledge of lead sources.
           source: "unknown" as const,
         };
-      }),
+      }).concat(
+        dollarWeekSubs.map((sub) => {
+          const customer = sub.customer;
+          const planItem = sub.items.data[0];
+          const productId = typeof planItem?.price.product === "string" ? planItem.price.product : undefined;
+          const planName = (productId && productNameById.get(productId)) ?? DOLLAR_WEEK.planLabel;
+          return {
+            id: sub.id,
+            customerName:
+              (customer && typeof customer === "object" && !customer.deleted ? customer.name : null) ?? null,
+            customerEmail: customer && typeof customer === "object" && !customer.deleted ? customer.email : null,
+            planName,
+            interval: "month",
+            amount: DOLLAR_WEEK.thenPrice,
+            // What it becomes after the week: the then-price, monthly.
+            predictedMrrContribution: DOLLAR_WEEK.thenPrice,
+            predictedArrContribution: 0,
+            accountId: sub.metadata?.accountId ?? null,
+            trialStartAt: new Date(sub.start_date * 1000).toISOString(),
+            trialEndAt: planItem ? new Date(planItem.current_period_end * 1000).toISOString() : null,
+            dollarWeek: true,
+            source: "unknown" as const,
+          };
+        }),
+      ),
       trialsTruncated: trialSubscriptions.data.length >= 100,
       potentialMrr:
         trialSubscriptions.data.reduce(
           (sum, sub) => sum + sub.items.data.reduce((s, item) => s + monthlyAmount(item), 0),
           0,
-        ) / 100,
+        ) /
+          100 +
+        dollarWeekSubs.length * DOLLAR_WEEK.thenPrice,
       potentialArr:
         trialSubscriptions.data.reduce(
           (sum, sub) => sum + sub.items.data.reduce((s, item) => s + annualAmount(item), 0),

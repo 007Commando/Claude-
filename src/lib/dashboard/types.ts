@@ -36,6 +36,8 @@ export interface TrialRow {
   accountId: string | null;
   trialStartAt: string | null;
   trialEndAt: string | null;
+  /** A paid $1 week (DOLLAR_WEEK) rather than Stripe's own free trial. */
+  dollarWeek?: boolean;
   source: LeadSource;
 }
 
