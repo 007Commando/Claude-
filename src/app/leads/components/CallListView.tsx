@@ -42,6 +42,7 @@ function Group({ group, onOpenLead }: { group: CallGroup; onOpenLead: (lead: Lea
     <section className="ld-live-block ld-cl-group">
       <h3>
         {group.title} <span className="ld-cl-count">{group.rows.length}</span>
+        {group.olderHidden ? <span className="ld-cl-older">{group.olderHidden} older than 60 days not shown</span> : null}
       </h3>
       {group.rows.length === 0 ? (
         <p className="ld-live-empty">Nobody to call here</p>

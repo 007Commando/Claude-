@@ -9,8 +9,8 @@ import { REP_PLAN_LABELS, appCheckoutLink, repSlug, signupLink, type RepPlan } f
  * Yearly checkout links for the signed-in rep, to paste into a text or the
  * setup call chat. Every link carries the rep's id (their first name, from the
  * Lead Desk sign-in), which is how the deal is credited. Hidden when there is
- * no usable rep id. Leads that already have an account get the in-app link
- * too once appCheckoutLink() knows its format.
+ * no usable rep id. Leads with an account get the in-app upgrade link, the
+ * rest the signup link.
  */
 
 const PLANS: RepPlan[] = ["plus", "pro"];
@@ -51,14 +51,12 @@ export default function CheckoutLinksSection({ lead, repName }: { lead: Lead; re
     <div className="ld-drawer-section">
       <div className="ld-drawer-section-title">Yearly checkout links</div>
       <div className="ld-links">
-        {PLANS.map((plan) => (
-          <CopyLink key={`signup-${plan}`} label={REP_PLAN_LABELS[plan]} href={signupLink(plan, rep)} />
-        ))}
-        {hasAccount &&
-          PLANS.map((plan) => {
-            const href = appCheckoutLink(plan, rep);
-            return href ? <CopyLink key={`app-${plan}`} label={`${REP_PLAN_LABELS[plan]} (in the app)`} href={href} /> : null;
-          })}
+        {/* Someone with an account upgrades inside the app; a signup link
+            would make them a second account. Everyone else signs up. */}
+        {PLANS.map((plan) => {
+          const href = (hasAccount && appCheckoutLink(plan, rep)) || signupLink(plan, rep);
+          return <CopyLink key={plan} label={REP_PLAN_LABELS[plan]} href={href} />;
+        })}
       </div>
     </div>
   );

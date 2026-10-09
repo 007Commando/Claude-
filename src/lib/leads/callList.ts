@@ -23,11 +23,15 @@ export interface CallGroup {
   id: CallGroupId;
   title: string;
   rows: CallListRow[];
+  /** Left out for age (accounts older than ACCOUNT_WINDOW_DAYS). */
+  olderHidden?: number;
 }
 
 const DAY_MS = 86_400_000;
 const TRIAL_WINDOW_DAYS = 7;
 const LEAD_WINDOW_DAYS = 30;
+/** Accounts older than this are a backlog, not today's list; they are counted, not listed. */
+const ACCOUNT_WINDOW_DAYS = 60;
 const RECENT_CALL_DAYS = 2;
 
 export const CALL_GROUP_TITLES: Record<CallGroupId, string> = {
@@ -62,6 +66,7 @@ export function buildCallList(
   today: string,
   now: number = Date.now(),
 ): CallGroup[] {
+  let olderAccounts = 0;
   const recentCallCutoff = now - RECENT_CALL_DAYS * DAY_MS;
   const outreachTag = `outreach:${today}`;
 
@@ -87,6 +92,11 @@ export function buildCallList(
         lastCall,
       });
     } else if (lead.stage === "registered") {
+      const at = time(lead.registeredAt ?? lead.leadAt);
+      if (Number.isNaN(at) || at < now - ACCOUNT_WINDOW_DAYS * DAY_MS) {
+        olderAccounts += 1;
+        continue;
+      }
       accounts.push({ lead, rank: activationRank(lead.activation), trialDaysLeft: null, since: lead.registeredAt ?? lead.leadAt, lastCall });
     } else if (lead.stage === "lead" && lead.ghlLocation === "apex") {
       const at = time(lead.leadAt);
@@ -101,7 +111,7 @@ export function buildCallList(
 
   return [
     { id: "trials", title: CALL_GROUP_TITLES.trials, rows: trials },
-    { id: "accounts", title: CALL_GROUP_TITLES.accounts, rows: accounts },
+    { id: "accounts", title: CALL_GROUP_TITLES.accounts, rows: accounts, olderHidden: olderAccounts },
     { id: "leads", title: CALL_GROUP_TITLES.leads, rows: crm },
   ];
 }

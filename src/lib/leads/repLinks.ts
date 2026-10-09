@@ -9,12 +9,12 @@ export type RepPlan = "plus" | "pro";
 export const REP_SLUG_RE = /^[a-z0-9-]{2,32}$/;
 
 /**
- * Where an existing account checks out inside the app, as a path on
- * app.apexapplications.io (it will take plan, period and rep as query
- * params). The format is not known yet, so this stays null and the drawer
- * shows only the signup links. Set it when the in-app route exists.
+ * Where an existing account checks out inside the app: the app's
+ * subscriptions page reads plan, period and rep, asks to confirm, and starts
+ * the checkout for the signed-in account (frontend rep-checkout-link.tsx,
+ * live 2026-10-09). A signed-out visitor is sent to sign in and back.
  */
-export const APP_CHECKOUT_PATH: string | null = null as string | null;
+export const APP_CHECKOUT_PATH: string | null = "/subscriptions" as string | null;
 
 export const REP_PLAN_LABELS: Record<RepPlan, string> = { plus: "Plus yearly", pro: "Pro yearly" };
 
