@@ -215,6 +215,10 @@ export default function TopBar({
   filters,
   loggedInAs,
   isOwner,
+  teamMode,
+  teamMembers,
+  viewAs,
+  onViewAs,
   allowedEmails,
   loading,
   onRefresh,
@@ -223,6 +227,11 @@ export default function TopBar({
   filters: LeadFilters;
   loggedInAs: string | null;
   isOwner: boolean;
+  /** True for a team member, or for the owner while previewing one. */
+  teamMode: boolean;
+  teamMembers: { email: string; name: string }[];
+  viewAs: string | null;
+  onViewAs: (email: string | null) => void;
   allowedEmails: string[];
   loading: boolean;
   onRefresh: () => void;
@@ -242,7 +251,7 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "call-list"} onClick={() => filters.setView("call-list")}>
           Call list
         </button>
-        {isOwner && (
+        {!teamMode && (
           <>
             <button type="button" data-active={filters.view === "funnels"} onClick={() => filters.setView("funnels")}>
               Funnels
@@ -255,7 +264,7 @@ export default function TopBar({
         <button type="button" data-active={filters.view === "calls"} onClick={() => filters.setView("calls")}>
           Calls
         </button>
-        {isOwner && (
+        {!teamMode && (
           <button type="button" data-active={filters.view === "live"} onClick={() => filters.setView("live")}>
             <span className="ld-live-tabdot" aria-hidden="true" />
             Live
@@ -295,7 +304,7 @@ export default function TopBar({
       />
       <DateDropdown filters={filters} />
 
-      {isOwner && (
+      {!teamMode && (
         <label className="ld-toggle-label">
           <span className="ld-switch" data-on={filters.ash} onClick={() => filters.setAsh(!filters.ash)} />
           Include Amazon Success Hub
@@ -312,8 +321,23 @@ export default function TopBar({
             Sign out
           </a>
         )}
+        {isOwner && teamMembers.length > 0 && (
+          <select
+            className="ld-viewas"
+            aria-label="View as"
+            value={viewAs ?? ""}
+            onChange={(e) => onViewAs(e.target.value || null)}
+          >
+            <option value="">View as: me</option>
+            {teamMembers.map((m) => (
+              <option key={m.email} value={m.email}>
+                View as: {m.name}
+              </option>
+            ))}
+          </select>
+        )}
         {isOwner && <InvitePopover allowedEmails={allowedEmails} />}
-        {isOwner && (
+        {!teamMode && (
           <a href="/dashboard" className="ld-dd-btn">
             Dashboard
           </a>

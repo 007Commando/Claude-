@@ -28,6 +28,7 @@ import JourneyOverlay from "./components/JourneyOverlay";
 import ChangesBanner, { changedIds as idsOf, takeChanges, type Changes } from "./components/ChangesBanner";
 import { useLeadFilters, filterLeads, todayStartIso, TEAM_VIEWS } from "./components/useLeadFilters";
 import { apiUrl, STAGES } from "./components/shared";
+import { repSlug } from "../../lib/leads/repLinks";
 import "./leadDesk.css";
 
 interface LeadsResponse {
@@ -40,6 +41,7 @@ interface LeadsResponse {
   goalMonth: string;
   allowedEmails: string[];
   isOwner: boolean;
+  teamMembers?: { email: string; name: string }[];
 }
 
 function SkeletonBoard() {
@@ -80,6 +82,23 @@ export default function LeadDesk() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   const filters = useLeadFilters();
+
+  /**
+   * The owner's "View as": preview Lead Desk as one team member sees it
+   * (their tabs, no business numbers, only their commissions). Kept in the
+   * URL as ?as=<email> so a refresh stays in the preview.
+   */
+  const [viewAs, setViewAs] = useState<string | null>(null);
+  useEffect(() => {
+    setViewAs(new URLSearchParams(window.location.search).get("as"));
+  }, []);
+  const changeViewAs = useCallback((email: string | null) => {
+    setViewAs(email);
+    const url = new URL(window.location.href);
+    if (email) url.searchParams.set("as", email);
+    else url.searchParams.delete("as");
+    window.history.replaceState(null, "", url.toString());
+  }, []);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const loadCalls = useCallback(async () => {
@@ -197,6 +216,9 @@ export default function LeadDesk() {
     [effectiveLeads, selectedLeadId],
   );
 
+  const viewingAs = data?.isOwner && viewAs ? data.teamMembers?.find((m) => m.email === viewAs) ?? null : null;
+  const teamMode = !data?.isOwner || Boolean(viewingAs);
+
   const markContacted = useCallback(
     async (lead: Lead, note: string) => {
       setActionError(null);
@@ -272,6 +294,10 @@ export default function LeadDesk() {
         filters={filters}
         loggedInAs={data?.loggedInAs ?? null}
         isOwner={data?.isOwner ?? false}
+        teamMode={teamMode}
+        teamMembers={data?.teamMembers ?? []}
+        viewAs={viewingAs?.email ?? null}
+        onViewAs={changeViewAs}
         allowedEmails={data?.allowedEmails ?? []}
         loading={loading}
         onRefresh={() => load(true)}
@@ -295,7 +321,16 @@ export default function LeadDesk() {
         />
       )}
 
-      {data?.isOwner && (
+      {viewingAs && (
+        <div className="ld-viewas-bar">
+          Viewing as <strong>{viewingAs.name}</strong>: this is what they see.
+          <button type="button" onClick={() => changeViewAs(null)}>
+            Back to my view
+          </button>
+        </div>
+      )}
+
+      {data && !teamMode && (
         <KpiStrip
           leads={filteredLeads}
           goalLeads={goalLeads}
@@ -311,7 +346,7 @@ export default function LeadDesk() {
         ) : data ? (
           // A team member who opens an owner-only view (an old link, a typed
           // ?view=) gets the board instead.
-          (filters.view === "board" || (!data.isOwner && !TEAM_VIEWS.includes(filters.view))) ? (
+          (filters.view === "board" || (teamMode && !TEAM_VIEWS.includes(filters.view))) ? (
             <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} callsByContact={callsByContact} />
           ) : filters.view === "call-list" ? (
             <CallListView leads={effectiveLeads} callsByContact={callsByContact} onOpenLead={(l) => setSelectedLeadId(l.id)} />
@@ -322,7 +357,7 @@ export default function LeadDesk() {
           ) : filters.view === "ads" ? (
             <AdsView leads={effectiveLeads} />
           ) : filters.view === "calls" ? (
-            <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} showCommissions={data.isOwner} />
+            <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} showCommissions commissionsAs={viewingAs ? { rep: repSlug(viewingAs.name), name: viewingAs.name } : undefined} />
           ) : (
             <>
             {filters.stage && (

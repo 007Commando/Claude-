@@ -25,3 +25,24 @@ export function isOwnerEmail(email: string | null | undefined): boolean {
   const [owner] = getAllowedEmails();
   return owner === email.toLowerCase();
 }
+
+export interface TeamMember {
+  email: string;
+  name: string;
+}
+
+/**
+ * Everyone on the allow list but the owner, for the owner's "View as"
+ * switch. Display names come from LEAD_DESK_MEMBER_NAMES
+ * ("email:Name,email:Name"), since a member's Google name is only known
+ * once they sign in; without one the address's local part is shown.
+ */
+export function getTeamMembers(): TeamMember[] {
+  const names = new Map<string, string>();
+  for (const pair of (process.env.LEAD_DESK_MEMBER_NAMES ?? "").split(",")) {
+    const i = pair.indexOf(":");
+    if (i > 0) names.set(pair.slice(0, i).trim().toLowerCase(), pair.slice(i + 1).trim());
+  }
+  const [, ...members] = getAllowedEmails();
+  return members.map((email) => ({ email, name: names.get(email) || email.split("@")[0] }));
+}

@@ -24,6 +24,8 @@ export interface CommissionRow {
 export interface CommissionsResponse {
   rows: CommissionRow[];
   error?: string;
+  /** "all" for the owner, "mine" for a rep who sees only their own deals. */
+  scope?: "all" | "mine";
 }
 
 /** Only active subscriptions earn commission: canceled, past due, unpaid and still-incomplete ones do not. */

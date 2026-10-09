@@ -29,7 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const repLabel = (rep: string) => rep.charAt(0).toUpperCase() + rep.slice(1);
 
-export default function CommissionsSection() {
+export default function CommissionsSection({ asRep, asName }: { asRep?: string; asName?: string } = {}) {
   const [data, setData] = useState<CommissionsResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,9 +37,9 @@ export default function CommissionsSection() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(apiUrl("/api/leads/commissions"), { cache: "no-store" });
+        const res = await fetch(apiUrl(`/api/leads/commissions${asRep ? `?as=${encodeURIComponent(asRep)}` : ""}`), { cache: "no-store" });
         const json = (await res.json()) as CommissionsResponse;
-        if (!cancelled) setData({ rows: Array.isArray(json.rows) ? json.rows : [], error: json.error });
+        if (!cancelled) setData({ rows: Array.isArray(json.rows) ? json.rows : [], error: json.error, scope: json.scope });
       } catch (err) {
         if (!cancelled) setData({ rows: [], error: err instanceof Error ? err.message : "Could not load commissions" });
       } finally {
@@ -49,14 +49,14 @@ export default function CommissionsSection() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [asRep]);
 
   const reps = useMemo(() => groupByRep(data?.rows ?? []), [data]);
 
   return (
     <section className="ld-live-block ld-cm">
       <h3>
-        Commissions <span className="ld-calls-sub">· {Math.round(COMMISSION_RATE * 100)}% of yearly deals</span>
+        {asName ? `${asName}'s commissions` : data?.scope === "mine" ? "Your commissions" : "Commissions"} <span className="ld-calls-sub">· {Math.round(COMMISSION_RATE * 100)}% of yearly deals</span>
       </h3>
       {data?.error && <p className="ld-cm-error">Could not read Stripe: {data.error}</p>}
       {loading ? (
