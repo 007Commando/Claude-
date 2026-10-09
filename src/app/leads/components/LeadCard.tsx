@@ -58,7 +58,13 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
 ) {
   const identity = lead.name || lead.email || "Unknown";
   const suffix = stageSuffix(lead);
-  const line2Parts = [lastOutreachLabel(lead.lastOutreachAt)];
+  // A call through GHL is contact too: the line says when they were last
+  // reached by either a call or "Mark contacted", whichever is newer.
+  const callDay = lastCall
+    ? new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date(lastCall.startedAt))
+    : null;
+  const lastContact = [lead.lastOutreachAt, callDay].filter((d): d is string => Boolean(d)).sort().pop() ?? null;
+  const line2Parts = [lastOutreachLabel(lastContact)];
   if (suffix) line2Parts.push(suffix);
   const age = leadAgeMs(lead);
   const jump = stageJump(lead);
@@ -92,6 +98,16 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       <div className="ld-card-line1">
         {isHotLead(lead) && <Star size={13} className="ld-hot-star" aria-label="Hot lead" />}
         <span className="ld-card-name">{identity}</span>
+        {lastCall && (
+          <span
+            className="ld-called-icon"
+            data-connected={lastCall.connected ? "true" : "false"}
+            title={lastCall.connected ? "Called" : "Called, no answer"}
+            aria-label={lastCall.connected ? "Called" : "Called, no answer"}
+          >
+            <Phone size={10} strokeWidth={2.5} aria-hidden="true" />
+          </span>
+        )}
         <SourceLogo source={lead.firstSource} />
         {lead.convertedVia && lead.convertedVia !== lead.firstSource && (
           <span className="ld-via" title={`First came from ${SOURCE_LABELS[lead.firstSource]}, converted via ${SOURCE_LABELS[lead.convertedVia]}`}>
