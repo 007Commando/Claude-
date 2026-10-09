@@ -54,12 +54,12 @@ const PRIMEWELL_COLOR = "#1d4ed8";
 const reachedApex = (l: Lead) => l.stage !== "lead";
 
 /**
- * Greyed out in the PrimeWell column (Stefano, 2026-10-08, replacing the green ring): anyone with a
- * contact in Apex's own GHL location. Everyone else stays white to be worked, including Apex account
- * holders with no Apex GHL contact, so they can be added to the CRM.
+ * Greyed out in the PrimeWell column: only applicants who already created an Apex account, so the
+ * team knows not to call them about making one (Stefano, 2026-10-09). Being copied into Apex's GHL
+ * location doesn't grey a card any more; nearly every applicant is, and those without an account
+ * are exactly the people to call. (Was "anyone with an Apex GHL contact", 2026-10-08.)
  */
-const inApexCrm = (l: Lead) => l.ghlLocation === "apex";
-const primewellMuted = (l: Lead) => (inApexCrm(l) ? "In Apex CRM" : null);
+const primewellMuted = (l: Lead) => (reachedApex(l) ? "Has Apex account" : null);
 
 type PrimewellView = "all" | "signed" | "not";
 const PRIMEWELL_VIEW_KEY = "leadDesk.primewellView.v1";
