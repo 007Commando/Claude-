@@ -12,9 +12,9 @@ import BoardColumn from "./BoardColumn";
 import type { SalesCall } from "../../../lib/leads/calls";
 import ColumnChooser from "./ColumnChooser";
 
-const COLUMNS_KEY = "leadDesk.boardColumns.v2";
-const LEGACY_ORDER_KEY = "leadDesk.boardColumnOrder.v1";
-const LEGACY_EXPANDED_KEY = "leadDesk.accountExpanded.v1";
+// v3: the default order changed (Stefano, 2026-10-10), so every browser starts from it once.
+const COLUMNS_KEY = "leadDesk.boardColumns.v3";
+const PREVIOUS_COLUMNS_KEY = "leadDesk.boardColumns.v2";
 
 /**
  * Activation milestones as their own columns (Stefano, 2026-09-30). A lead sits in every
@@ -90,7 +90,23 @@ const becameCustomerWithin = (l: Lead, view: CustomerView) => {
 };
 
 const ACTIVATION_IDS = ACTIVATION_COLUMNS.map((c) => c.id);
-const DEFAULT_ORDER = ["lead", "primewell", "registered", ...ACTIVATION_IDS, "trial", "customer", "churned"];
+/**
+ * Left to right is the path a lead walks (Stefano, 2026-10-10): PrimeWell, the Apex CRM, an
+ * account, Amazon connected, trialing, first scan. The milestones he rarely watches follow, then
+ * the paying and churned columns.
+ */
+const DEFAULT_ORDER = [
+  "primewell",
+  "lead",
+  "registered",
+  "act:amazon",
+  "trial",
+  "act:scan",
+  "act:database",
+  "act:vendor",
+  "customer",
+  "churned",
+];
 const COLUMN_LABELS: Record<string, string> = {
   lead: "Apex CRM Leads",
   primewell: "PrimeWell GHL Leads",
@@ -118,14 +134,10 @@ function loadLayout(): ColumnLayout {
       const missing = DEFAULT_ORDER.filter((id) => !order.includes(id));
       return { order: [...order, ...missing], hidden: (parsed.hidden ?? []).filter((id) => DEFAULT_ORDER.includes(id)) };
     }
-    // First visit since columns became free: carry over the old stage order and the activation toggle.
-    const legacy = JSON.parse(window.localStorage.getItem(LEGACY_ORDER_KEY) ?? "null") as string[] | null;
-    const expanded = window.localStorage.getItem(LEGACY_EXPANDED_KEY) === "1";
-    const order = legacy
-      ? legacy.flatMap((id) => (id === "lead" ? ["lead", "primewell"] : id === "registered" ? ["registered", ...ACTIVATION_IDS] : [id]))
-      : DEFAULT_ORDER;
-    const valid = order.filter((id) => DEFAULT_ORDER.includes(id));
-    return { order: [...valid, ...DEFAULT_ORDER.filter((id) => !valid.includes(id))], hidden: expanded ? [] : fallback.hidden };
+    // First visit since the order changed: start from the new order, keep which columns were hidden.
+    const previous = JSON.parse(window.localStorage.getItem(PREVIOUS_COLUMNS_KEY) ?? "null") as Partial<ColumnLayout> | null;
+    if (previous?.hidden) return { order: DEFAULT_ORDER, hidden: previous.hidden.filter((id) => DEFAULT_ORDER.includes(id)) };
+    return fallback;
   } catch {
     return fallback;
   }
@@ -246,6 +258,61 @@ export default function Board({
     updateLayout({ ...layout, order: arrayMove(layout.order, oldIndex, newIndex) });
   };
 
+  // Every column's cards, worked out once so a person's furthest column can be found.
+  const columnLeads = useMemo(() => {
+    const out: Record<string, Lead[]> = {};
+    for (const id of DEFAULT_ORDER) {
+      if (id === "primewell") {
+        out[id] = sortBoardColumn(
+          STAGES.flatMap((st) => leadsByStage[st] ?? []).filter(
+            (l) =>
+              (l.inPrimewell || isPrimewellDirect(l)) &&
+              (primewellView === "all" || (primewellView === "signed") === reachedApex(l)),
+          ),
+          "lead",
+          filters.boardSort.lead,
+        );
+        continue;
+      }
+      const activation = ACTIVATION_COLUMNS.find((c) => c.id === id);
+      if (activation) {
+        out[id] = sortBoardColumn(
+          activation.stages.flatMap((st) => leadsByStage[st] ?? []).filter((l) => activation.test(l, todaySince)),
+          "lead",
+          filters.boardSort.registered,
+        );
+        continue;
+      }
+      const stage = id as Stage;
+      out[id] =
+        stage === "lead"
+          ? sortedByStage.lead.filter((l) => !isPrimewellDirect(l))
+          : stage === "customer"
+            ? sortedByStage.customer.filter((l) => becameCustomerWithin(l, customerView))
+            : sortedByStage[stage];
+    }
+    return out;
+  }, [leadsByStage, sortedByStage, filters.boardSort, primewellView, customerView, todaySince]);
+
+  /**
+   * A person can sit in several columns (Robert McKay: Amazon connected, Trialing, First scan).
+   * Only the furthest one along the visible order shows them in white; everywhere else they stay,
+   * so the counts still add up, but greyed out (Stefano, 2026-10-10). PrimeWell keeps its own
+   * greying, "Has Apex account".
+   */
+  const furthestColumn = useMemo(() => {
+    const out = new Map<string, string>();
+    for (const id of visibleOrder) {
+      if (id === "primewell") continue;
+      for (const l of columnLeads[id] ?? []) out.set(l.id, id);
+    }
+    return out;
+  }, [visibleOrder, columnLeads]);
+  const movedOn = (colId: string) => (l: Lead) => {
+    const at = furthestColumn.get(l.id);
+    return at && at !== colId ? `Now in ${COLUMN_LABELS[at] ?? at}` : null;
+  };
+
   const common = { onSetSort: filters.setBoardSort, selectedLeadId, onSelectLead, changedIds, callsByContact };
 
   const renderColumn = (id: string) => {
@@ -257,15 +324,7 @@ export default function Board({
           stage="lead"
           title={COLUMN_LABELS.primewell}
           titleColor={PRIMEWELL_COLOR}
-          leads={sortBoardColumn(
-            STAGES.flatMap((st) => leadsByStage[st] ?? []).filter(
-              (l) =>
-                (l.inPrimewell || isPrimewellDirect(l)) &&
-                (primewellView === "all" || (primewellView === "signed") === reachedApex(l)),
-            ),
-            "lead",
-            filters.boardSort.lead,
-          )}
+          leads={columnLeads.primewell}
           mutedFor={primewellMuted}
           subHeader={
             <div className="ld-view-switch ld-col-switch" role="tablist" aria-label="PrimeWell leads">
@@ -297,11 +356,8 @@ export default function Board({
           stage="registered"
           subTitle={activation.title}
           subColor={activation.color}
-          leads={sortBoardColumn(
-            activation.stages.flatMap((st) => leadsByStage[st] ?? []).filter((l) => activation.test(l, todaySince)),
-            "lead",
-            filters.boardSort.registered,
-          )}
+          leads={columnLeads[id]}
+          mutedFor={movedOn(id)}
           sortKey={filters.boardSort.registered}
           {...common}
         />
@@ -314,13 +370,8 @@ export default function Board({
         id={id}
         stage={stage}
         title={stage === "lead" ? COLUMN_LABELS.lead : undefined}
-        leads={
-          stage === "lead"
-            ? sortedByStage.lead.filter((l) => !isPrimewellDirect(l))
-            : stage === "customer"
-              ? sortedByStage.customer.filter((l) => becameCustomerWithin(l, customerView))
-              : sortedByStage[stage]
-        }
+        leads={columnLeads[id]}
+        mutedFor={movedOn(id)}
         sortKey={filters.boardSort[stage]}
         {...common}
         subHeader={
