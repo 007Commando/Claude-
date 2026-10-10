@@ -3,7 +3,7 @@
 import { forwardRef } from "react";
 import type { Lead } from "../../../lib/leads/model";
 import { activationTier, isHotLead } from "../../../lib/leads/model";
-import { Phone, Star } from "lucide-react";
+import { AlertTriangle, Phone, Star } from "lucide-react";
 import { formatDurationShort, sinceLabel, type SalesCall } from "../../../lib/leads/calls";
 import {
   ACTIVATION_COLORS,
@@ -70,6 +70,11 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
   const jump = stageJump(lead);
   const total = lead.stage === "customer" ? leadToPaidMs(lead) : null;
 
+  // A paying customer who never connected Amazon gets little out of Apex and is
+  // the likeliest to cancel (Stefano, 2026-10-10). Stripe-only rows have no
+  // account to check, so they are left out.
+  const needsAmazon = lead.stage === "customer" && !lead.stripeOnly && !lead.activation.amazonConnectedAt;
+
   const tier = activationTier(lead.activation);
   const outline = muted ? null : tier ? ACTIVATION_COLORS[tier] : null;
   const cardStyle: React.CSSProperties = outline ? { ...style, boxShadow: `inset 0 0 0 1.5px ${outline}` } : (style ?? {});
@@ -82,6 +87,7 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
       data-selected={selected ? "true" : "false"}
       data-muted={muted ? "true" : undefined}
       data-changed={changed ? "true" : undefined}
+      data-needs-amazon={needsAmazon ? "true" : undefined}
       role="button"
       tabIndex={tabIndex}
       onFocus={onFocus}
@@ -92,11 +98,14 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
           onSelect(lead);
         }
       }}
-      title={`${identity} — ${fmtDateShort(lead.leadAt)}${muted ? ` · ${muted}` : ""}`}
+      title={`${identity} — ${fmtDateShort(lead.leadAt)}${muted ? ` · ${muted}` : ""}${needsAmazon ? " · Amazon not connected" : ""}`}
     >
       {isRecentLead(lead) && <span className="ld-card-new-dot" style={{ background: stageColorVar(lead.stage) }} />}
       <div className="ld-card-line1">
         {isHotLead(lead) && <Star size={13} className="ld-hot-star" aria-label="Hot lead" />}
+        {needsAmazon && (
+          <AlertTriangle size={13} className="ld-needs-amazon" aria-label="Amazon not connected" />
+        )}
         <span className="ld-card-name">{identity}</span>
         {lastCall && (
           <span

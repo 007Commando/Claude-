@@ -2582,3 +2582,8 @@
 /* Called through GHL: a round phone badge beside the name (Stefano, 2026-10-09) */
 .ld-called-icon { flex: none; display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; color: #fff; background: var(--ld-success); }
 .ld-called-icon[data-connected="false"] { background: var(--ld-text-faint); }
+
+/* A paying customer who has not connected Amazon: amber triangle and a warm tint. */
+.ld-needs-amazon { flex: none; color: #d97706; }
+.ld-card[data-needs-amazon="true"] { background: #fffbeb; }
+.ld-card[data-needs-amazon="true"][data-selected="true"] { background: #fef3c7; }

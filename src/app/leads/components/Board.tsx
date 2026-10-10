@@ -30,7 +30,8 @@ const ACTIVATION_COLUMNS: {
   test: (l: Lead, since: string | null) => boolean;
 }[] = [
   { id: "act:vendor", title: "Vendor email", color: "#eab308", stages: ["lead", "registered"], test: (l) => l.activation.vendorEmailSent },
-  { id: "act:scan", title: "First scan", color: "#16a34a", stages: ["registered", "trial", "customer"], test: (l, since) => onOrAfter(l.activation.firstScanAt, since) },
+  // Paying customers leave First scan (Stefano, 2026-10-10): the column is for people still to convert.
+  { id: "act:scan", title: "First scan", color: "#16a34a", stages: ["registered", "trial"], test: (l, since) => onOrAfter(l.activation.firstScanAt, since) },
   { id: "act:database", title: "Database", color: "#2563eb", stages: ["registered"], test: (l) => l.activation.databaseProducts > 0 },
   { id: "act:amazon", title: "Amazon connected", color: "#f97316", stages: ["registered", "trial", "customer"], test: (l, since) => onOrAfter(l.activation.amazonConnectedAt, since) },
 ];
@@ -68,6 +69,24 @@ const PRIMEWELL_VIEWS: { value: PrimewellView; label: string }[] = [
   { value: "signed", label: "Signed up" },
   { value: "not", label: "Not yet" },
 ];
+
+/**
+ * Customers by when they became one (Stefano, 2026-10-10): last 3, 7 or 30 days, or all time.
+ * Counts from customerSince, the day the first paid period started.
+ */
+type CustomerView = "3" | "7" | "30" | "all";
+const CUSTOMER_VIEW_KEY = "leadDesk.customerView.v1";
+const CUSTOMER_VIEWS: { value: CustomerView; label: string }[] = [
+  { value: "3", label: "3d" },
+  { value: "7", label: "7d" },
+  { value: "30", label: "30d" },
+  { value: "all", label: "All" },
+];
+const becameCustomerWithin = (l: Lead, view: CustomerView) => {
+  if (view === "all") return true;
+  if (!l.customerSince) return false;
+  return Date.now() - new Date(l.customerSince).getTime() <= Number(view) * 86_400_000;
+};
 
 const ACTIVATION_IDS = ACTIVATION_COLUMNS.map((c) => c.id);
 const DEFAULT_ORDER = ["lead", "primewell", "registered", ...ACTIVATION_IDS, "trial", "customer", "churned"];
@@ -155,12 +174,15 @@ export default function Board({
 }) {
   const [layout, setLayout] = useState<ColumnLayout>({ order: DEFAULT_ORDER, hidden: [] });
   const [primewellView, setPrimewellView] = useState<PrimewellView>("all");
+  const [customerView, setCustomerView] = useState<CustomerView>("all");
 
   useEffect(() => {
     setLayout(loadLayout());
     try {
       const saved = window.localStorage.getItem(PRIMEWELL_VIEW_KEY);
       if (saved === "signed" || saved === "not") setPrimewellView(saved);
+      const savedCustomers = window.localStorage.getItem(CUSTOMER_VIEW_KEY);
+      if (savedCustomers === "3" || savedCustomers === "7" || savedCustomers === "30") setCustomerView(savedCustomers);
     } catch {
       // localStorage unavailable: starts on All.
     }
@@ -170,6 +192,15 @@ export default function Board({
     setPrimewellView(v);
     try {
       window.localStorage.setItem(PRIMEWELL_VIEW_KEY, v);
+    } catch {
+      // not persisted
+    }
+  };
+
+  const chooseCustomerView = (v: CustomerView) => {
+    setCustomerView(v);
+    try {
+      window.localStorage.setItem(CUSTOMER_VIEW_KEY, v);
     } catch {
       // not persisted
     }
@@ -282,9 +313,34 @@ export default function Board({
         id={id}
         stage={stage}
         title={stage === "lead" ? COLUMN_LABELS.lead : undefined}
-        leads={stage === "lead" ? sortedByStage.lead.filter((l) => !isPrimewellDirect(l)) : sortedByStage[stage]}
+        leads={
+          stage === "lead"
+            ? sortedByStage.lead.filter((l) => !isPrimewellDirect(l))
+            : stage === "customer"
+              ? sortedByStage.customer.filter((l) => becameCustomerWithin(l, customerView))
+              : sortedByStage[stage]
+        }
         sortKey={filters.boardSort[stage]}
         {...common}
+        subHeader={
+          stage === "customer" ? (
+            <div className="ld-view-switch ld-col-switch" role="tablist" aria-label="Became a customer">
+              {CUSTOMER_VIEWS.map((v) => (
+                <button
+                  key={v.value}
+                  type="button"
+                  role="tab"
+                  aria-selected={customerView === v.value}
+                  data-active={customerView === v.value}
+                  title={v.value === "all" ? "Every customer" : `Became a customer in the last ${v.value} days`}
+                  onClick={() => chooseCustomerView(v.value)}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          ) : undefined
+        }
         headerExtra={
           stage === "registered" ? (
             <button
