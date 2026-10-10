@@ -20,8 +20,38 @@ import { apiUrl } from "./shared";
  * or by the ad and campaign names in its utm tags (website funnels).
  */
 
-const RANGES = [7, 14, 30, 90];
+/** Today, yesterday, rolling windows, or a calendar range. Days are New York days, the ad account's. */
+type Preset = "today" | "yesterday" | "7" | "14" | "30" | "90" | "custom";
+const PRESETS: [Preset, string][] = [
+  ["today", "Today"],
+  ["yesterday", "Yesterday"],
+  ["7", "7 days"],
+  ["14", "14 days"],
+  ["30", "30 days"],
+  ["90", "90 days"],
+  ["custom", "Pick dates"],
+];
 const DAY_MS = 86_400_000;
+const nyDay = (d: Date | string | number) => new Date(d).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+
+function rangeOf(preset: Preset, custom: { since: string; until: string }): { since: string; until: string } {
+  const today = nyDay(Date.now());
+  if (preset === "today") return { since: today, until: today };
+  if (preset === "yesterday") {
+    const y = nyDay(Date.now() - DAY_MS);
+    return { since: y, until: y };
+  }
+  if (preset === "custom") return custom.since <= custom.until ? custom : { since: custom.until, until: custom.since };
+  return { since: nyDay(Date.now() - (Number(preset) - 1) * DAY_MS), until: today };
+}
+
+/** Campaign and ad names as both sides spell them: "apex-pop-promotion" and "Apex Pop Promotion" are one. */
+const norm = (s: string | null | undefined) =>
+  (s ?? "")
+    .toLowerCase()
+    .replace(/[-_/()|·:,&]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 type GroupBy = "promotion" | "stage" | "campaign";
 type AdSort = "revenue" | "roas" | "paying" | "leads" | "cpl" | "spend";
 
@@ -29,6 +59,8 @@ interface Tally {
   spend: number;
   impressions: number;
   clicks: number;
+  /** Leads Meta says the ads produced (its own count, before anything reaches the CRM). */
+  metaLeads: number;
   leads: number;
   hot: number;
   accounts: number;
@@ -37,7 +69,7 @@ interface Tally {
   revenue: number;
 }
 
-const zero = (): Tally => ({ spend: 0, impressions: 0, clicks: 0, leads: 0, hot: 0, accounts: 0, trials: 0, paying: 0, revenue: 0 });
+const zero = (): Tally => ({ spend: 0, impressions: 0, clicks: 0, metaLeads: 0, leads: 0, hot: 0, accounts: 0, trials: 0, paying: 0, revenue: 0 });
 
 function add(t: Tally, o: Tally) {
   for (const k of Object.keys(t) as (keyof Tally)[]) t[k] += o[k];
@@ -122,7 +154,9 @@ function snapshotAgo(iso: string | null | undefined): string {
 }
 
 export default function AdsView({ leads }: { leads: Lead[] }) {
-  const [days, setDays] = useState(30);
+  const [preset, setPreset] = useState<Preset>("30");
+  const [custom, setCustom] = useState(() => ({ since: nyDay(Date.now() - 6 * DAY_MS), until: nyDay(Date.now()) }));
+  const range = useMemo(() => rangeOf(preset, custom), [preset, custom]);
   const [data, setData] = useState<MetaAdsPayload | null>(null);
   const [loading, setLoading] = useState(false);
   const [groupBy, setGroupBy] = useState<GroupBy>("promotion");
@@ -134,7 +168,7 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
     async (fresh = false) => {
       setLoading(true);
       try {
-        const res = await fetch(apiUrl(`/api/leads/ads?days=${days}${fresh ? "&fresh=1" : ""}`), { cache: "no-store" });
+        const res = await fetch(apiUrl(`/api/leads/ads?since=${range.since}&until=${range.until}${fresh ? "&fresh=1" : ""}`), { cache: "no-store" });
         setData((await res.json()) as MetaAdsPayload);
       } catch (e) {
         setData({ since: "", until: "", campaigns: [], adsets: [], ads: [], error: e instanceof Error ? e.message : String(e) });
@@ -142,14 +176,13 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
         setLoading(false);
       }
     },
-    [days],
+    [range.since, range.until],
   );
 
   useEffect(() => {
     load();
   }, [load]);
 
-  const since = useMemo(() => new Date(Date.now() - days * DAY_MS).toISOString(), [days]);
 
   const model = useMemo(() => {
     const ads = data?.ads ?? [];
@@ -157,14 +190,17 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
     const adsets = data?.adsets ?? [];
     const adById = new Map(ads.map((a) => [a.id, a]));
     const campaignById = new Map(metaCampaigns.map((c) => [c.id, c]));
-    const low = (s: string | null | undefined) => (s ?? "").trim().toLowerCase();
     const adsByName = new Map<string, MetaAd[]>();
-    for (const a of ads) adsByName.set(low(a.name), [...(adsByName.get(low(a.name)) ?? []), a]);
-    const campaignByName = new Map(metaCampaigns.map((c) => [low(c.name), c]));
+    for (const a of ads) adsByName.set(norm(a.name), [...(adsByName.get(norm(a.name)) ?? []), a]);
+    const campaignByName = new Map(metaCampaigns.map((c) => [norm(c.name), c]));
 
     // The Facebook leads of the period, each matched to its Meta ad where possible.
     const fbLeads = leads.filter(
-      (l) => !l.internal && l.leadAt >= since && (l.source === "facebook-form" || l.source === "facebook-web" || Boolean(l.adId)),
+      (l) => {
+        if (l.internal || !(l.source === "facebook-form" || l.source === "facebook-web" || Boolean(l.adId))) return false;
+        const day = nyDay(l.leadAt);
+        return day >= range.since && day <= range.until;
+      },
     );
     const adTally = new Map<string, Tally>();
     const campaignKeyOfLead = new Map<string, string>();
@@ -172,8 +208,8 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
     for (const l of fbLeads) {
       let ad: MetaAd | undefined = l.adId ? adById.get(l.adId) : undefined;
       if (!ad && l.ad) {
-        const named = adsByName.get(l.ad) ?? [];
-        ad = named.find((a) => low(campaignById.get(a.campaignId)?.name) === l.campaign) ?? (named.length === 1 ? named[0] : undefined);
+        const named = adsByName.get(norm(l.ad)) ?? [];
+        ad = named.find((a) => norm(campaignById.get(a.campaignId)?.name) === norm(l.campaign)) ?? (named.length === 1 ? named[0] : undefined);
       }
       const t = leadTally(l);
       if (ad) {
@@ -183,7 +219,7 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
         campaignKeyOfLead.set(l.id, ad.campaignId);
         continue;
       }
-      const camp = (l.campaignId && campaignById.get(l.campaignId)) || (l.campaign ? campaignByName.get(l.campaign) : undefined);
+      const camp = (l.campaignId && campaignById.get(l.campaignId)) || (l.campaign ? campaignByName.get(norm(l.campaign)) : undefined);
       // Leads with a campaign Meta no longer lists still get a campaign card, from the CRM side.
       const key = camp ? camp.id : l.campaign ? `crm:${l.campaign}` : "crm:none";
       campaignKeyOfLead.set(l.id, key);
@@ -199,6 +235,7 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
       t.spend += a.delivery.spend;
       t.impressions += a.delivery.impressions;
       t.clicks += a.delivery.clicks;
+      t.metaLeads += a.delivery.metaLeads;
       adTally.set(a.id, t);
     }
 
@@ -229,7 +266,7 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
       .sort((a, b) => Number(b.status.toUpperCase() === "ACTIVE") - Number(a.status.toUpperCase() === "ACTIVE") || b.tally.spend - a.tally.spend || b.tally.leads - a.tally.leads);
 
     return { ads, adsets, adTally, campaignList, unmatched, fbCount: fbLeads.length };
-  }, [data, leads, since]);
+  }, [data, leads, range.since, range.until]);
 
   const selectedCampaign = model.campaignList.find((c) => c.id === selected) ?? null;
   const scopeTally = useMemo(() => {
@@ -237,6 +274,16 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
     for (const c of model.campaignList) if (!selected || c.id === selected) add(t, c.tally);
     return t;
   }, [model.campaignList, selected]);
+
+  /** Every campaign that spent or brought a lead in the period, most spend first, with a total. */
+  const costRows = useMemo(() => {
+    const rows = model.campaignList
+      .filter((c) => c.tally.spend > 0 || c.tally.leads > 0)
+      .sort((a, b) => b.tally.spend - a.tally.spend || b.tally.leads - a.tally.leads);
+    const total = zero();
+    for (const c of rows) add(total, c.tally);
+    return { rows, total };
+  }, [model.campaignList]);
 
   const scoreboard = useMemo(() => {
     const groups = new Map<string, { label: string; sub: string | null; tally: Tally }>();
@@ -292,12 +339,36 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
     <div className="ld-ads">
       <div className="ld-ads-head">
         <div className="ld-view-switch" role="tablist" aria-label="Period">
-          {RANGES.map((d) => (
-            <button key={d} type="button" data-active={days === d} onClick={() => setDays(d)}>
-              {d} days
+          {PRESETS.map(([value, label]) => (
+            <button key={value} type="button" data-active={preset === value} onClick={() => setPreset(value)}>
+              {label}
             </button>
           ))}
         </div>
+        {preset === "custom" && (
+          <div className="ld-ads-dates">
+            <label>
+              From
+              <input
+                id="ads-range-since"
+                type="date"
+                value={custom.since}
+                max={nyDay(Date.now())}
+                onChange={(e) => e.target.value && setCustom((c) => ({ ...c, since: e.target.value }))}
+              />
+            </label>
+            <label>
+              To
+              <input
+                id="ads-range-until"
+                type="date"
+                value={custom.until}
+                max={nyDay(Date.now())}
+                onChange={(e) => e.target.value && setCustom((c) => ({ ...c, until: e.target.value }))}
+              />
+            </label>
+          </div>
+        )}
         <span className="ld-ads-meta">
           {model.fbCount} Facebook leads in the period{data && !metaDown ? ` · ${model.ads.length} ads from Meta` : ""}
         </span>
@@ -319,6 +390,83 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
           revenue below come from the CRM and are real. Meta said: {data?.error}
         </div>
       )}
+
+      {/* True cost per lead, campaign by campaign */}
+      <section className="ld-ads-card">
+        <div className="ld-ads-card-head">
+          <h2>Cost per lead by campaign</h2>
+          <span className="ld-ads-meta">
+            {range.since === range.until ? range.since : `${range.since} to ${range.until}`} · true cost = spend ÷ leads that reached the CRM
+          </span>
+        </div>
+        <div className="ld-ads-table-wrap">
+          <table className="ld-ads-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Spend</th>
+                <th title="Leads Meta counted">Meta leads</th>
+                <th title="Spend ÷ the leads Meta counted">Meta&apos;s cost / lead</th>
+                <th title="Leads that arrived in the CRM">Leads in CRM</th>
+                <th title="Spend ÷ leads that arrived in the CRM">True cost / lead</th>
+                <th>Accounts</th>
+                <th>Cost / account</th>
+                <th>Paying</th>
+                <th>Cost / paying</th>
+              </tr>
+            </thead>
+            <tbody>
+              {costRows.rows.map((c) => {
+                const st = statusOf(c.status);
+                return (
+                  <tr key={c.id}>
+                    <td>
+                      <span className="ld-ads-rowname">{c.name}</span>
+                      <span className="ld-ads-rowsub">
+                        <span className="ld-ads-status" data-tone={st.tone}>
+                          {st.label}
+                        </span>{" "}
+                        {c.promotion}
+                      </span>
+                    </td>
+                    <td>{c.tally.spend ? usd(c.tally.spend) : "–"}</td>
+                    <td>{c.tally.metaLeads ? int(c.tally.metaLeads) : "–"}</td>
+                    <td>{cost(c.tally.spend, c.tally.metaLeads)}</td>
+                    <td>{int(c.tally.leads)}</td>
+                    <td className="ld-ads-strong">{cost(c.tally.spend, c.tally.leads)}</td>
+                    <td>{int(c.tally.accounts)}</td>
+                    <td>{cost(c.tally.spend, c.tally.accounts)}</td>
+                    <td>{int(c.tally.paying)}</td>
+                    <td>{cost(c.tally.spend, c.tally.paying)}</td>
+                  </tr>
+                );
+              })}
+              {costRows.rows.length === 0 ? (
+                <tr>
+                  <td colSpan={10} className="ld-ads-empty">
+                    No spend or Facebook leads in this period.
+                  </td>
+                </tr>
+              ) : (
+                <tr className="ld-ads-total">
+                  <td>
+                    <span className="ld-ads-rowname">All campaigns</span>
+                  </td>
+                  <td>{costRows.total.spend ? usd(costRows.total.spend) : "–"}</td>
+                  <td>{costRows.total.metaLeads ? int(costRows.total.metaLeads) : "–"}</td>
+                  <td>{cost(costRows.total.spend, costRows.total.metaLeads)}</td>
+                  <td>{int(costRows.total.leads)}</td>
+                  <td className="ld-ads-strong">{cost(costRows.total.spend, costRows.total.leads)}</td>
+                  <td>{int(costRows.total.accounts)}</td>
+                  <td>{cost(costRows.total.spend, costRows.total.accounts)}</td>
+                  <td>{int(costRows.total.paying)}</td>
+                  <td>{cost(costRows.total.spend, costRows.total.paying)}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       {/* Where to double down */}
       <section className="ld-ads-card">

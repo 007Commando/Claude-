@@ -2594,3 +2594,34 @@
   font-size: 12px;
   color: var(--ld-muted, #667085);
 }
+
+/* Facebook ads tab: calendar range and the cost-per-lead table */
+.ld-ads-dates {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ld-ads-dates label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--ld-muted, #667085);
+}
+.ld-ads-dates input[type="date"] {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: 1px solid var(--ld-border, #e4e7ec);
+  border-radius: 6px;
+  background: var(--ld-surface, #fff);
+  color: inherit;
+}
+.ld-ads-strong {
+  font-weight: 600;
+}
+.ld-ads-total td {
+  border-top: 2px solid var(--ld-border, #e4e7ec);
+  font-weight: 600;
+}
