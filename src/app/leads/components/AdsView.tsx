@@ -45,6 +45,16 @@ function rangeOf(preset: Preset, custom: { since: string; until: string }): { si
   return { since: nyDay(Date.now() - (Number(preset) - 1) * DAY_MS), until: today };
 }
 
+/**
+ * Website tags that name a Meta campaign under an older label: the link's
+ * utm_campaign was set when the campaign had another name and never changed.
+ * Keyed by the normalised tag, valued by the Meta campaign id.
+ */
+const CAMPAIGN_ALIASES: Record<string, string> = {
+  "apex pop promotion web": "120249105938920366", // Apex Pop Promotion - Website (A/B)
+  "free va 14 days nq": "120249049706090366", // Apex Free VA 14 days - Leads
+};
+
 /** Campaign and ad names as both sides spell them: "apex-pop-promotion" and "Apex Pop Promotion" are one. */
 const norm = (s: string | null | undefined) =>
   (s ?? "")
@@ -219,7 +229,9 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
         campaignKeyOfLead.set(l.id, ad.campaignId);
         continue;
       }
-      const camp = (l.campaignId && campaignById.get(l.campaignId)) || (l.campaign ? campaignByName.get(norm(l.campaign)) : undefined);
+      const camp =
+        (l.campaignId && campaignById.get(l.campaignId)) ||
+        (l.campaign ? (campaignByName.get(norm(l.campaign)) ?? campaignById.get(CAMPAIGN_ALIASES[norm(l.campaign)] ?? "")) : undefined);
       // Leads with a campaign Meta no longer lists still get a campaign card, from the CRM side.
       const key = camp ? camp.id : l.campaign ? `crm:${l.campaign}` : "crm:none";
       campaignKeyOfLead.set(l.id, key);
