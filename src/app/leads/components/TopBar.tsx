@@ -216,6 +216,7 @@ export default function TopBar({
   loggedInAs,
   isOwner,
   teamMode,
+  showEmails,
   teamMembers,
   viewAs,
   onViewAs,
@@ -229,6 +230,8 @@ export default function TopBar({
   isOwner: boolean;
   /** True for a team member, or for the owner while previewing one. */
   teamMode: boolean;
+  /** The Emails tab: the owner and Aliza. */
+  showEmails: boolean;
   teamMembers: { email: string; name: string }[];
   viewAs: string | null;
   onViewAs: (email: string | null) => void;
@@ -259,10 +262,12 @@ export default function TopBar({
             <button type="button" data-active={filters.view === "ads"} onClick={() => filters.setView("ads")}>
               Facebook ads
             </button>
-            <button type="button" data-active={filters.view === "emails"} onClick={() => filters.setView("emails")}>
-              Emails
-            </button>
           </>
+        )}
+        {showEmails && (
+          <button type="button" data-active={filters.view === "emails"} onClick={() => filters.setView("emails")}>
+            Emails
+          </button>
         )}
         <button type="button" data-active={filters.view === "calls"} onClick={() => filters.setView("calls")}>
           Calls

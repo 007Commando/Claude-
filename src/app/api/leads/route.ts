@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getLeads } from "../../../lib/leads/build";
 import { auth } from "../../../auth";
-import { getAllowedEmails, getTeamMembers, isOwnerEmail } from "../../../lib/leadDesk/allowedEmails";
+import { getAllowedEmails, getTeamMembers, isOwnerEmail, canSeeEmailsTab } from "../../../lib/leadDesk/allowedEmails";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -37,8 +37,11 @@ export async function GET(req: NextRequest) {
       goalMonth,
       allowedEmails: getAllowedEmails(),
       isOwner: isOwnerEmail(email),
+      canSeeEmails: canSeeEmailsTab(email),
       // For the owner's "View as" switch; nobody else gets the list.
-      teamMembers: isOwnerEmail(email) ? getTeamMembers() : [],
+      teamMembers: isOwnerEmail(email)
+        ? getTeamMembers().map((m) => ({ ...m, emailsTab: canSeeEmailsTab(m.email) }))
+        : [],
     },
     { headers: { "x-leads-cache": fresh ? "bypass" : "maybe-hit" } },
   );

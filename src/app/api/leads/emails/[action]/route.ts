@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ownerOnly } from "../../../../../lib/leadDesk/ownerOnly";
+import { emailsTabOnly } from "../../../../../lib/leadDesk/ownerOnly";
 import { emailDeskFetch, type EmailDeskAction } from "../../../../../lib/leads/emailDesk";
 
 export const dynamic = "force-dynamic";
@@ -9,9 +9,9 @@ export const maxDuration = 300;
 
 const ACTIONS: EmailDeskAction[] = ["preview", "activity", "queue"];
 
-/** One email's preview, recent sends and clicks, or next-run recipients. Owner only. */
+/** One email's preview, recent sends and clicks, or next-run recipients. Owner and Aliza. */
 export async function GET(req: NextRequest, ctx: { params: Promise<{ action: string }> }) {
-  const denied = await ownerOnly();
+  const denied = await emailsTabOnly();
   if (denied) return denied;
   const { action } = await ctx.params;
   if (!ACTIONS.includes(action as EmailDeskAction)) return NextResponse.json({ error: "Unknown action" }, { status: 404 });

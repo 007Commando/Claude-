@@ -46,3 +46,19 @@ export function getTeamMembers(): TeamMember[] {
   const [, ...members] = getAllowedEmails();
   return members.map((email) => ({ email, name: names.get(email) || email.split("@")[0] }));
 }
+
+/**
+ * Team members who also see the Emails tab (Stefano, 2026-10-10: Aliza only),
+ * matched on the start of their Lead Desk name or their address. The owner
+ * always sees it.
+ */
+const EMAILS_TAB_MEMBERS = ["aliza"];
+
+export function canSeeEmailsTab(email: string | null | undefined): boolean {
+  if (isOwnerEmail(email)) return true;
+  if (!email) return false;
+  const member = getTeamMembers().find((m) => m.email === email.toLowerCase());
+  if (!member) return false;
+  const keys = [member.name.toLowerCase(), member.email.split("@")[0]];
+  return EMAILS_TAB_MEMBERS.some((prefix) => keys.some((key) => key.startsWith(prefix)));
+}

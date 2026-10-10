@@ -42,7 +42,8 @@ interface LeadsResponse {
   goalMonth: string;
   allowedEmails: string[];
   isOwner: boolean;
-  teamMembers?: { email: string; name: string }[];
+  canSeeEmails?: boolean;
+  teamMembers?: { email: string; name: string; emailsTab?: boolean }[];
 }
 
 function SkeletonBoard() {
@@ -219,6 +220,7 @@ export default function LeadDesk() {
 
   const viewingAs = data?.isOwner && viewAs ? data.teamMembers?.find((m) => m.email === viewAs) ?? null : null;
   const teamMode = !data?.isOwner || Boolean(viewingAs);
+  const emailsAllowed = viewingAs ? Boolean(viewingAs.emailsTab) : Boolean(data?.canSeeEmails);
 
   const markContacted = useCallback(
     async (lead: Lead, note: string) => {
@@ -296,6 +298,7 @@ export default function LeadDesk() {
         loggedInAs={data?.loggedInAs ?? null}
         isOwner={data?.isOwner ?? false}
         teamMode={teamMode}
+        showEmails={emailsAllowed}
         teamMembers={data?.teamMembers ?? []}
         viewAs={viewingAs?.email ?? null}
         onViewAs={changeViewAs}
@@ -347,7 +350,7 @@ export default function LeadDesk() {
         ) : data ? (
           // A team member who opens an owner-only view (an old link, a typed
           // ?view=) gets the board instead.
-          (filters.view === "board" || (teamMode && !TEAM_VIEWS.includes(filters.view))) ? (
+          (filters.view === "board" || (teamMode && !TEAM_VIEWS.includes(filters.view) && !(filters.view === "emails" && emailsAllowed))) ? (
             <Board leadsByStage={leadsByStage} filters={filters} todaySince={filters.datePreset === "today" && filters.scope === "activity" ? todayStartIso() : null} selectedLeadId={selectedLeadId} onSelectLead={(l) => setJourneyLeadId(l.id)} changedIds={changed} callsByContact={callsByContact} />
           ) : filters.view === "call-list" ? (
             <CallListView leads={effectiveLeads} callsByContact={callsByContact} onOpenLead={(l) => setSelectedLeadId(l.id)} />
