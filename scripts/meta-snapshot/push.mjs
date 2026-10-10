@@ -12,6 +12,19 @@
  * ({"ad_entities": "<json>"} or {"ad_creatives": [...]}), or a plain array.
  * Both forms can be mixed; key=file parts are added to the pull file's.
  *
+ * Third form, for the scheduled routine, which cannot write files (a
+ * scheduled run has nowhere to show a Write permission prompt): the data as
+ * arguments, one record per flag, fields separated by "|" (by "," for days),
+ * free text last so a stray "|" in a name cannot shift the other fields:
+ *
+ *   --day      "ADID,YYYY-MM-DD,SPEND,IMPRESSIONS,REACH,CLICKS,LEADS"
+ *   --ad       "ADID|CAMPAIGN_ID|ADSET_ID|STATUS|CREATIVE_ID|NAME"
+ *   --campaign "ID|STATUS|DAILY_BUDGET|OBJECTIVE|NAME"
+ *   --adset    "ID|CAMPAIGN_ID|STATUS|OPTIMIZATION_GOAL|NAME"
+ *   --creative "ID|FORMAT|CTA_TYPE|IMAGE_URL|LINK|TITLE|BODY"   (FORMAT: video or image)
+ *   --missing-creatives   print the creative ids the --ad records use that the
+ *                         snapshot has no creative for, and save nothing
+ *
  * The pull file holds what the connector's ads_get_ad_entities / ads_get_creatives
  * returned, pasted as-is (amounts may be {value, unit} objects). Every key is
  * optional, and a pull only replaces what it contains:
@@ -35,7 +48,12 @@ const repo = join(here, "..", "..");
 const KEEP_DAYS = 120;
 
 // The repo's own .env.local, or apex-app's when this copy runs from the APEX folder (the scheduled routine's copy).
-const ENV_FILES = [join(repo, ".env.local"), join(repo, "apex-app", ".env.local")];
+const ENV_FILES = [
+  join(repo, ".env.local"),
+  join(repo, "apex-app", ".env.local"),
+  join(here, "..", "apex-app", ".env.local"),
+  join(here, "..", ".env.local"),
+];
 
 function env(name) {
   if (process.env[name]) return process.env[name];
@@ -127,7 +145,50 @@ async function main() {
   if (!args.length) throw new Error("usage: node scripts/meta-snapshot/push.mjs <pull.json> | <part>=<file> ...");
   const PARTS = ["campaigns", "adsets", "ads", "creatives", "daily"];
   const pull = {};
-  for (const arg of args) {
+  let missingOnly = false;
+  const add = (part, record) => (pull[part] = [...(pull[part] ?? []), record]);
+  const fields = (value, count, sep = "|") => {
+    const bits = String(value).split(sep);
+    return [...bits.slice(0, count - 1), bits.slice(count - 1).join(sep)].map((b) => (b ?? "").trim());
+  };
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--missing-creatives") {
+      missingOnly = true;
+      continue;
+    }
+    if (arg.startsWith("--")) {
+      const value = args[++i];
+      if (value === undefined) throw new Error(`${arg} needs a value`);
+      if (arg === "--day") {
+        const [id, date, spend, impressions, reach, clicks, lead] = fields(value, 7, ",");
+        add("daily", { id, date_start: date, amount_spent: spend, impressions, reach, clicks, lead: lead || 0 });
+      } else if (arg === "--ad") {
+        const [id, campaign_id, adset_id, effective_status, creative_id, name] = fields(value, 6);
+        add("ads", { id, campaign_id, adset_id, effective_status, creative_id: creative_id || null, name });
+      } else if (arg === "--campaign") {
+        const [id, effective_status, daily_budget, objective, name] = fields(value, 5);
+        add("campaigns", { id, effective_status, daily_budget: daily_budget || null, objective: objective || null, name });
+      } else if (arg === "--adset") {
+        const [id, campaign_id, effective_status, optimization_goal, name] = fields(value, 5);
+        add("adsets", { id, campaign_id, effective_status, optimization_goal: optimization_goal || null, name });
+      } else if (arg === "--creative") {
+        const [id, format, cta, image, link, title, body] = fields(value, 7);
+        add("creatives", {
+          id,
+          object_type: format === "video" ? "VIDEO" : "IMAGE",
+          video_id: format === "video" ? "video" : null,
+          call_to_action_type: cta || null,
+          image_url: image || null,
+          link_url: link || null,
+          title: title || null,
+          body: body || null,
+        });
+      } else {
+        throw new Error(`unknown flag ${arg}`);
+      }
+      continue;
+    }
     const eq = arg.indexOf("=");
     const part = eq > 0 ? arg.slice(0, eq) : null;
     const raw = JSON.parse(readFileSync(eq > 0 ? arg.slice(eq + 1) : arg, "utf8"));
@@ -159,6 +220,16 @@ async function main() {
     return r.json();
   });
   const snap = current.snapshot ?? { fetchedAt: null, campaigns: [], adsets: [], ads: [], daily: [] };
+
+  if (missingOnly) {
+    const known = new Map(snap.ads.map((a) => [a.creativeId, a.creative]));
+    const missing = [...new Set((pull.ads ?? []).map((a) => str(a.creative_id)).filter(Boolean))].filter((id) => {
+      const c = known.get(id);
+      return !c || c.format === "unknown";
+    });
+    console.log(missing.length ? `MISSING_CREATIVES ${missing.join(",")}` : "MISSING_CREATIVES none");
+    return;
+  }
 
   const byId = (list) => new Map(list.map((x) => [x.id, x]));
   const campaigns = byId(snap.campaigns);
