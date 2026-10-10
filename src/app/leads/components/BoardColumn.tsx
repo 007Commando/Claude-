@@ -40,6 +40,8 @@ interface BoardColumnProps {
   /** Per-card outline colour, e.g. PrimeWell leads who made it into Apex. */
   /** Greys a card out and labels it, e.g. PrimeWell leads Apex already has. */
   mutedFor?: (lead: Lead) => string | null;
+  /** Greyed cards keep their activation outline (a person who moved on still shows what they did). */
+  mutedKeepsOutline?: boolean;
   /** A control row under the header, e.g. the PrimeWell signed-up switch. */
   subHeader?: React.ReactNode;
 }
@@ -178,6 +180,7 @@ export default function BoardColumn({
   title,
   titleColor,
   mutedFor,
+  mutedKeepsOutline,
   subHeader,
 }: BoardColumnProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -267,6 +270,7 @@ export default function BoardColumn({
                   }}
                   lead={lead}
                   muted={mutedFor?.(lead) ?? null}
+                  keepOutline={mutedKeepsOutline}
                   selected={lead.id === selectedLeadId}
                   changed={changedIds?.has(lead.id)}
                   lastCall={callsForLead(lead, callsByContact)[0] ?? null}

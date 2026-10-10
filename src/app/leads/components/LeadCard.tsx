@@ -35,6 +35,8 @@ interface LeadCardProps {
   muted?: string | null;
   /** The most recent sales call with this lead, if any. */
   lastCall?: SalesCall | null;
+  /** Keep the activation outline while greyed out (moved on to a later column). */
+  keepOutline?: boolean;
 }
 
 function stageSuffix(lead: Lead): string | null {
@@ -53,7 +55,7 @@ function stageSuffix(lead: Lead): string | null {
 }
 
 const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
-  { lead, selected, style, onSelect, tabIndex, onFocus, muted, changed, lastCall },
+  { lead, selected, style, onSelect, tabIndex, onFocus, muted, changed, lastCall, keepOutline },
   ref,
 ) {
   const identity = lead.name || lead.email || "Unknown";
@@ -76,7 +78,9 @@ const LeadCard = forwardRef<HTMLDivElement, LeadCardProps>(function LeadCard(
   const needsAmazon = lead.stage === "customer" && !lead.stripeOnly && !lead.activation.amazonConnectedAt;
 
   const tier = activationTier(lead.activation);
-  const outline = muted ? null : tier ? ACTIVATION_COLORS[tier] : null;
+  // PrimeWell's "Has Apex account" greying drops the outline; a card greyed because the person
+  // moved on to a later column keeps it, so Seller Central and first scan still show (2026-10-10).
+  const outline = muted && !keepOutline ? null : tier ? ACTIVATION_COLORS[tier] : null;
   const cardStyle: React.CSSProperties = outline ? { ...style, boxShadow: `inset 0 0 0 1.5px ${outline}` } : (style ?? {});
 
   return (

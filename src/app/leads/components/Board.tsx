@@ -386,6 +386,7 @@ export default function Board({
           subColor={activation.color}
           leads={greyLast(columnLeads[id], movedOn(id))}
           mutedFor={movedOn(id)}
+          mutedKeepsOutline
           sortKey={filters.boardSort.registered}
           {...common}
         />
@@ -400,6 +401,7 @@ export default function Board({
         title={stage === "lead" ? COLUMN_LABELS.lead : undefined}
         leads={greyLast(columnLeads[id], movedOn(id))}
         mutedFor={movedOn(id)}
+        mutedKeepsOutline
         sortKey={filters.boardSort[stage]}
         {...common}
         subHeader={
