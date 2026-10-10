@@ -37,6 +37,32 @@ const ACTIVATION_COLUMNS: {
   { id: "act:amazon", title: "Amazon connected", color: "#f97316", stages: ["registered", "trial"], test: (l, since) => onOrAfter(l.activation.amazonConnectedAt, since) },
 ];
 
+/** When each milestone happened, so its column can run newest first by that date. */
+const MILESTONE_DATE: Record<string, (l: Lead) => string | null> = {
+  "act:vendor": (l) => l.leadAt,
+  "act:scan": (l) => l.activation.firstScanAt,
+  "act:database": (l) => l.activation.databaseUpdatedAt,
+  "act:amazon": (l) => l.activation.amazonConnectedAt,
+};
+
+const newestFirst = (leads: Lead[], dateOf: (l: Lead) => string | null) =>
+  [...leads].sort((a, b) => {
+    const av = dateOf(a);
+    const bv = dateOf(b);
+    if (av === bv) return 0;
+    if (!av) return 1;
+    if (!bv) return -1;
+    return av < bv ? 1 : -1;
+  });
+
+/** Greyed-out cards go to the bottom; each half keeps its order (Stefano, 2026-10-10). */
+const greyLast = (leads: Lead[], muted: (l: Lead) => string | null) => {
+  const live: Lead[] = [];
+  const grey: Lead[] = [];
+  for (const l of leads) (muted(l) ? grey : live).push(l);
+  return [...live, ...grey];
+};
+
 function onOrAfter(iso: string | null, since: string | null): boolean {
   return Boolean(iso) && (!since || (iso as string) >= since);
 }
@@ -276,11 +302,13 @@ export default function Board({
       }
       const activation = ACTIVATION_COLUMNS.find((c) => c.id === id);
       if (activation) {
-        out[id] = sortBoardColumn(
-          activation.stages.flatMap((st) => leadsByStage[st] ?? []).filter((l) => activation.test(l, todaySince)),
-          "lead",
-          filters.boardSort.registered,
-        );
+        const inColumn = activation.stages
+          .flatMap((st) => leadsByStage[st] ?? [])
+          .filter((l) => activation.test(l, todaySince));
+        // Newest milestone first unless the column's sort menu says otherwise.
+        out[id] = filters.boardSort.registered
+          ? sortBoardColumn(inColumn, "lead", filters.boardSort.registered)
+          : newestFirst(inColumn, MILESTONE_DATE[id]);
         continue;
       }
       const stage = id as Stage;
@@ -324,7 +352,7 @@ export default function Board({
           stage="lead"
           title={COLUMN_LABELS.primewell}
           titleColor={PRIMEWELL_COLOR}
-          leads={columnLeads.primewell}
+          leads={greyLast(columnLeads.primewell, primewellMuted)}
           mutedFor={primewellMuted}
           subHeader={
             <div className="ld-view-switch ld-col-switch" role="tablist" aria-label="PrimeWell leads">
@@ -356,7 +384,7 @@ export default function Board({
           stage="registered"
           subTitle={activation.title}
           subColor={activation.color}
-          leads={columnLeads[id]}
+          leads={greyLast(columnLeads[id], movedOn(id))}
           mutedFor={movedOn(id)}
           sortKey={filters.boardSort.registered}
           {...common}
@@ -370,7 +398,7 @@ export default function Board({
         id={id}
         stage={stage}
         title={stage === "lead" ? COLUMN_LABELS.lead : undefined}
-        leads={columnLeads[id]}
+        leads={greyLast(columnLeads[id], movedOn(id))}
         mutedFor={movedOn(id)}
         sortKey={filters.boardSort[stage]}
         {...common}
