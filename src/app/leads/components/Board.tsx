@@ -33,7 +33,8 @@ const ACTIVATION_COLUMNS: {
   // Paying customers leave First scan (Stefano, 2026-10-10): the column is for people still to convert.
   { id: "act:scan", title: "First scan", color: "#16a34a", stages: ["registered", "trial"], test: (l, since) => onOrAfter(l.activation.firstScanAt, since) },
   { id: "act:database", title: "Database", color: "#2563eb", stages: ["registered"], test: (l) => l.activation.databaseProducts > 0 },
-  { id: "act:amazon", title: "Amazon connected", color: "#f97316", stages: ["registered", "trial", "customer"], test: (l, since) => onOrAfter(l.activation.amazonConnectedAt, since) },
+  // Customers leave this one too (Stefano, 2026-10-10).
+  { id: "act:amazon", title: "Amazon connected", color: "#f97316", stages: ["registered", "trial"], test: (l, since) => onOrAfter(l.activation.amazonConnectedAt, since) },
 ];
 
 function onOrAfter(iso: string | null, since: string | null): boolean {
