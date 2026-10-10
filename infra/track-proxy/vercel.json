@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/c/:token", "destination": "https://app.apexapplications.io/api/redirects/email/click/:token" }
+  ],
+  "redirects": [
+    { "source": "/((?!c/).*)", "destination": "https://www.apexapplications.io", "permanent": false }
+  ]
+}
