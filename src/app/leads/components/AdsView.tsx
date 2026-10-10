@@ -112,6 +112,15 @@ interface CampaignRow {
   tally: Tally;
 }
 
+/** "2h ago", "35 min ago": how old the connector snapshot is. */
+function snapshotAgo(iso: string | null | undefined): string {
+  if (!iso) return "at an unknown time";
+  const min = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60_000));
+  if (min < 60) return `${min} min ago`;
+  const h = Math.round(min / 60);
+  return h < 48 ? `${h}h ago` : `${Math.round(h / 24)} days ago`;
+}
+
 export default function AdsView({ leads }: { leads: Lead[] }) {
   const [days, setDays] = useState(30);
   const [data, setData] = useState<MetaAdsPayload | null>(null);
@@ -296,6 +305,13 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
           <RefreshCw size={13} className={loading ? "ld-spin" : undefined} /> Refresh
         </button>
       </div>
+
+      {data?.source === "snapshot" && (
+        <p className="ld-ads-note">
+          Meta numbers come from the Meta connector, refreshed {snapshotAgo(data.snapshotAt)}. They update a few times a day until Meta
+          gives the site its own token.
+        </p>
+      )}
 
       {metaDown && (
         <div className="ld-ads-banner">

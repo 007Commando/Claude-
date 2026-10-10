@@ -2587,3 +2587,10 @@
 .ld-needs-amazon { flex: none; color: #d97706; }
 .ld-card[data-needs-amazon="true"] { background: #fffbeb; }
 .ld-card[data-needs-amazon="true"][data-selected="true"] { background: #fef3c7; }
+
+/* Facebook ads tab: where the Meta numbers came from when it is the connector snapshot */
+.ld-ads-note {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--ld-muted, #667085);
+}

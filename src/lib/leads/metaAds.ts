@@ -1,3 +1,5 @@
+import { payloadFromSnapshot, readMetaSnapshot } from "./metaSnapshot";
+
 /**
  * Everything Lead Desk's Facebook ads tab shows from Meta: each campaign, its
  * ad sets (budget and audience) and its ads, with the creative people actually
@@ -76,6 +78,10 @@ export interface MetaAdsPayload {
   adsets: MetaAdset[];
   ads: MetaAd[];
   error?: string;
+  /** "snapshot" when the numbers come from the connector routine rather than a live token (metaSnapshot.ts). */
+  source?: "live" | "snapshot";
+  /** When the snapshot was pulled from Meta. */
+  snapshotAt?: string | null;
 }
 
 const EMPTY_DELIVERY: MetaDelivery = { spend: 0, impressions: 0, reach: 0, clicks: 0, metaLeads: 0 };
@@ -225,7 +231,20 @@ interface RawInsight {
   actions?: { action_type?: string; value?: string }[];
 }
 
+/**
+ * Live from the Marketing API when the token works; otherwise the snapshot the
+ * Meta connector routine keeps on the backend, so the tab still has spend,
+ * CPM and creatives while there is no token (see metaSnapshot.ts). The live
+ * error is only shown when there is no snapshot either.
+ */
 export async function getMetaAds(since: string, until: string, fresh = false): Promise<MetaAdsPayload> {
+  const live = await getMetaAdsLive(since, until, fresh);
+  if (!live.error) return { ...live, source: "live" };
+  const snapshot = await readMetaSnapshot(fresh);
+  return snapshot ? payloadFromSnapshot(snapshot, since, until) : live;
+}
+
+async function getMetaAdsLive(since: string, until: string, fresh = false): Promise<MetaAdsPayload> {
   const token = process.env.META_ACCESS_TOKEN;
   const rawAccount = process.env.META_AD_ACCOUNT_ID;
   const base: MetaAdsPayload = { since, until, campaigns: [], adsets: [], ads: [] };
