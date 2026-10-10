@@ -34,15 +34,20 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repo = join(here, "..", "..");
 const KEEP_DAYS = 120;
 
+// The repo's own .env.local, or apex-app's when this copy runs from the APEX folder (the scheduled routine's copy).
+const ENV_FILES = [join(repo, ".env.local"), join(repo, "apex-app", ".env.local")];
+
 function env(name) {
   if (process.env[name]) return process.env[name];
-  try {
-    for (const line of readFileSync(join(repo, ".env.local"), "utf8").split("\n")) {
-      const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
-      if (m && m[1] === name) return m[2].replace(/^"|"$/g, "");
+  for (const file of ENV_FILES) {
+    try {
+      for (const line of readFileSync(file, "utf8").split("\n")) {
+        const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+        if (m && m[1] === name) return m[2].replace(/^"|"$/g, "");
+      }
+    } catch {
+      /* not there */
     }
-  } catch {
-    /* no .env.local */
   }
   return undefined;
 }
