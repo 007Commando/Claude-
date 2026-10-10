@@ -12,7 +12,7 @@ import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Lead, LeadSource, SellerType, Stage } from "../../../lib/leads/model";
 
-export type ViewMode = "board" | "table" | "call-list" | "funnels" | "live" | "ads" | "calls";
+export type ViewMode = "board" | "table" | "call-list" | "funnels" | "live" | "ads" | "calls" | "emails";
 /**
  * What a team member (anyone signed in who is not the owner, i.e. Aliza and
  * the sales rep) sees: the leads and the calls, nothing about the business's
@@ -142,7 +142,7 @@ export function useLeadFilters(): LeadFilters {
 
   const viewParam = searchParams.get("view");
   const view: ViewMode =
-    viewParam === "table" ? "table" : viewParam === "call-list" ? "call-list" : viewParam === "funnels" ? "funnels" : viewParam === "live" ? "live" : viewParam === "calls" ? "calls" : viewParam === "ads" || viewParam === "experiments" ? "ads" : "board";
+    viewParam === "table" ? "table" : viewParam === "call-list" ? "call-list" : viewParam === "funnels" ? "funnels" : viewParam === "live" ? "live" : viewParam === "calls" ? "calls" : viewParam === "emails" ? "emails" : viewParam === "ads" || viewParam === "experiments" ? "ads" : "board";
   const source = useMemo(() => searchParams.get("source")?.split(",").filter(Boolean) as LeadSource[] | undefined, [searchParams]) ?? [];
   const sellerType =
     useMemo(() => searchParams.get("sellerType")?.split(",").filter(Boolean) as SellerType[] | undefined, [searchParams]) ?? [];

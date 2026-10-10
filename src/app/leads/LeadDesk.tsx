@@ -20,6 +20,7 @@ import LeadTable from "./components/LeadTable";
 import { STAGE_LABELS } from "./components/shared";
 import LivePanel from "./components/LivePanel";
 import AdsView from "./components/AdsView";
+import EmailsView from "./components/EmailsView";
 import FunnelView from "./components/FunnelView";
 import CallsView from "./components/CallsView";
 import CallListView from "./components/CallListView";
@@ -356,6 +357,8 @@ export default function LeadDesk() {
             <LivePanel />
           ) : filters.view === "ads" ? (
             <AdsView leads={effectiveLeads} />
+          ) : filters.view === "emails" ? (
+            <EmailsView />
           ) : filters.view === "calls" ? (
             <CallsView calls={calls} loading={callsLoading} leads={effectiveLeads} onOpenLead={(l) => setSelectedLeadId(l.id)} showCommissions commissionsAs={viewingAs ? { rep: repSlug(viewingAs.name), name: viewingAs.name } : undefined} />
           ) : (
