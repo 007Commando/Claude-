@@ -174,6 +174,9 @@ function EmailDetail({
   const w = windowOf(email, template);
   const lastSent = list.stats[template]?.lastSent ?? null;
   const stepLabel = (t: string) => email.templates.find((x) => x.template === t)?.label ?? t.split("/").pop();
+  const activity = useActivity(template);
+  // Mandrill templates carry no subject (each sender sets it), so show the latest real one.
+  const sentSubject = activity.data?.sends.find((m) => m.subject && !m.subject.startsWith("[Apex internal]"))?.subject ?? null;
 
   return (
     <section className="ld-emails-detail">
@@ -217,15 +220,15 @@ function EmailDetail({
         <Kpi label="Unsubscribed" value={int(w.unsubs)} sub={pct(w.unsubs, w.delivered)} />
       </div>
       <p className="ld-emails-note">
-        {period === "d30" ? "Last 30 days." : "Last 14 days."} Opens are Mandrill&apos;s count, which Apple Mail inflates. Clicks
+        {period === "d30" ? "Last 30 days." : "Last 14 days."}{" "}Opens are Mandrill&apos;s count, which Apple Mail inflates. Clicks
         are counted on our own tracked links, people only, and started on October 10.
       </p>
 
       <div className="ld-emails-split">
-        <Preview template={template} />
+        <Preview template={template} sentSubject={sentSubject} />
         <div className="ld-emails-side">
           <Queue email={email} stepLabel={stepLabel} />
-          <Activity template={template} />
+          <Activity data={activity.data} error={activity.error} />
         </div>
       </div>
     </section>
@@ -242,7 +245,7 @@ function Kpi({ label, value, sub }: { label: string; value: string; sub: string 
   );
 }
 
-function Preview({ template }: { template: string }) {
+function Preview({ template, sentSubject }: { template: string; sentSubject: string | null }) {
   const [data, setData] = useState<{ html: string; subject: string | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -267,9 +270,9 @@ function Preview({ template }: { template: string }) {
         <h3 className="ld-emails-h3">Preview</h3>
         <span className="ld-ads-meta">Sample data</span>
       </div>
-      {data?.subject && (
+      {(data?.subject || sentSubject) && (
         <div className="ld-emails-subject">
-          <span>Subject</span> {data.subject}
+          <span>Subject</span> {data?.subject || sentSubject}
         </div>
       )}
       {error && <div className="ld-emails-empty">{error}</div>}
@@ -373,10 +376,10 @@ function Queue({ email, stepLabel }: { email: DeskEmail; stepLabel: (t: string) 
   );
 }
 
-function Activity({ template }: { template: string }) {
+/** Recent sends and clicks for one template. Shared by the preview (for the subject) and the activity cards. */
+function useActivity(template: string) {
   const [data, setData] = useState<DeskActivity | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [showBots, setShowBots] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -389,6 +392,12 @@ function Activity({ template }: { template: string }) {
       live = false;
     };
   }, [template]);
+
+  return { data, error };
+}
+
+function Activity({ data, error }: { data: DeskActivity | null; error: string | null }) {
+  const [showBots, setShowBots] = useState(false);
 
   const clicks = (data?.clicks ?? []).filter((c) => showBots || !c.likelyBot);
   const bots = (data?.clicks ?? []).filter((c) => c.likelyBot).length;

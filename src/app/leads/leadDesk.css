@@ -95,12 +95,13 @@
 /* ---------------------------------------------------------------------- */
 
 .ld-topbar {
-  height: var(--ld-topbar-h);
   min-height: var(--ld-topbar-h);
   display: flex;
+  /* Wraps to a second row on laptop widths instead of pushing the right side off screen. */
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  padding: 0 14px;
+  gap: 6px 10px;
+  padding: 5px 14px;
   background: var(--ld-surface);
   border-bottom: 1px solid var(--ld-border);
 }
