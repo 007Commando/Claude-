@@ -46,14 +46,26 @@ function rangeOf(preset: Preset, custom: { since: string; until: string }): { si
 }
 
 /**
- * Website tags that name a Meta campaign under an older label: the link's
- * utm_campaign was set when the campaign had another name and never changed.
- * Keyed by the normalised tag, valued by the Meta campaign id.
+ * Website tags that name a Meta campaign under another label: the links had a
+ * hard-coded utm_campaign that was never changed when campaigns were renamed
+ * or added. Keyed by the normalised tag; each entry says which campaign the
+ * tag meant from which New York day on (the newest entry not after the
+ * lead's day wins). "apex-pop-promotion-web" was on the Lookalike - Website
+ * ads, the only website campaign spending on 2026-09-29, before Website (A/B)
+ * took the same tag from 2026-10-01.
  */
-const CAMPAIGN_ALIASES: Record<string, string> = {
-  "apex pop promotion web": "120249105938920366", // Apex Pop Promotion - Website (A/B)
-  "free va 14 days nq": "120249049706090366", // Apex Free VA 14 days - Leads
+const CAMPAIGN_ALIASES: Record<string, { from: string; id: string }[]> = {
+  "apex pop promotion web": [
+    { from: "2026-01-01", id: "120249111830540366" }, // Apex Pop Promotion - Lookalike - Website
+    { from: "2026-10-01", id: "120249105938920366" }, // Apex Pop Promotion - Website (A/B)
+  ],
+  "free va 14 days nq": [{ from: "2026-01-01", id: "120249049706090366" }], // Apex Free VA 14 days - Leads
 };
+
+function aliasCampaign(tag: string | null | undefined, day: string): string | undefined {
+  const entries = CAMPAIGN_ALIASES[norm(tag)] ?? [];
+  return entries.filter((e) => e.from <= day).sort((a, b) => (a.from < b.from ? 1 : -1))[0]?.id;
+}
 
 /** Campaign and ad names as both sides spell them: "apex-pop-promotion" and "Apex Pop Promotion" are one. */
 const norm = (s: string | null | undefined) =>
@@ -231,7 +243,7 @@ export default function AdsView({ leads }: { leads: Lead[] }) {
       }
       const camp =
         (l.campaignId && campaignById.get(l.campaignId)) ||
-        (l.campaign ? (campaignByName.get(norm(l.campaign)) ?? campaignById.get(CAMPAIGN_ALIASES[norm(l.campaign)] ?? "")) : undefined);
+        (l.campaign ? (campaignByName.get(norm(l.campaign)) ?? campaignById.get(aliasCampaign(l.campaign, nyDay(l.leadAt)) ?? "")) : undefined);
       // Leads with a campaign Meta no longer lists still get a campaign card, from the CRM side.
       const key = camp ? camp.id : l.campaign ? `crm:${l.campaign}` : "crm:none";
       campaignKeyOfLead.set(l.id, key);
